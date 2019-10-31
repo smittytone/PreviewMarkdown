@@ -11,7 +11,7 @@
  *
  * example:
  *
- *   mkd2html -cs /~orc/pages.css syntax
+ *   mkd2html -css /~orc/pages.css syntax
  *     ( read syntax OR syntax.text, write syntax.html )
  */
 /*
@@ -37,7 +37,11 @@
 #include "cstring.h"
 #include "amalloc.h"
 
+#include "gethopt.h"
+
 char *pgm = "mkd2html";
+
+extern int notspecial(char *filename);
 
 #ifndef HAVE_BASENAME
 char *
@@ -65,6 +69,22 @@ fail(char *why, ...)
 }
 
 
+enum { GFM, ADD_CSS, ADD_HEADER, ADD_FOOTER };
+
+struct h_opt opts[] = {
+    { GFM,           "gfm",'G', 0,       "Github style markdown" },
+    { ADD_CSS,       "css", 0, "url",    "Additional css for this page" },
+    { ADD_HEADER, "header", 0, "header", "Additonal headers for this page" },
+    { ADD_FOOTER, "footer", 0, "footer", "Additional footers for this page" },
+};
+#define NROPTS (sizeof opts/sizeof opts[0])
+
+#if USE_H1TITLE
+extern char* mkd_h1_title(MMIOT *);
+#endif
+
+
+int
 main(argc, argv)
 char **argv;
 {
@@ -72,8 +92,11 @@ char **argv;
     char *source = 0, *dest = 0;
     MMIOT *mmiot;
     int i;
+    int gfm = 0;
     FILE *input, *output; 
     STRING(char*) css, headers, footers;
+    struct h_opt *res;
+    struct h_context flags;
 
 
     CREATE(css);
@@ -81,41 +104,53 @@ char **argv;
     CREATE(footers);
     pgm = basename(argv[0]);
 
-    while ( argc > 1 ) {
-	if ( strcmp(argv[1], "-css") == 0 ) {
-	    EXPAND(css) = argv[2];
-	    argc -= 2;
-	    argv += 2;
+    hoptset(&flags, argc, argv);
+    hopterr(&flags, 1);
+    while ( res = gethopt(&flags, opts, NROPTS) ) {
+	if ( res == HOPTERR ) {
+	    hoptusage(pgm, opts, NROPTS, "source [dest]");
+	    exit(1);
 	}
-	else if ( strcmp(argv[1], "-header") == 0 ) {
-	    EXPAND(headers) = argv[2];
-	    argc -= 2;
-	    argv += 2;
-	}
-	else if ( strcmp(argv[1], "-footer") == 0 ) {
-	    EXPAND(footers) = argv[2];
-	    argc -= 2;
-	    argv += 2;
-	}
-	else
+	
+	switch ( res->option ) {
+	case ADD_CSS:
+	    EXPAND(css) = hoptarg(&flags);
 	    break;
+	case ADD_HEADER:
+	    EXPAND(headers) = hoptarg(&flags);
+	    break;
+	case ADD_FOOTER:
+	    EXPAND(footers) = hoptarg(&flags);
+	    break;
+	case GFM:
+	    gfm = 1;
+	    break;
+	default:
+	    fprintf(stderr, "unknown option?\n");
+	    break;
+	}
     }
+
+    argc -= hoptind(&flags);
+    argv += hoptind(&flags);
 
     switch ( argc ) {
 	char *p, *dot;
-    case 1:
+    case 0:
 	input = stdin;
 	output = stdout;
 	break;
+    
+    case 1:
     case 2:
-    case 3:
 	dest   = malloc(strlen(argv[argc-1]) + 6);
-	source = malloc(strlen(argv[1]) + 6);
+	source = malloc(strlen(argv[0]) + 6);
 
 	if ( !(source && dest) )
 	    fail("out of memory allocating name buffers");
 
-	strcpy(source, argv[1]);
+	strcpy(source, argv[0]);
+	strcpy(dest, argv[argc-1]);
 	if (( p = strrchr(source, '/') ))
 	    p = source;
 	else
@@ -124,24 +159,27 @@ char **argv;
 	if ( (input = fopen(source, "r")) == 0 ) {
 	    strcat(source, ".text");
 	    if ( (input = fopen(source, "r")) == 0 )
-		fail("can't open either %s or %s", argv[1], source);
+		fail("can't open either %s or %s", argv[0], source);
 	}
-	strcpy(dest, source);
 
-	if (( dot = strrchr(dest, '.') ))
-	    *dot = 0;
-	strcat(dest, ".html");
+	if ( notspecial(dest) ) {
+	    if (( dot = strrchr(dest, '.') ))
+		*dot = 0;
+	    strcat(dest, ".html");
+	}
 
 	if ( (output = fopen(dest, "w")) == 0 )
 	    fail("can't write to %s", dest);
 	break;
 
     default:
-	fprintf(stderr, "usage: %s [opts] source [dest]\n", pgm);
+	hoptusage(pgm, opts, NROPTS, "source [dest]");
 	exit(1);
     }
 
-    if ( (mmiot = mkd_in(input, 0)) == 0 )
+    mmiot = gfm ? gfm_in(input, 0) : mkd_in(input, 0);
+
+    if ( mmiot == 0 )
 	fail("can't read %s", source ? source : "stdin");
 
     if ( !mkd_compile(mmiot, 0) )
@@ -149,6 +187,10 @@ char **argv;
 
 
     h = mkd_doc_title(mmiot);
+#if USE_H1TITLE
+    if ( ! h )
+	h = mkd_h1_title(mmiot);
+#endif
 
     /* print a header */
 
@@ -158,19 +200,22 @@ char **argv;
 	"<head>\n"
 	"  <meta name=\"GENERATOR\" content=\"mkd2html %s\">\n", markdown_version);
 
-    fprintf(output,"  <meta http-equiv=\"Content-Type\"\n"
-		   "        content=\"text/html; charset=utf-8\">");
+    fprintf(output,"  <meta http-equiv=\"Content-Type\""
+		          " content=\"text/html; charset=utf-8\">\n");
 
     for ( i=0; i < S(css); i++ )
 	fprintf(output, "  <link rel=\"stylesheet\"\n"
 			"        type=\"text/css\"\n"
 			"        href=\"%s\" />\n", T(css)[i]);
 
-    if ( h ) {
-	fprintf(output,"  <title>");
+    fprintf(output,"  <title>");
+    if ( h )
 	mkd_generateline(h, strlen(h), output, 0);
-	fprintf(output, "</title>\n");
-    }
+    /* xhtml requires a <title> in the header, even if it doesn't
+     * contain anything
+     */
+    fprintf(output, "</title>\n");
+    
     for ( i=0; i < S(headers); i++ )
 	fprintf(output, "  %s\n", T(headers)[i]);
     fprintf(output, "</head>\n"

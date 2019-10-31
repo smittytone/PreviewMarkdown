@@ -2,7 +2,7 @@
 #include "markdown.h"
 
 struct flagnames {
-    DWORD flag;
+    mkd_flag_t flag;
     char *name;
 };
 
@@ -30,12 +30,20 @@ static struct flagnames flagnames[] = {
     { MKD_NODLIST,        "!DLIST" },
     { MKD_EXTRA_FOOTNOTE, "FOOTNOTE" },
     { MKD_NOSTYLE,        "!STYLE" },
+    { MKD_NODLDISCOUNT,   "!DLDISCOUNT" },
+    { MKD_DLEXTRA,        "DLEXTRA" },
+    { MKD_FENCEDCODE,     "FENCEDCODE" },
+    { MKD_IDANCHOR,       "IDANCHOR" },
+    { MKD_GITHUBTAGS,     "GITHUBTAGS" },
+    { MKD_URLENCODEDANCHOR, "URLENCODEDANCHOR" },
+    { MKD_LATEX,          "LATEX" },
+    { MKD_EXPLICITLIST,   "EXPLICITLIST" },
 };
 #define NR(x)	(sizeof x/sizeof x[0])
 
 
 void
-mkd_flags_are(FILE *f, DWORD flags, int htmlplease)
+mkd_flags_are(FILE *f, mkd_flag_t flags, int htmlplease)
 {
     int i;
     int not, set, even=1;

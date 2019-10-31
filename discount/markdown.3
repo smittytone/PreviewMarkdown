@@ -61,7 +61,7 @@ Don't allow raw html through AT ALL
 Disable 
 superscript and relaxed emphasis.
 .It Ar MKD_TAGTEXT
-Process text inside an html tag; no 
+Process text to put inside an html tag (ID=, NAME=, <title>, &tc); no 
 .Em <em> ,
 no 
 .Em <bold> ,
@@ -104,8 +104,23 @@ blocks.
 Forbid alphabetic lists.
 .It Ar MKD_NODLIST
 Forbid definition lists.
+.It Ar MKD_NODLDISCOUNT
+Disable the discount definition list syntax style.
+.It Ar MKD_DLEXTRA
+Enable the extra definition list syntax style.
 .It Ar MKD_EXTRA_FOOTNOTE
 Enable markdown extra-style footnotes.
+.It Ar MKD_NOSTYLE
+Do not extract (omit) <style/> blocks from the output.
+.It Ar MKD_FENCEDCODE
+Allow fenced code blocks.
+.It Ar MKD_IDANCHOR
+Use id= anchors instead of <a name=/> for table-of-contents links.
+.It Ar MKD_GITHUBTAGS
+Allow underscore and dash in passed through element names.
+.It Ar MKD_URLENCODEDANCHOR
+Use html5 encoding for multibyte and nonalphanumeric characters rather
+than hex expansion in toc links.
 .El
 .Sh RETURN VALUES
 .Fn markdown

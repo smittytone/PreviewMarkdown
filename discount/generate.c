@@ -38,6 +38,16 @@ push(char *bfr, int size, MMIOT *f)
 }
 
 
+/*
+ * push a character into the generator input buffer
+ */
+static void 
+pushc(char c, MMIOT *f)
+{
+    EXPAND(f->in) = c;
+}
+
+
 /* look <i> characters ahead of the cursor.
  */
 static inline int
@@ -46,16 +56,16 @@ peek(MMIOT *f, int i)
 
     i += (f->isp-1);
 
-    return (i >= 0) && (i < S(f->in)) ? T(f->in)[i] : EOF;
+    return (i >= 0) && (i < S(f->in)) ? (unsigned char)T(f->in)[i] : EOF;
 }
 
 
 /* pull a byte from the input buffer
  */
-static inline int
+static inline unsigned int
 pull(MMIOT *f)
 {
-    return ( f->isp < S(f->in) ) ? T(f->in)[f->isp++] : EOF;
+    return ( f->isp < S(f->in) ) ? (unsigned char)T(f->in)[f->isp++] : EOF;
 }
 
 
@@ -98,8 +108,10 @@ isthisnonword(MMIOT *f, int i)
 
 
 /* return/set the current cursor position
+ * (when setting the current cursor position we also need to flush the
+ * last character written cache)
  */
-#define mmiotseek(f,x)	(f->isp = x)
+#define mmiotseek(f,x)	((f->isp = x), (f->last = 0))
 #define mmiottell(f)	(f->isp)
 
 
@@ -168,6 +180,16 @@ Qprintf(MMIOT *f, char *fmt, ...)
 }
 
 
+/* Qanchor() prints out a suitable-for-id-tag version of a string
+ */
+static void
+Qanchor(struct line *p, MMIOT *f)
+{
+    mkd_string_to_anchor(T(p->text), S(p->text),
+			 (mkd_sta_function_t)Qchar, f, 1, f);
+}
+
+
 /* Qem()
  */
 static void
@@ -187,7 +209,7 @@ Qem(MMIOT *f, char c, int count)
 /* generate html from a markup fragment
  */
 void
-___mkd_reparse(char *bfr, int size, int flags, MMIOT *f, char *esc)
+___mkd_reparse(char *bfr, int size, mkd_flag_t flags, MMIOT *f, char *esc)
 {
     MMIOT sub;
     struct escaped e;
@@ -207,13 +229,18 @@ ___mkd_reparse(char *bfr, int size, int flags, MMIOT *f, char *esc)
 	sub.esc = f->esc;
 
     push(bfr, size, &sub);
-    EXPAND(sub.in) = 0;
+    pushc(0, &sub);
     S(sub.in)--;
     
     text(&sub);
     ___mkd_emblock(&sub);
     
     Qwrite(T(sub.out), S(sub.out), f);
+    /* inherit the last character printed from the reparsed
+     * text;  this way superscripts can work when they're
+     * applied to something embedded in a link
+     */
+    f->last = sub.last;
 
     ___mkd_freemmiot(&sub, f->footnotes);
 }
@@ -262,7 +289,7 @@ puturl(char *s, int size, MMIOT *f, int display)
 	    Qstring("%22", f);
 	else if ( isalnum(c) || ispunct(c) || (display && isspace(c)) )
 	    Qchar(c, f);
-	else if ( c == 003 )	/* untokenize ^C */
+	else if ( c == MKD_EOLN )	/* untokenize hard return */
 	    Qstring("  ", f);
 	else
 	    Qprintf(f, "%%%02X", c);
@@ -446,7 +473,7 @@ linkyurl(MMIOT *f, int image, Footnote *p)
 
     if ( c == '<' ) {
 	pull(f);
-	if ( !(f->flags & MKD_1_COMPAT) )
+	if ( !is_flag_set(f->flags, MKD_1_COMPAT) )
 	    return linkybroket(f,image,p);
 	mayneedtotrim=1;
     }
@@ -569,14 +596,14 @@ printlinkyref(MMIOT *f, linkytype *tag, char *link, int size)
 {
     char *edit;
     
-    if ( f->flags & IS_LABEL )
+    if ( is_flag_set(f->flags, IS_LABEL) )
 	return;
     
     Qstring(tag->link_pfx, f);
 	
     if ( tag->kind & IS_URL ) {
 	if ( f->cb && f->cb->e_url && (edit = (*f->cb->e_url)(link, size, f->cb->e_data)) ) {
-	    puturl(edit, (int)strlen(edit), f, 0);
+	    puturl(edit, strlen(edit), f, 0);
 	    if ( f->cb->e_free ) (*f->cb->e_free)(edit, f->cb->e_data);
 	}
 	else
@@ -618,13 +645,39 @@ extra_linky(MMIOT *f, Cstring text, Footnote *ref)
     	___mkd_reparse(T(text), S(text), linkt.flags, f, 0);
     else {
 	ref->flags |= REFERENCED;
-	ref->refnumber = ++ f->reference;
+	ref->refnumber = ++ f->footnotes->reference;
 	Qprintf(f, "<sup id=\"%sref:%d\"><a href=\"#%s:%d\" rel=\"footnote\">%d</a></sup>",
 		p_or_nothing(f), ref->refnumber,
 		p_or_nothing(f), ref->refnumber, ref->refnumber);
     }
     return 1;
 } /* extra_linky */
+
+
+
+/* check a url (or url fragment to see that it begins with a known good
+ * protocol (or no protocol at all)
+ */
+static int
+safelink(Cstring link)
+{
+    char *p, *colon;
+
+    if ( T(link) == 0 )	/* no link; safe */
+	return 1;
+
+    p = T(link);
+    if ( (colon = memchr(p, ':', S(link))) == 0 )
+	return 1; /* no protocol specified: safe */
+
+    if ( !isalpha(*p) )	/* protocol/method is [alpha][alnum or '+.-'] */
+	return 1;
+    while ( ++p < colon )
+	if ( !(isalnum(*p) || *p == '.' || *p == '+' || *p == '-') )
+	    return 1;
+
+    return isautoprefix(T(link), S(link));
+}
 
 
 /* print out a linky (or fail if it's Not Allowed)
@@ -638,12 +691,10 @@ linkyformat(MMIOT *f, Cstring text, int image, Footnote *ref)
     if ( image )
 	tag = &imaget;
     else if ( tag = pseudo(ref->link) ) {
-	if ( f->flags & (MKD_NO_EXT|MKD_SAFELINK) )
+	if ( is_flag_set(f->flags, MKD_NO_EXT) || is_flag_set(f->flags, MKD_SAFELINK) )
 	    return 0;
     }
-    else if ( (f->flags & MKD_SAFELINK) && T(ref->link)
-				        && (T(ref->link)[0] != '/')
-				        && !isautoprefix(T(ref->link), S(ref->link)) )
+    else if ( is_flag_set(f->flags, MKD_SAFELINK) && !safelink(ref->link) )
 	/* if MKD_SAFELINK, only accept links that are local or
 	 * a well-known protocol
 	 */
@@ -654,7 +705,7 @@ linkyformat(MMIOT *f, Cstring text, int image, Footnote *ref)
     if ( f->flags & tag->flags )
 	return 0;
 
-    if ( f->flags & IS_LABEL )
+    if ( is_flag_set(f->flags, IS_LABEL) )
 	___mkd_reparse(T(text), S(text), tag->flags, f, 0);
     else if ( tag->link_pfx ) {
 	printlinkyref(f, tag, T(ref->link), S(ref->link));
@@ -718,9 +769,9 @@ linkylinky(int image, MMIOT *f)
 		 * require a second []
 		 */
 		mmiotseek(f, implicit_mark);
-		goodlink = !(f->flags & MKD_1_COMPAT);
+		goodlink = !is_flag_set(f->flags, MKD_1_COMPAT);
 
-		if ( (f->flags & MKD_EXTRA_FOOTNOTE) && (!image) && S(name) && T(name)[0] == '^' )
+		if ( is_flag_set(f->flags, MKD_EXTRA_FOOTNOTE) && (!image) && S(name) && T(name)[0] == '^' )
 		    extra_footnote = 1;
 	    }
 	    
@@ -731,8 +782,9 @@ linkylinky(int image, MMIOT *f)
 		    S(key.tag) = S(name);
 		}
 
-		if ( ref = bsearch(&key, T(*f->footnotes), S(*f->footnotes),
-					  sizeof key, (stfu)__mkd_footsort) ) {
+		if ( ref = bsearch(&key, T(f->footnotes->note),
+					 S(f->footnotes->note),
+					 sizeof key, (stfu)__mkd_footsort) ) {
 		    if ( extra_footnote )
 			status = extra_linky(f,name,ref);
 		    else
@@ -774,8 +826,12 @@ static void
 mangle(char *s, int len, MMIOT *f)
 {
     while ( len-- > 0 ) {
+#if DEBIAN_GLITCH
+	Qprintf(f, "&#%02d;", *((unsigned char*)(s++)) );
+#else
 	Qstring("&#", f);
 	Qprintf(f, COINTOSS() ? "x%02x;" : "%02d;", *((unsigned char*)(s++)) );
+#endif
     }
 }
 
@@ -837,14 +893,13 @@ code(MMIOT *f, char *s, int length)
     int i,c;
 
     for ( i=0; i < length; i++ )
-	if ( (c = s[i]) == 003)  /* ^C: expand back to 2 spaces */
+	if ( (c = s[i]) == MKD_EOLN)  /* expand back to 2 spaces */
 	    Qstring("  ", f);
 	else if ( c == '\\' && (i < length-1) && escaped(f, s[i+1]) )
 	    cputc(s[++i], f);
 	else
 	    cputc(c, f);
 } /* code */
-
 
 /*  delspan() -- write out a chunk of text, blocking with <del>...</del>
  */
@@ -866,10 +921,7 @@ codespan(MMIOT *f, int size)
     int i=0;
 
     if ( size > 1 && peek(f, size-1) == ' ' ) --size;
-    if ( peek(f,i) == ' ' ) {
-        ++i;
-        --size;
-    }
+    if ( peek(f,i) == ' ' ) ++i, --size;
     
     Qstring("<code>", f);
     code(f, cursor(f)+(i-1), size);
@@ -885,12 +937,12 @@ forbidden_tag(MMIOT *f)
 {
     int c = toupper(peek(f, 1));
 
-    if ( f->flags & MKD_NOHTML )
+    if ( is_flag_set(f->flags, MKD_NOHTML) )
 	return 1;
 
-    if ( c == 'A' && (f->flags & MKD_NOLINKS) && !isthisalnum(f,2) )
+    if ( c == 'A' && is_flag_set(f->flags, MKD_NOLINKS) && !isthisalnum(f,2) )
 	return 1;
-    if ( c == 'I' && (f->flags & MKD_NOIMAGE)
+    if ( c == 'I' && is_flag_set(f->flags, MKD_NOIMAGE)
 		  && strncasecmp(cursor(f)+1, "MG", 2) == 0
 		  && !isthisalnum(f,4) )
 	return 1;
@@ -914,8 +966,7 @@ maybe_address(char *p, int size)
     if ( ! (size && *p == '@') )
 	return 0;
     
-    --size;
-    ++p;
+    --size, ++p;
 
     if ( size && *p == '.' ) return 0;
     
@@ -938,7 +989,7 @@ process_possible_link(MMIOT *f, int size)
     int mailto = 0;
     char *text = cursor(f);
     
-    if ( f->flags & MKD_NOLINKS ) return 0;
+    if ( is_flag_set(f->flags, MKD_NOLINKS) ) return 0;
 
     if ( (size > 7) && strncasecmp(text, "mailto:", 7) == 0 ) {
 	/* if it says it's a mailto, it's a mailto -- who am
@@ -985,7 +1036,7 @@ maybe_tag_or_link(MMIOT *f)
     int c, size;
     int maybetag = 1;
 
-    if ( f->flags & MKD_TAGTEXT )
+    if ( is_flag_set(f->flags, MKD_TAGTEXT) )
 	return 0;
 
     for ( size=0; (c = peek(f, size+1)) != '>'; size++) {
@@ -998,11 +1049,9 @@ maybe_tag_or_link(MMIOT *f)
 	}
 	else if ( isspace(c) )
 	    break;
-#if WITH_GITHUB_TAGS
-	else if ( ! (c == '/' || c == '-' || c == '_' || isalnum(c) ) )
-#else
-	else if ( ! (c == '/' || isalnum(c) ) )
-#endif
+	else if ( ! (c == '/'
+		     || (is_flag_set(f->flags, MKD_GITHUBTAGS) && (c == '-' || c == '_'))
+		     || isalnum(c) ) )
 	    maybetag=0;
     }
 
@@ -1048,13 +1097,16 @@ maybe_autolink(MMIOT *f)
 
     /* greedily scan forward for the end of a legitimate link.
      */
-    for ( size=0; (c=peek(f, size+1)) != EOF; size++ )
+    for ( size=0; (c=peek(f, size+1)) != EOF; size++ ) {
 	if ( c == '\\' ) {
 	     if ( peek(f, size+2) != EOF )
 		++size;
 	}
-	else if ( isspace(c) || strchr("'\"()[]{}<>`", c) )
+	else if ( c & 0x80 )	/* HACK: ignore utf-8 extended characters */
+	    continue;
+	else if ( isspace(c) || strchr("'\"()[]{}<>`", c) || c == MKD_EOLN )
 	    break;
+    }
 
     if ( (size > 1) && process_possible_link(f, size) ) {
 	shift(f, size);
@@ -1099,7 +1151,7 @@ islike(MMIOT *f, char *s)
        ++s;
     }
 
-    if ( !(len = (int)strlen(s)) )
+    if ( !(len = strlen(s)) )
 	return 0;
 
     if ( s[len-1] == '|' ) {
@@ -1152,7 +1204,9 @@ smartypants(int c, int *flags, MMIOT *f)
 {
     int i;
 
-    if ( f->flags & (MKD_NOPANTS|MKD_TAGTEXT|IS_LABEL) )
+    if ( is_flag_set(f->flags, MKD_NOPANTS) 
+      || is_flag_set(f->flags, MKD_TAGTEXT)
+      || is_flag_set(f->flags, IS_LABEL) )
 	return 0;
 
     for ( i=0; i < NRSMART; i++)
@@ -1196,6 +1250,27 @@ smartypants(int c, int *flags, MMIOT *f)
 } /* smartypants */
 
 
+/* process latex with arbitrary 2-character ( $$ .. $$, \[ .. \], \( .. \)
+ * delimiters
+ */
+static int
+mathhandler(MMIOT *f, int e1, int e2)
+{
+    int i = 0;
+
+    while(peek(f, ++i) != EOF) {
+        if (peek(f, i) == e1 && peek(f, i+1) == e2) {
+	    cputc(peek(f,-1), f);
+	    cputc(peek(f, 0), f);
+	    while ( i-- > -1 )
+		cputc(pull(f), f);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
 /* process a body of text encased in some sort of tick marks.   If it
  * works, generate the output and return 1, otherwise just return 0 and
  * let the caller figure it out.
@@ -1223,7 +1298,7 @@ tickhandler(MMIOT *f, int tickchar, int minticks, int allow_space, spanhandler s
     return 0;
 }
 
-#define tag_text(f)	(f->flags & MKD_TAGTEXT)
+#define tag_text(f)	is_flag_set(f->flags, MKD_TAGTEXT)
 
 
 static void
@@ -1234,7 +1309,7 @@ text(MMIOT *f)
     int smartyflags = 0;
 
     while (1) {
-        if ( (f->flags & MKD_AUTOLINK) && isalpha(peek(f,1)) && !tag_text(f) )
+        if ( is_flag_set(f->flags, MKD_AUTOLINK) && isalpha(peek(f,1)) && !tag_text(f) )
 	    maybe_autolink(f);
 
         c = pull(f);
@@ -1247,7 +1322,8 @@ text(MMIOT *f)
 	switch (c) {
 	case 0:     break;
 
-	case 3:     Qstring(tag_text(f) ? "  " : "<br/>", f);
+	case MKD_EOLN:
+		    Qstring(tag_text(f) ? "  " : "<br/>", f);
 		    break;
 
 	case '>':   if ( tag_text(f) )
@@ -1270,13 +1346,18 @@ text(MMIOT *f)
 		    else
 			Qchar(c, f);
 		    break;
+
 	case '[':   if ( tag_text(f) || !linkylinky(0, f) )
 			Qchar(c, f);
 		    break;
 	/* A^B -> A<sup>B</sup> */
-	case '^':   if ( (f->flags & (MKD_NOSUPERSCRIPT|MKD_STRICT|MKD_TAGTEXT))
-				|| (isthisnonword(f,-1) && peek(f,-1) != ')')
-				|| isthisspace(f,1) )
+	case '^':   if ( is_flag_set(f->flags, MKD_NOSUPERSCRIPT)
+			    || is_flag_set(f->flags, MKD_STRICT)
+			    || is_flag_set(f->flags, MKD_TAGTEXT)
+			    || (f->last == 0)
+			    || ((ispunct(f->last) || isspace(f->last))
+						    && f->last != ')')
+			    || isthisspace(f,1) )
 			Qchar(c,f);
 		    else {
 			char *sup = cursor(f);
@@ -1309,9 +1390,8 @@ text(MMIOT *f)
 		    break;
 	case '_':
 	/* Underscores don't count if they're in the middle of a word */
-		    if ( !(f->flags & (MKD_NORELAXED|MKD_STRICT))
-					&& isthisalnum(f,-1)
-					 && isthisalnum(f,1) ) {
+		    if ( !(is_flag_set(f->flags, MKD_NORELAXED) || is_flag_set(f->flags, MKD_STRICT))
+				&& isthisalnum(f,-1) && isthisalnum(f,1) ) {
 			Qchar(c, f);
 			break;
 		    }
@@ -1332,7 +1412,10 @@ text(MMIOT *f)
 		    }
 		    break;
 	
-	case '~':   if ( (f->flags & (MKD_NOSTRIKETHROUGH|MKD_TAGTEXT|MKD_STRICT)) || ! tickhandler(f,c,2,0, delspan) )
+	case '~':   if ( is_flag_set(f->flags, MKD_NOSTRIKETHROUGH)
+			 || is_flag_set(f->flags, MKD_STRICT)
+			 || is_flag_set(f->flags, MKD_TAGTEXT)
+			 || ! tickhandler(f,c,2,0, delspan) )
 			Qchar(c, f);
 		    break;
 
@@ -1354,7 +1437,8 @@ text(MMIOT *f)
 				}
 				
 				break;
-		    case '^':   if ( f->flags & (MKD_STRICT|MKD_NOSUPERSCRIPT) ) {
+		    case '^':   if ( is_flag_set(f->flags, MKD_STRICT)
+					|| is_flag_set(f->flags, MKD_NOSUPERSCRIPT) ) {
 				    Qchar('\\', f);
 				    shift(f,-1);
 				    break;
@@ -1363,7 +1447,7 @@ text(MMIOT *f)
 				break;
 				
 		    case ':': case '|':
-				if ( f->flags & MKD_NOTABLES ) {
+				if ( is_flag_set(f->flags, MKD_NOTABLES) ) {
 				    Qchar('\\', f);
 				    shift(f,-1);
 				    break;
@@ -1373,7 +1457,13 @@ text(MMIOT *f)
 				
 		    case EOF:	Qchar('\\', f);
 				break;
-				
+
+		    case '[':
+		    case '(':   if ( is_flag_set(f->flags, MKD_LATEX)
+				   && mathhandler(f, '\\', (c =='(')?')':']') )
+				    break;
+				/* else fall through to default */
+			
 		    default:    if ( escaped(f,c) ||
 				     strchr(">#.-+{}]![*_\\()`", c) )
 				    Qchar(c, f);
@@ -1399,7 +1489,16 @@ text(MMIOT *f)
 			Qchar(c, f);
 		    break;
 
-	default:    Qchar(c, f);
+	case '$':   if ( is_flag_set(f->flags, MKD_LATEX) && (peek(f, 1) == '$') ) {
+			pull(f);
+			if ( mathhandler(f, '$', '$') )
+			    break;
+			Qchar('$', f);
+		    }
+		    /* fall through to default */
+	
+	default:    f->last = c;
+		    Qchar(c, f);
 		    break;
 	}
     }
@@ -1413,26 +1512,22 @@ text(MMIOT *f)
 static void
 printheader(Paragraph *pp, MMIOT *f)
 {
-#if WITH_ID_ANCHOR
-    Qprintf(f, "<h%d", pp->hnumber);
-    if ( f->flags & MKD_TOC ) {
-	Qstring(" id=\"", f);
-	mkd_string_to_anchor(T(pp->text->text),
-			     S(pp->text->text),
-			     (mkd_sta_function_t)Qchar, f, 1);
-	Qchar('"', f);
+    if ( is_flag_set(f->flags, MKD_IDANCHOR) ) {
+	Qprintf(f, "<h%d", pp->hnumber);
+	if ( is_flag_set(f->flags, MKD_TOC) ) {
+	    Qstring(" id=\"", f);
+	    Qanchor(pp->text, f);
+	    Qchar('"', f);
+	}
+	Qchar('>', f);
+    } else {
+	if ( is_flag_set(f->flags, MKD_TOC) ) {
+	    Qstring("<a name=\"", f);
+	    Qanchor(pp->text, f);
+	    Qstring("\"></a>\n", f);
+	}
+	Qprintf(f, "<h%d>", pp->hnumber);
     }
-    Qchar('>', f);
-#else
-    if ( f->flags & MKD_TOC ) {
-	Qstring("<a name=\"", f);
-	mkd_string_to_anchor(T(pp->text->text),
-			     S(pp->text->text),
-			     (mkd_sta_function_t)Qchar, f, 1);
-	Qstring("\"></a>\n", f);
-    }
-    Qprintf(f, "<h%d>", pp->hnumber);
-#endif
     push(T(pp->text->text), S(pp->text->text), f);
     text(f);
     Qprintf(f, "</h%d>", pp->hnumber);
@@ -1561,9 +1656,10 @@ printtable(Paragraph *pp, MMIOT *f)
 static int
 printblock(Paragraph *pp, MMIOT *f)
 {
-    Line *t = pp->text;
     static char *Begin[] = { "", "<p>", "<p style=\"text-align:center;\">"  };
     static char *End[]   = { "", "</p>","</p>" };
+    Line *t = pp->text;
+    int align = pp->align;
 
     while (t) {
 	if ( S(t->text) ) {
@@ -1571,20 +1667,21 @@ printblock(Paragraph *pp, MMIOT *f)
 			 && T(t->text)[S(t->text)-2] == ' '
 			 && T(t->text)[S(t->text)-1] == ' ' ) {
 		push(T(t->text), S(t->text)-2, f);
-		push("\003\n", 2, f);
+		pushc(MKD_EOLN, f);
+		pushc('\n', f);
 	    }
 	    else {
 		___mkd_tidy(&t->text);
 		push(T(t->text), S(t->text), f);
 		if ( t->next )
-		    push("\n", 1, f);
+		    pushc('\n', f);
 	    }
 	}
 	t = t->next;
     }
-    Qstring(Begin[pp->align], f);
+    Qstring(Begin[align], f);
     text(f);
-    Qstring(End[pp->align], f);
+    Qstring(End[align], f);
     return 1;
 }
 
@@ -1594,8 +1691,44 @@ printcode(Line *t, char *lang, MMIOT *f)
 {
     int blanks;
 
+    if ( f->cb->e_codefmt ) {
+	/* external code block formatter;  copy the text into a buffer,
+	 * call the formatter to style it, then dump that styled text
+	 * directly to the queue
+	 */
+	char *text;
+	char *fmt;
+	int size, copy_p;
+	Line *p;
+
+	for (size=0, p = t; p; p = p->next )
+	    size += 1+S(p->text);
+
+	text = malloc(1+size);
+
+	for ( copy_p = 0; t ; t = t->next ) {
+	    memcpy(text+copy_p, T(t->text), S(t->text));
+	    copy_p += S(t->text);
+	    text[copy_p++] = '\n';
+	}
+	text[copy_p] = 0;
+	
+	fmt = (*(f->cb->e_codefmt))(text, copy_p, (lang && lang[0]) ? lang : 0);
+	free(text);
+
+	if ( fmt ) {
+	    Qwrite(fmt, strlen(fmt), f);
+	    if ( f->cb->e_free )
+		(*(f->cb->e_free))(fmt, f->cb->e_data);
+	    return;
+	}
+	/* otherwise the external formatter failed and we need to 
+	 * fall back to the traditional codeblock format
+	 */
+    }
+    
     Qstring("<pre><code", f);
-    if (lang) {
+    if (lang && lang[0]) {
       Qstring(" class=\"", f);
       Qstring(lang, f);
       Qstring("\"", f);
@@ -1635,17 +1768,57 @@ printhtml(Line *t, MMIOT *f)
 
 
 static void
-htmlify(Paragraph *p, char *block, char *arguments, MMIOT *f)
+htmlify_paragraphs(Paragraph *p, MMIOT *f)
 {
-    ___mkd_emblock(f);
-    if ( block )
-	Qprintf(f, arguments ? "<%s %s>" : "<%s>", block, arguments);
     ___mkd_emblock(f);
 
     while (( p = display(p, f) )) {
 	___mkd_emblock(f);
 	Qstring("\n\n", f);
     }
+}
+
+
+#ifdef GITHUB_CHECKBOX
+static void
+li_htmlify(Paragraph *p, char *arguments, mkd_flag_t flags, MMIOT *f)
+{
+    ___mkd_emblock(f);
+
+    Qprintf(f, "<li");
+    if ( arguments )
+	Qprintf(f, " %s", arguments);
+    if ( flags & GITHUB_CHECK )
+	Qprintf(f, " class=\"github_checkbox\"");
+    Qprintf(f, ">");
+#if CHECKBOX_AS_INPUT
+    if ( flags & GITHUB_CHECK ) {
+	Qprintf(f, "<input disabled=\"\" type=\"checkbox\"");
+	if ( flags & IS_CHECKED )
+	    Qprintf(f, " checked=\"checked\"");
+	Qprintf(f, "/>");
+    }
+#else
+    if ( flags & GITHUB_CHECK )
+	Qprintf(f, flags & IS_CHECKED ? "&#x2611;" : "&#x2610;");
+#endif
+
+    htmlify_paragraphs(p, f);
+
+     Qprintf(f, "</li>");
+    ___mkd_emblock(f);
+}
+#endif
+
+
+static void
+htmlify(Paragraph *p, char *block, char *arguments, MMIOT *f)
+{
+    ___mkd_emblock(f);
+    if ( block )
+	Qprintf(f, arguments ? "<%s %s>" : "<%s>", block, arguments);
+
+    htmlify_paragraphs(p, f);
 
     if ( block )
 	 Qprintf(f, "</%s>", block);
@@ -1687,7 +1860,11 @@ listdisplay(int typ, Paragraph *p, MMIOT* f)
 	Qprintf(f, ">\n");
 
 	for ( ; p ; p = p->next ) {
+#ifdef GITHUB_CHECKBOX
+	    li_htmlify(p->down, p->ident, p->flags, f);
+#else
 	    htmlify(p->down, "li", p->ident, f);
+#endif
 	    Qchar('\n', f);
 	}
 
@@ -1762,21 +1939,21 @@ mkd_extra_footnotes(MMIOT *m)
     int j, i;
     Footnote *t;
 
-    if ( m->reference == 0 )
+    if ( m->footnotes->reference == 0 )
 	return;
 
     Csprintf(&m->out, "\n<div class=\"footnotes\">\n<hr/>\n<ol>\n");
     
-    for ( i=1; i <= m->reference; i++ ) {
-	for ( j=0; j < S(*m->footnotes); j++ ) {
-	    t = &T(*m->footnotes)[j];
+    for ( i=1; i <= m->footnotes->reference; i++ ) {
+	for ( j=0; j < S(m->footnotes->note); j++ ) {
+	    t = &T(m->footnotes->note)[j];
 	    if ( (t->refnumber == i) && (t->flags & REFERENCED) ) {
-		Csprintf(&m->out, "<li id=\"%s:%d\">\n<p>",
+		Csprintf(&m->out, "<li id=\"%s:%d\">\n",
 			    p_or_nothing(m), t->refnumber);
-		Csreparse(&m->out, T(t->title), S(t->title), 0);
+		htmlify(t->text, 0, 0, m);
 		Csprintf(&m->out, "<a href=\"#%sref:%d\" rev=\"footnote\">&#8617;</a>",
 			    p_or_nothing(m), t->refnumber);
-		Csprintf(&m->out, "</p></li>\n");
+		Csprintf(&m->out, "</li>\n");
 	    }
 	}
     }
@@ -1795,19 +1972,22 @@ mkd_document(Document *p, char **res)
     if ( p && p->compiled ) {
 	if ( ! p->html ) {
 	    htmlify(p->code, 0, 0, p->ctx);
-	    if ( p->ctx->flags & MKD_EXTRA_FOOTNOTE )
+	    if ( is_flag_set(p->ctx->flags, MKD_EXTRA_FOOTNOTE) )
 		mkd_extra_footnotes(p->ctx);
 	    p->html = 1;
-	}
-
-	size = S(p->ctx->out);
+	    size = S(p->ctx->out);
 	
-	if ( (size == 0) || T(p->ctx->out)[size-1] )
-	    EXPAND(p->ctx->out) = 0;
+	    if ( (size == 0) || T(p->ctx->out)[size-1] ) {
+		/* Add a null byte at the end of the generated html,
+		 * but pretend it doesn't exist.
+		 */
+		EXPAND(p->ctx->out) = 0;
+		--S(p->ctx->out);
+	    }
+	}
 	
 	*res = T(p->ctx->out);
-	return size;
+	return S(p->ctx->out);
     }
     return EOF;
 }
-

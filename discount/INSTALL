@@ -26,16 +26,40 @@ Configure.sh has a few options that can be set:
 --libdir=DIR		where to put libraries (prefix/lib)
 --libexecdir=DIR	where to put private executables
 --mandir=DIR		where to put manpages
---enable-dl-tag	Use the DL tag extension
---enable-pandoc-header	Use pandoc-style header blocks
---enable-superscript	A^B expands to A<sup>B</sup>
---enable-amalloc	Use a debugging memory allocator (to detect leaks)
---relaxed-emphasis	Don't treat _ in the middle of a word as emphasis
---with-tabstops=N	Set tabstops to N characters (default is 4)
+--with-amalloc		Use my paranoid malloc library to catch memory leaks
+--shared		Build shared libraries
+--debian-glitch		When mangling email addresses, do them deterministically
+			so the Debian regression tester won't complain
+--pkg-config		Build & install a pkg-config(1) .pc file for
+			the discount library.
+--h1-title		Have theme & mkd2html use the first h1 in a document
+			as the title if there's no pandoc header or title
+			specified on the command line.
+--cxx-binding		Wrap mkdio.h with (conditional) 'extern "C"' for c++
+			binding.
 
-3) Installing sample programs and manpages
+3) Testing
+
+``make test'' runs discount against a collection of test cases.
+
+
+4) Installing sample programs and manpages
 
 The standard ``make install'' rule just installs the binaries. If you
 want to install the sample programs, they are installed with
 ``make install.samples'';  to install manpages, ``make install.man''.
 A shortcut to install everything is ``make install.everything''
+
+
+5) Assorted platform gotchas
+
+   1.  On NetBSD (version 8 for certain) running configure.sh by
+       itself will result in logging output being mixed in with diagnostic
+       output on the screen instead of having it written to config.log.
+       If, instead, you do `ksh ./configure.sh`, it will be much less
+       garbled (the shell defaults all fds > stderr to close on exec,
+       so my redirecting stdout fails after the first subprocess.)
+   2.  On 9Front (and maybe every other extant plan9 variant) the
+       system mkfile sets the `T' flag in CFLAGS; there are several
+       places where I typedef voids to opaque structure pointers and
+       this makes the build die when it attempts to link anything.

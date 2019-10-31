@@ -47,9 +47,9 @@ mkd_generatexml(char *p, int size, FILE *out)
 	c = *p++;
 
 	if ( entity = mkd_xmlchar(c) )
-	    fputs(entity, out);
+	    DO_OR_DIE( fputs(entity, out) );
 	else
-	    fputc(c, out);
+	    DO_OR_DIE( fputc(c, out) );
     }
     return 0;
 }
@@ -70,13 +70,14 @@ mkd_xml(char *p, int size, char **res)
     while ( size-- > 0 ) {
 	c = *p++;
 	if ( entity = mkd_xmlchar(c) )
-	    Cswrite(&f, entity, (int)strlen(entity));
+	    Cswrite(&f, entity, strlen(entity));
 	else
 	    Csputc(c, &f);
     }
-			/* HACK ALERT! HACK ALERT! HACK ALERT! */
-    *res = T(f);	/* we know that a T(Cstring) is a character pointer */
-			/* so we can simply pick it up and carry it away, */
-    return S(f);	/* leaving the husk of the Ctring on the stack */
-			/* END HACK ALERT */
+    /* null terminate, strdup() into a free()able memory block,
+     * and return the size of everything except the null terminator
+     */
+    EXPAND(f) = 0;
+    *res = strdup(T(f));
+    return S(f)-1;
 }

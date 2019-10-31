@@ -65,6 +65,7 @@ ___mkd_freefootnote(Footnote *f)
     DELETE(f->tag);
     DELETE(f->link);
     DELETE(f->title);
+    if ( f->text) ___mkd_freeParagraph(f->text);
 }
 
 
@@ -76,9 +77,9 @@ ___mkd_freefootnotes(MMIOT *f)
     int i;
 
     if ( f->footnotes ) {
-	for (i=0; i < S(*f->footnotes); i++)
-	    ___mkd_freefootnote( &T(*f->footnotes)[i] );
-	DELETE(*f->footnotes);
+	for (i=0; i < S(f->footnotes->note); i++)
+	    ___mkd_freefootnote( &T(f->footnotes->note)[i] );
+	DELETE(f->footnotes->note);
 	free(f->footnotes);
     }
 }
@@ -98,7 +99,7 @@ ___mkd_initmmiot(MMIOT *f, void *footnotes)
 	    f->footnotes = footnotes;
 	else {
 	    f->footnotes = malloc(sizeof f->footnotes[0]);
-	    CREATE(*f->footnotes);
+	    CREATE(f->footnotes->note);
 	}
     }
 }

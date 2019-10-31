@@ -1,13 +1,24 @@
-CC=@CC@ -I.
-LFLAGS=-L.
+CC=@CC@
 CFLAGS=@CFLAGS@
+LDFLAGS=@LDFLAGS@
 AR=@AR@
 RANLIB=@RANLIB@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+INSTALL_DIR=@INSTALL_DIR@
+INSTALL_DATA=@INSTALL_DATA@
+
+BUILD=$(CC) -I. $(CFLAGS)
+LINK=$(CC) -L. $(LDFLAGS)
+
+.c.o:
+	$(BUILD) -c -o $@ $<
+	
 
 BINDIR=@exedir@
 MANDIR=@mandir@
 LIBDIR=@libdir@
 INCDIR=@prefix@/include
+@MK_PKGCONFIG@PKGDIR=$(LIBDIR)/pkgconfig
 
 PGMS=markdown
 SAMPLE_PGMS=mkd2html makepage
@@ -16,30 +27,35 @@ MKDLIB=libmarkdown
 OBJS=mkdio.o markdown.o dumptree.o generate.o \
      resource.o docheader.o version.o toc.o css.o \
      xml.o Csio.o xmlpage.o basename.o emmatch.o \
-     github_flavoured.o setup.o tags.o html5.o flags.o @AMALLOC@
-TESTFRAMEWORK=echo cols
+     github_flavoured.o setup.o tags.o html5.o \
+     @AMALLOC@ @H1TITLE@ flags.o
+TESTFRAMEWORK=echo cols branch pandoc_headers
+
+# modules that markdown, makepage, mkd2html, &tc use
+COMMON=pgm_options.o gethopt.o notspecial.o
 
 MAN3PAGES=mkd-callbacks.3 mkd-functions.3 markdown.3 mkd-line.3
 
 all: $(PGMS) $(SAMPLE_PGMS) $(TESTFRAMEWORK)
 
-install: $(PGMS) $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR)
-	@INSTALL_PROGRAM@ $(PGMS) $(DESTDIR)$(BINDIR)
+install: $(PGMS) $(DESTDIR)$(BINDIR) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR) $(DESTDIR)$(PKGDIR)
+	$(INSTALL_PROGRAM) $(PGMS) $(DESTDIR)$(BINDIR)
 	./librarian.sh install libmarkdown VERSION $(DESTDIR)$(LIBDIR)
-	@INSTALL_DATA@ mkdio.h $(DESTDIR)$(INCDIR)
+	$(INSTALL_DATA) mkdio.h $(DESTDIR)$(INCDIR)
+	@MK_PKGCONFIG@$(INSTALL_DATA) $(MKDLIB).pc $(DESTDIR)$(PKGDIR)
 
 install.everything: install install.samples install.man
 
 install.samples: $(SAMPLE_PGMS) install $(DESTDIR)$(BINDIR)
-	@INSTALL_DIR@ $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man1
 	for x in $(SAMPLE_PGMS); do \
-	    @INSTALL_PROGRAM@ $$x $(DESTDIR)$(BINDIR)/$(SAMPLE_PFX)$$x; \
-	    @INSTALL_DATA@ $$x.1 $(DESTDIR)$(MANDIR)/man1/$(SAMPLE_PFX)$$x; \
+	    $(INSTALL_PROGRAM) $$x $(DESTDIR)$(BINDIR)/$(SAMPLE_PFX)$$x; \
+	    $(INSTALL_DATA) $$x.1 $(DESTDIR)$(MANDIR)/man1/$(SAMPLE_PFX)$$x.1; \
 	done
 
 install.man:
-	@INSTALL_DIR@ $(DESTDIR)$(MANDIR)/man3
-	@INSTALL_DATA@ $(MAN3PAGES) $(DESTDIR)$(MANDIR)/man3
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man3
+	$(INSTALL_DATA) $(MAN3PAGES) $(DESTDIR)$(MANDIR)/man3
 	for x in mkd_line mkd_generateline; do \
 	    ( echo '.\"' ; echo ".so man3/mkd-line.3" ) > $(DESTDIR)$(MANDIR)/man3/$$x.3;\
 	done
@@ -49,52 +65,66 @@ install.man:
 	for x in mkd_compile mkd_css mkd_generatecss mkd_generatehtml mkd_cleanup mkd_doc_title mkd_doc_author mkd_doc_date; do \
 	    ( echo '.\"' ; echo ".so man3/mkd-functions.3" ) > $(DESTDIR)$(MANDIR)/man3/$$x.3; \
 	done
-	@INSTALL_DIR@ $(DESTDIR)$(MANDIR)/man7
-	@INSTALL_DATA@ markdown.7 mkd-extensions.7 $(DESTDIR)$(MANDIR)/man7
-	@INSTALL_DIR@ $(DESTDIR)$(MANDIR)/man1
-	@INSTALL_DATA@ markdown.1 $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man7
+	$(INSTALL_DATA) markdown.7 mkd-extensions.7 $(DESTDIR)$(MANDIR)/man7
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL_DATA) markdown.1 $(DESTDIR)$(MANDIR)/man1
 
 install.everything: install install.man
 
 $(DESTDIR)$(BINDIR):
-	@INSTALL_DIR@ $(DESTDIR)$(BINDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 
 $(DESTDIR)$(INCDIR):
-	@INSTALL_DIR@ $(DESTDIR)$(INCDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(INCDIR)
 
 $(DESTDIR)$(LIBDIR):
-	@INSTALL_DIR@ $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
 
-version.o: version.c VERSION
-	$(CC) $(CFLAGS) -DVERSION=\"`cat VERSION`\" -c version.c
+@MK_PKGCONFIG@$(DESTDIR)$(PKGDIR):
+@MK_PKGCONFIG@	$(INSTALL_DIR) $(DESTDIR)$(PKGDIR)
+
+version.o: version.c VERSION branch
+	$(BUILD) -DBRANCH=`./branch` -DVERSION=\"`cat VERSION`\" -c version.c
 
 VERSION:
 	@true
 
-tags.o: tags.c blocktags
+tags.o: tags.c cstring.h tags.h blocktags
 
 blocktags: mktags
 	./mktags > blocktags
 
+mktags: mktags.o
+	$(LINK) -o mktags mktags.o
+
 # example programs
-@THEME@theme:  theme.o $(MKDLIB) mkdio.h
-@THEME@	$(CC) $(CFLAGS) $(LFLAGS) -o theme theme.o pgm_options.o -lmarkdown @LIBS@
+@THEME@theme:  theme.o $(COMMON) $(MKDLIB) mkdio.h
+@THEME@	$(LINK) -o theme theme.o $(COMMON) -lmarkdown @LIBS@
 
 
-mkd2html:  mkd2html.o $(MKDLIB) mkdio.h
-	$(CC) $(CFLAGS) $(LFLAGS) -o mkd2html mkd2html.o -lmarkdown @LIBS@
+mkd2html:  mkd2html.o $(MKDLIB) mkdio.h gethopt.h $(COMMON)
+	$(LINK) -o mkd2html mkd2html.o $(COMMON) -lmarkdown @LIBS@
 
-markdown: main.o pgm_options.o $(MKDLIB)
-	$(CC) $(CFLAGS) $(LFLAGS) -o markdown main.o pgm_options.o -lmarkdown @LIBS@
+markdown: main.o $(COMMON) $(MKDLIB)
+	$(LINK) -o markdown main.o $(COMMON) -lmarkdown @LIBS@
 	
-makepage:  makepage.c pgm_options.o $(MKDLIB) mkdio.h
-	$(CC) $(CFLAGS) $(LFLAGS) -o makepage makepage.c pgm_options.o -lmarkdown @LIBS@
+makepage.o: makepage.c mkdio.h
+	$(BUILD) -c makepage.c
+makepage:  makepage.o $(COMMON) $(MKDLIB)
+	$(LINK) -o makepage makepage.o $(COMMON) -lmarkdown @LIBS@
 
 pgm_options.o: pgm_options.c mkdio.h config.h
-	$(CC) $(CFLAGS) -I. -c pgm_options.c
+	$(BUILD) -c pgm_options.c
+
+notspecial.o: notspecial.c
+	$(BUILD) -c notspecial.c
+
+gethopt.o: gethopt.c
+	$(BUILD) -c gethopt.c
 
 main.o: main.c mkdio.h config.h
-	$(CC) $(CFLAGS) -I. -c main.c
+	$(BUILD) -c main.c
 
 $(MKDLIB): $(OBJS)
 	./librarian.sh make $(MKDLIB) VERSION $(OBJS)
@@ -103,21 +133,36 @@ verify: echo tools/checkbits.sh
 	@./echo -n "headers ... "; tools/checkbits.sh && echo "GOOD"
 
 test:	$(PGMS) $(TESTFRAMEWORK) verify
-	@for x in tests/*.t; do \
+	@for x in $${TESTS:-tests/*.t}; do \
 	    @LD_LIBRARY_PATH@=`pwd` sh $$x || exit 1; \
 	done
 
-cols:   tools/cols.c config.h
-	$(CC) -o cols tools/cols.c
-echo:   tools/echo.c config.h
-	$(CC) -o echo tools/echo.c
+pandoc_headers.o: tools/pandoc_headers.c config.h
+	$(BUILD) -c -o pandoc_headers.o tools/pandoc_headers.c
+pandoc_headers: pandoc_headers.o
+	$(LINK) -o pandoc_headers pandoc_headers.o $(COMMON) -lmarkdown 
+
+branch.o: tools/branch.c config.h
+	$(BUILD) -c -o branch.o tools/branch.c
+branch: branch.o
+	$(LINK) -o branch branch.o
+
+cols.o:	tools/cols.c config.h
+	$(BUILD) -c -o cols.o tools/cols.c
+cols:   cols.o
+	$(LINK) -o cols cols.o
+	
+echo.o:	tools/echo.c config.h
+	$(BUILD) -c -o echo.o tools/echo.c
+echo:   echo.o
+	$(LINK) -o echo echo.o
 	
 clean:
 	rm -f $(PGMS) $(TESTFRAMEWORK) $(SAMPLE_PGMS) *.o
 	rm -f $(MKDLIB) `./librarian.sh files $(MKDLIB) VERSION`
 
 distclean spotless: clean
-	rm -f @GENERATED_FILES@ @CONFIGURE_FILES@
+	@DISTCLEAN@ @GENERATED_FILES@ @CONFIGURE_FILES@ ./mktags ./blocktags
 
 Csio.o: Csio.c cstring.h amalloc.h config.h markdown.h
 amalloc.o: amalloc.c
@@ -139,3 +184,8 @@ toc.o: toc.c config.h cstring.h amalloc.h markdown.h
 version.o: version.c config.h
 xml.o: xml.c config.h cstring.h amalloc.h markdown.h
 xmlpage.o: xmlpage.c config.h cstring.h amalloc.h markdown.h
+setup.o: setup.c config.h cstring.h amalloc.h markdown.h
+github_flavoured.o: github_flavoured.c config.h cstring.h amalloc.h markdown.h
+gethopt.o: gethopt.c gethopt.h
+h1title.o: h1title.c markdown.h
+notspecial.o: notspecial.c config.h

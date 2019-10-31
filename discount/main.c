@@ -9,16 +9,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <unistd.h>
 #include <mkdio.h>
 #include <errno.h>
 #include <string.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 #include "config.h"
 #include "amalloc.h"
 #include "pgm_options.h"
 #include "tags.h"
+#include "gethopt.h"
 
 #if HAVE_LIBGEN_H
 #include <libgen.h>
@@ -60,9 +61,112 @@ complain(char *fmt, ...)
 }
 
 
+char *
+anchor_format(char *input, void *ctx)
+{
+    int i, j, size;
+    char* ret;
+
+    if ( !input )
+	return NULL;
+
+     size = strlen(input);
+
+     ret = malloc(1+size);
+
+     if ( !ret )
+	 return NULL;
+
+
+    while ( size && isspace(input[size-1]) )
+	--size;
+
+    for ( j=i=0; i < size; i++ ) {
+	if (isalnum(input[i]) || strchr("-_+", input[i]) )
+	    ret[j++] = input[i];
+	else if ( input[i] == ' ' )
+	    ret[j++] = '-';
+    }
+    ret[j++] = 0;
+
+    return ret;
+}
+
+void
+free_it(char *object, void *ctx)
+{
+    if ( object )
+	free(object);
+}
+
+char *
+external_codefmt(char *src, int len, char *lang)
+{
+    int extra = 0;
+    int i, x;
+    char *res;
+
+    if ( lang == 0 )
+	lang = "generic_code";
+
+    for ( i=0; i < len; i++) {
+	if ( src[i] == '&' )
+	    extra += 5;
+	else if ( src[i] == '<' || src[i] == '>' )
+	    extra += 4;
+    }
+
+    /* 80 characters for the format wrappers */
+    if ( (res = malloc(len+extra+80+strlen(lang))) ==0 )
+	/* out of memory?  drat! */
+	return 0;
+
+    sprintf(res, "<pre><code class=\"%s\">\n", lang);
+    x = strlen(res);
+    for ( i=0; i < len; i++ ) {
+	switch (src[i]) {
+	case '&':   strcpy(&src[x], "&amp;");
+		    x += 5 /*strlen(&amp;)*/ ;
+		    break;
+	case '<':   strcpy(&src[x], "&lt;");
+		    x += 4 /*strlen(&lt;)*/ ;
+		    break;
+	case '>':   strcpy(&src[x], "&gt;");
+		    x += 4 /*strlen(&gt;)*/ ;
+		    break;
+	default:    res[x++] = src[i];
+		    break;
+	}
+    }
+    strcpy(&res[x], "</code></pre>\n");
+    return res;
+}
+
+
+struct h_opt opts[] = {
+    { 0, "html5",  '5', 0,           "recognise html5 block elements" },
+    { 0, "base",   'b', "url-base",  "URL prefix" },
+    { 0, "debug",  'd', 0,           "debugging" },
+    { 0, "version",'V', 0,           "show version info" },
+    { 0, 0,        'E', "flags",     "url flags" },
+    { 0, 0,        'F', "bitmap",    "set/show hex flags" },
+    { 0, 0,        'f', "{+-}flags", "set/show named flags" },
+    { 0, 0,        'G', 0,           "github flavoured markdown" },
+    { 0, 0,        'n', 0,           "don't write generated html" },
+    { 0, 0,        's', "text",      "format `text`" },
+    { 0, "style",  'S', 0,           "output <style> blocks" },
+    { 0, 0,        't', "text",      "format `text` with mkd_line()" },
+    { 0, "toc",    'T', 0,           "output a TOC" },
+    { 0, 0,        'C', "prefix",    "prefix for markdown extra footnotes" },
+    { 0, 0,        'o', "file",      "write output to file" },
+    { 0, "squash", 'x', 0,           "squash toc labels to be more like github" },
+    { 0, "codefmt",'X', 0,           "use an external code formatter" },
+};
+#define NROPTS (sizeof opts/sizeof opts[0])
+
+int
 main(int argc, char **argv)
 {
-    int opt;
     int rc;
     mkd_flag_t flags = 0;
     int debug = 0;
@@ -72,7 +176,9 @@ main(int argc, char **argv)
     int with_html5 = 0;
     int styles = 0;
     int use_mkd_line = 0;
+    int use_e_codefmt = 0;
     int github_flavoured = 0;
+    int squash = 0;
     char *extra_footnote_prefix = 0;
     char *urlflags = 0;
     char *text = 0;
@@ -80,68 +186,77 @@ main(int argc, char **argv)
     char *urlbase = 0;
     char *q;
     MMIOT *doc;
+    struct h_context blob;
+    struct h_opt *opt;
+
+    hoptset(&blob, argc, argv);
+    hopterr(&blob, 1);
 
     if ( q = getenv("MARKDOWN_FLAGS") )
 	flags = strtol(q, 0, 0);
 
     pgm = basename(argv[0]);
-    opterr = 1;
 
-    while ( (opt=getopt(argc, argv, "5b:C:df:E:F:Gno:s:St:TV")) != EOF ) {
-	switch (opt) {
+    while ( opt=gethopt(&blob, opts, NROPTS) ) {
+	if ( opt == HOPTERR ) {
+	    hoptusage(pgm, opts, NROPTS, "[file]");
+	    exit(1);
+	}
+	switch (opt->optchar) {
 	case '5':   with_html5 = 1;
 		    break;
-	case 'b':   urlbase = optarg;
+	case 'b':   urlbase = hoptarg(&blob);
 		    break;
 	case 'd':   debug = 1;
 		    break;
 	case 'V':   version++;
 		    break;
-	case 'E':   urlflags = optarg;
+	case 'E':   urlflags = hoptarg(&blob);
 		    break;
-	case 'F':   if ( strcmp(optarg, "?") == 0 ) {
-			show_flags(0);
+	case 'F':   if ( strcmp(hoptarg(&blob), "?") == 0 ) {
+			show_flags(0, 0);
 			exit(0);
 		    }
 		    else
-			flags = strtol(optarg, 0, 0);
+			flags = strtol(hoptarg(&blob), 0, 0);
 		    break;
-	case 'f':   if ( strcmp(optarg, "?") == 0 ) {
-			show_flags(1);
+	case 'f':   if ( strcmp(hoptarg(&blob), "?") == 0 ) {
+			show_flags(1, version);
 			exit(0);
 		    }
-		    else if ( !set_flag(&flags, optarg) )
-			complain("unknown option <%s>", optarg);
+		    else if ( q=set_flag(&flags, hoptarg(&blob)) )
+			complain("unknown option <%s>", q);
 		    break;
 	case 'G':   github_flavoured = 1;
 		    break;
 	case 'n':   content = 0;
 		    break;
-	case 's':   text = optarg;
+	case 's':   text = hoptarg(&blob);
 		    break;
 	case 'S':   styles = 1;
 		    break;
-	case 't':   text = optarg;
+	case 't':   text = hoptarg(&blob);
 		    use_mkd_line = 1;
 		    break;
-	case 'T':   toc = 1;
+	case 'T':   flags |= MKD_TOC;
+		    toc = 1;
 		    break;
-	case 'C':   extra_footnote_prefix = optarg;
+	case 'C':   extra_footnote_prefix = hoptarg(&blob);
 		    break;
 	case 'o':   if ( ofile ) {
 			complain("Too many -o options");
 			exit(1);
 		    }
-		    if ( !freopen(ofile = optarg, "w", stdout) ) {
+		    if ( !freopen(ofile = hoptarg(&blob), "w", stdout) ) {
 			perror(ofile);
 			exit(1);
 		    }
 		    break;
-	default:    fprintf(stderr, "usage: %s [-dTV] [-b url-base]"
-				    " [-F bitmap] [-f {+-}flags]"
-				    " [-o ofile] [-s text]"
-				    " [-t text] [file]\n", pgm);
-		    exit(1);
+	case 'x':   squash = 1;
+		    break;
+	case 'X':   use_e_codefmt = 1;
+		    set_flag(&flags, "fencedcode");
+		    break;
 	}
     }
 
@@ -154,8 +269,8 @@ main(int argc, char **argv)
 	exit(0);
     }
 
-    argc -= optind;
-    argv += optind;
+    argc -= hoptind(&blob);
+    argv += hoptind(&blob);
 
     if ( with_html5 )
 	mkd_with_html5_tags();
@@ -190,6 +305,14 @@ main(int argc, char **argv)
 	    mkd_e_data(doc, urlflags);
 	    mkd_e_flags(doc, e_flags);
 	}
+	if ( squash )
+	    mkd_e_anchor(doc, (mkd_callback_t) anchor_format);
+	if ( use_e_codefmt )
+	    mkd_e_code_format(doc, external_codefmt);
+
+	if ( use_e_codefmt || squash )
+	    mkd_e_free(doc, free_it);
+
 	if ( extra_footnote_prefix )
 	    mkd_ref_prefix(doc, extra_footnote_prefix);
 
@@ -205,9 +328,9 @@ main(int argc, char **argv)
 		    mkd_generatetoc(doc, stdout);
 		if ( content )
 		    mkd_generatehtml(doc, stdout);
-		mkd_cleanup(doc);
 	    }
 	}
+	mkd_cleanup(doc);
     }
     mkd_deallocate_tags();
     adump();

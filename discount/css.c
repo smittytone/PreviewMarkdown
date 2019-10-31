@@ -54,15 +54,13 @@ mkd_css(Document *d, char **res)
 	stylesheets(d->code, &f);
 			
 	if ( (size = S(f)) > 0 ) {
+	    /* null-terminate, then strdup() into a free()able memory
+	     * chunk
+	     */
 	    EXPAND(f) = 0;
-			/* HACK ALERT! HACK ALERT! HACK ALERT! */
-	    *res = T(f);/* we know that a T(Cstring) is a character pointer */
-			/* so we can simply pick it up and carry it away, */
-			/* leaving the husk of the Ctring on the stack */
-			/* END HACK ALERT */
+	    *res = strdup(T(f));
 	}
-	else
-	    DELETE(f);
+	DELETE(f);
 	return size;
     }
     return EOF;
@@ -75,11 +73,13 @@ int
 mkd_generatecss(Document *d, FILE *f)
 {
     char *res;
-    int written = EOF, size = mkd_css(d, &res);
+    int written;
+    int size = mkd_css(d, &res);
 
-    if ( size > 0 )
-	written = fwrite(res, 1, size, f);
+    written = (size > 0) ? fwrite(res,1,size,f) : 0;
+    
     if ( res )
 	free(res);
+    
     return (written == size) ? size : EOF;
 }

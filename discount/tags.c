@@ -1,5 +1,7 @@
 /* block-level tags for passing html blocks through the blender
  */
+#include "config.h"
+
 #define __WITHOUT_AMALLOC 1
 #include "cstring.h"
 #include "tags.h"
@@ -12,7 +14,7 @@ STRING(struct kw) extratags;
  *
  * Additional tags still need to be allocated, sorted, and deallocated.
  */
-#include "../discount-support/blocktags"
+#include "blocktags"
 
 
 /* define an additional html block tag
@@ -25,13 +27,13 @@ mkd_define_tag(char *id, int selfclose)
     /* only add the new tag if it doesn't exist in
      * either the standard or extra tag tables.
      */
-    if ( !(p = mkd_search_tags(id, (int)strlen(id))) ) {
+    if ( !(p = mkd_search_tags(id, strlen(id))) ) {
 	/* extratags could be deallocated */
 	if ( S(extratags) == 0 )
 	    CREATE(extratags);
 	p = &EXPAND(extratags);
 	p->id = id;
-	p->size = (int)strlen(id);
+	p->size = strlen(id);
 	p->selfclose = selfclose;
     }
 }
