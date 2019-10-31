@@ -15,6 +15,6 @@ You can disable and re-enable the Previer and Thumbnailer extensions in **System
 
 ## Copyright and Credits ##
 
-Primary app code &copy; 2019, Tony Smith.
+Primary app code and UI design &copy; 2019, Tony Smith.
 
 Code portions &copy; 2007 David Loren Parsons, &copy; 2008-2019 Phil Toland, and the contributors to their projects.
