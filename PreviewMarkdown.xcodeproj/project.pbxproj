@@ -83,7 +83,7 @@
 /* Begin PBXFileReference section */
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../OneDrive/Programming/PreviewMarkdown/Assets.xcassets; sourceTree = "<group>"; };
 		3BBAEA1D236ADEB3009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3BBAEA1F236ADEB3009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PreviewMarkdown.entitlements; sourceTree = "<group>"; };
