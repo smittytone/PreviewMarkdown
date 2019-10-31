@@ -14,6 +14,9 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="creditMenuDiscount" destination="C9u-Ul-gio" id="WXq-Dg-p0A"/>
+                <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
+                <outlet property="creditMenuQLMarkdown" destination="hBf-5K-w2i" id="VIK-SL-guw"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -147,7 +150,31 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="PreviewMarkdown Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                            <menuItem title="Credits" id="FKE-Sm-Kum">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" id="WBx-VK-xbe">
+                                    <items>
+                                        <menuItem title="PreviewMarkdown" id="NdQ-kU-ZWH">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="ikJ-5X-b7S"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="PKG-sv-SKa"/>
+                                        <menuItem title="Discount" id="C9u-Ul-gio">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="oYX-Q4-pMj"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="QLMarkdown" id="hBf-5K-w2i">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="TNP-vV-IRD"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                                 <connections>
                                     <action selector="showHelp:" target="-1" id="y7X-2Q-9no"/>
                                 </connections>
@@ -161,10 +188,10 @@
         <window title="PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="229"/>
+            <rect key="contentRect" x="335" y="390" width="480" height="282"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="229"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="282"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
@@ -185,7 +212,7 @@ DQ
                         </connections>
                     </button>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MgT-WK-sk0">
-                        <rect key="frame" x="216" y="161" width="48" height="48"/>
+                        <rect key="frame" x="216" y="214" width="48" height="48"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="48" id="2Js-wn-Zxv"/>
                             <constraint firstAttribute="height" constant="48" id="dk2-Wb-FUG"/>
@@ -193,7 +220,7 @@ DQ
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="appicon" id="O4R-6I-qgH"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
-                        <rect key="frame" x="18" y="61" width="444" height="80"/>
+                        <rect key="frame" x="18" y="114" width="444" height="80"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="iLO-gq-Srl"/>
                         </constraints>
@@ -204,18 +231,33 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
+                        <rect key="frame" x="20" y="61" width="442" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="33" id="6Hw-XW-sOq"/>
+                        </constraints>
+                        <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
+                            <font key="font" metaFont="miniSystem"/>
+                            <string key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons, and QLMarkdown by Phil Toland and others. See Help &gt; Credits for more information</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="22" id="5t3-zz-22T"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="7Xy-CE-dM0"/>
                     <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="9Vk-Zg-v8J"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="top" secondItem="MgT-WK-sk0" secondAttribute="bottom" constant="20" id="CiB-V4-A4h"/>
                     <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" id="Fbv-5U-gxQ"/>
+                    <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" id="SYP-Eu-VxC"/>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="20" id="eeS-EP-jDc"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="hGf-gb-2qI"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="lpt-se-jRG"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="139" y="-185.5"/>
+            <point key="canvasLocation" x="139" y="-159"/>
         </window>
     </objects>
     <resources>
