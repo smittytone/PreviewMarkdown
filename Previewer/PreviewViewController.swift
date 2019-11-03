@@ -28,32 +28,34 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
-        let fc: NSFileCoordinator = NSFileCoordinator()
-        let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: url)
-        fc.coordinate(with: [intent], queue: .main) { (err) in
-            do {
-                // Read in the markdown from the specified file
-                let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
+        do {
+            // Read in the markdown from the specified file
+            let markdownString: String = try String(contentsOf: url, encoding: String.Encoding.utf8)
 
-                // Get an HTML page string from the markdown
-                let htmlString: String = self.renderMarkdown(markdownString, intent.url.deletingLastPathComponent())
+            // Get an HTML page string from the markdown
+            let htmlString: String = self.renderMarkdown(markdownString, url.deletingLastPathComponent())
 
-                // Instantiate a WKWebView to display the HTML in our view
-                let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: WKWebViewConfiguration())
-                webView.loadHTMLString(htmlString, baseURL: nil)
+            // Instantiate a WKWebView to display the HTML in our view
+            let prefs: WKPreferences = WKPreferences()
+            prefs.javaScriptEnabled = false
 
-                // Add the WKWebView to the superview, adding laytout constraints
-                // to keep it anchored to the edges of the superview, and then
-                // redraw the superview
-                self.view.addSubview(webView)
-                self.setViewConstraints(webView)
-                self.view.display()
+            let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
+            config.suppressesIncrementalRendering = false
+            config.preferences = prefs
 
-                // Hand control back to QuickLook
-                handler(nil)
-            } catch {
-                handler(err)
-            }
+            let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
+            webView.loadHTMLString(htmlString, baseURL: nil)
+
+            // Add the WKWebView to the superview, adding laytout constraints
+            // to keep it anchored to the edges of the superview
+            self.view.addSubview(webView)
+            self.setViewConstraints(webView)
+            self.view.display()
+
+            // Hand control back to QuickLook
+            handler(nil)
+        } catch {
+
         }
     }
 
