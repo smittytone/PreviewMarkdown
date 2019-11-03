@@ -27,9 +27,12 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>QLSupportedContentTypes</key>
-			<array/>
+			<array>
+				<string>com.unknown.md</string>
+				<string>net.daringfireball.markdown</string>
+			</array>
 			<key>QLThumbnailMinimumDimension</key>
-			<integer>0</integer>
+			<integer>32</integer>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.quicklook.thumbnail</string>
