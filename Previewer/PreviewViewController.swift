@@ -13,14 +13,10 @@ import WebKit
 
 class PreviewViewController: NSViewController, QLPreviewingController {
     
+
     override var nibName: NSNib.Name? {
 
         return NSNib.Name("PreviewViewController")
-    }
-
-    override func loadView() {
-        super.loadView()
-        // Do any additional setup after loading the view.
     }
 
 
