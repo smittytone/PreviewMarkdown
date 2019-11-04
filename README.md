@@ -8,6 +8,10 @@ Just run the host app once to register the extensions. Now you can preview markd
 
 You can disable and re-enable the Previer and Thumbnailer extensions in **System Preferences > Extensions > Quick Look**.
 
+| A | B | C |
+| :-- | :-: | --: |
+| 1 | 2 | 3 |
+
 ## Release Notes ##
 
 - 1.0.0 *Unlreleased*
