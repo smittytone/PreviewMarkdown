@@ -215,6 +215,7 @@
 				3BBAEB8D236AE080009BAA05 /* Thumbnailer-Bridging-Header.h */,
 				3BBAEA48236ADF11009BAA05 /* Info.plist */,
 				3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */,
+				3BBAEB9B236AE47A009BAA05 /* mkdio.h */,
 			);
 			path = Thumbnailer;
 			sourceTree = "<group>";
@@ -243,7 +244,6 @@
 			children = (
 				3BBAEB96236AE47A009BAA05 /* styles.css */,
 				3BBAEB97236AE47A009BAA05 /* config.h */,
-				3BBAEB9B236AE47A009BAA05 /* mkdio.h */,
 				3BBAEB98236AE47A009BAA05 /* blocktags */,
 				3BBAEB9A236AE47A009BAA05 /* discount-support.h */,
 				3BBAEB99236AE47A009BAA05 /* discount-support.c */,

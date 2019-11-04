@@ -8,74 +8,76 @@
 
 import QuickLookThumbnailing
 import WebKit
-import Quartz
 
 
 class ThumbnailProvider: QLThumbnailProvider {
     
     
     var webView: WKWebView? = nil
-    
+
+
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
-        
+
         let fc: NSFileCoordinator = NSFileCoordinator()
         let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: request.fileURL)
         fc.coordinate(with: [intent], queue: .main) { (err) in
             do {
                 // Read in the markdown from the specified file
-                let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
+                let markdownString: String = try String(contentsOf: request.fileURL, encoding: String.Encoding.utf8)
 
                 // Get an HTML page string from the markdown
-                let htmlString: String = self.renderMarkdown(markdownString, intent.url.deletingLastPathComponent())
+                let htmlString: String = self.renderMarkdown(markdownString, request.fileURL)
+                NSLog("BUFFOON \(htmlString)")
 
                 // Instantiate a WKWebView to display the HTML in our view
-                let thumbRect: CGRect = NSMakeRect(0.0, 0.0, request.maximumSize.width, request.maximumSize.height)
-                self.webView = WKWebView.init(frame: thumbRect, configuration: WKWebViewConfiguration())
+                let prefs: WKPreferences = WKPreferences()
+                prefs.javaScriptEnabled = false
+
+                let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
+                config.suppressesIncrementalRendering = false
+                config.preferences = prefs
+
+                let viewRect: CGRect = CGRect.init(x: 0.0, y: 0.0, width: 768.0, height: 1024.0)
+                self.webView = WKWebView.init(frame: viewRect, configuration: config)
+
                 if self.webView != nil {
-                    self.webView!.loadHTMLString(htmlString, baseURL: intent.url.deletingLastPathComponent())
-                    self.webView!.display()
+                    self.webView!.loadHTMLString(htmlString, baseURL: nil)
+                    //self.webView!.display()
+                } else {
+                    NSLog("BUFFOON WK FAIL");
                 }
-                
+
+                // Call the supplied handler to draw the thumbnail
                 handler(QLThumbnailReply(contextSize: request.maximumSize, currentContextDrawing: { () -> Bool in
-                    // Draw the thumbnail here.
-                    let context: NSGraphicsContext? = NSGraphicsContext.current
-                    if context != nil && self.webView != nil {
-                        self.webView!.displayIgnoringOpacity(thumbRect, in: context!)
-                        return true
+
+                    /*
+                    if let nsContext: NSGraphicsContext = NSGraphicsContext.current {
+                        let context: CGContext = nsContext.cgContext
+                        if let webView: WKWebView = self.webView {
+                            let renderHeight: CGFloat = CGFloat(context.height)
+                            let renderWidth: CGFloat = CGFloat(context.width)
+                            NSLog("BUFFOON Context Size: \(renderWidth), \(renderHeight). Flipped: " + (nsContext.isFlipped ? "YES" : "NO"))
+                            let renderCentre: CGFloat = (renderWidth - (renderHeight * 0.75)) / 2.0
+                            let renderRect: CGRect = CGRect.init(x: renderCentre, y: 0, width: renderWidth * 0.75, height: renderHeight)
+
+                            NSGraphicsContext.saveGraphicsState()
+                            webView.displayIgnoringOpacity(webView.bounds, in: nsContext)
+                            context.setStrokeColor(NSColor.blue.cgColor)
+                            context.setLineWidth(4.0)
+                            context.stroke(renderRect)
+                            NSGraphicsContext.restoreGraphicsState()
+
+                            return true
+                        }
                     }
-                        
+                    */
+
                     return false
                 }), nil)
             } catch {
                 handler(nil, nil)
             }
         }
-        
-        // There are three ways to provide a thumbnail through a QLThumbnailReply. Only one of them should be used.
-        
-        /* First way: Draw the thumbnail into the current context, set up with UIKit's coordinate system.
-        handler(QLThumbnailReply(contextSize: request.maximumSize, currentContextDrawing: { () -> Bool in
-            // Draw the thumbnail here.
-            let context: NSGraphicsContext = NSGraphicsContext.current
-            context.cgContext.draw
-            // Return true if the thumbnail was successfully drawn inside this block.
-            return true
-        }), nil)
-        
-        
-        
-        // Second way: Draw the thumbnail into a context passed to your block, set up with Core Graphics's coordinate system.
-        handler(QLThumbnailReply(contextSize: request.maximumSize, drawing: { (context) -> Bool in
-            // Draw the thumbnail here.
-         
-            // Return true if the thumbnail was successfully drawn inside this block.
-            return true
-        }), nil)
-         
-        // Third way: Set an image file URL.
-        handler(QLThumbnailReply(imageFileURL: Bundle.main.url(forResource: "fileThumbnail", withExtension: "jpg")!), nil)
-        
-        */
     }
     
     
@@ -86,9 +88,11 @@ class ThumbnailProvider: QLThumbnailProvider {
         var errString: String = "ERROR:"
         var css: String = ""
 
+        let url: URL = baseURL.deletingLastPathComponent()
+
         do {
             // Get the app extension's bundle...
-            let bndl: Bundle? = Bundle.init(identifier: "com.bps.PreviewMarkdown.Previewer")
+            let bndl: Bundle? = Bundle.init(identifier: "com.bps.PreviewMarkdown.Thumbnailer")
             if bndl != nil {
                 // ...and therefore its location, and that of the CSS file, which we load
                 let path: String = bndl!.path(forResource: "styles", ofType: "css")!
@@ -102,9 +106,9 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                 // Assemble a final HTML string, with boilerplate code, the loaded CSS file,
                 // the specifiec base URL and the rendered markdown, and return in
-                return "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<style>" + css + "</style>\n<base href=\"\(baseURL.absoluteString)\"/>\n</head>\n<body>" + render + "</body>\n</html>"
+                return "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"initial-scale=1.0\" />\n<style>" + css + "</style>\n<base href=\"\(url)\"/>\n</head>\n<body>" + render + "</body>\n</html>"
             } else {
-                errString += " could not access Previewer’s bundle"
+                errString += " could not access Thumbnailer’s bundle"
             }
         } catch {
             if css.count == 0 { errString += " could not load CSS" }
@@ -113,4 +117,6 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Something went wrong loading or rendering...
         return errString
     }
+
+    
 }

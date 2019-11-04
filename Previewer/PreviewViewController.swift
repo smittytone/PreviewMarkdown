@@ -29,7 +29,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
             let markdownString: String = try String(contentsOf: url, encoding: String.Encoding.utf8)
 
             // Get an HTML page string from the markdown
-            let htmlString: String = self.renderMarkdown(markdownString, url.deletingLastPathComponent())
+            let htmlString: String = self.renderMarkdown(markdownString, url)
 
             // Instantiate a WKWebView to display the HTML in our view
             let prefs: WKPreferences = WKPreferences()
@@ -44,9 +44,9 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
             // Add the WKWebView to the superview, adding laytout constraints
             // to keep it anchored to the edges of the superview
+            self.view.display()
             self.view.addSubview(webView)
             self.setViewConstraints(webView)
-            self.view.display()
 
             // Hand control back to QuickLook
             handler(nil)
@@ -62,6 +62,8 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
         var errString: String = "ERROR:"
         var css: String = ""
+
+        let url: URL = baseURL.deletingLastPathComponent()
 
         do {
             // Get the app extension's bundle...
@@ -79,7 +81,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
                 // Assemble a final HTML string, with boilerplate code, the loaded CSS file,
                 // the specifiec base URL and the rendered markdown, and return in
-                return "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<style>" + css + "</style>\n<base href=\"\(baseURL.absoluteString)\"/>\n</head>\n<body>" + render + "</body>\n</html>"
+                return "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"initial-scale=1.0\" />\n<style>" + css + "</style>\n<base href=\"\(url)\"/>\n</head>\n<body>" + render + "</body>\n</html>"
             } else {
                 errString += " could not access Previewer’s bundle"
             }
