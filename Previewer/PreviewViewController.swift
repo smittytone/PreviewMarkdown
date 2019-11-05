@@ -24,38 +24,49 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
-        do {
-            // Read in the markdown from the specified file
-            let markdownString: String = try String(contentsOf: url, encoding: String.Encoding.utf8)
+        let fc: NSFileCoordinator = NSFileCoordinator()
+        let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: url)
+        fc.coordinate(with: [intent], queue: .main) { (err) in
+            if err == nil {
+                // No error loading the file? Then continue
+                do {
+                    // Read in the markdown from the specified file
+                    let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
 
-            // Get an HTML page string from the markdown
-            let htmlString: String = self.renderMarkdown(markdownString, url)
+                    // Get an HTML page string from the markdown
+                    let htmlString: String = self.renderMarkdown(markdownString, intent.url)
 
-            // Instantiate a WKWebView to display the HTML in our view
-            let prefs: WKPreferences = WKPreferences()
-            prefs.javaScriptEnabled = false
+                    // Instantiate a WKWebView to display the HTML in our view
+                    let prefs: WKPreferences = WKPreferences()
+                    prefs.javaScriptEnabled = false
 
-            let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
-            config.suppressesIncrementalRendering = false
-            config.preferences = prefs
+                    let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
+                    config.suppressesIncrementalRendering = false
+                    config.preferences = prefs
 
-            let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
-            webView.loadHTMLString(htmlString, baseURL: nil)
+                    let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
+                    webView.loadHTMLString(htmlString, baseURL: nil)
 
-            // Add the WKWebView to the superview, adding laytout constraints
-            // to keep it anchored to the edges of the superview
-            self.view.display()
-            self.view.addSubview(webView)
-            self.setViewConstraints(webView)
+                    // Display the WKWebView and add it to the superview, finally adding
+                    // laytout constraints to keep it anchored to the edges of the superview
+                    self.view.display()
+                    self.view.addSubview(webView)
+                    self.setViewConstraints(webView)
 
-            // Hand control back to QuickLook
-            handler(nil)
-        } catch {
-
+                    // Hand control back to QuickLook
+                    handler(nil)
+                } catch {
+                    // 'try' to load file failed
+                    NSLog("Could not load file \(intent.url.lastPathComponent) to preview it")
+                }
+            } else {
+                // coordinate operation failed
+                NSLog("Could not find file \(intent.url.lastPathComponent) to preview it")
+            }
         }
     }
 
-
+    
     func renderMarkdown(_ markdown: String, _ baseURL: URL) -> String {
 
         // Convert the supplied markdown string to an HTML string - or an error string
