@@ -48,7 +48,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     webView.loadHTMLString(htmlString, baseURL: nil)
 
                     // Display the WKWebView and add it to the superview, finally adding
-                    // laytout constraints to keep it anchored to the edges of the superview
+                    // layout constraints to keep it anchored to the edges of the superview
                     self.view.display()
                     self.view.addSubview(webView)
                     self.setViewConstraints(webView)

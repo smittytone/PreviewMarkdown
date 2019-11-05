@@ -18,15 +18,17 @@ class ThumbnailProvider: QLThumbnailProvider {
 
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
 
+        // Load the source file using a co-ordinator as we don't know what thread this function
+        // will be executed in when it's called by macOS' QuickLook code
         let fc: NSFileCoordinator = NSFileCoordinator()
         let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: request.fileURL)
         fc.coordinate(with: [intent], queue: .main) { (err) in
             do {
                 // Read in the markdown from the specified file
-                let markdownString: String = try String(contentsOf: request.fileURL, encoding: String.Encoding.utf8)
+                let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
 
                 // Get an HTML page string from the markdown
-                let htmlString: String = self.renderMarkdown(markdownString, request.fileURL)
+                let htmlString: String = self.renderMarkdown(markdownString, intent.url)
                 NSLog("BUFFOON \(htmlString)")
 
                 // Instantiate a WKWebView to display the HTML in our view
@@ -42,7 +44,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                 if self.webView != nil {
                     self.webView!.loadHTMLString(htmlString, baseURL: nil)
-                    //self.webView!.display()
+                    self.webView!.display()
                 } else {
                     NSLog("BUFFOON WK FAIL");
                 }
@@ -50,7 +52,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // Call the supplied handler to draw the thumbnail
                 handler(QLThumbnailReply(contextSize: request.maximumSize, currentContextDrawing: { () -> Bool in
 
-                    /*
                     if let nsContext: NSGraphicsContext = NSGraphicsContext.current {
                         let context: CGContext = nsContext.cgContext
                         if let webView: WKWebView = self.webView {
@@ -61,16 +62,22 @@ class ThumbnailProvider: QLThumbnailProvider {
                             let renderRect: CGRect = CGRect.init(x: renderCentre, y: 0, width: renderWidth * 0.75, height: renderHeight)
 
                             NSGraphicsContext.saveGraphicsState()
-                            webView.displayIgnoringOpacity(webView.bounds, in: nsContext)
-                            context.setStrokeColor(NSColor.blue.cgColor)
-                            context.setLineWidth(4.0)
-                            context.stroke(renderRect)
+
+                            //context.setFillColor(CGColor.clear)
+                            //context.fill(CGRect.init(x: 0, y: 0, width: renderWidth, height: renderHeight))
+
+                            let imageRep: NSBitmapImageRep? = webView.bitmapImageRepForCachingDisplay(in: webView.bounds)
+                            if imageRep != nil {
+                                webView.cacheDisplay(in: webView.bounds, to: imageRep!)
+                                let success: Bool = imageRep!.draw(in: renderRect)
+                                NSLog("BUFFOON imagrep " + (success ? "drawn" : "not drawn"))
+                            }
+
                             NSGraphicsContext.restoreGraphicsState()
 
                             return true
                         }
                     }
-                    */
 
                     return false
                 }), nil)
