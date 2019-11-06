@@ -41,7 +41,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     prefs.javaScriptEnabled = false
 
                     let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
-                    config.suppressesIncrementalRendering = false
+                    config.suppressesIncrementalRendering = true
                     config.preferences = prefs
 
                     let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
@@ -66,7 +66,17 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         }
     }
 
-    
+
+    func preparePreviewOfSearchableItem(identifier: String, queryString: String?, completionHandler handler: @escaping (Error?) -> Void) {
+
+        NSLog("BUFFOON searchable identifier: \(identifier)")
+        NSLog("BUFFOON searchable query:      " + (queryString ?? "nil"))
+
+        // Hand control back to QuickLook
+        handler(nil)
+    }
+
+
     func renderMarkdown(_ markdown: String, _ baseURL: URL) -> String {
 
         // Convert the supplied markdown string to an HTML string - or an error string
