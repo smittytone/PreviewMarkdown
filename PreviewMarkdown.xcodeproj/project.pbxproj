@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
+		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
 		3BBAD70D2373812400EC1572 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
 		3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */; };
@@ -20,33 +22,20 @@
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3BBAEABF236ADF86009BAA05 /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA54236ADF85009BAA05 /* xml.c */; };
-		3BBAEAC0236ADF86009BAA05 /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA54236ADF85009BAA05 /* xml.c */; };
 		3BBAEACD236ADF86009BAA05 /* generate.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5C236ADF85009BAA05 /* generate.c */; };
-		3BBAEACE236ADF86009BAA05 /* generate.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5C236ADF85009BAA05 /* generate.c */; };
 		3BBAEAD1236ADF86009BAA05 /* tags.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5E236ADF85009BAA05 /* tags.c */; };
-		3BBAEAD2236ADF86009BAA05 /* tags.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5E236ADF85009BAA05 /* tags.c */; };
 		3BBAEAD3236ADF86009BAA05 /* resource.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5F236ADF85009BAA05 /* resource.c */; };
-		3BBAEAD4236ADF86009BAA05 /* resource.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5F236ADF85009BAA05 /* resource.c */; };
 		3BBAEB47236ADF86009BAA05 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9D236ADF85009BAA05 /* markdown.c */; };
-		3BBAEB48236ADF86009BAA05 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9D236ADF85009BAA05 /* markdown.c */; };
 		3BBAEB4B236ADF86009BAA05 /* mkdio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9F236ADF85009BAA05 /* mkdio.c */; };
-		3BBAEB4C236ADF86009BAA05 /* mkdio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9F236ADF85009BAA05 /* mkdio.c */; };
 		3BBAEB51236ADF86009BAA05 /* html5.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA3236ADF85009BAA05 /* html5.c */; };
-		3BBAEB52236ADF86009BAA05 /* html5.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA3236ADF85009BAA05 /* html5.c */; };
 		3BBAEB55236ADF86009BAA05 /* setup.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA5236ADF85009BAA05 /* setup.c */; };
-		3BBAEB56236ADF86009BAA05 /* setup.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA5236ADF85009BAA05 /* setup.c */; };
 		3BBAEB65236ADF86009BAA05 /* Csio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAAD236ADF85009BAA05 /* Csio.c */; };
-		3BBAEB66236ADF86009BAA05 /* Csio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAAD236ADF85009BAA05 /* Csio.c */; };
 		3BBAEB79236ADF86009BAA05 /* emmatch.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAB9236ADF85009BAA05 /* emmatch.c */; };
-		3BBAEB7A236ADF86009BAA05 /* emmatch.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAB9236ADF85009BAA05 /* emmatch.c */; };
 		3BBAEB90236AE1D4009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
 		3BBAEB91236AE1DB009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
 		3BBAEB9C236AE47A009BAA05 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB96236AE47A009BAA05 /* styles.css */; };
-		3BBAEB9D236AE47A009BAA05 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB96236AE47A009BAA05 /* styles.css */; };
 		3BBAEB9E236AE47A009BAA05 /* blocktags in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB98236AE47A009BAA05 /* blocktags */; };
-		3BBAEB9F236AE47A009BAA05 /* blocktags in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB98236AE47A009BAA05 /* blocktags */; };
 		3BBAEBA0236AE47A009BAA05 /* discount-support.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEB99236AE47A009BAA05 /* discount-support.c */; };
-		3BBAEBA1236AE47A009BAA05 /* discount-support.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEB99236AE47A009BAA05 /* discount-support.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +71,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdown.swift; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,7 +103,6 @@
 		3BBAEAAF236ADF85009BAA05 /* tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tags.h; sourceTree = "<group>"; };
 		3BBAEAB9236ADF85009BAA05 /* emmatch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = emmatch.c; sourceTree = "<group>"; };
 		3BBAEABA236ADF85009BAA05 /* markdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = markdown.h; sourceTree = "<group>"; };
-		3BBAEB8D236AE080009BAA05 /* Thumbnailer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Thumbnailer-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BBAEB8E236AE096009BAA05 /* Previewer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Previewer-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		3BBAEB96236AE47A009BAA05 /* styles.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
@@ -205,6 +195,7 @@
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
 				3BBAEB8E236AE096009BAA05 /* Previewer-Bridging-Header.h */,
 				3BBAEA34236ADECB009BAA05 /* Info.plist */,
+				3B1C9EB0237454F600331D75 /* licences.txt */,
 				3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */,
 			);
 			path = Previewer;
@@ -215,8 +206,8 @@
 			children = (
 				3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */,
 				3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */,
-				3BBAEB8D236AE080009BAA05 /* Thumbnailer-Bridging-Header.h */,
 				3BBAEA48236ADF11009BAA05 /* Info.plist */,
+				3B1C9EB22374565800331D75 /* licences.txt */,
 				3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */,
 			);
 			path = Thumbnailer;
@@ -367,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */,
+				3B1C9EB1237454F600331D75 /* licences.txt in Resources */,
 				3BBAEB9C236AE47A009BAA05 /* styles.css in Resources */,
 				3BBAEB9E236AE47A009BAA05 /* blocktags in Resources */,
 			);
@@ -376,8 +368,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEB9D236AE47A009BAA05 /* styles.css in Resources */,
-				3BBAEB9F236AE47A009BAA05 /* blocktags in Resources */,
+				3B1C9EB32374565800331D75 /* licences.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,19 +406,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEB7A236ADF86009BAA05 /* emmatch.c in Sources */,
-				3BBAEAD4236ADF86009BAA05 /* resource.c in Sources */,
 				3BBAD70D2373812400EC1572 /* SwiftyMarkdown.swift in Sources */,
-				3BBAEBA1236AE47A009BAA05 /* discount-support.c in Sources */,
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
-				3BBAEB52236ADF86009BAA05 /* html5.c in Sources */,
-				3BBAEB66236ADF86009BAA05 /* Csio.c in Sources */,
-				3BBAEAD2236ADF86009BAA05 /* tags.c in Sources */,
-				3BBAEACE236ADF86009BAA05 /* generate.c in Sources */,
-				3BBAEB4C236ADF86009BAA05 /* mkdio.c in Sources */,
-				3BBAEAC0236ADF86009BAA05 /* xml.c in Sources */,
-				3BBAEB48236ADF86009BAA05 /* markdown.c in Sources */,
-				3BBAEB56236ADF86009BAA05 /* setup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,7 +613,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -657,7 +637,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -681,7 +661,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -706,7 +686,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
