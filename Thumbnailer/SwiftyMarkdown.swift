@@ -1,33 +1,29 @@
-//
-//  SwiftyMarkdown.swift
-//  SwiftyMarkdown
-//
-//  Created by Simon Fairbairn on 05/03/2016.
-//  Copyright © 2016 Voyage Travel Apps. All rights reserved.
-//
+
+//  SwiftyMarkdownMac.swift
+//  Based on SwiftyMarkdown by Simon Fairbairn; copyright 2016 Simon Fairbairn; MIT licence
+//  Modified for macOS usage by Tony Smith; modifications copyright 2019 Tony Smith; MIT licence
+
 
 import AppKit
 
 
 @objc public protocol FontProperties {
-    var fontName : String { get set }
-    var color : NSColor { get set }
+    var fontName : String? { get set }
     var fontSize : CGFloat { get set }
+    var color : NSColor { get set }
 }
 
 
 /*
- * A struct defining the styles that can be applied to the parsed Markdown.
+ * A class defining the styles that can be applied to the parsed Markdown.
  * The `fontName` property is optional, and if it's not set then the `fontName` property
- * of the Body style will be applied.
- *
- * If that is not set, then the system default will be used.
+ * of the Body style will be applied. If that is not set, then the system default will be used.
  *
  */
 @objc open class BasicStyles : NSObject, FontProperties {
-    public var fontName : String = "SFCompactDisplay-Light"
+    public var fontName : String? = "SFCompactDisplay-Regular"
     public var color = NSColor.black
-    public var fontSize : CGFloat = 0.0
+    public var fontSize : CGFloat = 14.0
 }
 
 
@@ -56,18 +52,30 @@ enum LineStyle : Int {
             return .none
         }
     }
-
-    static func intFromStyle(_ style: LineStyle) -> Int {
-        return style.rawValue
-    }
 }
 
+
 /*
- *  A class that takes a [Markdown](https://daringfireball.net/projects/markdown/) string or file and returns an
- *  NSAttributedString with the applied styles. Supports Dynamic Type.
+ * This enum is part of the code's emulation of UIKit's UIFont.preferredFont() function, which
+ * is used extensively by SwiftMarkdown, but is not (natch) available to SwiftyMarkdownMac.
  *
  */
+enum TextStyle: Int {
+    case body
+    case footnote
+    case headline
+    case subheadline
+    case title1
+    case title2
+    case title3
+}
 
+
+/*
+ *  A class that takes a [Markdown](https://daringfireball.net/projects/markdown/) string or file
+ *  and returns an NSAttributedString with the applied styles.
+ *
+ */
 @objc open class SwiftyMarkdown: NSObject {
 
     // The styles to apply to any H1 headers found in the Markdown
@@ -104,20 +112,28 @@ enum LineStyle : Int {
     open var code = BasicStyles()
 
     var currentType : LineType = .body
-
-    let string : String
+    var string : String = ""
     let instructionSet = CharacterSet(charactersIn: "[\\*_`")
 
 
     /*
-     * parameter string: A string containing [Markdown](https://daringfireball.net/projects/markdown/) syntax to be converted to an NSAttributedString
+     * The primary initializer.
+     *
+     * parameter string: A string containing [Markdown](https://daringfireball.net/projects/markdown/) syntax
+     *                   to be converted to an NSAttributedString
      *
      * returns: An initialized SwiftyMarkdown object
      *
      */
-    public init(string : String ) {
+    public init(string: String?) {
 
-        self.string = string
+        super.init()
+
+        if string != nil {
+            self.string = string!
+        } else {
+            self.string = ""
+        }
     }
 
 
@@ -140,9 +156,8 @@ enum LineStyle : Int {
     }
 
     /*
-     * Set font size for all styles
-     *
-     * parameter size: size of font
+     * Set font parameters for all styles.
+     * There is a function for each parameter: size, colour, name.
      *
      */
     open func setFontSizeForAllStyles(with size: CGFloat) {
@@ -189,10 +204,16 @@ enum LineStyle : Int {
      * Generates an NSAttributedString from the string or URL passed at initialisation.
      * Custom fonts or styles are applied to the appropriate elements when this method is called.
      *
+     * parameter string: Optional markdown string to be converted.
+     *
      * returns: An NSAttributedString with the styles applied
      *
      */
-    open func attributedString() -> NSAttributedString {
+    open func attributedString(_ string: String?) -> NSAttributedString {
+
+        if string != nil {
+            self.string = string!
+        }
 
         let attributedString = NSMutableAttributedString(string: "")
         let lines = self.string.components(separatedBy: CharacterSet.newlines)
@@ -262,7 +283,6 @@ enum LineStyle : Int {
 
                     // Get all the characters up to the ones we are interested in
                     if scanner.scanUpToCharacters(from: instructionSet, into: &string) {
-
                         if let hasString = string as String? {
                             let bodyString = attributedStringFromString(hasString, withStyle: .none)
                             attributedString.append(bodyString)
@@ -277,15 +297,12 @@ enum LineStyle : Int {
                             if scanner.scanUpToCharacters(from: set as CharacterSet, into: nil) {
                                 scanner.scanLocation = location
                                 attributedString.append(self.attributedStringFromScanner(scanner))
-
                             } else if matchedCharacters == "[" {
                                 scanner.scanLocation = location
                                 attributedString.append(self.attributedStringFromScanner(scanner))
                             } else {
-
                                 let charAtts = attributedStringFromString(matchedCharacters, withStyle: .none)
                                 attributedString.append(charAtts)
-
                             }
                         }
                     } else {
@@ -306,17 +323,17 @@ enum LineStyle : Int {
     }
 
 
-    func attributedStringFromScanner( _ scanner : Scanner, atStartOfLine start : Bool = false) -> NSAttributedString {
+    func attributedStringFromScanner(_ scanner: Scanner, atStartOfLine start: Bool = false) -> NSAttributedString {
 
-        var followingString : NSString?
+        var followingString: NSString?
         let results = self.tagFromScanner(scanner)
         var style = LineStyle.styleFromString(results.foundCharacters)
 
         var attributes = [NSAttributedString.Key : AnyObject]()
 
         if style == .link {
-            var linkText : NSString?
-            var linkURL : NSString?
+            var linkText: NSString?
+            var linkURL: NSString?
             let linkCharacters = CharacterSet(charactersIn: "]()")
 
             scanner.scanUpToCharacters(from: linkCharacters, into: &linkText)
@@ -336,7 +353,7 @@ enum LineStyle : Int {
 
         let attributedString = attributedStringFromString(results.escapedCharacters, withStyle: style).mutableCopy() as! NSMutableAttributedString
         if let hasString = followingString as String? {
-            let prefix = ( style == .code && start ) ? "\t" : ""
+            let prefix = (style == .code && start) ? "\t" : ""
             let attString = attributedStringFromString(prefix + hasString, withStyle: style, attributes: attributes)
             attributedString.append(attString)
         }
@@ -348,19 +365,19 @@ enum LineStyle : Int {
     }
 
 
-    func tagFromScanner( _ scanner : Scanner ) -> (foundCharacters : String, escapedCharacters : String) {
+    func tagFromScanner(_ scanner: Scanner) -> (foundCharacters: String, escapedCharacters: String) {
 
-        var matchedCharacters : String = ""
-        var tempCharacters : NSString?
+        var matchedCharacters: String = ""
+        var tempCharacters: NSString?
 
-        // Scan the ones we are interested in
+        // Scan the characters we are interested in
         while scanner.scanCharacters(from: instructionSet, into: &tempCharacters) {
             if let chars = tempCharacters as String? {
-                matchedCharacters = matchedCharacters + chars
+                matchedCharacters += chars
             }
         }
 
-        var foundCharacters : String = ""
+        var foundCharacters: String = ""
 
         while matchedCharacters.contains("\\") {
             if let hasRange = matchedCharacters.range(of: "\\") {
@@ -379,88 +396,127 @@ enum LineStyle : Int {
     }
 
 
-    // Make H1
+    /*
+     * This is the primary conversion
+     */
 
-    func attributedStringFromString(_ string : String, withStyle style : LineStyle, attributes : [NSAttributedString.Key : AnyObject] = [:] ) -> NSAttributedString {
+    func attributedStringFromString(_ string: String, withStyle style: LineStyle, attributes: [NSAttributedString.Key : AnyObject] = [:]) -> NSAttributedString {
 
-        //let textStyle: LineStyle = .none
-        var fontName: String = "SFCompactDisplay-Light"
+        let textStyle: TextStyle
+        var fontName: String?
+        var fontSize: CGFloat?
         var attributes = attributes
-        var fontSize: CGFloat = 0.0
 
         // What type are we and is there a font name set?
         switch currentType {
         case .h1:
             fontName = h1.fontName
             fontSize = h1.fontSize
+            textStyle = .headline
             attributes[NSAttributedString.Key.foregroundColor] = h1.color
         case .h2:
             fontName = h2.fontName
             fontSize = h2.fontSize
+            textStyle = .headline
             attributes[NSAttributedString.Key.foregroundColor] = h2.color
         case .h3:
             fontName = h3.fontName
             fontSize = h3.fontSize
+            textStyle = .headline
             attributes[NSAttributedString.Key.foregroundColor] = h3.color
         case .h4:
             fontName = h4.fontName
             fontSize = h4.fontSize
+            textStyle = .subheadline
             attributes[NSAttributedString.Key.foregroundColor] = h4.color
         case .h5:
             fontName = h5.fontName
             fontSize = h5.fontSize
+            textStyle = .subheadline
             attributes[NSAttributedString.Key.foregroundColor] = h5.color
         case .h6:
             fontName = h6.fontName
             fontSize = h6.fontSize
+            textStyle = .footnote
             attributes[NSAttributedString.Key.foregroundColor] = h6.color
         default:
             fontName = body.fontName
             fontSize = body.fontSize
+            textStyle = .body
             attributes[NSAttributedString.Key.foregroundColor] = body.color
             break
         }
 
         // Check for code
-
         if style == .code {
             fontName = code.fontName
             fontSize = code.fontSize
             attributes[NSAttributedString.Key.foregroundColor] = code.color
         }
 
+        // Check for links
         if style == .link {
             fontName = link.fontName
             fontSize = link.fontSize
             attributes[NSAttributedString.Key.foregroundColor] = link.color
         }
 
-        var styleSize: CGFloat = 14.0
+        // Generate the font spec. for the current block of text
+        if fontName == nil { fontName = body.fontName }
+        fontSize = fontSize == 0.0 ? nil : fontSize
+        let font: NSFont = preferredFont(textStyle)
+        let styleDescriptor: NSFontDescriptor = font.fontDescriptor
+        let styleSize: CGFloat = fontSize ?? styleDescriptor.fontAttributes[NSFontDescriptor.AttributeName.size] as? CGFloat ?? CGFloat(14)
 
-        if let font = NSFont.init(name: fontName, size: fontSize) {
-            //let styleDescriptor = font.fontDescriptor
-            styleSize = fontSize
-        }
-
-        var finalFont : NSFont? = nil
-        let finalFontName = fontName
-        if let font = NSFont(name: finalFontName, size: styleSize) {
+        var finalFont : NSFont
+        if let finalFontName = fontName, let font = NSFont.init(name: finalFontName, size: styleSize) {
             finalFont = font
+        } else {
+            finalFont = preferredFont(textStyle)
+        }
 
-            let finalFontDescriptor = finalFont!.fontDescriptor
-            if style == .italic {
-                let italicDescriptor = finalFontDescriptor.withSymbolicTraits(.italic)
-                finalFont = NSFont(descriptor: italicDescriptor, size: styleSize)
-                attributes[NSAttributedString.Key.font] = finalFont
-            }
+        let finalFontDescriptor: NSFontDescriptor = finalFont.fontDescriptor
 
-            if style == .bold {
-                let boldDescriptor = finalFontDescriptor.withSymbolicTraits(.bold)
-                finalFont = NSFont(descriptor: boldDescriptor, size: styleSize)
-                attributes[NSAttributedString.Key.font] = finalFont
+        if style == .italic {
+            let italicDescriptor: NSFontDescriptor = finalFontDescriptor.withSymbolicTraits(.italic)
+            if let aFont = NSFont(descriptor: italicDescriptor, size: styleSize) {
+                finalFont = aFont
             }
         }
+
+        if style == .bold {
+            let boldDescriptor: NSFontDescriptor = finalFontDescriptor.withSymbolicTraits(.bold)
+            if let aFont = NSFont(descriptor: boldDescriptor, size: styleSize) {
+                finalFont = aFont
+            }
+        }
+
+        attributes[NSAttributedString.Key.font] = finalFont
 
         return NSAttributedString(string: string, attributes: attributes)
     }
+
+
+    /*
+     * Mimic UIKit's UIFont.preferredFont(withStyle:) function
+     * NOTE Currently limited to the needs of the host app.
+     *
+     * parameter style: A TextStyle value.
+     *
+     * returns: An NSFont.systemFont() instance.
+     */
+    func preferredFont(_ style: TextStyle) -> NSFont {
+
+        switch style {
+        case .headline:
+            return NSFont.systemFont(ofSize: 24.0)
+        case .subheadline:
+            return NSFont.boldSystemFont(ofSize: 16.0)
+        case .footnote:
+            return NSFont.systemFont(ofSize: 10.0)
+        default:
+            return NSFont.systemFont(ofSize: 12.0)
+        }
+    }
+
 }

@@ -28,34 +28,25 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // HOLD Until we get WKWebView working
                 // let htmlString: String = self.renderMarkdown(markdownString, intent.url)
 
-                // Set the thumbnail size
+                // Set the thumbnail frame
                 // NOTE This is always square, so adjust to a 3:4 aspect ratio to
                 //      maintain the macOS standard doc icon width
-                var viewFrame: CGRect = .zero
-                viewFrame.size = request.maximumSize
-                viewFrame.size.width = 0.75 * viewFrame.size.height
+                var thumbnailFrame: CGRect = .zero
+                thumbnailFrame.size = request.maximumSize
+                thumbnailFrame.size.width = 0.75 * thumbnailFrame.size.height
 
-                // Set a relative font size
-                var fontSize: CGFloat = 36.0 * request.maximumSize.height / 512.0
-                if fontSize < 4.0 {
-                    fontSize = 4.0
-                }
+                // Set the drawing frame and a base font size
+                let drawFrame: CGRect = CGRect.init(x: 0.0, y: 0.0, width: 768, height: 1024.00)
+                let fontSize: CGFloat = 14.0
 
                 // Instantiate an NSTextView to display the NSAttributedString render of the markdown
-                let tv: NSTextView = NSTextView.init(frame: viewFrame)
+                let tv: NSTextView = NSTextView.init(frame: drawFrame)
                 tv.backgroundColor = NSColor.white
 
                 if let tvs: NSTextStorage = tv.textStorage {
-                    let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: markdownString)
-                    sm.body.fontSize = fontSize
-                    sm.h6.fontSize = fontSize
-                    sm.h5.fontSize = fontSize
-                    sm.h4.fontSize = fontSize + 2.0
-                    sm.h3.fontSize = fontSize + 4.0
-                    sm.h2.fontSize = fontSize + 6.0
-                    sm.h1.fontSize = fontSize + 8.0
-
-                    tvs.setAttributedString(sm.attributedString())
+                    let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+                    self.setBaseValues(sm, fontSize)
+                    tvs.setAttributedString(sm.attributedString(markdownString))
                 }
 
                 /*
@@ -72,17 +63,17 @@ class ThumbnailProvider: QLThumbnailProvider {
                 webView.display()
                 */
 
-                let imageRep: NSBitmapImageRep? = tv.bitmapImageRepForCachingDisplay(in: viewFrame)
+                let imageRep: NSBitmapImageRep? = tv.bitmapImageRepForCachingDisplay(in: drawFrame)
 
                 if imageRep != nil {
-                    tv.cacheDisplay(in: viewFrame, to: imageRep!)
+                    tv.cacheDisplay(in: drawFrame, to: imageRep!)
                 }
 
-                let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: viewFrame.size) { () -> Bool in
+                let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
                     // This is the drawing block. It returns true (thumbnail drawn into current context)
                     // or false (thumbnail not drawn)
                     if imageRep != nil {
-                        let _ = imageRep!.draw(in: viewFrame)
+                        let _ = imageRep!.draw(in: thumbnailFrame)
                         // webView.displayIgnoringOpacity(webView.bounds, in: NSGraphicsContext.current!)
                         return true
                     }
@@ -99,8 +90,26 @@ class ThumbnailProvider: QLThumbnailProvider {
             }
         }
     }
-    
 
+
+    func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
+
+        sm.body.fontSize = baseFontSize
+        sm.h6.fontSize = baseFontSize
+        sm.h5.fontSize = baseFontSize
+        sm.h4.fontSize = baseFontSize * 1.2
+        sm.h3.fontSize = baseFontSize * 1.4
+        sm.h2.fontSize = baseFontSize * 1.6
+        sm.h1.fontSize = baseFontSize * 2.0
+        sm.h1.color = NSColor.red
+        sm.code.fontName = "AndaleMono"
+        sm.code.color = NSColor.gray
+        sm.bold.fontSize = baseFontSize
+    }
+
+
+    // NOTE Remove pending fixing of WKWebView issue
+    /*
     func renderMarkdown(_ markdown: String, _ baseURL: URL) -> String {
 
         // Convert the supplied markdown string to an HTML string - or an error string
@@ -138,6 +147,6 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Something went wrong loading or rendering...
         return errString
     }
-
+    */
     
 }
