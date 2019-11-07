@@ -25,9 +25,40 @@ class ThumbnailProvider: QLThumbnailProvider {
                 let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
 
                 // Get an HTML page string from the markdown
-                let htmlString: String = self.renderMarkdown(markdownString, intent.url)
-                NSLog("BUFFOON \(htmlString)")
+                // HOLD Until we get WKWebView working
+                // let htmlString: String = self.renderMarkdown(markdownString, intent.url)
 
+                // Set the thumbnail size
+                // NOTE This is always square, so adjust to a 3:4 aspect ratio to
+                //      maintain the macOS standard doc icon width
+                var viewFrame: CGRect = .zero
+                viewFrame.size = request.maximumSize
+                viewFrame.size.width = 0.75 * viewFrame.size.height
+
+                // Set a relative font size
+                var fontSize: CGFloat = 36.0 * request.maximumSize.height / 512.0
+                if fontSize < 4.0 {
+                    fontSize = 4.0
+                }
+
+                // Instantiate an NSTextView to display the NSAttributedString render of the markdown
+                let tv: NSTextView = NSTextView.init(frame: viewFrame)
+                tv.backgroundColor = NSColor.white
+
+                if let tvs: NSTextStorage = tv.textStorage {
+                    let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: markdownString)
+                    sm.body.fontSize = fontSize
+                    sm.h6.fontSize = fontSize
+                    sm.h5.fontSize = fontSize
+                    sm.h4.fontSize = fontSize + 2.0
+                    sm.h3.fontSize = fontSize + 4.0
+                    sm.h2.fontSize = fontSize + 6.0
+                    sm.h1.fontSize = fontSize + 8.0
+
+                    tvs.setAttributedString(sm.attributedString())
+                }
+
+                /*
                 // Instantiate a WKWebView to display the HTML in our view
                 let prefs: WKPreferences = WKPreferences()
                 prefs.javaScriptEnabled = false
@@ -36,42 +67,36 @@ class ThumbnailProvider: QLThumbnailProvider {
                 config.suppressesIncrementalRendering = true
                 config.preferences = prefs
 
-                var viewFrame: CGRect = .zero
-                viewFrame.size = request.maximumSize
-
                 let webView: WKWebView = WKWebView.init(frame: viewFrame, configuration: config)
                 webView.loadHTMLString(htmlString, baseURL: nil)
                 webView.display()
+                */
 
-                let imageRep: NSBitmapImageRep? = webView.bitmapImageRepForCachingDisplay(in: webView.frame)
+                let imageRep: NSBitmapImageRep? = tv.bitmapImageRepForCachingDisplay(in: viewFrame)
 
                 if imageRep != nil {
-                    webView.cacheDisplay(in: webView.frame, to: imageRep!)
+                    tv.cacheDisplay(in: viewFrame, to: imageRep!)
                 }
 
                 let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: viewFrame.size) { () -> Bool in
                     // This is the drawing block. It returns true (thumbnail drawn into current context)
                     // or false (thumbnail not drawn)
                     if imageRep != nil {
-                        let success: Bool = imageRep!.draw(in: webView.frame)
-                        NSLog("BUFFOON imagrep is " + (success ? "drawn" : "not drawn"))
+                        let _ = imageRep!.draw(in: viewFrame)
+                        // webView.displayIgnoringOpacity(webView.bounds, in: NSGraphicsContext.current!)
                         return true
                     }
 
                     //  We didn't draw anything
-                    NSLog("BUFFOON imagrep FAIL ")
                     return false
                 }
 
-                // Hand control back to QuickLook
+                // Hand control back to QuickLook, supplying the QLThumbnailReply instanace
+                // and no error
                 handler(reply, nil)
             } catch {
                 handler(nil, nil)
             }
-
-
-
-
         }
     }
     
