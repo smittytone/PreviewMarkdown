@@ -151,9 +151,9 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="Credits" id="FKE-Sm-Kum">
+                            <menuItem title="PreviewMarkdown Acknowledgements" id="FKE-Sm-Kum">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" id="WBx-VK-xbe">
+                                <menu key="submenu" title="PreviewMarkdown Acknowledgements" id="WBx-VK-xbe">
                                     <items>
                                         <menuItem title="PreviewMarkdown" id="NdQ-kU-ZWH">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -245,7 +245,7 @@ DQ
                         </constraints>
                         <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
-                            <string key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftMarkdown by Simon Fairbairn See Help &gt; Credits for more information</string>
+                            <mutableString key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftMarkdown by Simon Fairbairn See ‘Help &gt; PreviewMarkdown Acknowledgements’ for more information</mutableString>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
