@@ -1,12 +1,13 @@
-//
+
 //  AppDelegate.swift
 //  PreviewMarkdown
 //
 //  Created by Tony Smith on 31/10/2019.
 //  Copyright © 2019 Tony Smith. All rights reserved.
-//
+
 
 import Cocoa
+
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -15,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var creditMenuPM: NSMenuItem!
     @IBOutlet var creditMenuDiscount: NSMenuItem!
     @IBOutlet var creditMenuQLMarkdown: NSMenuItem!
+    @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
     
     // Windows
     @IBOutlet weak var window: NSWindow!
@@ -44,6 +46,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             path = "https://github.com/Orc/discount"
         } else if item == self.creditMenuQLMarkdown {
             path = "https://github.com/toland/qlmarkdown"
+        } else if item == self.creditMenuSwiftyMarkdown {
+            path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
         }
         
         // Open the selected website

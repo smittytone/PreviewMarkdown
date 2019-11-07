@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,6 +17,7 @@
                 <outlet property="creditMenuDiscount" destination="C9u-Ul-gio" id="WXq-Dg-p0A"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
                 <outlet property="creditMenuQLMarkdown" destination="hBf-5K-w2i" id="VIK-SL-guw"/>
+                <outlet property="creditMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="s3a-nj-rUO"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -173,6 +174,12 @@
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="TNP-vV-IRD"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="SwiftyMarkdown" id="3OS-WA-nsV">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="XJE-PY-x6d"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                                 <connections>
@@ -188,10 +195,10 @@
         <window title="PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="282"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="contentRect" x="335" y="390" width="480" height="304"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="282"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="304"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
@@ -212,7 +219,7 @@ DQ
                         </connections>
                     </button>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MgT-WK-sk0">
-                        <rect key="frame" x="216" y="214" width="48" height="48"/>
+                        <rect key="frame" x="216" y="236" width="48" height="48"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="48" id="2Js-wn-Zxv"/>
                             <constraint firstAttribute="height" constant="48" id="dk2-Wb-FUG"/>
@@ -220,25 +227,25 @@ DQ
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="appicon" id="O4R-6I-qgH"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
-                        <rect key="frame" x="18" y="114" width="444" height="80"/>
+                        <rect key="frame" x="18" y="136" width="444" height="80"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="iLO-gq-Srl"/>
                         </constraints>
                         <textFieldCell key="cell" selectable="YES" alignment="center" id="ztO-7G-jpz">
                             <font key="font" metaFont="system"/>
-                            <mutableString key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS 10.15 Catalina and above. Run this app just once to register the Previewer and Thumbnailer application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</mutableString>
+                            <string key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS 10.15 Catalina and above. Run this app just once to register the Previewer and Thumbnailer application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="20" y="61" width="442" height="33"/>
+                        <rect key="frame" x="20" y="61" width="442" height="55"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="33" id="6Hw-XW-sOq"/>
+                            <constraint firstAttribute="height" constant="55" id="6Hw-XW-sOq"/>
                         </constraints>
                         <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
-                            <font key="font" metaFont="miniSystem"/>
-                            <string key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons, and QLMarkdown by Phil Toland and others. See Help &gt; Credits for more information</string>
+                            <font key="font" metaFont="menu" size="9"/>
+                            <string key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftMarkdown by Simon Fairbairn See Help &gt; Credits for more information</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -257,7 +264,7 @@ DQ
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="lpt-se-jRG"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="139" y="-159"/>
+            <point key="canvasLocation" x="139" y="-148"/>
         </window>
     </objects>
     <resources>
