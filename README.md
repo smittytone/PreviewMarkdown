@@ -12,8 +12,8 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.0.0 *Unreleased*
-    - Initial public release
+- 1.0.0 *8 November 2019*
+    - Initial public release.
 
 ## Copyright and Credits ##
 
