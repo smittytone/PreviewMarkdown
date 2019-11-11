@@ -82,7 +82,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                     return false
                 }
 
-                // Hand control back to QuickLook, supplying the QLThumbnailReply instanace
+                // Hand control back to QuickLook, supplying the QLThumbnailReply instance
                 // and no error
                 handler(reply, nil)
             } catch {
