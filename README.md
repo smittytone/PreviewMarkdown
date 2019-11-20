@@ -19,4 +19,4 @@ For more information on the background to this app, please see this [blog post](
 
 Primary app code and UI design &copy; 2019, Tony Smith.
 
-Code portions &copy; 2007 David Loren Parsons, &copy; 2008-2019 Phil Toland, &copy 2016 Simon Fairbairn, and the contributors to their projects.
+Code portions &copy; 2007 David Loren Parsons, &copy; 2008-2019 Phil Toland, &copy; 2016 Simon Fairbairn, and the contributors to their projects.

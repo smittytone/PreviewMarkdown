@@ -94,17 +94,16 @@ class ThumbnailProvider: QLThumbnailProvider {
 
     func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
 
-        sm.body.fontSize = baseFontSize
-        sm.h6.fontSize = baseFontSize
-        sm.h5.fontSize = baseFontSize
+        sm.setFontSizeForAllStyles(with: baseFontSize)
+
         sm.h4.fontSize = baseFontSize * 1.2
         sm.h3.fontSize = baseFontSize * 1.4
         sm.h2.fontSize = baseFontSize * 1.6
         sm.h1.fontSize = baseFontSize * 2.0
-        sm.h1.color = NSColor.red
+        sm.h1.color = NSColor.darkGray
         sm.code.fontName = "AndaleMono"
         sm.code.color = NSColor.gray
-        sm.bold.fontSize = baseFontSize
+        sm.link.color = NSColor.blue
     }
 
 
