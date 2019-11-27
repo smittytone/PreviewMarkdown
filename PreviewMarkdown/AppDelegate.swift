@@ -33,11 +33,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // FROM 1.0.2
         // Centre window and display
-        window.center()
-        window.makeKeyAndOrderFront(self)
+        self.window.center()
+        self.window.makeKeyAndOrderFront(self)
     }
 
-    
+
     @IBAction func doClose(_ sender: Any) {
 
         // Close the window... which will trigger an app closure
