@@ -29,6 +29,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
+    func applicationDidFinishLaunching(_ notification: Notification) {
+
+        // FROM 1.0.2
+        // Centre window and display
+        self.window.center()
+        self.window.makeKeyAndOrderFront(self)
+    }
+
+
     @IBAction func doClose(_ sender: Any) {
 
         // Close the window... which will trigger an app closure

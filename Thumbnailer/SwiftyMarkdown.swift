@@ -290,8 +290,8 @@ enum TextStyle: Int {
                             let location = scanner.scanLocation
 
                             let matchedCharacters = tagFromScanner(scanner).foundCharacters
-                            // If the next string after the characters is a space, then add it to the final string and continue
 
+                            // If the next string after the characters is a space, then add it to the final string and continue
                             let set = NSMutableCharacterSet.whitespace()
                             set.formUnion(with: CharacterSet.punctuationCharacters)
                             if scanner.scanUpToCharacters(from: set as CharacterSet, into: nil) {
@@ -382,9 +382,10 @@ enum TextStyle: Int {
         while matchedCharacters.contains("\\") {
             if let hasRange = matchedCharacters.range(of: "\\") {
                 if matchedCharacters.count > 1 {
-                    let newRange = hasRange.lowerBound..<matchedCharacters.index(hasRange.upperBound, offsetBy: 1)
-                    foundCharacters = foundCharacters + matchedCharacters[newRange].replacingOccurrences(of: "\\", with: "")
-                    matchedCharacters.removeSubrange(newRange)
+                    // Crashing on "xxxx \\", ie. upperBound + 1 is out of string ?s
+                    // let newRange = hasRange.lowerBound..<matchedCharacters.index(hasRange.upperBound, offsetBy: 1)
+                    foundCharacters += matchedCharacters[hasRange].replacingOccurrences(of: "\\", with: "")
+                    matchedCharacters.removeSubrange(hasRange)
                 } else {
                     foundCharacters = matchedCharacters
                     break
