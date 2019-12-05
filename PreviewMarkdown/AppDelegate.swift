@@ -18,6 +18,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var creditMenuQLMarkdown: NSMenuItem!
     @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
     
+    // Panel Items
+    @IBOutlet var versionLabel: NSTextField!
+    
     // Windows
     @IBOutlet weak var window: NSWindow!
 
@@ -30,7 +33,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-
+        
+        // FROM 1.0.3
+        // Add the version number to the panel
+        let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        versionLabel.stringValue = "\(version) (\(build))"
+        
         // FROM 1.0.2
         // Centre window and display
         self.window.center()
@@ -49,7 +58,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = "https://smittytone.github.io/index.html"
+        var path: String = "https://smittytone.github.io/previewmarkdown/index.html"
         
         if item == self.creditMenuDiscount {
             path = "https://github.com/Orc/discount"
