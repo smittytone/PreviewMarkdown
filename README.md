@@ -12,7 +12,7 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.0.2 *Unreleased*
+- 1.0.2 *4 December 2019*
     - Fix random crash (`string index out of range` in SwiftyMarkdown).
 - 1.0.1 *20 November 2019*
     - Correct thumbnailer styles.
