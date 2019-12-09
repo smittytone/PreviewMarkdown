@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Add the version number to the panel
         let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        versionLabel.stringValue = "\(version) (\(build))"
+        versionLabel.stringValue = "Version \(version) (\(build))"
         
         // FROM 1.0.2
         // Centre window and display
