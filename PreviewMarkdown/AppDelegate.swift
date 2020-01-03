@@ -39,6 +39,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         versionLabel.stringValue = "Version \(version) (\(build))"
+
+        // From 1.0.4
+        // Disable the Help menu Spotlight features
+        let dummyHelpMenu: NSMenu = NSMenu.init(title: "Dummy")
+        let theApp = NSApplication.shared
+        theApp.helpMenu = dummyHelpMenu
         
         // FROM 1.0.2
         // Centre window and display
