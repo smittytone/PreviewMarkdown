@@ -14,6 +14,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="creditMenuAcknowlegdments" destination="FKE-Sm-Kum" id="Mi1-3q-c9I"/>
                 <outlet property="creditMenuDiscount" destination="C9u-Ul-gio" id="WXq-Dg-p0A"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
                 <outlet property="creditMenuQLMarkdown" destination="hBf-5K-w2i" id="VIK-SL-guw"/>
@@ -97,48 +98,6 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Help" id="wpr-3q-Mcd">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
-                        <items>
-                            <menuItem title="View Online Help" id="NdQ-kU-ZWH">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="ikJ-5X-b7S"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="PKG-sv-SKa"/>
-                            <menuItem title="Acknowledgements" id="FKE-Sm-Kum">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Acknowledgements" id="WBx-VK-xbe">
-                                    <items>
-                                        <menuItem title="Discount" id="C9u-Ul-gio">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="oYX-Q4-pMj"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="QLMarkdown" id="hBf-5K-w2i">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="TNP-vV-IRD"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="SwiftyMarkdown" id="3OS-WA-nsV">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="XJE-PY-x6d"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                                <connections>
-                                    <action selector="doNothingWithSender:" target="Voe-Tx-rLC" id="1a6-ll-0J0"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
             </items>
             <point key="canvasLocation" x="140" y="154"/>
         </menu>
@@ -146,7 +105,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="321"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="321"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -178,7 +137,7 @@
                         </constraints>
                         <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
-                            <string key="title">PreviewMarkdown © 2019, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftyMarkdown by Simon Fairbairn See ‘Help &gt; PreviewMarkdown Acknowledgements’ for more information</string>
+                            <mutableString key="title">PreviewMarkdown © 2019-20, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftyMarkdown by Simon Fairbairn See ‘Help &gt; PreviewMarkdown Acknowledgements’ for more information</mutableString>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -230,6 +189,48 @@ DQ
             </view>
             <point key="canvasLocation" x="139" y="-139.5"/>
         </window>
+        <menuItem title="Help" id="wpr-3q-Mcd">
+            <modifierMask key="keyEquivalentModifierMask"/>
+            <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
+                <items>
+                    <menuItem title="View Online Help" id="NdQ-kU-ZWH">
+                        <modifierMask key="keyEquivalentModifierMask"/>
+                        <connections>
+                            <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="ikJ-5X-b7S"/>
+                        </connections>
+                    </menuItem>
+                    <menuItem isSeparatorItem="YES" id="PKG-sv-SKa"/>
+                    <menuItem title="Acknowledgements" id="FKE-Sm-Kum">
+                        <modifierMask key="keyEquivalentModifierMask"/>
+                        <menu key="submenu" title="Acknowledgements" id="WBx-VK-xbe">
+                            <items>
+                                <menuItem title="Discount" id="C9u-Ul-gio">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                    <connections>
+                                        <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="oYX-Q4-pMj"/>
+                                    </connections>
+                                </menuItem>
+                                <menuItem title="QLMarkdown" id="hBf-5K-w2i">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                    <connections>
+                                        <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="TNP-vV-IRD"/>
+                                    </connections>
+                                </menuItem>
+                                <menuItem title="SwiftyMarkdown" id="3OS-WA-nsV">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                    <connections>
+                                        <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="XJE-PY-x6d"/>
+                                    </connections>
+                                </menuItem>
+                            </items>
+                        </menu>
+                        <connections>
+                            <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="hEi-gX-hLE"/>
+                        </connections>
+                    </menuItem>
+                </items>
+            </menu>
+        </menuItem>
     </objects>
     <resources>
         <image name="appicon" width="48" height="48"/>

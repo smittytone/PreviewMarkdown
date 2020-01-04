@@ -3,7 +3,7 @@
 //  PreviewMarkdown
 //
 //  Created by Tony Smith on 31/10/2019.
-//  Copyright © 2019 Tony Smith. All rights reserved.
+//  Copyright © 2019-20 Tony Smith. All rights reserved.
 
 
 import Cocoa
@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var creditMenuDiscount: NSMenuItem!
     @IBOutlet var creditMenuQLMarkdown: NSMenuItem!
     @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
+    @IBOutlet var creditMenuAcknowlegdments: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -72,18 +73,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             path = "https://github.com/toland/qlmarkdown"
         } else if item == self.creditMenuSwiftyMarkdown {
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
+        } else if item == self.creditMenuAcknowlegdments {
+            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
         }
         
         // Open the selected website
         NSWorkspace.shared.open(URL.init(string:path)!)
-    }
-
-
-    @IBAction @objc func doNothing(sender: Any) {
-
-        // ADDED 1.0.4
-        // Trap clicks on unused menus
-        
     }
 }
 
