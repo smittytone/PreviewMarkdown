@@ -77,5 +77,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Open the selected website
         NSWorkspace.shared.open(URL.init(string:path)!)
     }
+
+
+    @IBAction @objc func doNothing(sender: Any) {
+
+        // ADDED 1.0.4
+        // Trap clicks on unused menus
+        
+    }
 }
 
