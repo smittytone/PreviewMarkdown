@@ -30,9 +30,12 @@
 		<dict>
 			<key>QLSupportedContentTypes</key>
 			<array>
-				<string>com.unknown.md</string>
 				<string>net.daringfireball.markdown</string>
 				<string>net.daringfireball</string>
+				<string>net.multimarkdown.text</string>
+				<string>org.vim.markdown-file</string>
+				<string>com.unknown.md</string>
+				<string>com.foldingtext.FoldingText.document</string>
 				<string>dyn.ah62d4rv4ge8042pwrrwg875s</string>
 				<string>dyn.ah62d4rv4ge8045pe</string>
 				<string>dyn.ah62d4rv4ge80445e</string>
