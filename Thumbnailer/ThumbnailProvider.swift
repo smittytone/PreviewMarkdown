@@ -13,6 +13,8 @@ import WebKit
 class ThumbnailProvider: QLThumbnailProvider {
 
 
+    // MARK:- QLThumbnailProvider Required Functions
+
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
 
         // Load the source file using a co-ordinator as we don't know what thread this function
@@ -20,117 +22,91 @@ class ThumbnailProvider: QLThumbnailProvider {
         let fc: NSFileCoordinator = NSFileCoordinator()
         let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: request.fileURL)
         fc.coordinate(with: [intent], queue: .main) { (err) in
-            do {
-                // Read in the markdown from the specified file
-                let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
+            // FROM 1.1.0
+            // Get an error message ready for use
+            var reportError: NSError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                               code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN,
+                                               userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN])
+            if err != nil {
+                do {
+                    // Read in the markdown from the specified file
+                    let markdownString: String = try String(contentsOf: intent.url, encoding: String.Encoding.utf8)
 
-                // Get an HTML page string from the markdown
-                // HOLD Until we get WKWebView working
-                // let htmlString: String = self.renderMarkdown(markdownString, intent.url)
+                    // Set the thumbnail frame
+                    // NOTE This is always square, so adjust to a 3:4 aspect ratio to
+                    //      maintain the macOS standard doc icon width
+                    var thumbnailFrame: CGRect = .zero
+                    thumbnailFrame.size = request.maximumSize
+                    thumbnailFrame.size.width = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * thumbnailFrame.size.height
 
-                // Set the thumbnail frame
-                // NOTE This is always square, so adjust to a 3:4 aspect ratio to
-                //      maintain the macOS standard doc icon width
-                var thumbnailFrame: CGRect = .zero
-                thumbnailFrame.size = request.maximumSize
-                thumbnailFrame.size.width = 0.75 * thumbnailFrame.size.height
+                    // Set the drawing frame and a base font size
+                    let drawFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
+                                                        y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
+                                                        width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
+                                                        height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
+                    let fontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE)
 
-                // Set the drawing frame and a base font size
-                let drawFrame: CGRect = CGRect.init(x: 0.0, y: 0.0, width: 768, height: 1024.00)
-                let fontSize: CGFloat = 14.0
+                    // Instantiate an NSTextView to display the NSAttributedString render of the markdown
+                    let renderTextView: NSTextView = NSTextView.init(frame: drawFrame)
+                    renderTextView.backgroundColor = NSColor.white
 
-                // Instantiate an NSTextView to display the NSAttributedString render of the markdown
-                let tv: NSTextView = NSTextView.init(frame: drawFrame)
-                tv.backgroundColor = NSColor.white
-
-                if let tvs: NSTextStorage = tv.textStorage {
-                    let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-                    self.setBaseValues(sm, fontSize)
-                    tvs.setAttributedString(sm.attributedString(markdownString))
-                }
-
-                let imageRep: NSBitmapImageRep? = tv.bitmapImageRepForCachingDisplay(in: drawFrame)
-
-                if imageRep != nil {
-                    tv.cacheDisplay(in: drawFrame, to: imageRep!)
-                }
-
-                let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
-                    // This is the drawing block. It returns true (thumbnail drawn into current context)
-                    // or false (thumbnail not drawn)
-                    if imageRep != nil {
-                        let _ = imageRep!.draw(in: thumbnailFrame)
-                        return true
+                    if let renderTextStorage: NSTextStorage = renderTextView.textStorage {
+                        let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+                        self.setBaseValues(swiftyMarkdown, fontSize)
+                        renderTextStorage.setAttributedString(swiftyMarkdown.attributedString(from: markdownString))
                     }
 
-                    //  We didn't draw anything
-                    return false
-                }
+                    let imageRep: NSBitmapImageRep? = renderTextView.bitmapImageRepForCachingDisplay(in: drawFrame)
 
-                // Hand control back to QuickLook, supplying the QLThumbnailReply instance
-                // and no error
-                handler(reply, nil)
-            } catch {
-                handler(nil, nil)
+                    if imageRep != nil {
+                        renderTextView.cacheDisplay(in: drawFrame, to: imageRep!)
+                    }
+
+                    let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
+                        // This is the drawing block. It returns true (thumbnail drawn into current context)
+                        // or false (thumbnail not drawn)
+                        if imageRep != nil {
+                            let _ = imageRep!.draw(in: thumbnailFrame)
+                            return true
+                        }
+
+                        //  We didn't draw anything
+                        return false
+                    }
+
+                    // Hand control back to QuickLook, supplying the QLThumbnailReply instance and no error
+                    handler(reply, nil)
+                    return
+                } catch {
+                    // We couldn't read the file so set an appropriate error to report back
+                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                          code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
+                                          userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING])
+                }
             }
+
+            // We couldn't do any so set an appropriate error to report back
+            handler(nil, reportError)
         }
     }
 
 
+    // MARK:- Utility Functions
+
     func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
 
-        sm.setFontSizeForAllStyles(with: baseFontSize)
+        // Set base style values for the markdown render
 
+        sm.setFontSizeForAllStyles(with: baseFontSize)
+        sm.setFontNameForAllStyles(with: "HelveticaNeue")
+        sm.setFontColorForAllStyles(with: NSColor.black)
         sm.h4.fontSize = baseFontSize * 1.2
         sm.h3.fontSize = baseFontSize * 1.4
         sm.h2.fontSize = baseFontSize * 1.6
         sm.h1.fontSize = baseFontSize * 2.0
-        sm.h1.color = NSColor.darkGray
         sm.code.fontName = "AndaleMono"
-        sm.code.color = NSColor.gray
-        sm.link.color = NSColor.blue
+        sm.code.color = NSColor.systemPurple
+        sm.link.color = NSColor.systemBlue
     }
-
-
-    // NOTE Remove pending fixing of WKWebView issue
-    /*
-    func renderMarkdown(_ markdown: String, _ baseURL: URL) -> String {
-
-        // Convert the supplied markdown string to an HTML string - or an error string
-
-        var errString: String = "ERROR:"
-        var css: String = ""
-
-        let url: URL = baseURL.deletingLastPathComponent()
-
-        do {
-            // Get the app extension's bundle...
-            let bndl: Bundle? = Bundle.init(identifier: "com.bps.PreviewMarkdown.Thumbnailer")
-            if bndl != nil {
-                // ...and therefore its location, and that of the CSS file, which we load
-                let path: String = bndl!.path(forResource: "styles", ofType: "css")!
-                css = try String.init(contentsOfFile: path)
-
-                // Convert the markdown string to an NSString to ease its representation
-                // as a C string, which we pass (as reference) to 'markdownToHTML()', which
-                // is a C function that bridges the Discount markdown rendering engine
-                let source: NSString = markdown as NSString
-                let render: String = String.init(utf8String: markdownToHTML(source.utf8String))!
-
-                // Assemble a final HTML string, with boilerplate code, the loaded CSS file,
-                // the specifiec base URL and the rendered markdown, and return in
-                // <meta name=\"viewport\" content=\"initial-scale=1.0\" />
-                return "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><style>" + css + "</style><base href=\"\(url)\"/></head><body>" + render + "</body></html>"
-            } else {
-                errString += " could not access Thumbnailer’s bundle"
-            }
-        } catch {
-            if css.count == 0 { errString += " could not load CSS" }
-        }
-
-        // Something went wrong loading or rendering...
-        return errString
-    }
-    */
     
 }

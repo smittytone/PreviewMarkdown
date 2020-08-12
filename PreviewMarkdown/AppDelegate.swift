@@ -13,6 +13,7 @@ import CoreServices
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    // MARK:- Class Properies
     // Menu Items Tab
     @IBOutlet var creditMenuPM: NSMenuItem!
     @IBOutlet var creditMenuDiscount: NSMenuItem!
@@ -26,6 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Windows
     @IBOutlet weak var window: NSWindow!
 
+
+    // MARK:- Class Lifecycle Functions
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
 
@@ -63,10 +66,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
-
         #endif
     }
 
+
+    // MARK:- Action Functions
 
     @IBAction func doClose(_ sender: Any) {
 
@@ -80,11 +84,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
         var path: String = "https://smittytone.github.io/previewmarkdown/index.html"
-        
+
+        // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
-            path = "https://github.com/Orc/discount"
+            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
         } else if item == self.creditMenuQLMarkdown {
-            path = "https://github.com/toland/qlmarkdown"
+            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
         } else if item == self.creditMenuSwiftyMarkdown {
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
         } else if item == self.creditMenuAcknowlegdments {

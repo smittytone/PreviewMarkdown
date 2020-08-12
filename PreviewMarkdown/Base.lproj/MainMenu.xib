@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17147" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17147"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,9 +16,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
                 <outlet property="creditMenuAcknowlegdments" destination="FKE-Sm-Kum" id="Mi1-3q-c9I"/>
-                <outlet property="creditMenuDiscount" destination="C9u-Ul-gio" id="WXq-Dg-p0A"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
-                <outlet property="creditMenuQLMarkdown" destination="hBf-5K-w2i" id="VIK-SL-guw"/>
                 <outlet property="creditMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="s3a-nj-rUO"/>
                 <outlet property="versionLabel" destination="RuP-3k-wPO" id="2c9-E8-cV8"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -113,18 +112,6 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Acknowledgements" id="WBx-VK-xbe">
                                     <items>
-                                        <menuItem title="Discount" id="C9u-Ul-gio">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="oYX-Q4-pMj"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="QLMarkdown" id="hBf-5K-w2i">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="TNP-vV-IRD"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="SwiftyMarkdown" id="3OS-WA-nsV">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -147,7 +134,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="321"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="321"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -172,18 +159,6 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="18" y="74" width="444" height="55"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="55" id="ves-99-nim"/>
-                        </constraints>
-                        <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
-                            <font key="font" metaFont="menu" size="9"/>
-                            <mutableString key="title">PreviewMarkdown © 2019-20, Tony Smith.  Contains portions of Discount by David Parsons and others. Contains portions of  QLMarkdown by Phil Toland and others. Contains portions of SwiftyMarkdown by Simon Fairbairn See ‘Help &gt; Acknowledgements’ for more information</mutableString>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RuP-3k-wPO">
                         <rect key="frame" x="18" y="225" width="444" height="16"/>
                         <constraints>
@@ -196,7 +171,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
-                        <rect key="frame" x="199" y="13" width="82" height="32"/>
+                        <rect key="frame" x="198" y="13" width="84" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="5W7-jO-VfU"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="lsY-5x-ikr"/>
@@ -212,6 +187,18 @@ DQ
                             <action selector="doClose:" target="Voe-Tx-rLC" id="kue-39-OjM"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
+                        <rect key="frame" x="18" y="61" width="444" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="55" id="ves-99-nim"/>
+                        </constraints>
+                        <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
+                            <font key="font" metaFont="menu" size="9"/>
+                            <string key="title">PreviewMarkdown © 2020, Tony Smith.  Contains SwiftyMarkdown by Simon Fairbairn See ‘Help &gt; Acknowledgements’ for more information</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="7Xy-CE-dM0"/>
@@ -220,7 +207,7 @@ DQ
                     <constraint firstAttribute="trailing" secondItem="RuP-3k-wPO" secondAttribute="trailing" constant="20" id="NOS-rf-Isn"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="We8-d6-Vd3"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ZGi-IC-AJN"/>
-                    <constraint firstItem="F0g-rH-b3T" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="8" id="hpo-2D-a8W"/>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="21" id="hpo-2D-a8W"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="ixc-oa-Nle"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
                     <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" id="mpD-fn-qIH"/>
