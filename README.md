@@ -13,22 +13,22 @@ For more information on the background to this app, please see this [blog post](
 ## Release Notes ##
 
 - 1.1.0 *Unreleased*
-    - Add Big Sur support.
-    - Better dark mode/light mode support.
-    - Migrate engine to [SwiftyMarkdown 1.2.2](https://github.com/SimonFairbairn/SwiftyMarkdown):
-        - Better style support.
+	- Add Big Sur support.
+	- Better dark mode/light mode support.
+	- Migrate engine to [SwiftyMarkdown 1.2.2](https://github.com/SimonFairbairn/SwiftyMarkdown):
+		- Better style support.
 - 1.0.5 *9 April 2020*
-    - App Store release version.
+	- App Store release version.
 - 1.0.4 *Unreleased*
-    - Minor cosmetic changes to app menus.
+	- Minor cosmetic changes to app menus.
 - 1.0.3 *10 December 2019*
-    - Add version number to app’s info panel.
+	- Add version number to app’s info panel.
 - 1.0.2 *4 December 2019*
-    - Fix random crash (`string index out of range` in SwiftyMarkdown).
+	- Fix random crash (`string index out of range` in SwiftyMarkdown).
 - 1.0.1 *20 November 2019*
-    - Correct thumbnailer styles.
+	- Correct thumbnailer styles.
 - 1.0.0 *8 November 2019*
-    - Initial public release.
+	- Initial public release.
 
 ## Copyright and Credits ##
 
