@@ -49,20 +49,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                     tvs.setAttributedString(sm.attributedString(markdownString))
                 }
 
-                /*
-                // Instantiate a WKWebView to display the HTML in our view
-                let prefs: WKPreferences = WKPreferences()
-                prefs.javaScriptEnabled = false
-
-                let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
-                config.suppressesIncrementalRendering = true
-                config.preferences = prefs
-
-                let webView: WKWebView = WKWebView.init(frame: viewFrame, configuration: config)
-                webView.loadHTMLString(htmlString, baseURL: nil)
-                webView.display()
-                */
-
                 let imageRep: NSBitmapImageRep? = tv.bitmapImageRepForCachingDisplay(in: drawFrame)
 
                 if imageRep != nil {
@@ -74,7 +60,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                     // or false (thumbnail not drawn)
                     if imageRep != nil {
                         let _ = imageRep!.draw(in: thumbnailFrame)
-                        // webView.displayIgnoringOpacity(webView.bounds, in: NSGraphicsContext.current!)
                         return true
                     }
 

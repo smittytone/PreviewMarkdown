@@ -282,9 +282,10 @@ enum TextStyle: Int {
                     var string : NSString?
 
                     // Get all the characters up to the ones we are interested in
-                    if scanner.scanUpToCharacters(from: instructionSet, into: &string) {
-                        if let hasString = string as String? {
-                            let bodyString = attributedStringFromString(hasString, withStyle: .none)
+                    if let sstring: String = scanner.scanUpToCharacters(from: instructionSet) {
+                    // if scanner.scanUpToCharacters(from: instructionSet, into: &string) {
+                        //if let hasString = string as String? {
+                            let bodyString = attributedStringFromString(sstring, withStyle: .none)
                             attributedString.append(bodyString)
 
                             let location = scanner.scanLocation
@@ -304,7 +305,7 @@ enum TextStyle: Int {
                                 let charAtts = attributedStringFromString(matchedCharacters, withStyle: .none)
                                 attributedString.append(charAtts)
                             }
-                        }
+                        //}
                     } else {
                         attributedString.append(self.attributedStringFromScanner(scanner, atStartOfLine: true))
                     }
@@ -376,6 +377,8 @@ enum TextStyle: Int {
                 matchedCharacters += chars
             }
         }
+
+        
 
         var foundCharacters: String = ""
 

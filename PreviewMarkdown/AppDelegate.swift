@@ -7,6 +7,7 @@
 
 
 import Cocoa
+import CoreServices
 
 
 @NSApplicationMain
@@ -51,6 +52,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Centre window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
+
+        #if DEBUG
+
+        let refs = LSCopyApplicationURLsForURL(URL.init(fileURLWithPath: "/Users/smitty/Dropbox/PreviewMarkdownDocs/text.md") as CFURL, .editor)
+        if refs != nil {
+            let theRefs = refs!.takeRetainedValue() as NSArray
+            for ref in theRefs {
+                print(ref)
+            }
+        }
+
+
+        #endif
     }
 
 

@@ -3,7 +3,7 @@
 //  Previewer
 //
 //  Created by Tony Smith on 31/10/2019.
-//  Copyright © 2019 Tony Smith. All rights reserved.
+//  Copyright © 2019-20 Tony Smith. All rights reserved.
 
 
 import Cocoa
@@ -13,6 +13,8 @@ import WebKit
 
 class PreviewViewController: NSViewController, QLPreviewingController {
     
+    @IBOutlet var errorReportField: NSTextField!
+
 
     override var nibName: NSNib.Name? {
 
@@ -21,9 +23,56 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
 
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
-        
+
+        // Hide the error message field
+        self.errorReportField.isHidden = true
+
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
+
+
+        var reportError: NSError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                            code: -201,
+                                            userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't access file"])
+
+        let fs: FileManager = FileManager.default
+        if fs.isReadableFile(atPath: url.path) {
+            do {
+                let data: Data = try Data.init(contentsOf: url)
+                if let markdownString: String = String.init(data: data, encoding: .utf8) {
+
+                    // Instantiate an NSTextView to display the NSAttributedString render of the markdown
+                    let renderTextView: NSTextView = NSTextView.init(frame: self.view.frame)
+                    renderTextView.backgroundColor = NSColor.white
+
+                    if let tvs: NSTextStorage = renderTextView.textStorage {
+                        let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+                        self.setBaseValues(sm, 14.0)
+                        tvs.setAttributedString(sm.attributedString(markdownString))
+                    }
+
+                    self.view.addSubview(renderTextView)
+                    self.setViewConstraints(renderTextView)
+                    self.view.display()
+
+                    handler(nil)
+                    return
+                } else {
+                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                          code: -202,
+                                          userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't stringify file"])
+                }
+            } catch {
+                reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                      code: -201,
+                                      userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't load file"])
+            }
+        }
+
+        handler(reportError)
+        showError(reportError.userInfo[NSLocalizedDescriptionKey] as! String)
+
+        /*
         let fc: NSFileCoordinator = NSFileCoordinator()
         let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: url)
         fc.coordinate(with: [intent], queue: .main) { (err) in
@@ -45,25 +94,56 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     config.preferences = prefs
 
                     let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
+
+                    NSLog(htmlString)
+
                     webView.loadHTMLString(htmlString, baseURL: nil)
 
                     // Display the WKWebView and add it to the superview, finally adding
                     // layout constraints to keep it anchored to the edges of the superview
-                    self.view.display()
                     self.view.addSubview(webView)
                     self.setViewConstraints(webView)
-
+                    self.view.display()
+                    
                     // Hand control back to QuickLook
                     handler(nil)
                 } catch {
                     // 'try' to load file failed
-                    NSLog("Could not load file \(intent.url.lastPathComponent) to preview it")
+                    self.showError("Could not load file \(intent.url.lastPathComponent) to preview it")
+                    let reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                              code: -201,
+                                              userInfo: nil)
+                    handler(reportError)
                 }
             } else {
                 // coordinate operation failed
-                NSLog("Could not find file \(intent.url.lastPathComponent) to preview it")
+                self.showError("Could not find file \(intent.url.lastPathComponent) to preview it")
+                handler(err)
             }
         }
+
+         */
+    }
+
+    func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
+
+        sm.setFontSizeForAllStyles(with: baseFontSize)
+
+        sm.h4.fontSize = baseFontSize * 1.2
+        sm.h3.fontSize = baseFontSize * 1.4
+        sm.h2.fontSize = baseFontSize * 1.6
+        sm.h1.fontSize = baseFontSize * 2.0
+        sm.h1.color = NSColor.darkGray
+        sm.code.fontName = "AndaleMono"
+        sm.code.color = NSColor.gray
+        sm.link.color = NSColor.blue
+    }
+
+    func showError(_ errString: String) {
+
+        NSLog("BUFFOON " + errString)
+        self.errorReportField.isHidden = false
+        self.errorReportField.stringValue = errString
     }
 
 
