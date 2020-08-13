@@ -128,39 +128,41 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="140" y="154"/>
+            <point key="canvasLocation" x="-201" y="288"/>
         </menu>
         <window title="PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="321"/>
+            <rect key="contentRect" x="335" y="390" width="480" height="340"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <value key="minSize" type="size" width="480" height="340"/>
+            <value key="maxSize" type="size" width="480" height="340"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="321"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="340"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MgT-WK-sk0">
-                        <rect key="frame" x="216" y="253" width="48" height="48"/>
+                        <rect key="frame" x="208" y="268" width="64" height="64"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="48" id="2Js-wn-Zxv"/>
-                            <constraint firstAttribute="height" constant="48" id="dk2-Wb-FUG"/>
+                            <constraint firstAttribute="width" constant="64" id="2Js-wn-Zxv"/>
+                            <constraint firstAttribute="height" constant="64" id="dk2-Wb-FUG"/>
                         </constraints>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="appicon" id="O4R-6I-qgH"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="appicon" id="O4R-6I-qgH"/>
                     </imageView>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
-                        <rect key="frame" x="18" y="137" width="444" height="80"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
+                        <rect key="frame" x="18" y="156" width="444" height="80"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="6bM-Ok-96N"/>
                         </constraints>
-                        <textFieldCell key="cell" selectable="YES" alignment="center" id="ztO-7G-jpz">
+                        <textFieldCell key="cell" allowsUndo="NO" alignment="center" id="ztO-7G-jpz">
                             <font key="font" metaFont="system"/>
-                            <string key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS 10.15 Catalina and above. Run this app just once to register the Previewer and Thumbnailer application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</string>
+                            <mutableString key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS Catalina and later. Run this app once to register the Previewer and Thumbnailer  application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</mutableString>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RuP-3k-wPO">
-                        <rect key="frame" x="18" y="225" width="444" height="16"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuP-3k-wPO">
+                        <rect key="frame" x="18" y="244" width="444" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="QdT-Ai-Oqx"/>
                         </constraints>
@@ -187,39 +189,55 @@ DQ
                             <action selector="doClose:" target="Voe-Tx-rLC" id="kue-39-OjM"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="18" y="61" width="444" height="55"/>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
+                        <rect key="frame" x="18" y="61" width="444" height="34"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="55" id="ves-99-nim"/>
+                            <constraint firstAttribute="height" constant="34" id="oGv-kS-n6Z"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="mini" selectable="YES" alignment="center" id="aj6-5q-zC1">
+                        <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
                             <string key="title">PreviewMarkdown © 2020, Tony Smith.  Contains SwiftyMarkdown by Simon Fairbairn See ‘Help &gt; Acknowledgements’ for more information</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
+                        <rect key="frame" x="158" y="121" width="164" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="150" id="L6p-CX-ebx"/>
+                            <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Go to System Prefs" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFW-b3-xdd">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="openSysPrefsWithSender:" target="Voe-Tx-rLC" id="7QC-ZS-7VH"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="7Xy-CE-dM0"/>
+                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="8" symbolic="YES" id="1vL-cU-3Dn"/>
+                    <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="8" id="7Xy-CE-dM0"/>
                     <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="GAp-6B-Vm1"/>
                     <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" id="GVZ-Lc-Fvq"/>
                     <constraint firstAttribute="trailing" secondItem="RuP-3k-wPO" secondAttribute="trailing" constant="20" id="NOS-rf-Isn"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="We8-d6-Vd3"/>
+                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="X72-aP-1ry"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ZGi-IC-AJN"/>
-                    <constraint firstItem="F0g-rH-b3T" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="21" id="hpo-2D-a8W"/>
+                    <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="20" symbolic="YES" id="doV-Jg-cyI"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="ixc-oa-Nle"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
-                    <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" id="mpD-fn-qIH"/>
-                    <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="uX1-0B-iHl"/>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="tkZ-dx-IAZ"/>
+                    <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" symbolic="YES" id="xRq-Mg-hv9"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="top" secondItem="RuP-3k-wPO" secondAttribute="bottom" constant="8" id="xSK-e7-CvK"/>
-                    <constraint firstItem="RuP-3k-wPO" firstAttribute="top" secondItem="MgT-WK-sk0" secondAttribute="bottom" constant="12" id="ylJ-KU-6RY"/>
+                    <constraint firstItem="RuP-3k-wPO" firstAttribute="top" secondItem="MgT-WK-sk0" secondAttribute="bottom" constant="8" id="ylJ-KU-6RY"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="139" y="-139.5"/>
+            <point key="canvasLocation" x="139" y="-130"/>
         </window>
     </objects>
     <resources>
-        <image name="appicon" width="48" height="48"/>
+        <image name="appicon" width="64" height="64"/>
     </resources>
 </document>
