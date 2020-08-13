@@ -93,25 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // FROM 1.1.0
         // Open the System Preferences app at the Extensions pane
-        //let script = "tell application \"System Preferences\"\nactivate\nreveal pane \"Extensions\"\nend tell"
-        let task: Process = Process()
-        task.executableURL = URL.init(fileURLWithPath: "/usr/bin/osascript")
-        task.arguments = ["-e", "tell application \"System Preferences\"", "-e", "activate",  "-e", "reveal pane id \"com.apple.preferences.extensions\"", "-e", "set test to id of pane \"com.apple.preferences.extensions\"", "-e", "end tell"]
-
-        // Pipe out the output to avoid putting it in the log
-        //let outputPipe = Pipe()
-        //task.standardOutput = outputPipe
-        //task.standardError = outputPipe
-
-        do {
-            try task.run()
-            task.waitUntilExit()
-        } catch {
-            // The script exited with an error -- fall through
-            print("** \(error)")
-        }
-
-        //print(task.terminationStatus)
+        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
     }
 
 }
