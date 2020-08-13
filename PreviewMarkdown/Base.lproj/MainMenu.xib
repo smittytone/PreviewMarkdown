@@ -156,7 +156,7 @@
                         </constraints>
                         <textFieldCell key="cell" allowsUndo="NO" alignment="center" id="ztO-7G-jpz">
                             <font key="font" metaFont="system"/>
-                            <mutableString key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS Catalina and later. Run this app once to register the Previewer and Thumbnailer  application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</mutableString>
+                            <string key="title">PreviewMarkdown provides QuickLook preview support and thumbnailing for Markdown files in macOS Catalina and later. Run this app once to register the Previewer and Thumbnailer  application extensions, which you can then control in  System Preferences &gt; Extensions &gt; Quick Look</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -204,7 +204,7 @@ DQ
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
                         <rect key="frame" x="158" y="121" width="164" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="150" id="L6p-CX-ebx"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="L6p-CX-ebx"/>
                             <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
                         </constraints>
                         <buttonCell key="cell" type="push" title="Go to System Prefs" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFW-b3-xdd">
