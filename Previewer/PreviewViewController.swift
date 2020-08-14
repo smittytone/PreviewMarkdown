@@ -8,7 +8,6 @@
 
 import Cocoa
 import Quartz
-import WebKit
 
 
 class PreviewViewController: NSViewController, QLPreviewingController {
@@ -18,9 +17,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
     @IBOutlet var errorReportField: NSTextField!
     @IBOutlet var renderTextView: NSTextView!
 
-
     override var nibName: NSNib.Name? {
-
         return NSNib.Name("PreviewViewController")
     }
 
@@ -39,8 +36,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
         // NOTE From 1.1.0 we use plain old FileManager for this
-        let fs: FileManager = FileManager.default
-        if fs.isReadableFile(atPath: url.path) {
+        if FileManager.default.isReadableFile(atPath: url.path) {
             // Only proceed if the file is accessible from here
             do {
                 // Get the file contents as a string
@@ -86,6 +82,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
     func preparePreviewOfSearchableItem(identifier: String, queryString: String?, completionHandler handler: @escaping (Error?) -> Void) {
 
+        // Is this ever called?
         NSLog("BUFFOON searchable identifier: \(identifier)")
         NSLog("BUFFOON searchable query:      " + (queryString ?? "nil"))
 
@@ -118,46 +115,8 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         // Relay an error message to its various outlets
 
         NSLog("BUFFOON " + errString)
-        self.errorReportField.isHidden = false
         self.errorReportField.stringValue = errString
-    }
-
-
-    func setViewConstraints(_ view: NSView) {
-
-        // Programmatically apply constraints which bind the specified view to
-        // the edges of the view controller's primary view
-
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint(item: view,
-                           attribute: .leading,
-                           relatedBy: .equal,
-                           toItem: self.view,
-                           attribute: .leading,
-                           multiplier: 1.0,
-                           constant: 0.0).isActive = true
-        NSLayoutConstraint(item: view,
-                           attribute: .trailing,
-                           relatedBy: .equal,
-                           toItem: self.view,
-                           attribute: .trailing,
-                           multiplier: 1.0,
-                           constant: 0.0).isActive = true
-        NSLayoutConstraint(item: view,
-                           attribute: .top,
-                           relatedBy: .equal,
-                           toItem: self.view,
-                           attribute: .top,
-                           multiplier: 1.0,
-                           constant: 0.0).isActive = true
-        NSLayoutConstraint(item: view,
-                           attribute: .bottom,
-                           relatedBy: .equal,
-                           toItem: self.view,
-                           attribute: .bottom,
-                           multiplier: 1.0,
-                           constant: 0.0).isActive = true
+        self.errorReportField.isHidden = false
     }
     
 }

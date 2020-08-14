@@ -43,8 +43,6 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3BBAEB90236AE1D4009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
-		3BBAEB91236AE1DB009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,7 +123,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEB90236AE1D4009BAA05 /* WebKit.framework in Frameworks */,
 				3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,7 +133,6 @@
 			files = (
 				3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */,
 				3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */,
-				3BBAEB91236AE1DB009BAA05 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,7 +559,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -588,7 +584,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -610,7 +606,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -636,7 +632,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -662,7 +658,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -689,7 +685,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
