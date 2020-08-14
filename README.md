@@ -4,19 +4,18 @@ A simple app that provides [Markdown](https://daringfireball.net/projects/markdo
 
 ## Installation and Usage ##
 
-Just run the host app once to register the extensions &mdash; you can quit the app as soon as it has launched. We recommend logging out of your Mac and back in again at this point. Now you can preview markdown documents using QuickLook (select an icon and hit Space), and Finder’s preview pane.
+Just run the host app once to register the extensions &mdash; you can quit the app as soon as it has launched. We recommend logging out of your Mac and back in again at this point. Now you can preview markdown documents using QuickLook (select an icon and hit Space), and Finder’s preview pane and **Info** panels.
 
-You can disable and re-enable the Previewer and Thumbnailer extensions in **System Preferences > Extensions > Quick Look**.
+You can disable and re-enable the Previewer and Thumbnailer extensions at any time in **System Preferences > Extensions > Quick Look**.
 
 For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
 
 ## Release Notes ##
 
 - 1.1.0 *Unreleased*
-	- Add Big Sur support.
-	- Better dark mode/light mode support.
-	- Migrate engine to [SwiftyMarkdown 1.2.2](https://github.com/SimonFairbairn/SwiftyMarkdown):
-		- Better style support.
+	- Add macOS Big Sur support.
+	- Better macOS dark/light mode support.
+	- Migrate engine to [SwiftyMarkdown 1.2.2](https://github.com/SimonFairbairn/SwiftyMarkdown)
 - 1.0.5 *9 April 2020*
 	- App Store release version.
 - 1.0.4 *Unreleased*
