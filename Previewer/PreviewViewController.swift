@@ -14,7 +14,7 @@ import WebKit
 class PreviewViewController: NSViewController, QLPreviewingController {
     
     @IBOutlet var errorReportField: NSTextField!
-
+    @IBOutlet var webView: WKWebView!
 
     override var nibName: NSNib.Name? {
 
@@ -35,44 +35,6 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                                             code: -201,
                                             userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't access file"])
 
-        let fs: FileManager = FileManager.default
-        if fs.isReadableFile(atPath: url.path) {
-            do {
-                let data: Data = try Data.init(contentsOf: url)
-                if let markdownString: String = String.init(data: data, encoding: .utf8) {
-
-                    // Instantiate an NSTextView to display the NSAttributedString render of the markdown
-                    let renderTextView: NSTextView = NSTextView.init(frame: self.view.frame)
-                    renderTextView.backgroundColor = NSColor.white
-
-                    if let tvs: NSTextStorage = renderTextView.textStorage {
-                        let sm: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-                        self.setBaseValues(sm, 14.0)
-                        tvs.setAttributedString(sm.attributedString(markdownString))
-                    }
-
-                    self.view.addSubview(renderTextView)
-                    self.setViewConstraints(renderTextView)
-                    self.view.display()
-
-                    handler(nil)
-                    return
-                } else {
-                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
-                                          code: -202,
-                                          userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't stringify file"])
-                }
-            } catch {
-                reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
-                                      code: -201,
-                                      userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't load file"])
-            }
-        }
-
-        handler(reportError)
-        showError(reportError.userInfo[NSLocalizedDescriptionKey] as! String)
-
-        /*
         let fc: NSFileCoordinator = NSFileCoordinator()
         let intent: NSFileAccessIntent = NSFileAccessIntent.readingIntent(with: url)
         fc.coordinate(with: [intent], queue: .main) { (err) in
@@ -86,27 +48,28 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     let htmlString: String = self.renderMarkdown(markdownString, intent.url)
 
                     // Instantiate a WKWebView to display the HTML in our view
-                    let prefs: WKPreferences = WKPreferences()
-                    prefs.javaScriptEnabled = false
+                    //let prefs: WKPreferences = WKPreferences()
+                    //prefs.javaScriptEnabled = false
 
-                    let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
-                    config.suppressesIncrementalRendering = true
-                    config.preferences = prefs
+                    //let config: WKWebViewConfiguration = WKWebViewConfiguration.init()
+                    //config.suppressesIncrementalRendering = true
+                    //config.preferences = prefs
 
-                    let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
+                    //let webView: WKWebView = WKWebView.init(frame: self.view.bounds, configuration: config)
 
                     NSLog(htmlString)
 
-                    webView.loadHTMLString(htmlString, baseURL: nil)
+                    self.webView.loadHTMLString(htmlString, baseURL: nil)
 
                     // Display the WKWebView and add it to the superview, finally adding
                     // layout constraints to keep it anchored to the edges of the superview
-                    self.view.addSubview(webView)
-                    self.setViewConstraints(webView)
+                    self.view.addSubview(self.webView)
+                    self.setViewConstraints(self.webView)
                     self.view.display()
                     
                     // Hand control back to QuickLook
                     handler(nil)
+                    return
                 } catch {
                     // 'try' to load file failed
                     self.showError("Could not load file \(intent.url.lastPathComponent) to preview it")
@@ -119,10 +82,12 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                 // coordinate operation failed
                 self.showError("Could not find file \(intent.url.lastPathComponent) to preview it")
                 handler(err)
+                return
             }
+
+            handler(reportError)
         }
 
-         */
     }
 
     func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {

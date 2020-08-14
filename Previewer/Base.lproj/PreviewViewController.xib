@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17147"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="17147"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -10,6 +11,7 @@
             <connections>
                 <outlet property="errorReportField" destination="CPg-cs-coC" id="2IY-Jg-Tvr"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
+                <outlet property="webView" destination="r23-XJ-6UQ" id="Szd-D4-05n"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -18,6 +20,13 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r23-XJ-6UQ">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                    <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO">
+                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                        <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
+                    </wkWebViewConfiguration>
+                </wkWebView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-cs-coC">
                     <rect key="frame" x="18" y="128" width="444" height="16"/>
                     <constraints>
@@ -31,9 +40,13 @@
                 </textField>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="r23-XJ-6UQ" secondAttribute="bottom" id="3q9-C9-tR0"/>
                 <constraint firstItem="CPg-cs-coC" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="AW8-Ua-1tj"/>
                 <constraint firstItem="CPg-cs-coC" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="JfM-2G-Qtq"/>
+                <constraint firstItem="r23-XJ-6UQ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="MeW-VA-pcq"/>
                 <constraint firstAttribute="trailing" secondItem="CPg-cs-coC" secondAttribute="trailing" constant="20" symbolic="YES" id="NpT-0l-cv5"/>
+                <constraint firstAttribute="trailing" secondItem="r23-XJ-6UQ" secondAttribute="trailing" id="Rev-I3-TsG"/>
+                <constraint firstItem="r23-XJ-6UQ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="TpA-fQ-0q2"/>
             </constraints>
             <point key="canvasLocation" x="65" y="134"/>
         </customView>
