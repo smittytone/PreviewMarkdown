@@ -8,6 +8,7 @@
 
 import Cocoa
 import QuickLookThumbnailing
+import SwiftyMarkdown
 
 
 class ThumbnailProvider: QLThumbnailProvider {

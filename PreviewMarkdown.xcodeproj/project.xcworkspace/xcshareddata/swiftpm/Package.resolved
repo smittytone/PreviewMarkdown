@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftyMarkdown",
+        "repositoryURL": "https://github.com/SimonFairbairn/SwiftyMarkdown.git",
+        "state": {
+          "branch": null,
+          "revision": "6c64c1647581bd469f8e720f4474e53f1111c3bc",
+          "version": "1.2.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

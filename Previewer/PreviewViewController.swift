@@ -8,6 +8,7 @@
 
 import Cocoa
 import Quartz
+import SwiftyMarkdown
 
 
 class PreviewViewController: NSViewController, QLPreviewingController {
