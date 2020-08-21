@@ -71,17 +71,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = "https://smittytone.github.io/previewmarkdown/index.html"
+        var path: String = "https://www.smittytone.net/previewmarkdown/index.html"
 
         // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
-            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
+            path += "#acknowledgements"
         } else if item == self.creditMenuQLMarkdown {
-            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
+            path += "#acknowledgements"
         } else if item == self.creditMenuSwiftyMarkdown {
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
         } else if item == self.creditMenuAcknowlegdments {
-            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
+            path += "#acknowledgements"
         }
         
         // Open the selected website
