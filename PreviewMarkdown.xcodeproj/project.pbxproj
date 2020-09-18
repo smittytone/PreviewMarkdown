@@ -11,6 +11,11 @@
 		3B0CC89B24EADF2E006AC907 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
+		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
+		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
+		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
+		3B7D30A02515077300A37F96 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3B7D30AA251507CF00A37F96 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */; };
 		3B8865D724E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
@@ -28,6 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3B7D308B251504A900A37F96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BBAEA0D236ADEB0009BAA05 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BBAEA14236ADEB0009BAA05;
+			remoteInfo = PreviewMarkdown;
+		};
 		3BBAEA36236ADECB009BAA05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3BBAEA0D236ADEB0009BAA05 /* Project object */;
@@ -62,6 +74,9 @@
 /* Begin PBXFileReference section */
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
+		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +99,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3B7D3083251504A900A37F96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B7D30AA251507CF00A37F96 /* SwiftyMarkdown in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA12236ADEB0009BAA05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -113,12 +136,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B7D3087251504A900A37F96 /* PreviewMarkdownTests */ = {
+			isa = PBXGroup;
+			children = (
+				3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */,
+				3B7D308A251504A900A37F96 /* Info.plist */,
+			);
+			path = PreviewMarkdownTests;
+			sourceTree = "<group>";
+		};
 		3BBAEA0C236ADEB0009BAA05 = {
 			isa = PBXGroup;
 			children = (
 				3BBAEA17236ADEB0009BAA05 /* PreviewMarkdown */,
 				3BBAEA2E236ADECB009BAA05 /* Previewer */,
 				3BBAEA45236ADF11009BAA05 /* Thumbnailer */,
+				3B7D3087251504A900A37F96 /* PreviewMarkdownTests */,
 				3BBAEA2B236ADECB009BAA05 /* Frameworks */,
 				3BBAEA16236ADEB0009BAA05 /* Products */,
 			);
@@ -130,6 +163,7 @@
 				3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */,
 				3BBAEA2A236ADECB009BAA05 /* Previewer.appex */,
 				3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */,
+				3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -183,6 +217,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3B7D3085251504A900A37F96 /* PreviewMarkdownTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B7D308F251504A900A37F96 /* Build configuration list for PBXNativeTarget "PreviewMarkdownTests" */;
+			buildPhases = (
+				3B7D3082251504A900A37F96 /* Sources */,
+				3B7D3083251504A900A37F96 /* Frameworks */,
+				3B7D3084251504A900A37F96 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B7D308C251504A900A37F96 /* PBXTargetDependency */,
+			);
+			name = PreviewMarkdownTests;
+			packageProductDependencies = (
+				3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */,
+			);
+			productName = PreviewMarkdownTests;
+			productReference = 3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BBAEA23236ADEB3009BAA05 /* Build configuration list for PBXNativeTarget "PreviewMarkdown" */;
@@ -249,10 +304,14 @@
 		3BBAEA0D236ADEB0009BAA05 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1110;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Tony Smith";
 				TargetAttributes = {
+					3B7D3085251504A900A37F96 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 3BBAEA14236ADEB0009BAA05;
+					};
 					3BBAEA14236ADEB0009BAA05 = {
 						CreatedOnToolsVersion = 11.1;
 					};
@@ -283,11 +342,19 @@
 				3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */,
 				3BBAEA29236ADECB009BAA05 /* Previewer */,
 				3BBAEA40236ADF11009BAA05 /* Thumbnailer */,
+				3B7D3085251504A900A37F96 /* PreviewMarkdownTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3B7D3084251504A900A37F96 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA13236ADEB0009BAA05 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -317,6 +384,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3B7D3082251504A900A37F96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
+				3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */,
+				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,
+				3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA11236ADEB0009BAA05 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -347,6 +425,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3B7D308C251504A900A37F96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */;
+			targetProxy = 3B7D308B251504A900A37F96 /* PBXContainerItemProxy */;
+		};
 		3BBAEA37236ADECB009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3BBAEA29236ADECB009BAA05 /* Previewer */;
@@ -379,6 +462,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3B7D308D251504A900A37F96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				INFOPLIST_FILE = PreviewMarkdownTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdownTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PreviewMarkdown.app/Contents/MacOS/PreviewMarkdown";
+			};
+			name = Debug;
+		};
+		3B7D308E251504A900A37F96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				INFOPLIST_FILE = PreviewMarkdownTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdownTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PreviewMarkdown.app/Contents/MacOS/PreviewMarkdown";
+			};
+			name = Release;
+		};
 		3BBAEA21236ADEB3009BAA05 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -503,7 +626,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -529,7 +652,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -552,7 +675,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -579,7 +702,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -606,7 +729,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -633,7 +756,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -657,6 +780,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3B7D308F251504A900A37F96 /* Build configuration list for PBXNativeTarget "PreviewMarkdownTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B7D308D251504A900A37F96 /* Debug */,
+				3B7D308E251504A900A37F96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3BBAEA10236ADEB0009BAA05 /* Build configuration list for PBXProject "PreviewMarkdown" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -713,6 +845,11 @@
 			productName = SwiftyMarkdown;
 		};
 		3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
+		3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
 			productName = SwiftyMarkdown;
