@@ -94,8 +94,11 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         handler(nil)
     }
 
+    
     func processSymbols(_ base: String) -> String {
 
+        // FROM 1.1.0
+        // FInd and and replace any HTML symbol markup
         let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&copy;", "&reg;", "&deg;", "&plusmn;", "&sup2;", "&sup3;", "&micro;"]
         let reps = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "©", "®", "º", "±", "²", "³", "µ"]
         let pattern = #"&[a-zA-Z]+[1-9]*;"#

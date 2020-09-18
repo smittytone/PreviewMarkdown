@@ -27,10 +27,18 @@ class PreviewMarkdownTests: XCTestCase {
     func testProcessSymbols() throws {
 
         var markdownString = "**&trade; &plusmn; &nbsp;"
-        XCTAssert(pvc.processSymbols(markdownString) == "**™ ±  ")
+        var expectedString = "**™ ±  "
+        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
 
         markdownString = "&reg; &copy;"
-        XCTAssert(pvc.processSymbols(markdownString) == "® ©")
+        expectedString = "® ©"
+        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
+
+        markdownString = "&sup2; &gt; &trad."
+        expectedString = "² > &trad."
+        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
     }
+
+
 
 }
