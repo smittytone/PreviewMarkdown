@@ -44,13 +44,16 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                 let data: Data = try Data.init(contentsOf: url)
                 if let markdownString: String = String.init(data: data, encoding: .utf8) {
 
+                    // Render HTML symbols
+                    let processedString = processSymbols(markdownString)
+
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = NSColor.textBackgroundColor
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
                         self.setBaseValues(swiftyMarkdown, CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE))
-                        renderTextStorage.setAttributedString(swiftyMarkdown.attributedString(from: markdownString))
+                        renderTextStorage.setAttributedString(swiftyMarkdown.attributedString(from: processedString))
                     }
 
                     // Add the subview to the instance's own view and draw
@@ -89,6 +92,29 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
         // Hand control back to QuickLook
         handler(nil)
+    }
+
+    func processSymbols(_ base: String) -> String {
+
+        let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&copy;", "&reg;", "&deg;", "&plusmn;", "&sup2;", "&sup3;", "&micro;"]
+        let reps = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "©", "®", "º", "±", "²", "³", "µ"]
+        let pattern = #"&[a-zA-Z]+[1-9]*;"#
+        var result = base
+        var range = result.range(of: pattern, options: .regularExpression)
+        while range != nil {
+            var repText = ""
+            let find = String(result[range!])
+            if finds.contains(find) {
+                repText = reps[finds.firstIndex(of: find)!]
+            } else {
+                repText = "SOMETHING"
+            }
+
+            result = result.replacingCharacters(in: range!, with: repText)
+            range = result.range(of: pattern, options: .regularExpression)
+        }
+
+        return result;
     }
 
 
