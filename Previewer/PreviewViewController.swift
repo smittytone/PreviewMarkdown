@@ -31,7 +31,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         // will be executed in when it's called by macOS' QuickLook code
 
 
-        var reportError: NSError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+        let reportError: NSError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
                                             code: -201,
                                             userInfo: [NSLocalizedDescriptionKey: "BUFFOON can't access file"])
 
@@ -59,13 +59,13 @@ class PreviewViewController: NSViewController, QLPreviewingController {
 
                     NSLog(htmlString)
 
-                    self.webView.loadHTMLString(htmlString, baseURL: nil)
+                    self.webView.loadHTMLString(htmlString, baseURL: intent.url)
 
                     // Display the WKWebView and add it to the superview, finally adding
                     // layout constraints to keep it anchored to the edges of the superview
-                    self.view.addSubview(self.webView)
-                    self.setViewConstraints(self.webView)
-                    self.view.display()
+                    //self.view.addSubview(self.webView)
+                    //self.setViewConstraints(self.webView)
+                    //self.view.display()
                     
                     // Hand control back to QuickLook
                     handler(nil)
