@@ -1,0 +1,561 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		"SwiftyMarkdown::SwiftyMarkdownPackageTests::ProductTarget" /* SwiftyMarkdownPackageTests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = OBJ_54 /* Build configuration list for PBXAggregateTarget "SwiftyMarkdownPackageTests" */;
+			buildPhases = (
+			);
+			dependencies = (
+				OBJ_57 /* PBXTargetDependency */,
+			);
+			name = SwiftyMarkdownPackageTests;
+			productName = SwiftyMarkdownPackageTests;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		F4ACB6CB23E8A5C500EA665D /* SwiftyScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ACB6CA23E8A5C500EA665D /* SwiftyScanner.swift */; };
+		F4ACB6CE23E8A88400EA665D /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ACB6CD23E8A88400EA665D /* Token.swift */; };
+		F4ACB6D023E8A8A500EA665D /* CharacterRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ACB6CF23E8A8A500EA665D /* CharacterRule.swift */; };
+		F4ACB6D223E8B08400EA665D /* PerfomanceLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ACB6D123E8B08400EA665D /* PerfomanceLog.swift */; };
+		OBJ_40 /* String+SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* String+SwiftyMarkdown.swift */; };
+		OBJ_41 /* SwiftyLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* SwiftyLineProcessor.swift */; };
+		OBJ_42 /* SwiftyMarkdown+iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* SwiftyMarkdown+iOS.swift */; };
+		OBJ_43 /* SwiftyMarkdown+macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* SwiftyMarkdown+macOS.swift */; };
+		OBJ_44 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* SwiftyMarkdown.swift */; };
+		OBJ_45 /* SwiftyTokeniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* SwiftyTokeniser.swift */; };
+		OBJ_52 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
+		OBJ_63 /* SwiftyMarkdownAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* SwiftyMarkdownAttributedStringTests.swift */; };
+		OBJ_64 /* SwiftyMarkdownCharacterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* SwiftyMarkdownCharacterTests.swift */; };
+		OBJ_65 /* SwiftyMarkdownLineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* SwiftyMarkdownLineTests.swift */; };
+		OBJ_66 /* SwiftyMarkdownLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* SwiftyMarkdownLinkTests.swift */; };
+		OBJ_67 /* SwiftyMarkdownPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* SwiftyMarkdownPerformanceTests.swift */; };
+		OBJ_68 /* XCTest+SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* XCTest+SwiftyMarkdown.swift */; };
+		OBJ_70 /* SwiftyMarkdown.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftyMarkdown::SwiftyMarkdown::Product" /* SwiftyMarkdown.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F4ACB6CC23E8A5C600EA665D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "SwiftyMarkdown::SwiftyMarkdownTests";
+			remoteInfo = SwiftyMarkdownTests;
+		};
+		F4B37A0723E507C900833479 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "SwiftyMarkdown::SwiftyMarkdown";
+			remoteInfo = SwiftyMarkdown;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F4ACB6CA23E8A5C500EA665D /* SwiftyScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyScanner.swift; sourceTree = "<group>"; };
+		F4ACB6CD23E8A88400EA665D /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		F4ACB6CF23E8A8A500EA665D /* CharacterRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterRule.swift; sourceTree = "<group>"; };
+		F4ACB6D123E8B08400EA665D /* PerfomanceLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerfomanceLog.swift; sourceTree = "<group>"; };
+		OBJ_10 /* SwiftyLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyLineProcessor.swift; sourceTree = "<group>"; };
+		OBJ_11 /* SwiftyMarkdown+iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyMarkdown+iOS.swift"; sourceTree = "<group>"; };
+		OBJ_12 /* SwiftyMarkdown+macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftyMarkdown+macOS.swift"; sourceTree = "<group>"; };
+		OBJ_13 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdown.swift; sourceTree = "<group>"; };
+		OBJ_14 /* SwiftyTokeniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyTokeniser.swift; sourceTree = "<group>"; };
+		OBJ_17 /* SwiftyMarkdownAttributedStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdownAttributedStringTests.swift; sourceTree = "<group>"; };
+		OBJ_18 /* SwiftyMarkdownCharacterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdownCharacterTests.swift; sourceTree = "<group>"; };
+		OBJ_19 /* SwiftyMarkdownLineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdownLineTests.swift; sourceTree = "<group>"; };
+		OBJ_20 /* SwiftyMarkdownLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdownLinkTests.swift; sourceTree = "<group>"; };
+		OBJ_21 /* SwiftyMarkdownPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdownPerformanceTests.swift; sourceTree = "<group>"; };
+		OBJ_22 /* XCTest+SwiftyMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+SwiftyMarkdown.swift"; sourceTree = "<group>"; };
+		OBJ_26 /* Playground */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Playground; sourceTree = SOURCE_ROOT; };
+		OBJ_27 /* Example */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Example; sourceTree = SOURCE_ROOT; };
+		OBJ_28 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = SOURCE_ROOT; };
+		OBJ_29 /* fastlane */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fastlane; sourceTree = SOURCE_ROOT; };
+		OBJ_30 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		OBJ_31 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		OBJ_32 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
+		OBJ_33 /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile.lock; sourceTree = "<group>"; };
+		OBJ_34 /* SwiftyMarkdown.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = SwiftyMarkdown.podspec; sourceTree = "<group>"; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* String+SwiftyMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+SwiftyMarkdown.swift"; sourceTree = "<group>"; };
+		"SwiftyMarkdown::SwiftyMarkdown::Product" /* SwiftyMarkdown.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyMarkdown.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"SwiftyMarkdown::SwiftyMarkdownTests::Product" /* SwiftyMarkdownTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwiftyMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		OBJ_46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_70 /* SwiftyMarkdown.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		OBJ_15 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_16 /* SwiftyMarkdownTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_16 /* SwiftyMarkdownTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_17 /* SwiftyMarkdownAttributedStringTests.swift */,
+				OBJ_18 /* SwiftyMarkdownCharacterTests.swift */,
+				OBJ_19 /* SwiftyMarkdownLineTests.swift */,
+				OBJ_20 /* SwiftyMarkdownLinkTests.swift */,
+				OBJ_21 /* SwiftyMarkdownPerformanceTests.swift */,
+				OBJ_22 /* XCTest+SwiftyMarkdown.swift */,
+			);
+			name = SwiftyMarkdownTests;
+			path = Tests/SwiftyMarkdownTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_23 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"SwiftyMarkdown::SwiftyMarkdown::Product" /* SwiftyMarkdown.framework */,
+				"SwiftyMarkdown::SwiftyMarkdownTests::Product" /* SwiftyMarkdownTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_15 /* Tests */,
+				OBJ_23 /* Products */,
+				OBJ_26 /* Playground */,
+				OBJ_27 /* Example */,
+				OBJ_28 /* Resources */,
+				OBJ_29 /* fastlane */,
+				OBJ_30 /* LICENSE */,
+				OBJ_31 /* README.md */,
+				OBJ_32 /* Gemfile */,
+				OBJ_33 /* Gemfile.lock */,
+				OBJ_34 /* SwiftyMarkdown.podspec */,
+			);
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_8 /* SwiftyMarkdown */,
+			);
+			name = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_8 /* SwiftyMarkdown */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* String+SwiftyMarkdown.swift */,
+				OBJ_10 /* SwiftyLineProcessor.swift */,
+				OBJ_11 /* SwiftyMarkdown+iOS.swift */,
+				OBJ_12 /* SwiftyMarkdown+macOS.swift */,
+				OBJ_13 /* SwiftyMarkdown.swift */,
+				OBJ_14 /* SwiftyTokeniser.swift */,
+				F4ACB6CD23E8A88400EA665D /* Token.swift */,
+				F4ACB6CA23E8A5C500EA665D /* SwiftyScanner.swift */,
+				F4ACB6CF23E8A8A500EA665D /* CharacterRule.swift */,
+				F4ACB6D123E8B08400EA665D /* PerfomanceLog.swift */,
+			);
+			name = SwiftyMarkdown;
+			path = Sources/SwiftyMarkdown;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		"SwiftyMarkdown::SwiftPMPackageDescription" /* SwiftyMarkdownPackageDescription */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_48 /* Build configuration list for PBXNativeTarget "SwiftyMarkdownPackageDescription" */;
+			buildPhases = (
+				OBJ_51 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftyMarkdownPackageDescription;
+			productName = SwiftyMarkdownPackageDescription;
+			productType = "com.apple.product-type.framework";
+		};
+		"SwiftyMarkdown::SwiftyMarkdown" /* SwiftyMarkdown */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_36 /* Build configuration list for PBXNativeTarget "SwiftyMarkdown" */;
+			buildPhases = (
+				OBJ_39 /* Sources */,
+				OBJ_46 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftyMarkdown;
+			productName = SwiftyMarkdown;
+			productReference = "SwiftyMarkdown::SwiftyMarkdown::Product" /* SwiftyMarkdown.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"SwiftyMarkdown::SwiftyMarkdownTests" /* SwiftyMarkdownTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_59 /* Build configuration list for PBXNativeTarget "SwiftyMarkdownTests" */;
+			buildPhases = (
+				OBJ_62 /* Sources */,
+				OBJ_69 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_71 /* PBXTargetDependency */,
+			);
+			name = SwiftyMarkdownTests;
+			productName = SwiftyMarkdownTests;
+			productReference = "SwiftyMarkdown::SwiftyMarkdownTests::Product" /* SwiftyMarkdownTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftMigration = 9999;
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "SwiftyMarkdown" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_23 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				"SwiftyMarkdown::SwiftyMarkdown" /* SwiftyMarkdown */,
+				"SwiftyMarkdown::SwiftPMPackageDescription" /* SwiftyMarkdownPackageDescription */,
+				"SwiftyMarkdown::SwiftyMarkdownPackageTests::ProductTarget" /* SwiftyMarkdownPackageTests */,
+				"SwiftyMarkdown::SwiftyMarkdownTests" /* SwiftyMarkdownTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		OBJ_39 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_40 /* String+SwiftyMarkdown.swift in Sources */,
+				OBJ_41 /* SwiftyLineProcessor.swift in Sources */,
+				F4ACB6D223E8B08400EA665D /* PerfomanceLog.swift in Sources */,
+				F4ACB6CB23E8A5C500EA665D /* SwiftyScanner.swift in Sources */,
+				OBJ_42 /* SwiftyMarkdown+iOS.swift in Sources */,
+				OBJ_43 /* SwiftyMarkdown+macOS.swift in Sources */,
+				OBJ_44 /* SwiftyMarkdown.swift in Sources */,
+				OBJ_45 /* SwiftyTokeniser.swift in Sources */,
+				F4ACB6D023E8A8A500EA665D /* CharacterRule.swift in Sources */,
+				F4ACB6CE23E8A88400EA665D /* Token.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_52 /* Package.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_62 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_63 /* SwiftyMarkdownAttributedStringTests.swift in Sources */,
+				OBJ_64 /* SwiftyMarkdownCharacterTests.swift in Sources */,
+				OBJ_65 /* SwiftyMarkdownLineTests.swift in Sources */,
+				OBJ_66 /* SwiftyMarkdownLinkTests.swift in Sources */,
+				OBJ_67 /* SwiftyMarkdownPerformanceTests.swift in Sources */,
+				OBJ_68 /* XCTest+SwiftyMarkdown.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		OBJ_57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "SwiftyMarkdown::SwiftyMarkdownTests" /* SwiftyMarkdownTests */;
+			targetProxy = F4ACB6CC23E8A5C600EA665D /* PBXContainerItemProxy */;
+		};
+		OBJ_71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "SwiftyMarkdown::SwiftyMarkdown" /* SwiftyMarkdown */;
+			targetProxy = F4B37A0723E507C900833479 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+					"DEBUG=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyMarkdown.xcodeproj/SwiftyMarkdown_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftyMarkdown;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = SwiftyMarkdown;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
+		OBJ_38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyMarkdown.xcodeproj/SwiftyMarkdown_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = SwiftyMarkdown;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = SwiftyMarkdown;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"SWIFT_PACKAGE=1",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		OBJ_49 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.1";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		OBJ_50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD = /usr/bin/true;
+				OTHER_SWIFT_FLAGS = "-swift-version 5 -I $(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2 -target x86_64-apple-macosx10.10 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -package-description-version 5.1";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		OBJ_55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		OBJ_56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		OBJ_60 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyMarkdown.xcodeproj/SwiftyMarkdownTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = SwiftyMarkdownTests;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
+		OBJ_61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = SwiftyMarkdown.xcodeproj/SwiftyMarkdownTests_Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGET_NAME = SwiftyMarkdownTests;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		OBJ_2 /* Build configuration list for PBXProject "SwiftyMarkdown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_36 /* Build configuration list for PBXNativeTarget "SwiftyMarkdown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_37 /* Debug */,
+				OBJ_38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_48 /* Build configuration list for PBXNativeTarget "SwiftyMarkdownPackageDescription" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_49 /* Debug */,
+				OBJ_50 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_54 /* Build configuration list for PBXAggregateTarget "SwiftyMarkdownPackageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_55 /* Debug */,
+				OBJ_56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		OBJ_59 /* Build configuration list for PBXNativeTarget "SwiftyMarkdownTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_60 /* Debug */,
+				OBJ_61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}
