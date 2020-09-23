@@ -8,7 +8,6 @@
 
 import Cocoa
 import QuickLookThumbnailing
-import SwiftyMarkdown
 
 
 class ThumbnailProvider: QLThumbnailProvider {
@@ -43,16 +42,15 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                         y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
                                                         width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                         height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
-                    let fontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE)
 
                     // Instantiate an NSTextView to display the NSAttributedString render of the markdown
                     let renderTextView: NSTextView = NSTextView.init(frame: drawFrame)
                     renderTextView.backgroundColor = NSColor.white
 
                     if let renderTextStorage: NSTextStorage = renderTextView.textStorage {
-                        let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-                        self.setBaseValues(swiftyMarkdown, fontSize)
-                        renderTextStorage.setAttributedString(swiftyMarkdown.attributedString(from: markdownString))
+                        renderTextStorage.setAttributedString(getAttributedString(markdownString,
+                                                                                  CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
+                                                                                  true))
                     }
 
                     let imageRep: NSBitmapImageRep? = renderTextView.bitmapImageRepForCachingDisplay(in: drawFrame)
@@ -92,25 +90,6 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // We couldn't do any so set an appropriate error to report back
         handler(nil, reportError)
-    }
-
-
-    // MARK:- Utility Functions
-
-    func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
-
-        // Set base style values for the markdown render
-
-        sm.setFontSizeForAllStyles(with: baseFontSize)
-        sm.setFontNameForAllStyles(with: "HelveticaNeue")
-        sm.setFontColorForAllStyles(with: NSColor.black)
-        sm.h4.fontSize = baseFontSize * 1.2
-        sm.h3.fontSize = baseFontSize * 1.4
-        sm.h2.fontSize = baseFontSize * 1.6
-        sm.h1.fontSize = baseFontSize * 2.0
-        sm.code.fontName = "AndaleMono"
-        sm.code.color = NSColor.systemPurple
-        sm.link.color = NSColor.systemBlue
     }
     
 }

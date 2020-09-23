@@ -15,7 +15,7 @@ For more information on the background to this app, please see this [blog post](
 - 1.1.0 *Unreleased*
 	- Add macOS Big Sur support.
 	- Better macOS dark/light mode support.
-	- Migrate engine to [SwiftyMarkdown 1.2.2](https://github.com/SimonFairbairn/SwiftyMarkdown)
+	- Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown)
 - 1.0.5 *9 April 2020*
 	- App Store release version.
 - 1.0.4 *Unreleased*

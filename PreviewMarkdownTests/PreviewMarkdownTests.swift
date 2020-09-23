@@ -28,15 +28,15 @@ class PreviewMarkdownTests: XCTestCase {
 
         var markdownString = "**&trade; &plusmn; &nbsp;"
         var expectedString = "**™ ±  "
-        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
+        XCTAssert(processSymbols(markdownString) == expectedString)
 
         markdownString = "&reg; &copy;"
         expectedString = "® ©"
-        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
+        XCTAssert(processSymbols(markdownString) == expectedString)
 
         markdownString = "&sup2; &gt; &trad."
         expectedString = "² > &trad."
-        XCTAssert(pvc.processSymbols(markdownString) == expectedString)
+        XCTAssert(processSymbols(markdownString) == expectedString)
     }
 
 

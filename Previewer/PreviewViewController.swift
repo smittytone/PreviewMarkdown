@@ -8,7 +8,6 @@
 
 import Cocoa
 import Quartz
-import SwiftyMarkdown
 
 
 class PreviewViewController: NSViewController, QLPreviewingController {
@@ -43,17 +42,14 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                 // Get the file contents as a string
                 let data: Data = try Data.init(contentsOf: url)
                 if let markdownString: String = String.init(data: data, encoding: .utf8) {
-
-                    // Render HTML symbols
-                    let processedString = processSymbols(markdownString)
-
+                    
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = NSColor.textBackgroundColor
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-                        self.setBaseValues(swiftyMarkdown, CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE))
-                        renderTextStorage.setAttributedString(swiftyMarkdown.attributedString(from: processedString))
+                        renderTextStorage.setAttributedString(getAttributedString(markdownString,
+                                                                                  CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
+                                                                                  false))
                     }
 
                     // Add the subview to the instance's own view and draw
@@ -94,51 +90,8 @@ class PreviewViewController: NSViewController, QLPreviewingController {
         handler(nil)
     }
 
-    
-    func processSymbols(_ base: String) -> String {
-
-        // FROM 1.1.0
-        // FInd and and replace any HTML symbol markup
-        let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&copy;", "&reg;", "&deg;", "&plusmn;", "&sup2;", "&sup3;", "&micro;"]
-        let reps = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "©", "®", "º", "±", "²", "³", "µ"]
-        let pattern = #"&[a-zA-Z]+[1-9]*;"#
-        var result = base
-        var range = result.range(of: pattern, options: .regularExpression)
-        while range != nil {
-            var repText = ""
-            let find = String(result[range!])
-            if finds.contains(find) {
-                repText = reps[finds.firstIndex(of: find)!]
-            } else {
-                repText = "SOMETHING"
-            }
-
-            result = result.replacingCharacters(in: range!, with: repText)
-            range = result.range(of: pattern, options: .regularExpression)
-        }
-
-        return result;
-    }
-
 
     // MARK:- Utility Functions
-
-    func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
-
-        // Set base style values for the markdown render
-
-        sm.setFontSizeForAllStyles(with: baseFontSize)
-        sm.setFontNameForAllStyles(with: "HelveticaNeue")
-        sm.setFontColorForAllStyles(with: NSColor.labelColor)
-        sm.h4.fontSize = baseFontSize * 1.2
-        sm.h3.fontSize = baseFontSize * 1.4
-        sm.h2.fontSize = baseFontSize * 1.6
-        sm.h1.fontSize = baseFontSize * 2.0
-        sm.code.fontName = "AndaleMono"
-        sm.code.color = NSColor.systemPurple
-        sm.link.color = NSColor.systemBlue
-    }
-
 
     func showError(_ errString: String) {
 
