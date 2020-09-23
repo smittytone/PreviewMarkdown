@@ -46,25 +46,27 @@ func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnai
     //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
 
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-    setBaseValues(swiftyMarkdown, size)
-    swiftyMarkdown.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
-    let processString = processSymbols(markdownString)
-    return swiftyMarkdown.attributedString(from: processString)
+    setBaseValues(swiftyMarkdown, size, isThumbnail)
+    return swiftyMarkdown.attributedString(from: processSymbols(markdownString))
 }
 
 
-func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat) {
+func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat, _ isThumbnail: Bool) {
 
     // Set common base style values for the markdown render
 
+    sm.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: baseFontSize)
     sm.setFontNameForAllStyles(with: "HelveticaNeue")
+
     sm.h4.fontSize = baseFontSize * 1.2
     sm.h3.fontSize = baseFontSize * 1.4
     sm.h2.fontSize = baseFontSize * 1.6
     sm.h1.fontSize = baseFontSize * 2.0
+
     sm.code.fontName = "AndaleMono"
     sm.code.color = NSColor.systemPurple
+
     sm.link.color = NSColor.systemBlue
 }
 
