@@ -15,13 +15,14 @@ func processSymbols(_ base: String) -> String {
 
     // FROM 1.1.0
     // FInd and and replace any HTML symbol markup
+    // Processed here because SwiftyMarkdown doesn't handle this markup
 
     let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
     let reps = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
 
     var result = base
     let pattern = #"&[a-zA-Z]+[1-9]*;"#
-    var range = result.range(of: pattern, options: .regularExpression)
+    var range = base.range(of: pattern, options: .regularExpression)
 
     while range != nil {
         var repText = ""
@@ -41,22 +42,27 @@ func processSymbols(_ base: String) -> String {
 func processCodeTags(_ base: String) -> String {
 
     // FROM 1.1.0
+    // Look for markdown code blocks top'n'tailed with three ticks ```
+    // Processed here because SwiftyMarkdown doesn't handle this markup
 
-    var result = base
-    var open = false
+    var isBlock = false
     var index = 0
-    var lines = result.components(separatedBy: CharacterSet.newlines)
+    var lines = base.components(separatedBy: CharacterSet.newlines)
 
     // Run through the lines looking for initial ```
     // Remove any found and inset the lines in between (for SwiftyMarkdown to format)
     for line in lines {
-        if line.range(of: "```", options: .regularExpression) != nil {
-            open = !open
+        if line.hasPrefix("```") {
+            // Found a code block marker: remove the line and set
+            // the marker to the opposite what it was, off or on
             lines.remove(at: index)
+            isBlock = !isBlock
             continue
         }
 
-        if open {
+        if isBlock {
+            // Pad each line with an initial four spaces - this is what SwiftyMarkdown
+            // looks for in a code block
             lines[index] = "    " + lines[index]
         }
 
@@ -65,7 +71,7 @@ func processCodeTags(_ base: String) -> String {
 
     // Re-assemble the string from the lines, spacing them with a newline
     // (except for the final line, of course)
-    result = ""
+    var result = ""
     index = 0
     for line in lines {
         result += line + (index < lines.count - 1 ? "\n" : "")
@@ -85,7 +91,8 @@ func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnai
 
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
     setBaseValues(swiftyMarkdown, size, isThumbnail)
-    return swiftyMarkdown.attributedString(from: processSymbols(markdownString))
+    let processed = processCodeTags(markdownString)
+    return swiftyMarkdown.attributedString(from: processSymbols(processed))
 }
 
 
