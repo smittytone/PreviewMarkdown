@@ -3,14 +3,25 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0CC89924EADF0C006AC907 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B0CC89824EADF0C006AC907 /* SwiftyMarkdown */; };
+		3B0CC89B24EADF2E006AC907 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */; };
+		3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
+		3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
+		3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
-		3B40FD8324E3DCE500FF2A01 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B40FD8224E3DCE500FF2A01 /* SwiftyMarkdown.swift */; };
-		3BBAD70D2373812400EC1572 /* SwiftyMarkdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */; };
+		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
+		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
+		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
+		3B7D30A02515077300A37F96 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3B7D30AA251507CF00A37F96 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */; };
+		3B8865D724E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
 		3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */; };
 		3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */; };
@@ -22,24 +33,16 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3BBAEABF236ADF86009BAA05 /* xml.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA54236ADF85009BAA05 /* xml.c */; };
-		3BBAEACD236ADF86009BAA05 /* generate.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5C236ADF85009BAA05 /* generate.c */; };
-		3BBAEAD1236ADF86009BAA05 /* tags.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5E236ADF85009BAA05 /* tags.c */; };
-		3BBAEAD3236ADF86009BAA05 /* resource.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA5F236ADF85009BAA05 /* resource.c */; };
-		3BBAEB47236ADF86009BAA05 /* markdown.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9D236ADF85009BAA05 /* markdown.c */; };
-		3BBAEB4B236ADF86009BAA05 /* mkdio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA9F236ADF85009BAA05 /* mkdio.c */; };
-		3BBAEB51236ADF86009BAA05 /* html5.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA3236ADF85009BAA05 /* html5.c */; };
-		3BBAEB55236ADF86009BAA05 /* setup.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAA5236ADF85009BAA05 /* setup.c */; };
-		3BBAEB65236ADF86009BAA05 /* Csio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAAD236ADF85009BAA05 /* Csio.c */; };
-		3BBAEB79236ADF86009BAA05 /* emmatch.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEAB9236ADF85009BAA05 /* emmatch.c */; };
-		3BBAEB90236AE1D4009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
-		3BBAEB91236AE1DB009BAA05 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
-		3BBAEB9C236AE47A009BAA05 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB96236AE47A009BAA05 /* styles.css */; };
-		3BBAEB9E236AE47A009BAA05 /* blocktags in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEB98236AE47A009BAA05 /* blocktags */; };
-		3BBAEBA0236AE47A009BAA05 /* discount-support.c in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEB99236AE47A009BAA05 /* discount-support.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3B7D308B251504A900A37F96 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3BBAEA0D236ADEB0009BAA05 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BBAEA14236ADEB0009BAA05;
+			remoteInfo = PreviewMarkdown;
+		};
 		3BBAEA36236ADECB009BAA05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3BBAEA0D236ADEB0009BAA05 /* Project object */;
@@ -72,10 +75,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B0E8DCE251B8775001AC5BC /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
-		3B40FD8224E3DCE500FF2A01 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyMarkdown.swift; path = Thumbnailer/SwiftyMarkdown.swift; sourceTree = SOURCE_ROOT; };
-		3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyMarkdown.swift; sourceTree = "<group>"; };
+		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
+		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../OneDrive/Programming/PreviewMarkdown/Assets.xcassets; sourceTree = "<group>"; };
@@ -93,29 +99,18 @@
 		3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
-		3BBAEA54236ADF85009BAA05 /* xml.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xml.c; sourceTree = "<group>"; };
-		3BBAEA5C236ADF85009BAA05 /* generate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = generate.c; sourceTree = "<group>"; };
-		3BBAEA5E236ADF85009BAA05 /* tags.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tags.c; sourceTree = "<group>"; };
-		3BBAEA5F236ADF85009BAA05 /* resource.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = resource.c; sourceTree = "<group>"; };
-		3BBAEA9D236ADF85009BAA05 /* markdown.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = markdown.c; sourceTree = "<group>"; };
-		3BBAEA9F236ADF85009BAA05 /* mkdio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mkdio.c; sourceTree = "<group>"; };
-		3BBAEAA3236ADF85009BAA05 /* html5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = html5.c; sourceTree = "<group>"; };
-		3BBAEAA5236ADF85009BAA05 /* setup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = setup.c; sourceTree = "<group>"; };
-		3BBAEAAD236ADF85009BAA05 /* Csio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Csio.c; sourceTree = "<group>"; };
-		3BBAEAAF236ADF85009BAA05 /* tags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tags.h; sourceTree = "<group>"; };
-		3BBAEAB9236ADF85009BAA05 /* emmatch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = emmatch.c; sourceTree = "<group>"; };
-		3BBAEABA236ADF85009BAA05 /* markdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = markdown.h; sourceTree = "<group>"; };
-		3BBAEB8E236AE096009BAA05 /* Previewer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Previewer-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		3BBAEB96236AE47A009BAA05 /* styles.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
-		3BBAEB97236AE47A009BAA05 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		3BBAEB98236AE47A009BAA05 /* blocktags */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = blocktags; sourceTree = "<group>"; };
-		3BBAEB99236AE47A009BAA05 /* discount-support.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "discount-support.c"; sourceTree = "<group>"; };
-		3BBAEB9A236AE47A009BAA05 /* discount-support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "discount-support.h"; sourceTree = "<group>"; };
-		3BBAEB9B236AE47A009BAA05 /* mkdio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mkdio.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3B7D3083251504A900A37F96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B7D30AA251507CF00A37F96 /* SwiftyMarkdown in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA12236ADEB0009BAA05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,8 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEB90236AE1D4009BAA05 /* WebKit.framework in Frameworks */,
 				3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */,
+				3B0CC89924EADF0C006AC907 /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,21 +133,29 @@
 			files = (
 				3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */,
 				3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */,
-				3BBAEB91236AE1DB009BAA05 /* WebKit.framework in Frameworks */,
+				3B0CC89B24EADF2E006AC907 /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B7D3087251504A900A37F96 /* PreviewMarkdownTests */ = {
+			isa = PBXGroup;
+			children = (
+				3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */,
+				3B7D308A251504A900A37F96 /* Info.plist */,
+			);
+			path = PreviewMarkdownTests;
+			sourceTree = "<group>";
+		};
 		3BBAEA0C236ADEB0009BAA05 = {
 			isa = PBXGroup;
 			children = (
 				3BBAEA17236ADEB0009BAA05 /* PreviewMarkdown */,
 				3BBAEA2E236ADECB009BAA05 /* Previewer */,
 				3BBAEA45236ADF11009BAA05 /* Thumbnailer */,
-				3BBAEB95236AE47A009BAA05 /* discount-support */,
-				3BBAEA53236ADF85009BAA05 /* discount */,
+				3B7D3087251504A900A37F96 /* PreviewMarkdownTests */,
 				3BBAEA2B236ADECB009BAA05 /* Frameworks */,
 				3BBAEA16236ADEB0009BAA05 /* Products */,
 			);
@@ -164,6 +167,7 @@
 				3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */,
 				3BBAEA2A236ADECB009BAA05 /* Previewer.appex */,
 				3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */,
+				3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,6 +175,7 @@
 		3BBAEA17236ADEB0009BAA05 /* PreviewMarkdown */ = {
 			isa = PBXGroup;
 			children = (
+				3B8865D624E3E99700435B1C /* Constants.swift */,
 				3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */,
 				3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
@@ -194,9 +199,8 @@
 			isa = PBXGroup;
 			children = (
 				3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */,
-				3B40FD8224E3DCE500FF2A01 /* SwiftyMarkdown.swift */,
+				3B0E8DCE251B8775001AC5BC /* Common.swift */,
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
-				3BBAEB8E236AE096009BAA05 /* Previewer-Bridging-Header.h */,
 				3BBAEA34236ADECB009BAA05 /* Info.plist */,
 				3B1C9EB0237454F600331D75 /* licences.txt */,
 				3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */,
@@ -208,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */,
-				3BBAD70C2373812400EC1572 /* SwiftyMarkdown.swift */,
 				3BBAEA48236ADF11009BAA05 /* Info.plist */,
 				3B1C9EB22374565800331D75 /* licences.txt */,
 				3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */,
@@ -216,41 +219,30 @@
 			path = Thumbnailer;
 			sourceTree = "<group>";
 		};
-		3BBAEA53236ADF85009BAA05 /* discount */ = {
-			isa = PBXGroup;
-			children = (
-				3BBAEABA236ADF85009BAA05 /* markdown.h */,
-				3BBAEA9D236ADF85009BAA05 /* markdown.c */,
-				3BBAEA9F236ADF85009BAA05 /* mkdio.c */,
-				3BBAEA5F236ADF85009BAA05 /* resource.c */,
-				3BBAEAA5236ADF85009BAA05 /* setup.c */,
-				3BBAEAAF236ADF85009BAA05 /* tags.h */,
-				3BBAEA5E236ADF85009BAA05 /* tags.c */,
-				3BBAEA54236ADF85009BAA05 /* xml.c */,
-				3BBAEAAD236ADF85009BAA05 /* Csio.c */,
-				3BBAEAB9236ADF85009BAA05 /* emmatch.c */,
-				3BBAEA5C236ADF85009BAA05 /* generate.c */,
-				3BBAEAA3236ADF85009BAA05 /* html5.c */,
-			);
-			path = discount;
-			sourceTree = "<group>";
-		};
-		3BBAEB95236AE47A009BAA05 /* discount-support */ = {
-			isa = PBXGroup;
-			children = (
-				3BBAEB96236AE47A009BAA05 /* styles.css */,
-				3BBAEB9B236AE47A009BAA05 /* mkdio.h */,
-				3BBAEB97236AE47A009BAA05 /* config.h */,
-				3BBAEB98236AE47A009BAA05 /* blocktags */,
-				3BBAEB9A236AE47A009BAA05 /* discount-support.h */,
-				3BBAEB99236AE47A009BAA05 /* discount-support.c */,
-			);
-			path = "discount-support";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3B7D3085251504A900A37F96 /* PreviewMarkdownTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B7D308F251504A900A37F96 /* Build configuration list for PBXNativeTarget "PreviewMarkdownTests" */;
+			buildPhases = (
+				3B7D3082251504A900A37F96 /* Sources */,
+				3B7D3083251504A900A37F96 /* Frameworks */,
+				3B7D3084251504A900A37F96 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B7D308C251504A900A37F96 /* PBXTargetDependency */,
+			);
+			name = PreviewMarkdownTests;
+			packageProductDependencies = (
+				3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */,
+			);
+			productName = PreviewMarkdownTests;
+			productReference = 3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BBAEA23236ADEB3009BAA05 /* Build configuration list for PBXNativeTarget "PreviewMarkdown" */;
@@ -284,6 +276,9 @@
 			dependencies = (
 			);
 			name = Previewer;
+			packageProductDependencies = (
+				3B0CC89824EADF0C006AC907 /* SwiftyMarkdown */,
+			);
 			productName = Previewer;
 			productReference = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -301,6 +296,9 @@
 			dependencies = (
 			);
 			name = Thumbnailer;
+			packageProductDependencies = (
+				3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */,
+			);
 			productName = Thumbnailer;
 			productReference = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -311,10 +309,14 @@
 		3BBAEA0D236ADEB0009BAA05 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1110;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Tony Smith";
 				TargetAttributes = {
+					3B7D3085251504A900A37F96 = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 3BBAEA14236ADEB0009BAA05;
+					};
 					3BBAEA14236ADEB0009BAA05 = {
 						CreatedOnToolsVersion = 11.1;
 					};
@@ -327,7 +329,7 @@
 				};
 			};
 			buildConfigurationList = 3BBAEA10236ADEB0009BAA05 /* Build configuration list for PBXProject "PreviewMarkdown" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -335,6 +337,9 @@
 				Base,
 			);
 			mainGroup = 3BBAEA0C236ADEB0009BAA05;
+			packageReferences = (
+				3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
+			);
 			productRefGroup = 3BBAEA16236ADEB0009BAA05 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -342,11 +347,19 @@
 				3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */,
 				3BBAEA29236ADECB009BAA05 /* Previewer */,
 				3BBAEA40236ADF11009BAA05 /* Thumbnailer */,
+				3B7D3085251504A900A37F96 /* PreviewMarkdownTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3B7D3084251504A900A37F96 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA13236ADEB0009BAA05 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,8 +375,6 @@
 			files = (
 				3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */,
 				3B1C9EB1237454F600331D75 /* licences.txt in Resources */,
-				3BBAEB9C236AE47A009BAA05 /* styles.css in Resources */,
-				3BBAEB9E236AE47A009BAA05 /* blocktags in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,11 +389,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3B7D3082251504A900A37F96 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */,
+				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
+				3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */,
+				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,
+				3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3BBAEA11236ADEB0009BAA05 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
+				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,19 +414,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEB79236ADF86009BAA05 /* emmatch.c in Sources */,
-				3BBAEAD3236ADF86009BAA05 /* resource.c in Sources */,
-				3B40FD8324E3DCE500FF2A01 /* SwiftyMarkdown.swift in Sources */,
-				3BBAEBA0236AE47A009BAA05 /* discount-support.c in Sources */,
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
-				3BBAEB51236ADF86009BAA05 /* html5.c in Sources */,
-				3BBAEB65236ADF86009BAA05 /* Csio.c in Sources */,
-				3BBAEAD1236ADF86009BAA05 /* tags.c in Sources */,
-				3BBAEACD236ADF86009BAA05 /* generate.c in Sources */,
-				3BBAEB4B236ADF86009BAA05 /* mkdio.c in Sources */,
-				3BBAEABF236ADF86009BAA05 /* xml.c in Sources */,
-				3BBAEB47236ADF86009BAA05 /* markdown.c in Sources */,
-				3BBAEB55236ADF86009BAA05 /* setup.c in Sources */,
+				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
+				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,14 +424,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAD70D2373812400EC1572 /* SwiftyMarkdown.swift in Sources */,
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
+				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
+				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3B7D308C251504A900A37F96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */;
+			targetProxy = 3B7D308B251504A900A37F96 /* PBXContainerItemProxy */;
+		};
 		3BBAEA37236ADECB009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3BBAEA29236ADECB009BAA05 /* Previewer */;
@@ -450,6 +470,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3B7D308D251504A900A37F96 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				INFOPLIST_FILE = PreviewMarkdownTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdownTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PreviewMarkdown.app/Contents/MacOS/PreviewMarkdown";
+			};
+			name = Debug;
+		};
+		3B7D308E251504A900A37F96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				INFOPLIST_FILE = PreviewMarkdownTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdownTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PreviewMarkdown.app/Contents/MacOS/PreviewMarkdown";
+			};
+			name = Release;
+		};
 		3BBAEA21236ADEB3009BAA05 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -571,10 +631,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -582,6 +642,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -596,10 +657,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -607,6 +668,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -619,9 +681,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -630,11 +692,14 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Previewer/Previewer-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -643,9 +708,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -654,11 +719,14 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Previewer/Previewer-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -667,9 +735,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -682,8 +750,10 @@
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Thumbnailer/Thumbnailer-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -692,9 +762,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -707,8 +777,10 @@
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Thumbnailer/Thumbnailer-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -716,6 +788,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3B7D308F251504A900A37F96 /* Build configuration list for PBXNativeTarget "PreviewMarkdownTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B7D308D251504A900A37F96 /* Debug */,
+				3B7D308E251504A900A37F96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3BBAEA10236ADEB0009BAA05 /* Build configuration list for PBXProject "PreviewMarkdown" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -753,6 +834,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3B0CC89824EADF0C006AC907 /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
+		3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
+		3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3BBAEA0D236ADEB0009BAA05 /* Project object */;
 }

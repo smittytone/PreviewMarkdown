@@ -13,6 +13,7 @@ import CoreServices
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    // MARK:- Class Properies
     // Menu Items Tab
     @IBOutlet var creditMenuPM: NSMenuItem!
     @IBOutlet var creditMenuDiscount: NSMenuItem!
@@ -26,6 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Windows
     @IBOutlet weak var window: NSWindow!
 
+
+    // MARK:- Class Lifecycle Functions
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
 
@@ -52,21 +55,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Centre window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
-
-        #if DEBUG
-
-        let refs = LSCopyApplicationURLsForURL(URL.init(fileURLWithPath: "/Users/smitty/Dropbox/PreviewMarkdownDocs/text.md") as CFURL, .editor)
-        if refs != nil {
-            let theRefs = refs!.takeRetainedValue() as NSArray
-            for ref in theRefs {
-                print(ref)
-            }
-        }
-
-
-        #endif
     }
 
+
+    // MARK:- Action Functions
 
     @IBAction func doClose(_ sender: Any) {
 
@@ -79,20 +71,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = "https://smittytone.github.io/previewmarkdown/index.html"
-        
+        var path: String = "https://www.smittytone.net/previewmarkdown/index.html"
+
+        // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
-            path = "https://github.com/Orc/discount"
+            path += "#acknowledgements"
         } else if item == self.creditMenuQLMarkdown {
-            path = "https://github.com/toland/qlmarkdown"
+            path += "#acknowledgements"
         } else if item == self.creditMenuSwiftyMarkdown {
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
         } else if item == self.creditMenuAcknowlegdments {
-            path = "https://smittytone.github.io/previewmarkdown/index.html#acknowledgements"
+            path += "#acknowledgements"
         }
         
         // Open the selected website
         NSWorkspace.shared.open(URL.init(string:path)!)
     }
+
+
+    @IBAction func openSysPrefs(sender: Any) {
+
+        // FROM 1.1.0
+        // Open the System Preferences app at the Extensions pane
+        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
+    }
+
 }
 

@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Previewer" customModuleProvider="target">
             <connections>
                 <outlet property="errorReportField" destination="CPg-cs-coC" id="2IY-Jg-Tvr"/>
+                <outlet property="renderTextView" destination="uBe-Ep-G4B" id="mft-4j-mp7"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
                 <outlet property="webView" destination="r23-XJ-6UQ" id="Szd-D4-05n"/>
             </connections>
@@ -20,33 +21,52 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r23-XJ-6UQ">
+                <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRc-gN-4bi">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
-                    <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO">
-                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                        <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO" minimumFontSize="10"/>
-                    </wkWebViewConfiguration>
-                </wkWebView>
+                    <clipView key="contentView" drawsBackground="NO" id="EYh-vb-Hnm">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="uBe-Ep-G4B">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <size key="minSize" width="480" height="272"/>
+                                <size key="maxSize" width="486" height="10000000"/>
+                                <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            </textView>
+                        </subviews>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Arj-OO-Qnn">
+                        <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Sff-5o-5fp">
+                        <rect key="frame" x="464" y="0.0" width="16" height="272"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-cs-coC">
-                    <rect key="frame" x="18" y="128" width="444" height="16"/>
+                    <rect key="frame" x="18" y="126" width="444" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="Ek3-WF-n5o"/>
+                        <constraint firstAttribute="height" constant="21" id="oiv-6o-W1w"/>
                     </constraints>
-                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Label" id="DWJ-iT-hZh">
-                        <font key="font" usesAppearanceFont="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Error Message!" id="DWJ-iT-hZh">
+                        <font key="font" textStyle="title3" name=".SFNS-Regular"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="r23-XJ-6UQ" secondAttribute="bottom" id="3q9-C9-tR0"/>
-                <constraint firstItem="CPg-cs-coC" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="AW8-Ua-1tj"/>
-                <constraint firstItem="CPg-cs-coC" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="JfM-2G-Qtq"/>
-                <constraint firstItem="r23-XJ-6UQ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="MeW-VA-pcq"/>
-                <constraint firstAttribute="trailing" secondItem="CPg-cs-coC" secondAttribute="trailing" constant="20" symbolic="YES" id="NpT-0l-cv5"/>
-                <constraint firstAttribute="trailing" secondItem="r23-XJ-6UQ" secondAttribute="trailing" id="Rev-I3-TsG"/>
-                <constraint firstItem="r23-XJ-6UQ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="TpA-fQ-0q2"/>
+                <constraint firstItem="CPg-cs-coC" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="4sG-Ov-Od0"/>
+                <constraint firstItem="CPg-cs-coC" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="LRy-GG-wCb"/>
+                <constraint firstItem="pRc-gN-4bi" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Prr-T5-bPY"/>
+                <constraint firstItem="pRc-gN-4bi" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="VtB-Dq-QKk"/>
+                <constraint firstAttribute="trailing" secondItem="pRc-gN-4bi" secondAttribute="trailing" id="cwq-Ih-O4k"/>
+                <constraint firstAttribute="trailing" secondItem="CPg-cs-coC" secondAttribute="trailing" constant="20" symbolic="YES" id="g5f-rr-lyo"/>
+                <constraint firstAttribute="bottom" secondItem="pRc-gN-4bi" secondAttribute="bottom" id="xK5-rD-hmd"/>
             </constraints>
             <point key="canvasLocation" x="65" y="134"/>
         </customView>

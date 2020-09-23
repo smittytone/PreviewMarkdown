@@ -1,4 +1,4 @@
-PreviewMarkdown, Previewer Art and UI Design Copyright (c) 2019 Tony Smith (@smittytone)
+PreviewMarkdown, Previewer Art and UI Design Copyright (c) 2019-20 Tony Smith (@smittytone)
 
 All rights reserved.
 
@@ -6,7 +6,7 @@ All rights reserved.
 
 MIT License
 
-PreviewMarkdown, Previewer Source Code Copyright (c) 2019 Tony Smith (@smittytone)
+PreviewMarkdown, Previewer Source Code Copyright (c) 2019-20 Tony Smith (@smittytone)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ SOFTWARE.
 
 MIT License
 
-SwiftyMarkdown Copyright (c) 2016 Simon Fairbairn
+SwiftyMarkdown Copyright (c) 2016-20 Simon Fairbairn
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
