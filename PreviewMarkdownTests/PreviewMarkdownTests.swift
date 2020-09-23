@@ -40,5 +40,28 @@ class PreviewMarkdownTests: XCTestCase {
     }
 
 
+    func testProcessCode() throws {
+
+        let markdownString = """
+            This is some text.
+
+            ```
+            This is some code.
+            ```
+            More text.
+            """
+
+        let expectedString = """
+            This is some text.
+
+                This is some code.
+            More text.
+            """
+
+        print(processCodeTags(markdownString))
+        XCTAssert(processCodeTags(markdownString) == expectedString)
+
+    }
+
 
 }

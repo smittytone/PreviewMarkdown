@@ -34,7 +34,45 @@ func processSymbols(_ base: String) -> String {
         range = result.range(of: pattern, options: .regularExpression)
     }
 
-    return result;
+    return result
+}
+
+
+func processCodeTags(_ base: String) -> String {
+
+    // FROM 1.1.0
+
+    var result = base
+    var open = false
+    var index = 0
+    var lines = result.components(separatedBy: CharacterSet.newlines)
+
+    // Run through the lines looking for initial ```
+    // Remove any found and inset the lines in between (for SwiftyMarkdown to format)
+    for line in lines {
+        if line.range(of: "```", options: .regularExpression) != nil {
+            open = !open
+            lines.remove(at: index)
+            continue
+        }
+
+        if open {
+            lines[index] = "    " + lines[index]
+        }
+
+        index += 1
+    }
+
+    // Re-assemble the string from the lines, spacing them with a newline
+    // (except for the final line, of course)
+    result = ""
+    index = 0
+    for line in lines {
+        result += line + (index < lines.count - 1 ? "\n" : "")
+        index += 1
+    }
+
+    return result
 }
 
 
