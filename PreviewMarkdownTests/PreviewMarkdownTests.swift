@@ -66,7 +66,7 @@ class PreviewMarkdownTests: XCTestCase {
 
     func testSpacesToTabs() throws {
 
-       var markdownString = """
+       let markdownString = """
             This is some text.
 
             1. Item
@@ -75,7 +75,7 @@ class PreviewMarkdownTests: XCTestCase {
                     * Item
             """
 
-        var expectedString = """
+        let expectedString = """
             This is some text.
 
             1. Item
