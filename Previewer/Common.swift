@@ -11,10 +11,37 @@ import SwiftyMarkdown
 import AppKit
 
 
+func spacesToTabs(_ base: String) -> String {
+
+    // FROM 1.1.0
+    // Find and and replace any list items inset with spaces, not tabs
+    // Processed here because SwiftyMarkdown doesn't handle this markup
+
+    var result = base
+    let pattern = #"^[\s]+(\*|-|[1-9])"#
+    let tab = "\t"
+    var range = base.range(of: pattern, options: .regularExpression)
+    print(range ?? "NIL")
+    while range != nil {
+        let spaceRange: NSRange = NSRange((range!.lowerBound..<range!.upperBound), in: result)
+        let tabCount = (spaceRange.upperBound - spaceRange.lowerBound) / 4
+        print(tabCount)
+        var tabs = ""
+        for _ in 0..<tabCount {
+            tabs += tab
+        }
+        result = result.replacingCharacters(in: Range(spaceRange, in: result)!, with: tabs)
+        range = result.range(of: pattern, options: .regularExpression)
+    }
+
+    return result
+}
+
+
 func processSymbols(_ base: String) -> String {
 
     // FROM 1.1.0
-    // FInd and and replace any HTML symbol markup
+    // Find and and replace any HTML symbol markup
     // Processed here because SwiftyMarkdown doesn't handle this markup
 
     let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]

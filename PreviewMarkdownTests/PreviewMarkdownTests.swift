@@ -58,10 +58,35 @@ class PreviewMarkdownTests: XCTestCase {
             More text.
             """
 
-        print(processCodeTags(markdownString))
+        //print(processCodeTags(markdownString))
         XCTAssert(processCodeTags(markdownString) == expectedString)
 
     }
 
 
+    func testSpacesToTabs() throws {
+
+       var markdownString = """
+            This is some text.
+
+            1. Item
+                1. Item
+                2. Item
+                    * Item
+            """
+
+        var expectedString = """
+            This is some text.
+
+            1. Item
+            \t1. Item
+            \t2. Item
+            \t\t* Item
+            """
+
+        print(spacesToTabs(markdownString))
+        XCTAssert(spacesToTabs(markdownString) == expectedString)
+
+
+    }
 }
