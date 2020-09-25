@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.1.0 #
+# PreviewMarkdown 1.1.1 #
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -12,6 +12,8 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
+- 1.1.1
+    - Add feedback mechanism.
 - 1.1.0 *Unreleased*
 	- Add macOS Big Sur support.
 	- Better macOS dark/light mode support.
