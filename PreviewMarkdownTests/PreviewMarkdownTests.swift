@@ -23,7 +23,7 @@ class PreviewMarkdownTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    
+
     func testProcessSymbols() throws {
 
         var markdownString = "**&trade; &plusmn; &nbsp;"
@@ -58,7 +58,7 @@ class PreviewMarkdownTests: XCTestCase {
             More text.
             """
 
-        print(processCodeTags(markdownString))
+        //print(processCodeTags(markdownString))
         XCTAssert(processCodeTags(markdownString) == expectedString)
 
     }

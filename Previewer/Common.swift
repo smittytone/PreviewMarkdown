@@ -29,7 +29,7 @@ func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnai
 func processSymbols(_ base: String) -> String {
 
     // FROM 1.1.0
-    // FInd and and replace any HTML symbol markup
+    // Find and and replace any HTML symbol markup
     // Processed here because SwiftyMarkdown doesn't handle this markup
 
     let codes = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
@@ -160,6 +160,3 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat, _ isThumbnail:
 
     sm.link.color = NSColor.systemBlue
 }
-
-
-
