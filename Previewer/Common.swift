@@ -46,7 +46,7 @@ func processSymbols(_ base: String) -> String {
         var repText = ""
         let find = String(result[range!])
         if codes.contains(find) {
-            repText = synmbols[codes.firstIndex(of: find)!]
+            repText = symbols[codes.firstIndex(of: find)!]
         }
 
         // Swap out the HTML symbol code for the actual symbol

@@ -66,7 +66,7 @@ class PreviewMarkdownTests: XCTestCase {
 
     func testConvertSpaces() throws {
 
-        let markdownString = """
+        var markdownString = """
             This is some text.
             1. Tab
                 * Tab
@@ -75,7 +75,7 @@ class PreviewMarkdownTests: XCTestCase {
             Done
             """
 
-        let expectedString = """
+        var expectedString = """
             This is some text.
             1. Tab
             \t* Tab
@@ -84,9 +84,12 @@ class PreviewMarkdownTests: XCTestCase {
             Done
             """
 
-        print(convertSpaces(markdownString))
+        //print(convertSpaces(markdownString))
         XCTAssert(convertSpaces(markdownString) == expectedString)
 
+        markdownString = "    11. Something"
+        expectedString = "\t11. Something"
+        XCTAssert(convertSpaces(markdownString) == expectedString)
     }
 
 
