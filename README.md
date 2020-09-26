@@ -12,7 +12,7 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.1.0 *Unreleased*
+- 1.1.0 *25 September 2020*
 	- Add macOS Big Sur support.
 	- Better macOS dark/light mode support.
 	- Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
