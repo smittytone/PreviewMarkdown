@@ -64,4 +64,30 @@ class PreviewMarkdownTests: XCTestCase {
     }
 
 
+    func testConvertSpaces() throws {
+
+        let markdownString = """
+            This is some text.
+            1. Tab
+                * Tab
+                    - Tab
+            \t* Tab2
+            Done
+            """
+
+        let expectedString = """
+            This is some text.
+            1. Tab
+            \t* Tab
+            \t\t- Tab
+            \t* Tab2
+            Done
+            """
+
+        print(convertSpaces(markdownString))
+        XCTAssert(convertSpaces(markdownString) == expectedString)
+
+    }
+
+
 }
