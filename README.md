@@ -12,24 +12,26 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.1.1
-	- Add feedback mechanism.
+- 1.1.1 *Unreleased*
+    - Add report bugs/send feedback mechanism.
+    - Handle markdown formatting not yet rendered by SwiftyMarkdown:
+        - Three-tick code blocks; HTML symbols; space-inset lists.
 - 1.1.0 *25 September 2020*
-	- Add macOS Big Sur support.
-	- Better macOS dark/light mode support.
-	- Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
+    - Add macOS Big Sur support.
+    - Better macOS dark/light mode support.
+    - Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
 - 1.0.5 *9 April 2020*
-	- App Store release version.
+    - App Store release version.
 - 1.0.4 *Unreleased*
-	- Minor cosmetic changes to app menus.
+    - Minor cosmetic changes to app menus.
 - 1.0.3 *10 December 2019*
-	- Add version number to app’s info panel.
+    - Add version number to app’s info panel.
 - 1.0.2 *4 December 2019*
-	- Fix random crash (`string index out of range` in SwiftyMarkdown).
+    - Fix random crash (`string index out of range` in SwiftyMarkdown).
 - 1.0.1 *20 November 2019*
-	- Correct thumbnailer styles.
+    - Correct thumbnailer styles.
 - 1.0.0 *8 November 2019*
-	- Initial public release.
+    - Initial public release.
 
 ## Copyright and Credits ##
 
