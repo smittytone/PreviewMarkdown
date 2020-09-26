@@ -11,6 +11,21 @@ import SwiftyMarkdown
 import AppKit
 
 
+func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnail: Bool) -> NSAttributedString {
+
+    // FROM 1.1.0
+    // Use SwiftyMarkdown to render the input markdown as an NSAttributedString, which is returned
+    // NOTE Set the font colour according to whether we're rendering a thumbail or a preview
+    //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
+
+    let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+    setBaseValues(swiftyMarkdown, size, isThumbnail)
+    var processed = processCodeTags(markdownString)
+    processed = convertSpaces(processed)
+    return swiftyMarkdown.attributedString(from: processSymbols(processed))
+}
+
+
 func processSymbols(_ base: String) -> String {
 
     // FROM 1.1.0
@@ -82,17 +97,31 @@ func processCodeTags(_ base: String) -> String {
 }
 
 
-func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnail: Bool) -> NSAttributedString {
+func convertSpaces(_ base: String) -> String {
 
-    // FROM 1.1.0
-    // Use SwiftyMarkdown to render the input markdown as an NSAttributedString, which is returned
-    // NOTE Set the font colour according to whether we're rendering a thumbail or a preview
-    //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
+    // FROM 1.1.1
+    // Convert space-formatted lists to tab-formatte lists
+    // Required because SwiftyMarkdown doesn't indent on spaces
 
-    let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-    setBaseValues(swiftyMarkdown, size, isThumbnail)
-    let processed = processCodeTags(markdownString)
-    return swiftyMarkdown.attributedString(from: processSymbols(processed))
+    let pattern = #"(?m)^[ ]+([1-9]|\*|-)"#
+    let tab = "\t"
+    var result = base as NSString
+    var nrange: NSRange = result.range(of: pattern, options: .regularExpression)
+
+    while nrange.location != NSNotFound {
+        var tabs = ""
+        let crange: NSRange = NSMakeRange(nrange.location, nrange.length - 1)
+        let tabCount = (nrange.length - 1) / 4
+
+        for _ in 0..<tabCount {
+            tabs += tab
+        }
+
+        result = result.replacingCharacters(in: crange, with: tabs) as NSString
+        nrange = result.range(of: pattern, options: .regularExpression)
+    }
+
+    return result as String
 }
 
 
@@ -116,27 +145,4 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat, _ isThumbnail:
 }
 
 
-func convertSpaces(_ base: String) -> String {
 
-    // FROM 1.1.1
-    // Convert space-formatted lists to tab-formatte lists
-    let pattern = #"[ ]+([1-9]|\*|-)"#
-    let tab = "\t"
-    var result = base as NSString
-    var nrange: NSRange = result.range(of: pattern, options: .regularExpression)
-
-    while nrange.location != NSNotFound {
-        var tabs = ""
-        let crange: NSRange = NSMakeRange(nrange.location, nrange.length - 1)
-        let tabCount = (nrange.length - 1) / 4
-
-        for _ in 0..<tabCount {
-            tabs += tab
-        }
-
-        result = result.replacingCharacters(in: crange, with: tabs) as NSString
-        nrange = result.range(of: pattern, options: .regularExpression)
-    }
-
-    return result as String
-}
