@@ -32,21 +32,27 @@ func processSymbols(_ base: String) -> String {
     // FInd and and replace any HTML symbol markup
     // Processed here because SwiftyMarkdown doesn't handle this markup
 
-    let finds = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
-    let reps = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
+    let codes = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
+    let symbols = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
 
-    var result = base
+    // Look for HTML symbol code '&...;' substrings, eg. '&sup2;'
     let pattern = #"&[a-zA-Z]+[1-9]*;"#
+    var result = base
     var range = base.range(of: pattern, options: .regularExpression)
 
     while range != nil {
+        // Get the symbol from the 'symbols' array that has the same index
+        // as the symbol code from the 'codes' array
         var repText = ""
         let find = String(result[range!])
-        if finds.contains(find) {
-            repText = reps[finds.firstIndex(of: find)!]
+        if codes.contains(find) {
+            repText = synmbols[codes.firstIndex(of: find)!]
         }
 
+        // Swap out the HTML symbol code for the actual symbol
         result = result.replacingCharacters(in: range!, with: repText)
+
+        // Get the next occurence of the pattern ready for the 'while...' check
         range = result.range(of: pattern, options: .regularExpression)
     }
 
@@ -86,8 +92,8 @@ func processCodeTags(_ base: String) -> String {
 
     // Re-assemble the string from the lines, spacing them with a newline
     // (except for the final line, of course)
-    var result = ""
     index = 0
+    var result = ""
     for line in lines {
         result += line + (index < lines.count - 1 ? "\n" : "")
         index += 1
@@ -103,21 +109,32 @@ func convertSpaces(_ base: String) -> String {
     // Convert space-formatted lists to tab-formatte lists
     // Required because SwiftyMarkdown doesn't indent on spaces
 
+    // Find (multiline) x spaces followed by *, - or 1-9,
+    // where x >= 1
     let pattern = #"(?m)^[ ]+([1-9]|\*|-)"#
-    let tab = "\t"
     var result = base as NSString
     var nrange: NSRange = result.range(of: pattern, options: .regularExpression)
 
+    // Use NSRange and NSString because it's easier to modify the
+    // range to exclude the character *after* the spaces
     while nrange.location != NSNotFound {
         var tabs = ""
-        let crange: NSRange = NSMakeRange(nrange.location, nrange.length - 1)
-        let tabCount = (nrange.length - 1) / 4
 
+        // Get the range of the spaces minus the detected list character
+        let crange: NSRange = NSMakeRange(nrange.location, nrange.length - 1)
+
+        // Get the number of tabs characters we need to insert
+        let tabCount = (nrange.length - 1) / BUFFOON_CONSTANTS.SPACES_FOR_A_TAB
+
+        // Assemble the required number of tabs
         for _ in 0..<tabCount {
-            tabs += tab
+            tabs += "\t"
         }
 
+        // Swap out the spaces for the string of one or more tabs
         result = result.replacingCharacters(in: crange, with: tabs) as NSString
+
+        // Get the next occurence of the pattern ready for the 'while...' check
         nrange = result.range(of: pattern, options: .regularExpression)
     }
 
