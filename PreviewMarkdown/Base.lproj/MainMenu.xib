@@ -167,7 +167,7 @@
                         </constraints>
                         <textFieldCell key="cell" allowsUndo="NO" alignment="center" id="ztO-7G-jpz">
                             <font key="font" metaFont="system"/>
-                            <mutableString key="title">PreviewMarkdown provides QuickLook previews and icon thumbnails for Markdown files.  Run this app once to register its Previewer and Thumbnailer application extensions, which you can then manage in  System Preferences &gt; Extensions &gt; Quick Look  Cases where previews cannot be rendered can usually be resolved by  logging out of your Mac account, logging in again and re-running this app.</mutableString>
+                            <string key="title">PreviewMarkdown provides QuickLook previews and icon thumbnails for Markdown files.  Run this app once to register its Previewer and Thumbnailer application extensions, which you can then manage in  System Preferences &gt; Extensions &gt; Quick Look  Cases where previews cannot be rendered can usually be resolved by  logging out of your Mac account, logging in again and re-running this app.</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -201,12 +201,12 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
-                        <rect key="frame" x="209" y="119" width="162" height="31"/>
+                        <rect key="frame" x="191" y="113" width="198" height="31"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="L6p-CX-ebx"/>
                             <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
                         </constraints>
-                        <buttonCell key="cell" type="push" title="Go to System Prefs" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFW-b3-xdd">
+                        <buttonCell key="cell" type="push" title="Open System Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFW-b3-xdd">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -215,7 +215,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="223" y="86" width="134" height="32"/>
+                        <rect key="frame" x="223" y="80" width="134" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="SNH-kB-lsD"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122" id="kra-Ss-ZX5"/>
@@ -229,7 +229,7 @@ DQ
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="18" y="61" width="544" height="11"/>
+                        <rect key="frame" x="18" y="56" width="544" height="11"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="11" id="oGv-kS-n6Z"/>
                         </constraints>
@@ -241,7 +241,7 @@ DQ
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="8" id="1vL-cU-3Dn"/>
+                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="14" id="1vL-cU-3Dn"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="8" id="7Xy-CE-dM0"/>
                     <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="GAp-6B-Vm1"/>
                     <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" id="GVZ-Lc-Fvq"/>
@@ -250,10 +250,10 @@ DQ
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="We8-d6-Vd3"/>
                     <constraint firstItem="Gsi-wT-aLS" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="X72-aP-1ry"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ZGi-IC-AJN"/>
-                    <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="20" symbolic="YES" id="doV-Jg-cyI"/>
+                    <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="15" id="doV-Jg-cyI"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="ixc-oa-Nle"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
-                    <constraint firstItem="NSG-kl-hgD" firstAttribute="top" secondItem="Gsi-wT-aLS" secondAttribute="bottom" constant="12" symbolic="YES" id="odI-nU-9KD"/>
+                    <constraint firstItem="NSG-kl-hgD" firstAttribute="top" secondItem="Gsi-wT-aLS" secondAttribute="bottom" constant="12" id="odI-nU-9KD"/>
                     <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="tkZ-dx-IAZ"/>
                     <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" symbolic="YES" id="xRq-Mg-hv9"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="top" secondItem="RuP-3k-wPO" secondAttribute="bottom" constant="8" id="xSK-e7-CvK"/>
@@ -294,7 +294,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="YMa-8u-AIC"/>
                         </constraints>
-                        <textFieldCell key="cell" selectable="YES" title="Please provide us with feedback or report a problem you’ve encountered (512 characters max.)" id="uM7-Oz-2Vh">
+                        <textFieldCell key="cell" selectable="YES" title="Please provide us with your feedback or report a problem that you’ve encountered (512 characters max.)" id="uM7-Oz-2Vh">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
