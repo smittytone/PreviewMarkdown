@@ -2,6 +2,8 @@
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
+![PreviewMarkdown App Store QR code](qr-code.jpg)
+
 ## Installation and Usage ##
 
 Just run the host app once to register the extensions &mdash; you can quit the app as soon as it has launched. We recommend logging out of your Mac and back in again at this point. Now you can preview markdown documents using QuickLook (select an icon and hit Space), and Finder’s preview pane and **Info** panels.
