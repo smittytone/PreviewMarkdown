@@ -14,10 +14,10 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.1.1 *Unreleased*
+- 1.1.1 *1 October 2020*
     - Add report bugs/send feedback mechanism.
-    - Handle markdown formatting not yet rendered by SwiftyMarkdown:
-        - Three-tick code blocks; HTML symbols; space-inset lists.
+    - Add usage advice to main window.
+    - Handle markdown formatting not yet rendered by SwiftyMarkdown: three-tick code blocks, HTML symbols, space-inset lists.
 - 1.1.0 *25 September 2020*
     - Add macOS Big Sur support.
     - Better macOS dark/light mode support.
