@@ -14,7 +14,7 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
-- 1.1.2 *Unreleased*
+- 1.1.2 *18 November 2020*
     - Apple Silicon version included.
 - 1.1.1 *1 October 2020*
     - Add report bugs/send feedback mechanism.
