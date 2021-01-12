@@ -3,7 +3,7 @@
 //  PreviewMarkdown
 //
 //  Created by Tony Smith on 12/08/2020.
-//  Copyright © 2020 Tony Smith. All rights reserved.
+//  Copyright © 2021 Tony Smith. All rights reserved.
 
 
 // Combine the app's various constants into a struct
