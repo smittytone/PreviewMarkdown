@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -143,7 +143,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="580" height="370"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="580" height="370"/>
             <value key="maxSize" type="size" width="580" height="370"/>
             <value key="minFullScreenContentSize" type="size" width="580" height="370"/>
@@ -184,7 +184,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
-                        <rect key="frame" x="249" y="13" width="82" height="32"/>
+                        <rect key="frame" x="248" y="13" width="84" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="5W7-jO-VfU"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="lsY-5x-ikr"/>
@@ -201,7 +201,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
-                        <rect key="frame" x="191" y="113" width="198" height="31"/>
+                        <rect key="frame" x="194" y="113" width="192" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="L6p-CX-ebx"/>
                             <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
@@ -215,7 +215,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="223" y="80" width="134" height="32"/>
+                        <rect key="frame" x="222" y="80" width="136" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="SNH-kB-lsD"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122" id="kra-Ss-ZX5"/>
@@ -233,7 +233,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="11" id="oGv-kS-n6Z"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" title="PreviewMarkdown © 2020, Tony Smith. Contains SwiftyMarkdown © 2020, Simon Fairbairn" id="aj6-5q-zC1">
+                        <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" title="PreviewMarkdown © 2021, Tony Smith. Contains SwiftyMarkdown © 2021, Simon Fairbairn" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -266,7 +266,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="324"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="560" height="324"/>
             <value key="maxSize" type="size" width="560" height="324"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
@@ -276,7 +276,7 @@ DQ
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tkx-af-mn5">
-                        <rect key="frame" x="475" y="13" width="71" height="32"/>
+                        <rect key="frame" x="474" y="13" width="73" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="aT3-G8-Bnn"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="59" id="xp3-3d-vfd"/>
@@ -334,7 +334,7 @@ DQ
                         </constraints>
                     </progressIndicator>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P6B-a3-sQA">
-                        <rect key="frame" x="393" y="13" width="82" height="32"/>
+                        <rect key="frame" x="392" y="13" width="84" height="33"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="Vif-ZZ-Mm3"/>
                             <constraint firstAttribute="height" constant="21" id="jar-Uy-Qgk"/>
