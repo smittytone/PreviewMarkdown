@@ -169,7 +169,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 
     sm.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
-    sm.setFontNameForAllStyles(with: "zHelveticaNeue")
+    sm.setFontNameForAllStyles(with: "Geneva")
 
     sm.h4.fontSize = fontSizeBase * 1.2
     sm.h3.fontSize = fontSizeBase * 1.4
@@ -180,6 +180,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     sm.code.color = getColour(codeColourIndex)
     
     sm.link.color = getColour(linkColourIndex)
+    sm.link.underlineColor = sm.link.color
 }
 
 
