@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.1.2 #
+# PreviewMarkdown 1.1.3 #
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -14,6 +14,8 @@ For more information on the background to this app, please see this [blog post](
 
 ## Release Notes ##
 
+- 1.1.3 *14 January 2021*
+    - Add UTI `pro.writer.markdown`.
 - 1.1.2 *18 November 2020*
     - Apple Silicon version included.
 - 1.1.1 *1 October 2020*
@@ -39,6 +41,6 @@ For more information on the background to this app, please see this [blog post](
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2020, Tony Smith.
+Primary app code and UI design &copy; 2021, Tony Smith.
 
-Code portions &copy; 2020 Simon Fairbairn.
+Code portions &copy; 2021 Simon Fairbairn.
