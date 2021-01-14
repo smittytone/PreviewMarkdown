@@ -47,9 +47,7 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                     self.renderTextView.backgroundColor = NSColor.textBackgroundColor
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        renderTextStorage.setAttributedString(getAttributedString(markdownString,
-                                                                                  CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
-                                                                                  false))
+                        renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
                     }
 
                     // Add the subview to the instance's own view and draw

@@ -15,11 +15,16 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="codeColourPopup" destination="SEM-cm-6Zx" id="wYY-YO-SKL"/>
                 <outlet property="connectionProgress" destination="wmC-QI-6Qu" id="g61-ar-tEi"/>
+                <outlet property="creditAppStoreRating" destination="Poi-jo-cDz" id="WQs-yG-55G"/>
                 <outlet property="creditMenuAcknowlegdments" destination="FKE-Sm-Kum" id="Mi1-3q-c9I"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
                 <outlet property="creditMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="s3a-nj-rUO"/>
                 <outlet property="feedbackText" destination="TYV-nH-BBy" id="Yaf-kB-Der"/>
+                <outlet property="fontSizePopup" destination="KuO-ex-tNV" id="nXc-Pe-Kc0"/>
+                <outlet property="linkColourPopup" destination="y5f-AM-Xuh" id="vCm-3u-6tE"/>
+                <outlet property="preferencesWindow" destination="sjc-xZ-D3x" id="ulJ-fW-pzl"/>
                 <outlet property="reportWindow" destination="Qvu-BL-pGS" id="iaa-7G-SRe"/>
                 <outlet property="versionLabel" destination="RuP-3k-wPO" id="2c9-E8-cV8"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -32,6 +37,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="PreviewMarkdown" systemMenu="apple" id="uQy-DD-JDr">
                         <items>
+                            <menuItem title="Preferences..." keyEquivalent="," id="t9y-p4-apt">
+                                <connections>
+                                    <action selector="doShowPreferencesWithSender:" target="Voe-Tx-rLC" id="Hl1-h6-60N"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="8TO-1f-5js"/>
                             <menuItem title="Services" id="NMo-om-nkz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
@@ -117,6 +128,13 @@
                                     <action selector="showFeedbackWindowWithSender:" target="Voe-Tx-rLC" id="sqe-If-xD7"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Review This App..." id="Poi-jo-cDz">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="y7f-iq-wFd"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="FN0-hS-58G"/>
                             <menuItem title="Acknowledgements" id="FKE-Sm-Kum">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Acknowledgements" id="WBx-VK-xbe">
@@ -372,6 +390,235 @@ Gw
             </view>
             <point key="canvasLocation" x="-341" y="-21"/>
         </window>
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="sjc-xZ-D3x">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="206" width="269" height="158"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <value key="minSize" type="size" width="269" height="158"/>
+            <value key="maxSize" type="size" width="269" height="158"/>
+            <value key="minFullScreenContentSize" type="size" width="269" height="158"/>
+            <value key="maxFullScreenContentSize" type="size" width="269" height="158"/>
+            <view key="contentView" id="DTJ-no-zbr">
+                <rect key="frame" x="0.0" y="0.0" width="269" height="158"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IBK-vw-Hmp">
+                        <rect key="frame" x="18" y="122" width="148" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="144" id="Y3y-bR-Da1"/>
+                            <constraint firstAttribute="height" constant="16" id="fIQ-S1-kxi"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="hjE-y4-LcN"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Preview Text Size:" id="8Zi-Ve-FHM">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VOV-CD-l3R">
+                        <rect key="frame" x="18" y="92" width="148" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="sOl-Ms-e62"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="144" id="thm-WB-mKe"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Preview Code Colour:" id="CEP-1L-RCZ">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HXE-LS-yR9">
+                        <rect key="frame" x="18" y="62" width="148" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="bQp-Ka-RmI"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="144" id="h1Z-eW-boj"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Preview Link Colour:" id="mhM-Qd-Gzq">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SEM-cm-6Zx">
+                        <rect key="frame" x="169" y="86" width="84" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="Rml-SU-JbL"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="71" id="hXV-5V-n7R"/>
+                        </constraints>
+                        <popUpButtonCell key="cell" type="push" title="Purple" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="gex-s2-hEs" id="T2G-nK-GMP">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="Ae3-zw-EWw">
+                                <items>
+                                    <menuItem title="Purple" state="on" id="gex-s2-hEs"/>
+                                    <menuItem title="Blue" id="20i-9P-QuK"/>
+                                    <menuItem title="Red" id="vpq-L7-Qr7"/>
+                                    <menuItem title="Green" id="Z7v-Wp-IF4">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Orange" id="6Et-SE-xmj">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Pink" id="dTK-hZ-CKs">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Teal" id="teo-Di-o8l">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Brown" id="34i-Z2-H8g">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Yellow" id="y1b-FD-yxk">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Indigo" id="Dp3-CD-F6d">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Grey" id="z90-lt-BSM">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="y5f-AM-Xuh">
+                        <rect key="frame" x="169" y="56" width="84" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="71" id="fuS-Ig-v0j"/>
+                            <constraint firstAttribute="height" constant="20" id="lcx-68-Zv5"/>
+                        </constraints>
+                        <popUpButtonCell key="cell" type="push" title="Purple" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="oY9-ni-5XJ" id="4De-e7-LCP">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="QRg-gh-247">
+                                <items>
+                                    <menuItem title="Purple" state="on" id="oY9-ni-5XJ"/>
+                                    <menuItem title="Blue" id="P59-Iu-sMQ"/>
+                                    <menuItem title="Red" id="g5V-px-7BK"/>
+                                    <menuItem title="Green" id="3fj-sU-aNo">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Orange" id="I3t-dJ-NnM">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Pink" id="Uz5-ej-U64">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Teal" id="huh-LA-3ie">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Brown" id="aWZ-1b-ruA">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Yellow" id="Gif-pC-iPw">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Indigo" id="4is-bF-IEg">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="Grey" id="2wD-EN-wz5">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KuO-ex-tNV">
+                        <rect key="frame" x="169" y="116" width="84" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="O3S-Vr-k6J"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="71" id="wgd-Cj-0Di"/>
+                        </constraints>
+                        <popUpButtonCell key="cell" type="push" title="10" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="dfj-vW-s6J" id="KOH-0H-65o">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="FyX-hy-TVW">
+                                <items>
+                                    <menuItem title="10" id="dfj-vW-s6J">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="12" state="on" id="bEc-ea-1Tm">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="14" id="Xz8-su-Wj8">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="16" id="Wff-ua-R0e"/>
+                                    <menuItem title="18" id="hPZ-Rc-gdm"/>
+                                    <menuItem title="24" id="Fxg-gC-XpE">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="28" id="o8i-Og-l9L"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kxb-3y-zsN">
+                        <rect key="frame" x="192" y="13" width="64" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Tqd-Bf-Wb4"/>
+                            <constraint firstAttribute="height" constant="20" id="lJS-sj-uI5"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hij-YA-i2o">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="doSavePreferencesWithSender:" target="Voe-Tx-rLC" id="zvK-cx-4m5"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FEy-oZ-Q0b">
+                        <rect key="frame" x="118" y="13" width="76" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="62" id="TMU-yY-WY7"/>
+                            <constraint firstAttribute="height" constant="20" id="bRf-D1-9pL"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NfM-u3-xbg">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="doClosePreferencesWithSender:" target="Voe-Tx-rLC" id="xi7-Z6-PBJ"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SEM-cm-6Zx" secondAttribute="trailing" symbolic="YES" id="08u-Zl-HQM"/>
+                    <constraint firstItem="HXE-LS-yR9" firstAttribute="top" secondItem="VOV-CD-l3R" secondAttribute="bottom" constant="14" id="5dx-lN-dLJ"/>
+                    <constraint firstItem="y5f-AM-Xuh" firstAttribute="leading" secondItem="HXE-LS-yR9" secondAttribute="trailing" constant="8" id="7Ap-yA-Iae"/>
+                    <constraint firstItem="IBK-vw-Hmp" firstAttribute="top" secondItem="DTJ-no-zbr" secondAttribute="top" constant="20" symbolic="YES" id="ARg-Ze-ZOf"/>
+                    <constraint firstItem="HXE-LS-yR9" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="C9W-43-lOQ"/>
+                    <constraint firstItem="VOV-CD-l3R" firstAttribute="top" secondItem="IBK-vw-Hmp" secondAttribute="bottom" constant="14" id="Db9-Ph-c52"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="y5f-AM-Xuh" secondAttribute="trailing" constant="20" symbolic="YES" id="Ktd-S7-bS8"/>
+                    <constraint firstItem="IBK-vw-Hmp" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="MFj-Ea-ybA"/>
+                    <constraint firstItem="y5f-AM-Xuh" firstAttribute="top" secondItem="SEM-cm-6Zx" secondAttribute="bottom" constant="10" symbolic="YES" id="Pgk-rY-ANX"/>
+                    <constraint firstItem="IBK-vw-Hmp" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="Rm7-rl-A5W"/>
+                    <constraint firstItem="SEM-cm-6Zx" firstAttribute="leading" secondItem="VOV-CD-l3R" secondAttribute="trailing" constant="8" id="Rq2-uS-yYB"/>
+                    <constraint firstAttribute="bottom" secondItem="FEy-oZ-Q0b" secondAttribute="bottom" constant="20" symbolic="YES" id="UmY-kM-MaJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Kxb-3y-zsN" secondAttribute="trailing" constant="20" symbolic="YES" id="Wc4-9D-bnm"/>
+                    <constraint firstAttribute="trailing" secondItem="KuO-ex-tNV" secondAttribute="trailing" constant="20" symbolic="YES" id="WeJ-sa-Sf3"/>
+                    <constraint firstAttribute="bottom" secondItem="Kxb-3y-zsN" secondAttribute="bottom" constant="20" symbolic="YES" id="X0U-sU-wfy"/>
+                    <constraint firstItem="SEM-cm-6Zx" firstAttribute="top" secondItem="KuO-ex-tNV" secondAttribute="bottom" constant="10" symbolic="YES" id="aCm-MK-eos"/>
+                    <constraint firstItem="KuO-ex-tNV" firstAttribute="leading" secondItem="IBK-vw-Hmp" secondAttribute="trailing" constant="8" symbolic="YES" id="aKY-He-b3R"/>
+                    <constraint firstItem="Kxb-3y-zsN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FEy-oZ-Q0b" secondAttribute="trailing" constant="12" symbolic="YES" id="bLQ-B0-cMF"/>
+                    <constraint firstItem="FEy-oZ-Q0b" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="125" id="rcN-fW-y8G"/>
+                    <constraint firstItem="IBK-vw-Hmp" firstAttribute="top" secondItem="DTJ-no-zbr" secondAttribute="top" constant="20" symbolic="YES" id="rdQ-z6-B78"/>
+                    <constraint firstItem="VOV-CD-l3R" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="uf3-zg-aPP"/>
+                    <constraint firstItem="KuO-ex-tNV" firstAttribute="top" secondItem="DTJ-no-zbr" secondAttribute="top" constant="18" id="yO8-Uj-RL0"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="227" y="507"/>
+        </window>
+        <menuItem title="Item" id="iQi-XH-uTb">
+            <modifierMask key="keyEquivalentModifierMask"/>
+        </menuItem>
     </objects>
     <resources>
         <image name="appicon" width="64" height="64"/>

@@ -23,6 +23,7 @@ class AppDelegate: NSObject,
     @IBOutlet var creditMenuQLMarkdown: NSMenuItem!
     @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
     @IBOutlet var creditMenuAcknowlegdments: NSMenuItem!
+    @IBOutlet var creditAppStoreRating: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -36,10 +37,22 @@ class AppDelegate: NSObject,
     @IBOutlet weak var feedbackText: NSTextField!
     @IBOutlet weak var connectionProgress: NSProgressIndicator!
 
+    // FROM 1.2.0
+    // Preferences Sheet
+    @IBOutlet weak var preferencesWindow: NSWindow!
+    @IBOutlet weak var fontSizePopup: NSPopUpButton!
+    @IBOutlet weak var linkColourPopup: NSPopUpButton!
+    @IBOutlet weak var codeColourPopup: NSPopUpButton!
+
 
     // MARK:- Private Properies
     // FROM 1.1.1
     private var feedbackTask: URLSessionTask? = nil
+
+    // FROM 1.2.0 -- stores for preferences
+    private var previewFontSize: CGFloat = 16.0
+    private var previewCodeColour: Int = 1
+    private var previewLinkColour: Int = 2
 
 
     // MARK:- Class Lifecycle Functions
@@ -53,6 +66,10 @@ class AppDelegate: NSObject,
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         
+        // FROM 1.2.0
+        // Set application group-level defaults
+        registerPreferences()
+
         // FROM 1.0.3
         // Add the version number to the panel
         let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
@@ -85,7 +102,7 @@ class AppDelegate: NSObject,
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = "https://www.smittytone.net/previewmarkdown/index.html"
+        var path: String = "https://smittytone.net/previewmarkdown/index.html"
 
         // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
@@ -96,6 +113,8 @@ class AppDelegate: NSObject,
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
         } else if item == self.creditMenuAcknowlegdments {
             path += "#acknowledgements"
+        } else if item == self.creditAppStoreRating {
+            path = "https://apps.apple.com/gb/app/previewmarkdown/id1492280469?action=write-review"
         }
         
         // Open the selected website
@@ -195,6 +214,74 @@ class AppDelegate: NSObject,
         }
     }
 
+    @IBAction func doShowPreferences(sender: Any?) {
+
+        // FROM 1.2.0
+        // Display the Preferences... sheet
+
+        // The suite name is the app group name, set in each extension's entitlements, and the host app's
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+            self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
+            self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+        }
+
+        // Get the menu item index from the stored value
+        // NOTE The other values are currently stored as indexes -- should this be the same?
+        let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+        let index: Int = options.lastIndex(of: self.previewFontSize) ?? 3
+        self.fontSizePopup.selectItem(at: index)
+        self.codeColourPopup.selectItem(at: self.previewCodeColour)
+        self.linkColourPopup.selectItem(at: self.previewLinkColour)
+
+        // Display the sheet
+        if let window = self.window {
+            window.beginSheet(self.preferencesWindow,
+                              completionHandler: nil)
+        }
+    }
+
+
+    @IBAction func doClosePreferences(sender: Any?) {
+
+        // FROM 1.2.0
+        // Close the Preferences... sheet
+
+        self.window.endSheet(self.preferencesWindow)
+    }
+
+
+    @IBAction func doSavePreferences(sender: Any?) {
+
+        // FROM 1.2.0
+        // Close the Preferences... sheet and save the prefs, if they have changed
+
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            if self.codeColourPopup.indexOfSelectedItem != self.previewCodeColour {
+                defaults.setValue(self.codeColourPopup.indexOfSelectedItem,
+                                  forKey: "com-bps-previewmarkdown-code-colour-index")
+            }
+
+            if self.linkColourPopup.indexOfSelectedItem != self.previewLinkColour {
+                defaults.setValue(self.linkColourPopup.indexOfSelectedItem,
+                                  forKey: "com-bps-previewmarkdown-link-colour-index")
+            }
+
+            let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+            let newValue: CGFloat = options[self.fontSizePopup.indexOfSelectedItem]
+            if newValue != self.previewFontSize {
+                defaults.setValue(newValue,
+                                  forKey: "com-bps-previewmarkdown-base-font-size")
+            }
+
+            // Sync any changes
+            defaults.synchronize()
+        }
+
+        // Remove the sheet now we have the data
+        self.window.endSheet(self.preferencesWindow)
+    }
+
 
     // MARK: - URLSession Delegate Functions
 
@@ -249,6 +336,48 @@ class AppDelegate: NSObject,
         alert.informativeText = message
         alert.addButton(withTitle: "OK")
         return alert
+    }
+
+
+    func registerPreferences() {
+
+        // FROM 1.2.0
+        // Called by the app at launch to register its initial defaults
+
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            // Check if each preference value exists -- set if it doesn't
+            // Preview base font size
+            let previewFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
+            if previewFontSizeDefault == nil {
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
+                                  forKey: "com-bps-previewmarkdown-base-font-size")
+            }
+
+            // Thumbnail view base font size
+            let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-thumb-font-size")
+            if thumbFontSizeDefault == nil {
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
+                                  forKey: "com-bps-previewmarkdown-thumb-font-size")
+            }
+
+            // Colour of links in the preview
+            let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-index")
+            if linkColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_INDEX,
+                                  forKey: "com-bps-previewmarkdown-link-colour-index")
+            }
+
+            // Colour of code blocks in the preview
+            let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-index")
+            if codeColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
+                                  forKey: "com-bps-previewmarkdown-code-colour-index")
+            }
+
+            // Sync any additions
+            defaults.synchronize()
+        }
+
     }
 
 }

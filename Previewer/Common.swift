@@ -11,7 +11,7 @@ import SwiftyMarkdown
 import AppKit
 
 
-func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnail: Bool) -> NSAttributedString {
+func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
     // FROM 1.1.0
     // Use SwiftyMarkdown to render the input markdown as an NSAttributedString, which is returned
@@ -19,7 +19,7 @@ func getAttributedString(_ markdownString: String, _ size: CGFloat, _ isThumbnai
     //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
 
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-    setBaseValues(swiftyMarkdown, size, isThumbnail)
+    setBaseValues(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
     processed = convertSpaces(processed)
     return swiftyMarkdown.attributedString(from: processSymbols(processed))
@@ -142,28 +142,43 @@ func convertSpaces(_ base: String) -> String {
 }
 
 
-func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat, _ isThumbnail: Bool) {
+func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 
     // Set common base style values for the markdown render
 
     // FROM 1.2.0
     // Use defaults for some user-selectable values
-    var fontSizeBase: CGFloat = 16.0
-    var codeColourIndex: Int = 1
-    var linkColourIndex: Int = 2
+    var fontSizeBase: CGFloat = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+    var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+
+    // The suite name is the app group name, set in each extension's entitlements, and the host app's
+    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        defaults.synchronize()
+        fontSizeBase = CGFloat(isThumbnail
+                                ? defaults.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
+                                : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+        codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
+        linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+    }
+
+    // Just in case the above block reads in zero values
+    if fontSizeBase == 0.0 {
+        fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    }
 
     sm.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
-    sm.setFontNameForAllStyles(with: "HelveticaNeue")
+    sm.setFontNameForAllStyles(with: "zHelveticaNeue")
 
     sm.h4.fontSize = fontSizeBase * 1.2
     sm.h3.fontSize = fontSizeBase * 1.4
     sm.h2.fontSize = fontSizeBase * 1.6
     sm.h1.fontSize = fontSizeBase * 2.0
 
-    sm.code.fontName = "AndaleMono"
+    sm.code.fontName = "Courier"
     sm.code.color = getColour(codeColourIndex)
-
+    
     sm.link.color = getColour(linkColourIndex)
 }
 
@@ -174,25 +189,25 @@ func getColour(_ index: Int) -> NSColor {
     // Return the colour from the selection
 
     switch index {
-        case 1:
+        case 0:
             return NSColor.systemPurple
-        case 2:
+        case 1:
             return NSColor.systemBlue
-        case 3:
+        case 2:
             return NSColor.systemRed
-        case 4:
+        case 3:
             return NSColor.systemGreen
-        case 5:
+        case 4:
             return NSColor.systemOrange
-        case 6:
+        case 5:
             return NSColor.systemPink
-        case 7:
+        case 6:
             return NSColor.systemTeal
-        case 8:
+        case 7:
             return NSColor.systemBrown
-        case 9:
+        case 8:
             return NSColor.systemYellow
-        case 10:
+        case 9:
             return NSColor.systemIndigo
         default:
             return NSColor.systemGray

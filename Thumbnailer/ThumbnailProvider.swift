@@ -48,9 +48,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                     renderTextView.backgroundColor = NSColor.white
 
                     if let renderTextStorage: NSTextStorage = renderTextView.textStorage {
-                        renderTextStorage.setAttributedString(getAttributedString(markdownString,
-                                                                                  CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
-                                                                                  true))
+                        renderTextStorage.setAttributedString(getAttributedString(markdownString, true))
                     }
 
                     let imageRep: NSBitmapImageRep? = renderTextView.bitmapImageRepForCachingDisplay(in: drawFrame)
