@@ -3,7 +3,7 @@
 //  Thumbnailer
 //
 //  Created by Tony Smith on 31/10/2019.
-//  Copyright © 2019 Tony Smith. All rights reserved.
+//  Copyright © 2021 Tony Smith. All rights reserved.
 
 
 import Cocoa

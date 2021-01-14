@@ -146,17 +146,55 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ baseFontSize: CGFloat, _ isThumbnail:
 
     // Set common base style values for the markdown render
 
+    // FROM 1.2.0
+    // Use defaults for some user-selectable values
+    var fontSizeBase: CGFloat = 16.0
+    var codeColourIndex: Int = 1
+    var linkColourIndex: Int = 2
+
     sm.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
-    sm.setFontSizeForAllStyles(with: baseFontSize)
+    sm.setFontSizeForAllStyles(with: fontSizeBase)
     sm.setFontNameForAllStyles(with: "HelveticaNeue")
 
-    sm.h4.fontSize = baseFontSize * 1.2
-    sm.h3.fontSize = baseFontSize * 1.4
-    sm.h2.fontSize = baseFontSize * 1.6
-    sm.h1.fontSize = baseFontSize * 2.0
+    sm.h4.fontSize = fontSizeBase * 1.2
+    sm.h3.fontSize = fontSizeBase * 1.4
+    sm.h2.fontSize = fontSizeBase * 1.6
+    sm.h1.fontSize = fontSizeBase * 2.0
 
     sm.code.fontName = "AndaleMono"
-    sm.code.color = NSColor.systemPurple
+    sm.code.color = getColour(codeColourIndex)
 
-    sm.link.color = NSColor.systemBlue
+    sm.link.color = getColour(linkColourIndex)
+}
+
+
+func getColour(_ index: Int) -> NSColor {
+
+    // FROM 1.2.0
+    // Return the colour from the selection
+
+    switch index {
+        case 1:
+            return NSColor.systemPurple
+        case 2:
+            return NSColor.systemBlue
+        case 3:
+            return NSColor.systemRed
+        case 4:
+            return NSColor.systemGreen
+        case 5:
+            return NSColor.systemOrange
+        case 6:
+            return NSColor.systemPink
+        case 7:
+            return NSColor.systemTeal
+        case 8:
+            return NSColor.systemBrown
+        case 9:
+            return NSColor.systemYellow
+        case 10:
+            return NSColor.systemIndigo
+        default:
+            return NSColor.systemGray
+    }
 }
