@@ -40,9 +40,10 @@ class AppDelegate: NSObject,
     // FROM 1.2.0
     // Preferences Sheet
     @IBOutlet weak var preferencesWindow: NSWindow!
-    @IBOutlet weak var fontSizePopup: NSPopUpButton!
-    @IBOutlet weak var linkColourPopup: NSPopUpButton!
     @IBOutlet weak var codeColourPopup: NSPopUpButton!
+    @IBOutlet weak var fontSizeSlider: NSSlider!
+    @IBOutlet weak var fontSizeLabel: NSTextField!
+    @IBOutlet weak var useLightCheckbox: NSButton!
 
 
     // MARK:- Private Properies
@@ -53,6 +54,7 @@ class AppDelegate: NSObject,
     private var previewFontSize: CGFloat = 16.0
     private var previewCodeColour: Int = 1
     private var previewLinkColour: Int = 2
+    private var doShowLightBackground: Bool = false
 
 
     // MARK:- Class Lifecycle Functions
@@ -224,21 +226,32 @@ class AppDelegate: NSObject,
             self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
             self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
             self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+            self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
         }
 
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
         let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
         let index: Int = options.lastIndex(of: self.previewFontSize) ?? 3
-        self.fontSizePopup.selectItem(at: index)
+        self.fontSizeSlider.floatValue = Float(index)
+        self.fontSizeLabel.stringValue = "\(Int(options[index]))pt"
         self.codeColourPopup.selectItem(at: self.previewCodeColour)
-        self.linkColourPopup.selectItem(at: self.previewLinkColour)
+        self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
 
         // Display the sheet
         if let window = self.window {
             window.beginSheet(self.preferencesWindow,
                               completionHandler: nil)
         }
+    }
+
+
+    @IBAction func doMoveSlider(sender: Any?) {
+
+        // FROM 1.2.0
+        let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+        let index: Int = Int(self.fontSizeSlider.floatValue)
+        self.fontSizeLabel.stringValue = "\(Int(options[index]))pt"
     }
 
 
@@ -262,13 +275,14 @@ class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
 
-            if self.linkColourPopup.indexOfSelectedItem != self.previewLinkColour {
-                defaults.setValue(self.linkColourPopup.indexOfSelectedItem,
-                                  forKey: "com-bps-previewmarkdown-link-colour-index")
+            let state: Bool = self.useLightCheckbox.state == .on
+            if self.doShowLightBackground != state {
+                defaults.setValue(state,
+                                  forKey: "com-bps-previewmarkdown-do-use-light")
             }
 
             let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
-            let newValue: CGFloat = options[self.fontSizePopup.indexOfSelectedItem]
+            let newValue: CGFloat = options[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
                                   forKey: "com-bps-previewmarkdown-base-font-size")
@@ -372,6 +386,13 @@ class AppDelegate: NSObject,
             if codeColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
+            }
+
+            // Use light background even in dark mode
+            let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-use-light")
+            if useLightDefault == nil {
+                defaults.setValue(false,
+                                  forKey: "com-bps-previewmarkdown-do-use-light")
             }
 
             // Sync any additions

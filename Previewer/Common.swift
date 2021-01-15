@@ -151,6 +151,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     var fontSizeBase: CGFloat = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
     var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
     var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+    var doShowLightBackground = false
 
     // The suite name is the app group name, set in each extension's entitlements, and the host app's
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
@@ -160,6 +161,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
                                 : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
         codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
         linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+        doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
     }
 
     // Just in case the above block reads in zero values
@@ -167,7 +169,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
         fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
     }
 
-    sm.setFontColorForAllStyles(with: isThumbnail ? NSColor.black : NSColor.labelColor)
+    sm.setFontColorForAllStyles(with: (isThumbnail || doShowLightBackground) ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
     sm.setFontNameForAllStyles(with: "Geneva")
 

@@ -44,7 +44,15 @@ class PreviewViewController: NSViewController, QLPreviewingController {
                 if let markdownString: String = String.init(data: data, encoding: .utf8) {
 
                     // Update the NSTextView
-                    self.renderTextView.backgroundColor = NSColor.textBackgroundColor
+                    // FROM 1.2.0 -- Use a preference to govern this
+                    var doShowLightBackground: Bool = false
+
+                    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+                        defaults.synchronize()
+                        doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
+                    }
+
+                    self.renderTextView.backgroundColor = doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
