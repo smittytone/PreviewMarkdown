@@ -27,7 +27,7 @@ For more information on the background to this app, please see this [blog post](
 ## Release Notes ##
 
 - 1.2.0 *Unreleased*
-    - Add preview display preferences.
+    - Add preview display preferences (requested by various anonymous feedback senders)
     - Add file type ident tag to thumbnails (requested by @chamiu).
     - Add link for app reviews.
 - 1.1.4 *Unreleased*
