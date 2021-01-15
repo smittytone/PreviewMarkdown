@@ -31,8 +31,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                 if let markdownString: String = String.init(data: data, encoding: .utf8) {
 
                     // Set the thumbnail frame
-                    // NOTE This is always square, so adjust to a 3:4 aspect ratio to
-                    //      maintain the macOS standard doc icon width
+                    // NOTE This is always square, with height matched to width, so adjust
+                    //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
                     var thumbnailFrame: CGRect = .zero
                     thumbnailFrame.size = request.maximumSize
                     thumbnailFrame.size.width = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * thumbnailFrame.size.height
@@ -79,7 +79,8 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                         // Write the tag rendered as an NSAttributedString into the view's text storage
                         if let tagTextStorage: NSTextStorage = tagTextView!.textStorage {
-                            tagTextStorage.setAttributedString(getTagString())
+                            // NOTE We use 'request.maximumSize' for more accurate results
+                            tagTextStorage.setAttributedString(getTagString("MARKDOWN", request.maximumSize.width))
                         }
                     }
 
@@ -129,7 +130,7 @@ class ThumbnailProvider: QLThumbnailProvider {
     }
 
 
-    func getTagString(_ tag: String = "MARKDOWN") -> NSAttributedString {
+    func getTagString(_ tag: String = "MARKDOWN", _ width: CGFloat) -> NSAttributedString {
 
         // FROM 1.2.0
         // Set the text for the bottom-of-thumbnail file type tag
@@ -141,9 +142,11 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // Build the string attributes
         var atts: [NSAttributedString.Key : Any] = [:]
-        atts[.foregroundColor] = NSColor.gray
         atts[.paragraphStyle] = style
         atts[.font] = NSFont.systemFont(ofSize: 120.0)
+
+        // Set the colour based on the thumbnail size
+        atts[.foregroundColor] = width < 128 ? NSColor.black : NSColor.gray
 
         // Return the attributed string built from the tag
         return NSAttributedString.init(string: tag, attributes: atts)

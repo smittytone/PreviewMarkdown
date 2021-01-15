@@ -447,7 +447,7 @@ class AppDelegate: NSObject,
             // Default: true
             let showTagDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-tag")
             if showTagDefault == nil {
-                defaults.setValue(false,
+                defaults.setValue(true,
                                   forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
