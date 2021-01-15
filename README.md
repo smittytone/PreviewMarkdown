@@ -15,7 +15,13 @@ For more information on the background to this app, please see this [blog post](
 ## Release Notes ##
 
 - 1.2.0 *Unreleased*
-    - Add preview display preferences.
+    - Add preview display preferences:
+        - Code colour
+        - Base text size
+        - Whether preview should be display white-on-black even in Dark Mode
+    - Add link for app reviews.
+- 1.1.4 *Unreleased*
+    - Add UTI `net.ia.markdown`.
 - 1.1.3 *14 January 2021*
     - Add UTI `pro.writer.markdown`.
 - 1.1.2 *18 November 2020*
