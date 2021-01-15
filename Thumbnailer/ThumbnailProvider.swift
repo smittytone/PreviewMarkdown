@@ -37,24 +37,46 @@ class ThumbnailProvider: QLThumbnailProvider {
                     thumbnailFrame.size = request.maximumSize
                     thumbnailFrame.size.width = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * thumbnailFrame.size.height
 
-                    // Set the drawing frame and a base font size
-                    let drawFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
+                    // Set the primary drawing frame and a base font size
+                    let markdownFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
                                                         y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
                                                         width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                         height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
 
                     // Instantiate an NSTextView to display the NSAttributedString render of the markdown
-                    let renderTextView: NSTextView = NSTextView.init(frame: drawFrame)
-                    renderTextView.backgroundColor = NSColor.white
+                    let markdownTextView: NSTextView = NSTextView.init(frame: markdownFrame)
+                    markdownTextView.backgroundColor = NSColor.white
 
-                    if let renderTextStorage: NSTextStorage = renderTextView.textStorage {
-                        renderTextStorage.setAttributedString(getAttributedString(markdownString, true))
+                    // Write the markdown rendered as an NSAttributedString into the view's text storage
+                    if let markdownTextStorage: NSTextStorage = markdownTextView.textStorage {
+                        markdownTextStorage.setAttributedString(getAttributedString(markdownString, true))
                     }
 
-                    let imageRep: NSBitmapImageRep? = renderTextView.bitmapImageRepForCachingDisplay(in: drawFrame)
+                    // FROM 1.2.0
+                    // Also generate text for the bottom-of-thumbnail file type tag
+                    let tagFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
+                                                       y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
+                                                       width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
+                                                       height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
 
+                    // Instantiate an NSTextView to display the NSAttributedString render of the tag,
+                    // this time with a clear background
+                    let tagTextView: NSTextView = NSTextView.init(frame: tagFrame)
+                    tagTextView.backgroundColor = NSColor.clear
+
+                    // Write the tag rendered as an NSAttributedString into the view's text storage
+                    if let tagTextStorage: NSTextStorage = tagTextView.textStorage {
+                        tagTextStorage.setAttributedString(getTagString())
+                    }
+
+                    // Generate the bitmap from the rendered markdown text view
+                    let imageRep: NSBitmapImageRep? = markdownTextView.bitmapImageRepForCachingDisplay(in: markdownFrame)
                     if imageRep != nil {
-                        renderTextView.cacheDisplay(in: drawFrame, to: imageRep!)
+                        // Draw into the bitmap first the markdown view...
+                        markdownTextView.cacheDisplay(in: markdownFrame, to: imageRep!)
+
+                        // ...then the tag view
+                        tagTextView.cacheDisplay(in: tagFrame, to: imageRep!)
                     }
 
                     let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
@@ -88,6 +110,27 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // We couldn't do any so set an appropriate error to report back
         handler(nil, reportError)
+    }
+
+
+    func getTagString(_ tag: String = "MARKDOWN") -> NSAttributedString {
+
+        // FROM 1.2.0
+        // Set the text for the bottom-of-thumbnail file type tag
+        // Default: MARKDOWN
+
+        // Set the paraghraph style we'll use -- just centred text
+        let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
+        style.alignment = .center
+
+        // Build the string attributes
+        var atts: [NSAttributedString.Key : Any] = [:]
+        atts[.foregroundColor] = NSColor.gray
+        atts[.paragraphStyle] = style
+        atts[.font] = NSFont.systemFont(ofSize: 120.0)
+
+        // Return the attributed string built from the tag
+        return NSAttributedString.init(string: tag, attributes: atts)
     }
     
 }
