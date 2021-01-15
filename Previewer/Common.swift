@@ -147,10 +147,18 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     // Set common base style values for the markdown render
 
     // FROM 1.2.0
+    // Set possible font values
+    // NOTE The strings are PostScript names
+    let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
+    let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
+
+    // FROM 1.2.0
     // Use defaults for some user-selectable values
     var fontSizeBase: CGFloat = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
     var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
     var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+    var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
+    var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     var doShowLightBackground = false
 
     // The suite name is the app group name, set in each extension's entitlements, and the host app's
@@ -161,26 +169,39 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
                                 : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
         codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
         linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+        bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
         doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
     }
 
     // Just in case the above block reads in zero values
-    if fontSizeBase == 0.0 {
+    // NOTE The other valyes CAN be zero
+    if fontSizeBase < 1.0 || fontSizeBase > 28.0 {
         fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
     }
 
     sm.setFontColorForAllStyles(with: (isThumbnail || doShowLightBackground) ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
-    sm.setFontNameForAllStyles(with: "Geneva")
 
     sm.h4.fontSize = fontSizeBase * 1.2
     sm.h3.fontSize = fontSizeBase * 1.4
     sm.h2.fontSize = fontSizeBase * 1.6
     sm.h1.fontSize = fontSizeBase * 2.0
 
-    sm.code.fontName = "Courier"
+    if bodyFontIndex > 0 && bodyFontIndex < bodyFonts.count {
+        // NOTE We ignore 0 because that indicates the System font,
+        //      which is the default
+        sm.setFontNameForAllStyles(with: bodyFonts[bodyFontIndex])
+    }
+
+    if codeFontIndex >= 0 && codeFontIndex < codeFonts.count {
+        sm.code.fontName = codeFonts[codeFontIndex]
+    }
+
     sm.code.color = getColour(codeColourIndex)
-    
+
+    // NOTE The following do not set link colour - this is
+    //      a bug or issue with SwiftyMarkdown 1.2.3
     sm.link.color = getColour(linkColourIndex)
     sm.link.underlineColor = sm.link.color
 }

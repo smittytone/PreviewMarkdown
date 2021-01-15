@@ -44,7 +44,8 @@ class AppDelegate: NSObject,
     @IBOutlet weak var fontSizeSlider: NSSlider!
     @IBOutlet weak var fontSizeLabel: NSTextField!
     @IBOutlet weak var useLightCheckbox: NSButton!
-
+    @IBOutlet weak var bodyFontPopup: NSPopUpButton!
+    @IBOutlet weak var codeFontPopup: NSPopUpButton!
 
     // MARK:- Private Properies
     // FROM 1.1.1
@@ -55,6 +56,8 @@ class AppDelegate: NSObject,
     private var previewCodeColour: Int = 1
     private var previewLinkColour: Int = 2
     private var doShowLightBackground: Bool = false
+    private var previewCodeFont: Int = 0
+    private var previewBodyFont: Int = 0
 
 
     // MARK:- Class Lifecycle Functions
@@ -227,6 +230,8 @@ class AppDelegate: NSObject,
             self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
             self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
             self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
+            self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+            self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
         }
 
         // Get the menu item index from the stored value
@@ -236,6 +241,8 @@ class AppDelegate: NSObject,
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(options[index]))pt"
         self.codeColourPopup.selectItem(at: self.previewCodeColour)
+        self.codeFontPopup.selectItem(at: self.previewCodeFont)
+        self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
 
         // Display the sheet
@@ -275,6 +282,16 @@ class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
 
+            if self.codeFontPopup.indexOfSelectedItem != self.previewCodeFont {
+                defaults.setValue(self.codeFontPopup.indexOfSelectedItem,
+                                  forKey: "com-bps-previewmarkdown-code-font-index")
+            }
+
+            if self.bodyFontPopup.indexOfSelectedItem != self.previewBodyFont {
+                defaults.setValue(self.bodyFontPopup.indexOfSelectedItem,
+                                  forKey: "com-bps-previewmarkdown-body-font-index")
+            }
+
             let state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
@@ -287,6 +304,8 @@ class AppDelegate: NSObject,
                 defaults.setValue(newValue,
                                   forKey: "com-bps-previewmarkdown-base-font-size")
             }
+
+
 
             // Sync any changes
             defaults.synchronize()
@@ -360,35 +379,50 @@ class AppDelegate: NSObject,
 
         if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
             // Check if each preference value exists -- set if it doesn't
-            // Preview base font size
-            let previewFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
-            if previewFontSizeDefault == nil {
+            // Preview body font size, stored as a CGFloat
+            let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
+            if bodyFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
                                   forKey: "com-bps-previewmarkdown-base-font-size")
             }
 
-            // Thumbnail view base font size
+            // Font for body blocks in the preview, stored as in integer array index
+            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-index")
+            if bodyFontDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_INDEX,
+                                  forKey: "com-bps-previewmarkdown-body-font-index")
+            }
+
+            // Thumbnail view base font size, stored as a CGFloat, not currently used
             let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-thumb-font-size")
             if thumbFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
                                   forKey: "com-bps-previewmarkdown-thumb-font-size")
             }
 
-            // Colour of links in the preview
+            // Colour of links in the preview, stored as in integer array index, not currently used
+            // Reason: see Common.swift
             let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-index")
             if linkColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-link-colour-index")
             }
 
-            // Colour of code blocks in the preview
+            // Colour of code blocks in the preview, stored as in integer array index
             let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-index")
             if codeColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
 
-            // Use light background even in dark mode
+            // Font for code blocks in the preview, stored as in integer array index
+            let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-index")
+            if codeFontDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_INDEX,
+                                  forKey: "com-bps-previewmarkdown-code-font-index")
+            }
+
+            // Use light background even in dark mode, stored as a bool
             let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-use-light")
             if useLightDefault == nil {
                 defaults.setValue(false,

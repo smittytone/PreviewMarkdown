@@ -44,4 +44,7 @@ struct BUFFOON_CONSTANTS {
     // FROM 1.2.0
     static let CODE_COLOUR_INDEX            = 0
     static let LINK_COLOUR_INDEX            = 2
+
+    static let CODE_FONT_INDEX             = 0
+    static let BODY_FONT_INDEX             = 0
 }
