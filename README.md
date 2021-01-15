@@ -10,15 +10,25 @@ Just run the host app once to register the extensions &mdash; you can quit the a
 
 You can disable and re-enable the Previewer and Thumbnailer extensions at any time in **System Preferences > Extensions > Quick Look**.
 
+### Adjusting the Preview ###
+
+Version 1.2.0 adds a Preferences panel, which allows you to alter some of the key elements of the preview:
+
+- The colour of code blocks.
+- Code blocks’ monospaced font.
+- The base body text size.
+- The body text font.
+- Whether preview should be display white-on-black even in Dark Mode.
+
+Changing these settings will affect previews immediately, but may not affect thumbnail until you open a folder that has not been previously opened in the current login session.
+
 For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
 
 ## Release Notes ##
 
 - 1.2.0 *Unreleased*
-    - Add preview display preferences:
-        - Code colour
-        - Base text size
-        - Whether preview should be display white-on-black even in Dark Mode
+    - Add preview display preferences.
+    - Add file type ident tag to thumbnails (requested by @chamiu).
     - Add link for app reviews.
 - 1.1.4 *Unreleased*
     - Add UTI `net.ia.markdown`.
