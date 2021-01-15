@@ -16,6 +16,7 @@ class AppDelegate: NSObject,
                    URLSessionDelegate,
                    URLSessionDataDelegate {
 
+
     // MARK:- Class UI Properies
     // Menu Items Tab
     @IBOutlet var creditMenuPM: NSMenuItem!
@@ -40,12 +41,14 @@ class AppDelegate: NSObject,
     // FROM 1.2.0
     // Preferences Sheet
     @IBOutlet weak var preferencesWindow: NSWindow!
-    @IBOutlet weak var codeColourPopup: NSPopUpButton!
     @IBOutlet weak var fontSizeSlider: NSSlider!
     @IBOutlet weak var fontSizeLabel: NSTextField!
     @IBOutlet weak var useLightCheckbox: NSButton!
+    @IBOutlet weak var doShowTagCheckbox: NSButton!
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
+    @IBOutlet weak var codeColourPopup: NSPopUpButton!
+
 
     // MARK:- Private Properies
     // FROM 1.1.1
@@ -55,9 +58,10 @@ class AppDelegate: NSObject,
     private var previewFontSize: CGFloat = 16.0
     private var previewCodeColour: Int = 1
     private var previewLinkColour: Int = 2
-    private var doShowLightBackground: Bool = false
     private var previewCodeFont: Int = 0
     private var previewBodyFont: Int = 0
+    private var doShowLightBackground: Bool = false
+    private var doShowTag: Bool = false
 
 
     // MARK:- Class Lifecycle Functions
@@ -232,18 +236,20 @@ class AppDelegate: NSObject,
             self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
             self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
             self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
+            self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
         }
 
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
-        let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
-        let index: Int = options.lastIndex(of: self.previewFontSize) ?? 3
+        //let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+        let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: self.previewFontSize) ?? 3
         self.fontSizeSlider.floatValue = Float(index)
-        self.fontSizeLabel.stringValue = "\(Int(options[index]))pt"
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
         self.codeColourPopup.selectItem(at: self.previewCodeColour)
         self.codeFontPopup.selectItem(at: self.previewCodeFont)
         self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
+        self.doShowTagCheckbox.state = self.doShowTag ? .on : .off
 
         // Display the sheet
         if let window = self.window {
@@ -256,9 +262,8 @@ class AppDelegate: NSObject,
     @IBAction func doMoveSlider(sender: Any?) {
 
         // FROM 1.2.0
-        let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
         let index: Int = Int(self.fontSizeSlider.floatValue)
-        self.fontSizeLabel.stringValue = "\(Int(options[index]))pt"
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
     }
 
 
@@ -292,20 +297,23 @@ class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-body-font-index")
             }
 
-            let state: Bool = self.useLightCheckbox.state == .on
+            var state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
                                   forKey: "com-bps-previewmarkdown-do-use-light")
             }
 
-            let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
-            let newValue: CGFloat = options[Int(self.fontSizeSlider.floatValue)]
+            state = self.doShowTagCheckbox.state == .on
+            if self.doShowTag != state {
+                defaults.setValue(state,
+                                  forKey: "com-bps-previewmarkdown-do-show-tag")
+            }
+
+            let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
                                   forKey: "com-bps-previewmarkdown-base-font-size")
             }
-
-
 
             // Sync any changes
             defaults.synchronize()
@@ -380,6 +388,7 @@ class AppDelegate: NSObject,
         if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
             // Check if each preference value exists -- set if it doesn't
             // Preview body font size, stored as a CGFloat
+            // Default: 16.0
             let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
             if bodyFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
@@ -387,6 +396,7 @@ class AppDelegate: NSObject,
             }
 
             // Font for body blocks in the preview, stored as in integer array index
+            // Default: 0 (System)
             let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-index")
             if bodyFontDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_INDEX,
@@ -394,6 +404,7 @@ class AppDelegate: NSObject,
             }
 
             // Thumbnail view base font size, stored as a CGFloat, not currently used
+            // Default: 14.0
             let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-thumb-font-size")
             if thumbFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
@@ -409,6 +420,7 @@ class AppDelegate: NSObject,
             }
 
             // Colour of code blocks in the preview, stored as in integer array index
+            // Default: 0 (purple)
             let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-index")
             if codeColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
@@ -416,6 +428,7 @@ class AppDelegate: NSObject,
             }
 
             // Font for code blocks in the preview, stored as in integer array index
+            // Default: 0 (Andale Mono)
             let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-index")
             if codeFontDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_INDEX,
@@ -423,10 +436,19 @@ class AppDelegate: NSObject,
             }
 
             // Use light background even in dark mode, stored as a bool
+            // Default: false
             let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-use-light")
             if useLightDefault == nil {
                 defaults.setValue(false,
                                   forKey: "com-bps-previewmarkdown-do-use-light")
+            }
+
+            // Show the file identity ('tag') on Finder thumbnails
+            // Default: true
+            let showTagDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-tag")
+            if showTagDefault == nil {
+                defaults.setValue(false,
+                                  forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
             // Sync any additions

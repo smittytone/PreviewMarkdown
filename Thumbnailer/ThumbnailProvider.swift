@@ -53,20 +53,34 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
 
                     // FROM 1.2.0
-                    // Also generate text for the bottom-of-thumbnail file type tag
-                    let tagFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
-                                                       y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
-                                                       width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
-                                                       height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
+                    // Also generate text for the bottom-of-thumbnail file type tag,
+                    // if the user has this set as a preference
+                    var tagTextView: NSTextView? = nil
+                    var tagFrame: CGRect? = nil
+                    var doShowTag: Bool = true
 
-                    // Instantiate an NSTextView to display the NSAttributedString render of the tag,
-                    // this time with a clear background
-                    let tagTextView: NSTextView = NSTextView.init(frame: tagFrame)
-                    tagTextView.backgroundColor = NSColor.clear
+                    // Get the preference
+                    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+                        defaults.synchronize()
+                        doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+                    }
 
-                    // Write the tag rendered as an NSAttributedString into the view's text storage
-                    if let tagTextStorage: NSTextStorage = tagTextView.textStorage {
-                        tagTextStorage.setAttributedString(getTagString())
+                    if doShowTag {
+                        // Define the frame of the tag area
+                        tagFrame = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
+                                               y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
+                                               width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
+                                               height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
+
+                        // Instantiate an NSTextView to display the NSAttributedString render of the tag,
+                        // this time with a clear background
+                        tagTextView = NSTextView.init(frame: tagFrame!)
+                        tagTextView!.backgroundColor = NSColor.clear
+
+                        // Write the tag rendered as an NSAttributedString into the view's text storage
+                        if let tagTextStorage: NSTextStorage = tagTextView!.textStorage {
+                            tagTextStorage.setAttributedString(getTagString())
+                        }
                     }
 
                     // Generate the bitmap from the rendered markdown text view
@@ -76,7 +90,9 @@ class ThumbnailProvider: QLThumbnailProvider {
                         markdownTextView.cacheDisplay(in: markdownFrame, to: imageRep!)
 
                         // ...then the tag view
-                        tagTextView.cacheDisplay(in: tagFrame, to: imageRep!)
+                        if tagTextView != nil && tagFrame != nil {
+                            tagTextView!.cacheDisplay(in: tagFrame!, to: imageRep!)
+                        }
                     }
 
                     let reply: QLThumbnailReply = QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in

@@ -7,6 +7,8 @@
 
 
 // Combine the app's various constants into a struct
+import Foundation
+
 
 struct BUFFOON_CONSTANTS {
 
@@ -27,8 +29,8 @@ struct BUFFOON_CONSTANTS {
         }
     }
 
-
     struct THUMBNAIL_SIZE {
+
         static let ORIGIN_X             = 0
         static let ORIGIN_Y             = 0
         static let WIDTH                = 768
@@ -39,7 +41,6 @@ struct BUFFOON_CONSTANTS {
 
     static let BASE_PREVIEW_FONT_SIZE       = 16.0
     static let BASE_THUMB_FONT_SIZE         = 14.0
-
     static let SPACES_FOR_A_TAB             = 4
 
     // FROM 1.2.0
@@ -48,5 +49,7 @@ struct BUFFOON_CONSTANTS {
 
     static let CODE_FONT_INDEX             = 0
     static let BODY_FONT_INDEX             = 0
+
+    static let FONT_SIZE_OPTIONS: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
 
 }
