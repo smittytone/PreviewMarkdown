@@ -29,8 +29,9 @@ For more information on the background to this app, please see this [blog post](
 - 1.2.0 *Unreleased*
     - Add preview display preferences (requested by various anonymous feedback senders)
     - Add file type ident tag to thumbnails (requested by @chamiu).
+    - Include local markdown UTI with user-submitted feedback.
     - Add link for app reviews.
-- 1.1.4 *Unreleased*
+- 1.1.4 *16 January 2021*
     - Add UTI `net.ia.markdown`.
 - 1.1.3 *14 January 2021*
     - Add UTI `pro.writer.markdown`.
