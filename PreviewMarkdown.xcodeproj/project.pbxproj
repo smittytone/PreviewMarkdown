@@ -12,6 +12,7 @@
 		3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
 		3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
 		3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
+		3B170B8625B2E62600F14FDD /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B170B8525B2E62600F14FDD /* sample.md */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
 		3B223FD925AF4AB200BC46E8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B223FD825AF4AB200BC46E8 /* Secrets.swift */; };
@@ -80,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		3B0E8DCE251B8775001AC5BC /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B223FD825AF4AB200BC46E8 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../../../OneDrive/Programming/mnu/Secrets.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
 				3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */,
+				3B170B8525B2E62600F14FDD /* sample.md */,
 			);
 			path = PreviewMarkdown;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 			files = (
 				3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */,
 				3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */,
+				3B170B8625B2E62600F14FDD /* sample.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,7 +653,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -675,7 +679,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -699,7 +703,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -727,7 +731,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -754,7 +758,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -781,7 +785,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 56;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;

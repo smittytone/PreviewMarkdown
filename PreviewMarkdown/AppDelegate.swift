@@ -62,6 +62,7 @@ class AppDelegate: NSObject,
     private var previewBodyFont: Int = 0
     private var doShowLightBackground: Bool = false
     private var doShowTag: Bool = false
+    private var localMarkdownUTI: String = "NONE"
 
 
     // MARK:- Class Lifecycle Functions
@@ -78,6 +79,10 @@ class AppDelegate: NSObject,
         // FROM 1.2.0
         // Set application group-level defaults
         registerPreferences()
+        
+        // FROM 1.2.0
+        // Get the local UTI for markdown files
+        self.localMarkdownUTI = getLocalMarkdownUTI()
 
         // FROM 1.0.3
         // Add the version number to the panel
@@ -175,54 +180,81 @@ class AppDelegate: NSObject,
         if feedback.count > 0 {
             // Start the connection indicator if it's not already visible
             self.connectionProgress.startAnimation(self)
-
-            // Send the string etc.
-            let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-            let bundle: Bundle = Bundle.main
-            let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
-            let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-            let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-            let userAgent: String = "\(app) \(version) (build \(build)) (macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
-
-            let date: Date = Date()
-            var dateString = "Unknown"
-
-            let def: DateFormatter = DateFormatter()
-            def.locale = Locale(identifier: "en_US_POSIX")
-            def.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-            def.timeZone = TimeZone(secondsFromGMT: 0)
-            dateString = def.string(from: date)
-
-            let dict: NSMutableDictionary = NSMutableDictionary()
-            dict.setObject("*FEEDBACK REPORT*\n*DATE* \(dateString))\n*USER AGENT* \(userAgent)\n*FEEDBACK* \(feedback)",
-                            forKey: NSString.init(string: "text"))
-            dict.setObject(true, forKey: NSString.init(string: "mrkdown"))
-
-            if let url: URL = URL.init(string: MNU_SECRETS.ADDRESS.A + MNU_SECRETS.ADDRESS.B) {
-                var request: URLRequest = URLRequest.init(url: url)
-                request.httpMethod = "POST"
-                do {
-                    request.httpBody = try JSONSerialization.data(withJSONObject: dict,
-                                                                  options:JSONSerialization.WritingOptions.init(rawValue: 0))
-
-                    request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
-                    request.addValue("application/json", forHTTPHeaderField: "Content-type")
-
-                    let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-                    let session: URLSession = URLSession.init(configuration: config,
-                                                              delegate: self,
-                                                              delegateQueue: OperationQueue.main)
-                    self.feedbackTask = session.dataTask(with: request)
-                    self.feedbackTask?.resume()
-                } catch {
-                    sendFeedbackError()
-                }
+            
+            self.feedbackTask = sendFeedback(feedback)
+            
+            if self.feedbackTask != nil {
+                // We have a valid URL Session Task, so start it to send
+                self.feedbackTask!.resume()
+            } else {
+                // Report the error
+                sendFeedbackError()
             }
         } else {
+            // No feedback, so close the sheet
             self.window!.endSheet(self.reportWindow)
         }
+        
+        // NOTE sheet closes asynchronously unless there was no feedback to send
+    }
+    
+    
+    func sendFeedback(_ feedback: String) -> URLSessionTask? {
+        
+        // FROM 1.2.0
+        // Break out into separate function
+        
+        // Send the string etc.
+        // First get the data we need to build the user agent string
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        let bundle: Bundle = Bundle.main
+        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
+        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        let userAgent: String = "\(app) \(version) (build \(build)) (macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
+        
+        // Get the date as a string
+        var dateString = "Unknown"
+        let date: Date = Date()
+        let def: DateFormatter = DateFormatter()
+        def.locale = Locale(identifier: "en_US_POSIX")
+        def.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        def.timeZone = TimeZone(secondsFromGMT: 0)
+        dateString = def.string(from: date)
+
+        // Build the data we will POST
+        let dict: NSMutableDictionary = NSMutableDictionary()
+        let dataString: String = "*FEEDBACK REPORT*\n*DATE* \(dateString))\n*USER AGENT* \(userAgent)\n*UTI* \(self.localMarkdownUTI)\n*FEEDBACK* \(feedback)"
+        dict.setObject(dataString,
+                        forKey: NSString.init(string: "text"))
+        dict.setObject(true, forKey: NSString.init(string: "mrkdown"))
+        
+        // Add the
+
+        if let url: URL = URL.init(string: MNU_SECRETS.ADDRESS.A + MNU_SECRETS.ADDRESS.B) {
+            var request: URLRequest = URLRequest.init(url: url)
+            request.httpMethod = "POST"
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: dict,
+                                                              options:JSONSerialization.WritingOptions.init(rawValue: 0))
+
+                request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
+                request.addValue("application/json", forHTTPHeaderField: "Content-type")
+
+                let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+                let session: URLSession = URLSession.init(configuration: config,
+                                                          delegate: self,
+                                                          delegateQueue: OperationQueue.main)
+                return session.dataTask(with: request)
+            } catch {
+                // NOP
+            }
+        }
+        
+        return nil
     }
 
+    
     @IBAction func doShowPreferences(sender: Any?) {
 
         // FROM 1.2.0
@@ -455,6 +487,33 @@ class AppDelegate: NSObject,
             defaults.synchronize()
         }
 
+    }
+    
+    
+    func getLocalMarkdownUTI() -> String {
+        
+        // FROM 1.2.0
+        // Read back the host system's registered UTI for markdown files.
+        // This is not PII. It used solely for debugging purposes
+        
+        var localMarkdownUTI: String = "NONE"
+        let samplePath = Bundle.main.resourcePath! + "/sample.md"
+        
+        if FileManager.default.fileExists(atPath: samplePath) {
+            // Create a URL reference to the sample file
+            let sampleURL = URL.init(fileURLWithPath: samplePath)
+            
+            do {
+                // Read back the UTI from the URL
+                if let uti = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+                    localMarkdownUTI = uti
+                }
+            } catch {
+                // NOP
+            }
+        }
+        
+        return localMarkdownUTI
     }
 
 }
