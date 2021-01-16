@@ -67,13 +67,6 @@ class AppDelegate: NSObject,
 
     // MARK:- Class Lifecycle Functions
 
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-
-        // When the main window closed, shut down the app
-        return true
-    }
-
-
     func applicationDidFinishLaunching(_ notification: Notification) {
         
         // FROM 1.2.0
@@ -100,6 +93,13 @@ class AppDelegate: NSObject,
         // Centre window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
+    }
+
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+
+        // When the main window closed, shut down the app
+        return true
     }
 
 
@@ -206,34 +206,31 @@ class AppDelegate: NSObject,
         
         // Send the string etc.
         // First get the data we need to build the user agent string
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        let bundle: Bundle = Bundle.main
-        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
-        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        let userAgent: String = "\(app) \(version) (build \(build)) (macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
+        let userAgent: String = getUserAgentForFeedback()
         
         // Get the date as a string
-        var dateString = "Unknown"
-        let date: Date = Date()
-        let def: DateFormatter = DateFormatter()
-        def.locale = Locale(identifier: "en_US_POSIX")
-        def.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        def.timeZone = TimeZone(secondsFromGMT: 0)
-        dateString = def.string(from: date)
+        let dateString: String = getDateForFeedback()
 
-        // Build the data we will POST
+        // Assemble the message string
+        let dataString: String = """
+         *FEEDBACK REPORT*
+         *DATE* \(dateString))
+         *USER AGENT* \(userAgent)
+         *UTI* \(self.localMarkdownUTI)
+         *FEEDBACK* \(feedback)
+         """
+
+        // Build the data we will POST:
         let dict: NSMutableDictionary = NSMutableDictionary()
-        let dataString: String = "*FEEDBACK REPORT*\n*DATE* \(dateString))\n*USER AGENT* \(userAgent)\n*UTI* \(self.localMarkdownUTI)\n*FEEDBACK* \(feedback)"
         dict.setObject(dataString,
                         forKey: NSString.init(string: "text"))
         dict.setObject(true, forKey: NSString.init(string: "mrkdown"))
         
-        // Add the
-
+        // Make and return the HTTPS request for sending
         if let url: URL = URL.init(string: MNU_SECRETS.ADDRESS.A + MNU_SECRETS.ADDRESS.B) {
             var request: URLRequest = URLRequest.init(url: url)
             request.httpMethod = "POST"
+
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: dict,
                                                               options:JSONSerialization.WritingOptions.init(rawValue: 0))
@@ -252,6 +249,34 @@ class AppDelegate: NSObject,
         }
         
         return nil
+    }
+
+
+    func getDateForFeedback() -> String {
+
+        // FROM 1.2.0
+        // Refactor code out into separate function for clarity
+
+        let date: Date = Date()
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter.string(from: date)
+    }
+
+
+    func getUserAgentForFeedback() -> String {
+
+        // FROM 1.2.0
+        // Refactor code out into separate function for clarity
+
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        let bundle: Bundle = Bundle.main
+        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
+        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        return "\(app) \(version) (build \(build)) (macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
     }
 
     
