@@ -154,10 +154,7 @@ class AppDelegate: NSObject,
         self.feedbackText.stringValue = ""
 
         // Present the window
-        if let window = self.window {
-            window.beginSheet(self.reportWindow,
-                              completionHandler: nil)
-        }
+        self.window.beginSheet(self.reportWindow, completionHandler: nil)
     }
 
 
@@ -167,7 +164,7 @@ class AppDelegate: NSObject,
         // User has clicked 'Cancel', so just close the sheet
 
         self.connectionProgress.stopAnimation(self)
-        self.window!.endSheet(self.reportWindow)
+        self.window.endSheet(self.reportWindow)
     }
 
 
@@ -192,7 +189,7 @@ class AppDelegate: NSObject,
             }
         } else {
             // No feedback, so close the sheet
-            self.window!.endSheet(self.reportWindow)
+            self.window.endSheet(self.reportWindow)
         }
         
         // NOTE sheet closes asynchronously unless there was no feedback to send
@@ -309,10 +306,7 @@ class AppDelegate: NSObject,
         self.doShowTagCheckbox.state = self.doShowTag ? .on : .off
 
         // Display the sheet
-        if let window = self.window {
-            window.beginSheet(self.preferencesWindow,
-                              completionHandler: nil)
-        }
+        self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
 
 
@@ -404,7 +398,7 @@ class AppDelegate: NSObject,
                                            "Your comments have been received and we’ll take a look at them shortly.")
             alert.beginSheetModal(for: self.reportWindow) { (resp) in
                 // Close the feedback window when the modal alert returns
-                self.window!.endSheet(self.reportWindow)
+                self.window.endSheet(self.reportWindow)
             }
         }
     }
