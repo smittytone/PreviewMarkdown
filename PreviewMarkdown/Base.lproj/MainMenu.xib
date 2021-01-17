@@ -164,18 +164,18 @@
         <window title="PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="580" height="370"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
-            <value key="minSize" type="size" width="580" height="370"/>
-            <value key="maxSize" type="size" width="580" height="370"/>
-            <value key="minFullScreenContentSize" type="size" width="580" height="370"/>
-            <value key="maxFullScreenContentSize" type="size" width="580" height="370"/>
+            <rect key="contentRect" x="335" y="390" width="580" height="360"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <value key="minSize" type="size" width="580" height="360"/>
+            <value key="maxSize" type="size" width="580" height="360"/>
+            <value key="minFullScreenContentSize" type="size" width="580" height="360"/>
+            <value key="maxFullScreenContentSize" type="size" width="580" height="360"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="580" height="370"/>
+                <rect key="frame" x="0.0" y="0.0" width="580" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MgT-WK-sk0">
-                        <rect key="frame" x="258" y="298" width="64" height="64"/>
+                        <rect key="frame" x="258" y="288" width="64" height="64"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="64" id="2Js-wn-Zxv"/>
                             <constraint firstAttribute="height" constant="64" id="dk2-Wb-FUG"/>
@@ -183,19 +183,19 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="appicon" id="O4R-6I-qgH"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
-                        <rect key="frame" x="18" y="154" width="544" height="112"/>
+                        <rect key="frame" x="18" y="192" width="544" height="64"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="112" id="6bM-Ok-96N"/>
+                            <constraint firstAttribute="height" constant="64" id="6bM-Ok-96N"/>
                         </constraints>
                         <textFieldCell key="cell" allowsUndo="NO" alignment="center" id="ztO-7G-jpz">
                             <font key="font" metaFont="system"/>
-                            <string key="title">PreviewMarkdown provides QuickLook previews and icon thumbnails for Markdown files.  Run this app once to register its Previewer and Thumbnailer application extensions, which you can then manage in System Preferences &gt; Extensions &gt; Quick Look  Cases where previews cannot be rendered can usually be resolved by  logging out of your Mac account, logging in again and re-running this app.</string>
+                            <string key="title">PreviewMarkdown provides QuickLook previews and icon thumbnails for Markdown files.  Run this app once to register its Previewer and Thumbnailer application extensions, which you can then manage in System Preferences &gt; Extensions &gt; Quick Look</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuP-3k-wPO">
-                        <rect key="frame" x="18" y="274" width="544" height="16"/>
+                        <rect key="frame" x="18" y="264" width="544" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="QdT-Ai-Oqx"/>
                         </constraints>
@@ -208,8 +208,8 @@
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
                         <rect key="frame" x="248" y="13" width="84" height="33"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="5W7-jO-VfU"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="lsY-5x-ikr"/>
+                            <constraint firstAttribute="height" constant="21" id="Swh-Po-1ZP"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="nif-mB-0CP"/>
                         </constraints>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GIL-s9-L7E">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -223,7 +223,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
-                        <rect key="frame" x="194" y="113" width="192" height="32"/>
+                        <rect key="frame" x="194" y="157" width="192" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="L6p-CX-ebx"/>
                             <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
@@ -237,10 +237,10 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="222" y="80" width="136" height="33"/>
+                        <rect key="frame" x="194" y="88" width="192" height="33"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="SNH-kB-lsD"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="122" id="kra-Ss-ZX5"/>
+                            <constraint firstAttribute="height" constant="21" id="sXd-m9-ssw"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="xiJ-nG-Ew3"/>
                         </constraints>
                         <buttonCell key="cell" type="push" title="Send Feedback" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ho2-VM-TFK">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -250,10 +250,22 @@ DQ
                             <action selector="showFeedbackWindowWithSender:" target="Voe-Tx-rLC" id="gXk-XM-ZPq"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="18" y="56" width="544" height="11"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3wi-zv-iYg">
+                        <rect key="frame" x="18" y="124" width="544" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="11" id="oGv-kS-n6Z"/>
+                            <constraint firstAttribute="height" constant="32" id="2tQ-tg-s2x"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" id="Ca4-Aq-uAZ">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <string key="title">Cases where previews cannot be rendered can usually be resolved by  logging out of your Mac account, logging in again and re-running this app.</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
+                        <rect key="frame" x="18" y="61" width="544" height="11"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="11" id="wZ0-9P-Rv3"/>
                         </constraints>
                         <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" title="PreviewMarkdown © 2021, Tony Smith. Contains SwiftyMarkdown © 2021, Simon Fairbairn" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
@@ -263,23 +275,26 @@ DQ
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="14" id="1vL-cU-3Dn"/>
+                    <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="8" id="1vL-cU-3Dn"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="8" id="7Xy-CE-dM0"/>
-                    <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="GAp-6B-Vm1"/>
-                    <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" id="GVZ-Lc-Fvq"/>
-                    <constraint firstItem="NSG-kl-hgD" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="Hik-R8-hRD"/>
+                    <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="20" symbolic="YES" id="8Wd-ZV-LdX"/>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="A3z-7g-iBU"/>
                     <constraint firstAttribute="trailing" secondItem="RuP-3k-wPO" secondAttribute="trailing" constant="20" id="NOS-rf-Isn"/>
+                    <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" symbolic="YES" id="Np0-S8-suU"/>
+                    <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="Smh-Q0-fvF"/>
+                    <constraint firstItem="3wi-zv-iYg" firstAttribute="top" secondItem="Gsi-wT-aLS" secondAttribute="bottom" constant="8" symbolic="YES" id="VFL-Em-u3W"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="We8-d6-Vd3"/>
                     <constraint firstItem="Gsi-wT-aLS" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="X72-aP-1ry"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ZGi-IC-AJN"/>
-                    <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="15" id="doV-Jg-cyI"/>
+                    <constraint firstItem="NSG-kl-hgD" firstAttribute="top" secondItem="3wi-zv-iYg" secondAttribute="bottom" constant="8" symbolic="YES" id="cJF-sf-3Ry"/>
+                    <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" symbolic="YES" id="do2-Um-wPw"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="ixc-oa-Nle"/>
+                    <constraint firstAttribute="trailing" secondItem="3wi-zv-iYg" secondAttribute="trailing" constant="20" symbolic="YES" id="jFx-gx-iE6"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
-                    <constraint firstItem="NSG-kl-hgD" firstAttribute="top" secondItem="Gsi-wT-aLS" secondAttribute="bottom" constant="12" id="odI-nU-9KD"/>
-                    <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="tkZ-dx-IAZ"/>
-                    <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" symbolic="YES" id="xRq-Mg-hv9"/>
+                    <constraint firstItem="NSG-kl-hgD" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="oks-23-ecX"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="top" secondItem="RuP-3k-wPO" secondAttribute="bottom" constant="8" id="xSK-e7-CvK"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="top" secondItem="MgT-WK-sk0" secondAttribute="bottom" constant="8" id="ylJ-KU-6RY"/>
+                    <constraint firstItem="3wi-zv-iYg" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="zOL-4T-bcu"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="321" y="5"/>
@@ -288,7 +303,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="324"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="560" height="324"/>
             <value key="maxSize" type="size" width="560" height="324"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
@@ -398,7 +413,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="428" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="428" height="356"/>
             <value key="maxSize" type="size" width="428" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="428" height="356"/>
