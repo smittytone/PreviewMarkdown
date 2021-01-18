@@ -164,18 +164,18 @@
         <window title="PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="580" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
-            <value key="minSize" type="size" width="580" height="360"/>
-            <value key="maxSize" type="size" width="580" height="360"/>
-            <value key="minFullScreenContentSize" type="size" width="580" height="360"/>
-            <value key="maxFullScreenContentSize" type="size" width="580" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="580" height="430"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <value key="minSize" type="size" width="580" height="430"/>
+            <value key="maxSize" type="size" width="580" height="430"/>
+            <value key="minFullScreenContentSize" type="size" width="580" height="430"/>
+            <value key="maxFullScreenContentSize" type="size" width="580" height="430"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="580" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="580" height="430"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MgT-WK-sk0">
-                        <rect key="frame" x="258" y="288" width="64" height="64"/>
+                        <rect key="frame" x="258" y="358" width="64" height="64"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="64" id="2Js-wn-Zxv"/>
                             <constraint firstAttribute="height" constant="64" id="dk2-Wb-FUG"/>
@@ -183,7 +183,7 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="appicon" id="O4R-6I-qgH"/>
                     </imageView>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZ4-st-Vdc">
-                        <rect key="frame" x="18" y="192" width="544" height="64"/>
+                        <rect key="frame" x="18" y="262" width="544" height="64"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="64" id="6bM-Ok-96N"/>
                         </constraints>
@@ -195,7 +195,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuP-3k-wPO">
-                        <rect key="frame" x="18" y="264" width="544" height="16"/>
+                        <rect key="frame" x="18" y="334" width="544" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="QdT-Ai-Oqx"/>
                         </constraints>
@@ -223,7 +223,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
-                        <rect key="frame" x="194" y="157" width="192" height="32"/>
+                        <rect key="frame" x="194" y="227" width="192" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="L6p-CX-ebx"/>
                             <constraint firstAttribute="height" constant="20" id="eQd-KA-L0Q"/>
@@ -236,22 +236,8 @@ DQ
                             <action selector="openSysPrefsWithSender:" target="Voe-Tx-rLC" id="7QC-ZS-7VH"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="194" y="88" width="192" height="33"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="sXd-m9-ssw"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="xiJ-nG-Ew3"/>
-                        </constraints>
-                        <buttonCell key="cell" type="push" title="Send Feedback" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ho2-VM-TFK">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="showFeedbackWindowWithSender:" target="Voe-Tx-rLC" id="gXk-XM-ZPq"/>
-                        </connections>
-                    </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3wi-zv-iYg">
-                        <rect key="frame" x="18" y="124" width="544" height="32"/>
+                        <rect key="frame" x="18" y="194" width="544" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="2tQ-tg-s2x"/>
                         </constraints>
@@ -273,37 +259,67 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vcG-Dx-9rX">
+                        <rect key="frame" x="194" y="159" width="192" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="1CQ-aQ-SVh"/>
+                            <constraint firstAttribute="height" constant="20" id="rzt-rI-sjh"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Log Out Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IAF-wl-iln">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="doLogOut:" target="Voe-Tx-rLC" id="S3w-1y-Qbw"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
+                        <rect key="frame" x="194" y="85" width="192" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="bxE-yY-xN1"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="dql-2V-212"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Send Feedback" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ho2-VM-TFK">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="showFeedbackWindowWithSender:" target="Voe-Tx-rLC" id="gXk-XM-ZPq"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Gsi-wT-aLS" firstAttribute="top" secondItem="yZ4-st-Vdc" secondAttribute="bottom" constant="8" id="1vL-cU-3Dn"/>
+                    <constraint firstItem="vcG-Dx-9rX" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="48W-Qf-qfr"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="8" id="7Xy-CE-dM0"/>
                     <constraint firstItem="Od6-82-oZh" firstAttribute="top" secondItem="F0g-rH-b3T" secondAttribute="bottom" constant="20" symbolic="YES" id="8Wd-ZV-LdX"/>
                     <constraint firstItem="F0g-rH-b3T" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="A3z-7g-iBU"/>
+                    <constraint firstItem="NSG-kl-hgD" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="LUf-3D-hIp"/>
                     <constraint firstAttribute="trailing" secondItem="RuP-3k-wPO" secondAttribute="trailing" constant="20" id="NOS-rf-Isn"/>
                     <constraint firstAttribute="trailing" secondItem="F0g-rH-b3T" secondAttribute="trailing" constant="20" symbolic="YES" id="Np0-S8-suU"/>
                     <constraint firstItem="Od6-82-oZh" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="Smh-Q0-fvF"/>
                     <constraint firstItem="3wi-zv-iYg" firstAttribute="top" secondItem="Gsi-wT-aLS" secondAttribute="bottom" constant="8" symbolic="YES" id="VFL-Em-u3W"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="We8-d6-Vd3"/>
                     <constraint firstItem="Gsi-wT-aLS" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="X72-aP-1ry"/>
+                    <constraint firstItem="F0g-rH-b3T" firstAttribute="top" secondItem="NSG-kl-hgD" secondAttribute="bottom" constant="20" symbolic="YES" id="Y3t-6O-JYF"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="ZGi-IC-AJN"/>
-                    <constraint firstItem="NSG-kl-hgD" firstAttribute="top" secondItem="3wi-zv-iYg" secondAttribute="bottom" constant="8" symbolic="YES" id="cJF-sf-3Ry"/>
                     <constraint firstAttribute="bottom" secondItem="Od6-82-oZh" secondAttribute="bottom" constant="20" symbolic="YES" id="do2-Um-wPw"/>
                     <constraint firstAttribute="trailing" secondItem="yZ4-st-Vdc" secondAttribute="trailing" constant="20" id="ixc-oa-Nle"/>
                     <constraint firstAttribute="trailing" secondItem="3wi-zv-iYg" secondAttribute="trailing" constant="20" symbolic="YES" id="jFx-gx-iE6"/>
                     <constraint firstItem="MgT-WK-sk0" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="lWg-EH-s2D"/>
-                    <constraint firstItem="NSG-kl-hgD" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="oks-23-ecX"/>
+                    <constraint firstItem="vcG-Dx-9rX" firstAttribute="top" secondItem="3wi-zv-iYg" secondAttribute="bottom" constant="8" symbolic="YES" id="u6B-4f-Ma0"/>
                     <constraint firstItem="yZ4-st-Vdc" firstAttribute="top" secondItem="RuP-3k-wPO" secondAttribute="bottom" constant="8" id="xSK-e7-CvK"/>
                     <constraint firstItem="RuP-3k-wPO" firstAttribute="top" secondItem="MgT-WK-sk0" secondAttribute="bottom" constant="8" id="ylJ-KU-6RY"/>
                     <constraint firstItem="3wi-zv-iYg" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="zOL-4T-bcu"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="321" y="5"/>
+            <point key="canvasLocation" x="321" y="44"/>
         </window>
         <window title="Send Feedback" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qvu-BL-pGS">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="324"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="560" height="324"/>
             <value key="maxSize" type="size" width="560" height="324"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
@@ -413,7 +429,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="428" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="428" height="356"/>
             <value key="maxSize" type="size" width="428" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="428" height="356"/>

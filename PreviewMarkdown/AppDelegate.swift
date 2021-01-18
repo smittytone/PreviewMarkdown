@@ -375,6 +375,72 @@ class AppDelegate: NSObject,
     }
 
 
+    @IBAction func doLogOut(_ sender: Any?) {
+
+        // FROM 1.2.0
+        // Run a log out sequence if the user requests it
+
+        let app: String = "/usr/bin/osascript"
+        let args: [String] = ["-e", "tell application \"System Events\" to log out"]
+
+        // Run the process
+        // NOTE This time we wait for its conclusion
+        let success = runProcess(app: app, with: (args.count > 0 ? args : []))
+        if !success {
+            // Log out request failed for some reason
+            let alert: NSAlert = NSAlert.init()
+            alert.messageText = "Log out request failed"
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
+    }
+
+
+    func runProcess(app path: String, with args: [String]) -> Bool {
+
+        // FROM 1.2.0
+        // Generic task creation and run function
+
+        let task: Process = Process()
+        task.executableURL = URL.init(fileURLWithPath: path)
+        task.arguments = args
+
+        // Pipe out the output to avoid putting it in the log
+        let outputPipe = Pipe()
+        task.standardOutput = outputPipe
+        task.standardError = outputPipe
+
+        do {
+            try task.run()
+        } catch {
+            return false
+        }
+
+        // Block until the task has completed (short tasks ONLY)
+        task.waitUntilExit()
+
+        if !task.isRunning {
+            if (task.terminationStatus != 0) {
+                // Command failed -- collect the output if there is any
+                let outputHandle = outputPipe.fileHandleForReading
+                var outString: String = ""
+                if let line = String(data: outputHandle.availableData, encoding: String.Encoding.utf8) {
+                    outString = line
+                }
+
+                if outString.count > 0 {
+                    print("\(outString)")
+                } else {
+                    print("Error", "Exit code \(task.terminationStatus)")
+                }
+                return false
+            }
+        }
+
+        return true
+    }
+
+
     // MARK: - URLSession Delegate Functions
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
