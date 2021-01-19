@@ -423,12 +423,11 @@ class AppDelegate: NSObject,
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
             let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
-            #if RELEASE
             defaults.setValue(false, forKey: key)
-            #endif
 
             #if DEBUG
-            print("\(key) not reset")
+            print("\(key) reset back to true")
+            defaults.setValue(true, forKey: key)
             #endif
 
             defaults.synchronize()
