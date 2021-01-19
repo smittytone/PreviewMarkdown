@@ -102,7 +102,7 @@ class AppDelegate: NSObject,
         // FROM 1.2.0
         // Show 'What's New' if we need to
         // NOTE Has to take place at the end of the function
-        doShowWhatsNew()
+        doShowWhatsNew(self)
     }
 
 
@@ -168,7 +168,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction @objc func doCancelReportWindow(sender: Any?) {
+    @IBAction @objc func doCancelReportWindow(sender: Any) {
 
         // FROM 1.1.1
         // User has clicked 'Cancel', so just close the sheet
@@ -178,7 +178,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction @objc func doSendFeedback(sender: Any?) {
+    @IBAction @objc func doSendFeedback(sender: Any) {
 
         // FROM 1.1.1
         // User clicked 'Send' so get the message (if there is one) from the text field and send it
@@ -287,7 +287,7 @@ class AppDelegate: NSObject,
     }
 
     
-    @IBAction func doShowPreferences(sender: Any?) {
+    @IBAction func doShowPreferences(sender: Any) {
 
         // FROM 1.2.0
         // Display the Preferences... sheet
@@ -320,7 +320,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doMoveSlider(sender: Any?) {
+    @IBAction func doMoveSlider(sender: Any) {
 
         // FROM 1.2.0
         let index: Int = Int(self.fontSizeSlider.floatValue)
@@ -328,7 +328,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doClosePreferences(sender: Any?) {
+    @IBAction func doClosePreferences(sender: Any) {
 
         // FROM 1.2.0
         // Close the Preferences... sheet
@@ -337,7 +337,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doSavePreferences(sender: Any?) {
+    @IBAction func doSavePreferences(sender: Any) {
 
         // FROM 1.2.0
         // Close the Preferences... sheet and save the prefs, if they have changed
@@ -385,7 +385,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func doShowWhatsNew() {
+    @IBAction func doShowWhatsNew(_ sender: Any) {
 
         // FROM 1.2.0
         // Show the 'What's New' sheet, if we're on a new, non-patch version
@@ -411,7 +411,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doCloseWhatsNew(_ sender: Any?) {
+    @IBAction func doCloseWhatsNew(_ sender: Any) {
 
         // FROM 1.2.0
         // Close the 'What's New' sheet, making sure we clear the preference flag for this minor version,
@@ -419,6 +419,9 @@ class AppDelegate: NSObject,
 
         // Close the sheet
         self.window.endSheet(self.whatsNewWindow)
+        
+        // Scroll the web view back to the top
+        self.whatsNewWebView.evaluateJavaScript("window.scrollTo(0,0)", completionHandler: nil)
 
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
@@ -435,7 +438,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doLogOut(_ sender: Any?) {
+    @IBAction func doLogOut(_ sender: Any) {
 
         // FROM 1.2.0
         // Run a log out sequence if the user requests it
