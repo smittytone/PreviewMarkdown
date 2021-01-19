@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B04F70725B6FC170024F39C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
 		3B0CC89924EADF0C006AC907 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B0CC89824EADF0C006AC907 /* SwiftyMarkdown */; };
 		3B0CC89B24EADF2E006AC907 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */; };
 		3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
@@ -126,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B04F70725B6FC170024F39C /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +659,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -683,7 +685,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -707,7 +709,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -735,7 +737,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -762,7 +764,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -789,7 +791,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
