@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -31,6 +32,8 @@
                 <outlet property="reportWindow" destination="Qvu-BL-pGS" id="iaa-7G-SRe"/>
                 <outlet property="useLightCheckbox" destination="Mls-DP-Cdx" id="HfF-ed-Tbs"/>
                 <outlet property="versionLabel" destination="RuP-3k-wPO" id="2c9-E8-cV8"/>
+                <outlet property="whatsNewWebView" destination="edS-kL-I2r" id="f6t-H5-tEf"/>
+                <outlet property="whatsNewWindow" destination="9wj-wl-UO6" id="5x9-DD-ytU"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -259,13 +262,13 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vcG-Dx-9rX">
+                    <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vcG-Dx-9rX">
                         <rect key="frame" x="194" y="159" width="192" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="1CQ-aQ-SVh"/>
                             <constraint firstAttribute="height" constant="20" id="rzt-rI-sjh"/>
                         </constraints>
-                        <buttonCell key="cell" type="push" title="Log Out Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IAF-wl-iln">
+                        <buttonCell key="cell" type="push" title="Log Out Now" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="IAF-wl-iln">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -738,6 +741,56 @@ Gw
         <menuItem title="Item" id="iQi-XH-uTb">
             <modifierMask key="keyEquivalentModifierMask"/>
         </menuItem>
+        <window title="What's New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9wj-wl-UO6">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="206" width="540" height="410"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <value key="minSize" type="size" width="540" height="410"/>
+            <value key="maxSize" type="size" width="540" height="410"/>
+            <value key="minFullScreenContentSize" type="size" width="540" height="410"/>
+            <value key="maxFullScreenContentSize" type="size" width="540" height="410"/>
+            <view key="contentView" id="vdn-fg-L2O">
+                <rect key="frame" x="0.0" y="0.0" width="540" height="410"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="edS-kL-I2r">
+                        <rect key="frame" x="4" y="39" width="532" height="371"/>
+                        <wkWebViewConfiguration key="configuration">
+                            <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                            <wkPreferences key="preferences"/>
+                        </wkWebViewConfiguration>
+                    </wkWebView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AQa-FM-Ece">
+                        <rect key="frame" x="237" y="3" width="66" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="52" id="kZG-00-QcU"/>
+                            <constraint firstAttribute="height" constant="20" id="sUy-H8-emO"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tnq-MK-fJq">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <color key="contentTintColor" name="systemPurpleColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <action selector="doCloseWhatsNew:" target="Voe-Tx-rLC" id="eSS-C4-4GT"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="AQa-FM-Ece" firstAttribute="centerX" secondItem="vdn-fg-L2O" secondAttribute="centerX" id="DHC-bJ-b9e"/>
+                    <constraint firstAttribute="bottom" secondItem="AQa-FM-Ece" secondAttribute="bottom" constant="10" id="a0N-LE-eAh"/>
+                    <constraint firstAttribute="trailing" secondItem="edS-kL-I2r" secondAttribute="trailing" constant="4" id="bEe-hW-SrZ"/>
+                    <constraint firstAttribute="bottom" secondItem="edS-kL-I2r" secondAttribute="bottom" constant="39" id="qZ8-Yt-fvO"/>
+                    <constraint firstItem="edS-kL-I2r" firstAttribute="leading" secondItem="vdn-fg-L2O" secondAttribute="leading" constant="4" id="y7R-yl-np7"/>
+                    <constraint firstItem="edS-kL-I2r" firstAttribute="top" secondItem="vdn-fg-L2O" secondAttribute="top" id="yLx-iS-xyl"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="481" y="591"/>
+        </window>
     </objects>
     <resources>
         <image name="appicon" width="64" height="64"/>

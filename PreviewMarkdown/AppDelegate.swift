@@ -8,6 +8,7 @@
 
 import Cocoa
 import CoreServices
+import WebKit
 
 
 @NSApplicationMain
@@ -49,6 +50,10 @@ class AppDelegate: NSObject,
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
     @IBOutlet weak var codeColourPopup: NSPopUpButton!
 
+    // FROM 1.2.0
+    // What's New Sheet
+    @IBOutlet weak var whatsNewWindow: NSWindow!
+    @IBOutlet weak var whatsNewWebView: WKWebView!
 
     // MARK:- Private Properies
     // FROM 1.1.1
@@ -93,6 +98,11 @@ class AppDelegate: NSObject,
         // Centre window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
+
+        // FROM 1.2.0
+        // Show 'What's New' if we need to
+        // NOTE Has to take place at the end of the function
+        doShowWhatsNew()
     }
 
 
@@ -375,6 +385,57 @@ class AppDelegate: NSObject,
     }
 
 
+    func doShowWhatsNew() {
+
+        // FROM 1.2.0
+        // Show the 'What's New' sheet, if we're on a new, non-patch version
+
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            // Get the version-specific preference key
+            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+            if defaults.bool(forKey: key) {
+                // Configure and show the sheet: first, get the folder path
+                let htmlFolderPath = Bundle.main.resourcePath! + "/new"
+
+                // Just in case, make sure we can load the file
+                if FileManager.default.fileExists(atPath: htmlFolderPath) {
+                    let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
+                    let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
+                    self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
+
+                    // Display the sheet
+                    self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                }
+            }
+        }
+    }
+
+
+    @IBAction func doCloseWhatsNew(_ sender: Any?) {
+
+        // FROM 1.2.0
+        // Close the 'What's New' sheet, making sure we clear the preference flag for this minor version,
+        // so that the sheet is not displayed next time the app is run (unless the version changes)
+
+        // Close the sheet
+        self.window.endSheet(self.whatsNewWindow)
+
+        // Set this version's preference
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+            #if RELEASE
+            defaults.setValue(false, forKey: key)
+            #endif
+
+            #if DEBUG
+            print("\(key) not reset")
+            #endif
+
+            defaults.synchronize()
+        }
+    }
+
+
     @IBAction func doLogOut(_ sender: Any?) {
 
         // FROM 1.2.0
@@ -568,6 +629,18 @@ class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
+            // Show the What's New sheet
+            // Default: true
+            // This is a version-specific preference suffixed with, eg, '-2-3'. Once created
+            // this will persist, but with each new major and/or minor version, we make a
+            // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
+            // should be shown this run
+            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+            let showNewDefault: Any? = defaults.object(forKey: key)
+            if showNewDefault == nil {
+                defaults.setValue(true, forKey: key)
+            }
+
             // Sync any additions
             defaults.synchronize()
         }
@@ -599,6 +672,17 @@ class AppDelegate: NSObject,
         }
         
         return localMarkdownUTI
+    }
+
+
+    func getVersion() -> String {
+
+        // FROM 1.2.0
+        // Build a basic 'major.manor' version string for prefs usage
+
+        let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let parts: [String] = (version as NSString).components(separatedBy: ".")
+        return parts[0] + "-" + parts[1]
     }
 
 }
