@@ -29,6 +29,7 @@ For more information on the background to this app, please see this [blog post](
 - 1.2.0 *Unreleased*
     - Add preview display preferences (requested by various anonymous feedback senders)
     - Add file type ident tag to thumbnails (requested by @chamiu).
+    - Add **What’s New** sheet to be shown with new major/minor versions.
     - Include local markdown UTI with user-submitted feedback.
     - Add link for app reviews.
 - 1.1.4 *16 January 2021*
