@@ -392,7 +392,7 @@ class AppDelegate: NSObject,
            
         // See if we're coming from a menu click (sender != self) or
         // directly in code from 'appDidFinishLoading()' (sender == self)
-        var doShowSheet: Bool = sender != self
+        var doShowSheet: Bool = type(of: self) == type(of: sender)
         
         if !doShowSheet {
             // We are coming from the 'appDidFinishLoading()' so check
