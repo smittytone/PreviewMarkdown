@@ -389,23 +389,33 @@ class AppDelegate: NSObject,
 
         // FROM 1.2.0
         // Show the 'What's New' sheet, if we're on a new, non-patch version
+           
+        // See if we're coming from a menu click (sender != self) or
+        // directly in code from 'appDidFinishLoading()' (sender == self)
+        var doShowSheet: Bool = sender != self
+        
+        if !doShowSheet {
+            // We are coming from the 'appDidFinishLoading()' so check
+            // if we need to show the sheet by the checking the prefs
+            if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+                // Get the version-specific preference key
+                let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+                doShowSheet = defaults.bool(forKey: key)
+            }
+        }
+      
+        // Configure and show the sheet: first, get the folder path
+        if doShowSheet {
+            let htmlFolderPath = Bundle.main.resourcePath! + "/new"
 
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-            // Get the version-specific preference key
-            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
-            if defaults.bool(forKey: key) {
-                // Configure and show the sheet: first, get the folder path
-                let htmlFolderPath = Bundle.main.resourcePath! + "/new"
+            // Just in case, make sure we can load the file
+            if FileManager.default.fileExists(atPath: htmlFolderPath) {
+                let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
+                let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
+                self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
 
-                // Just in case, make sure we can load the file
-                if FileManager.default.fileExists(atPath: htmlFolderPath) {
-                    let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
-                    let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
-                    self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
-
-                    // Display the sheet
-                    self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
-                }
+                // Display the sheet
+                self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
             }
         }
     }
