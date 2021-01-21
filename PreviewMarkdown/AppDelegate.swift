@@ -412,6 +412,7 @@ class AppDelegate: NSObject,
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
                 let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
                 let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
+                self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
                 self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
 
                 // Display the sheet

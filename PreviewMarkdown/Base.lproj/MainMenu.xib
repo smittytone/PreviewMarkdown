@@ -762,7 +762,7 @@ Gw
                 <subviews>
                     <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edS-kL-I2r">
                         <rect key="frame" x="4" y="39" width="532" height="371"/>
-                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO">
+                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                         </wkWebViewConfiguration>
