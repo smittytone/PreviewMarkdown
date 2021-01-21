@@ -15,7 +15,8 @@ import WebKit
 class AppDelegate: NSObject,
                    NSApplicationDelegate,
                    URLSessionDelegate,
-                   URLSessionDataDelegate {
+                   URLSessionDataDelegate,
+                   WKNavigationDelegate {
 
 
     // MARK:- Class UI Properies
@@ -68,7 +69,7 @@ class AppDelegate: NSObject,
     private var doShowLightBackground: Bool = false
     private var doShowTag: Bool = false
     private var localMarkdownUTI: String = "NONE"
-
+    private var whatsNewNav: WKNavigation? = nil
 
     // MARK:- Class Lifecycle Functions
 
@@ -101,7 +102,9 @@ class AppDelegate: NSObject,
 
         // FROM 1.2.0
         // Show 'What's New' if we need to
+        // (and set up the WKWebBiew
         // NOTE Has to take place at the end of the function
+        self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
         doShowWhatsNew(self)
     }
 
@@ -412,9 +415,20 @@ class AppDelegate: NSObject,
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
                 let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
                 let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
-                self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
-                self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
+                self.whatsNewNav = self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
+            }
+        }
+    }
 
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+        // FROM 1.2.0
+        // Asynchronously show the sheet once the HTML has loaded
+        // (triggered by delegate method)
+
+        if let nav = self.whatsNewNav {
+            if nav == navigation {
                 // Display the sheet
                 self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
             }

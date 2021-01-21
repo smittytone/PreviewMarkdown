@@ -174,7 +174,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="580" height="430"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="580" height="430"/>
             <value key="maxSize" type="size" width="580" height="430"/>
             <value key="minFullScreenContentSize" type="size" width="580" height="430"/>
@@ -328,7 +328,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="324"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="560" height="324"/>
             <value key="maxSize" type="size" width="560" height="324"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
@@ -438,7 +438,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="428" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="428" height="356"/>
             <value key="maxSize" type="size" width="428" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="428" height="356"/>
@@ -751,7 +751,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="540" height="410"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <value key="minSize" type="size" width="540" height="410"/>
             <value key="maxSize" type="size" width="540" height="410"/>
             <value key="minFullScreenContentSize" type="size" width="540" height="410"/>
@@ -766,6 +766,9 @@ Gw
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                         </wkWebViewConfiguration>
+                        <connections>
+                            <outlet property="navigationDelegate" destination="Voe-Tx-rLC" id="yeb-F5-gt5"/>
+                        </connections>
                     </wkWebView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AQa-FM-Ece">
                         <rect key="frame" x="237" y="3" width="66" height="32"/>
