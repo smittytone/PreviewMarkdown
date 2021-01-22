@@ -102,9 +102,11 @@ class AppDelegate: NSObject,
 
         // FROM 1.2.0
         // Show 'What's New' if we need to
-        // (and set up the WKWebBiew
+        // (and set up the WKWebBiew: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
         self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
+        self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
+        self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
         doShowWhatsNew(self)
     }
 
