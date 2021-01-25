@@ -174,7 +174,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="580" height="430"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="580" height="430"/>
             <value key="maxSize" type="size" width="580" height="430"/>
             <value key="minFullScreenContentSize" type="size" width="580" height="430"/>
@@ -328,7 +328,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="324"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="560" height="324"/>
             <value key="maxSize" type="size" width="560" height="324"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
@@ -356,7 +356,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="YMa-8u-AIC"/>
                         </constraints>
-                        <textFieldCell key="cell" selectable="YES" title="Please provide us with your feedback or report a problem that you’ve encountered (512 characters max.)" id="uM7-Oz-2Vh">
+                        <textFieldCell key="cell" title="Please provide us with your feedback or report a problem that you’ve encountered (512 characters max.)" id="uM7-Oz-2Vh">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -367,7 +367,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="VdR-KW-Mc5"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="small" selectable="YES" id="rWk-kR-Tjj">
+                        <textFieldCell key="cell" controlSize="small" id="rWk-kR-Tjj">
                             <font key="font" metaFont="message" size="11"/>
                             <string key="title">We respect your privacy and we will not record or store any supplied email addresses, use them for marketing purposes, or pass them to third-parties.</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -438,7 +438,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="428" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="428" height="356"/>
             <value key="maxSize" type="size" width="428" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="428" height="356"/>
@@ -688,7 +688,7 @@ Gw
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
                         <rect key="frame" x="40" y="65" width="370" height="28"/>
-                        <textFieldCell key="cell" controlSize="small" selectable="YES" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
+                        <textFieldCell key="cell" controlSize="small" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -751,7 +751,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="540" height="410"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="540" height="410"/>
             <value key="maxSize" type="size" width="540" height="410"/>
             <value key="minFullScreenContentSize" type="size" width="540" height="410"/>
