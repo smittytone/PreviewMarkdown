@@ -226,17 +226,18 @@ class AppDelegate: NSObject,
         // Assemble the message string
         let dataString: String = """
          *FEEDBACK REPORT*
-         *DATE* \(dateString))
-         *USER AGENT* \(userAgent)
-         *UTI* \(self.localMarkdownUTI)
-         *FEEDBACK* \(feedback)
+         *Date:* \(dateString)
+         *User Agent:* \(userAgent)
+         *UTI:* \(self.localMarkdownUTI)
+         *FEEDBACK:*
+         \(feedback)
          """
 
         // Build the data we will POST:
         let dict: NSMutableDictionary = NSMutableDictionary()
         dict.setObject(dataString,
                         forKey: NSString.init(string: "text"))
-        dict.setObject(true, forKey: NSString.init(string: "mrkdown"))
+        dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
         
         // Make and return the HTTPS request for sending
         if let url: URL = URL.init(string: MNU_SECRETS.ADDRESS.A + MNU_SECRETS.ADDRESS.B) {
@@ -264,34 +265,6 @@ class AppDelegate: NSObject,
     }
 
 
-    func getDateForFeedback() -> String {
-
-        // FROM 1.2.0
-        // Refactor code out into separate function for clarity
-
-        let date: Date = Date()
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return dateFormatter.string(from: date)
-    }
-
-
-    func getUserAgentForFeedback() -> String {
-
-        // FROM 1.2.0
-        // Refactor code out into separate function for clarity
-
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        let bundle: Bundle = Bundle.main
-        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
-        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        return "\(app) \(version) (build \(build)) (macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
-    }
-
-    
     @IBAction func doShowPreferences(sender: Any) {
 
         // FROM 1.2.0
@@ -712,6 +685,34 @@ class AppDelegate: NSObject,
         let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let parts: [String] = (version as NSString).components(separatedBy: ".")
         return parts[0] + "-" + parts[1]
+    }
+    
+    
+    func getDateForFeedback() -> String {
+
+        // FROM 1.2.0
+        // Refactor code out into separate function for clarity
+
+        let date: Date = Date()
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter.string(from: date)
+    }
+
+
+    func getUserAgentForFeedback() -> String {
+
+        // FROM 1.2.0
+        // Refactor code out into separate function for clarity
+
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        let bundle: Bundle = Bundle.main
+        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
+        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        return "\(app)/\(version).\(build) (Mac macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
     }
 
 }
