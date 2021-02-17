@@ -113,13 +113,13 @@ class ThumbnailProvider: QLThumbnailProvider {
                     return
                 } else {
                     // We couldn't get the markdwn string so set an appropriate error to report back
-                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Thumbnailer",
                                           code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
                                           userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING])
                 }
             } catch {
                 // We couldn't read the file so set an appropriate error to report back
-                reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                reportError = NSError(domain: "com.bps.PreviewMarkdown.Thumbnailer",
                                       code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN,
                                       userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN])
             }
