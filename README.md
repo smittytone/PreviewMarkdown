@@ -28,6 +28,7 @@ For more information on the background to this app, please see this [blog post](
 
 - 1.2.1 *Unreleased*
     - Update user-agent string.
+    - Small code improvements.
 - 1.2.0 *4 February 2021*
     - Add preview display preferences (requested by various anonymous feedback senders)
     - Add file type ident tag to thumbnails (requested by @chamiu).
