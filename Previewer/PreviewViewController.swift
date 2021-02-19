@@ -10,7 +10,8 @@ import Cocoa
 import Quartz
 
 
-class PreviewViewController: NSViewController, QLPreviewingController {
+class PreviewViewController: NSViewController,
+                             QLPreviewingController {
 
     // MARK:- Class Properties
 

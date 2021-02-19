@@ -71,6 +71,7 @@ class AppDelegate: NSObject,
     private var localMarkdownUTI: String = "NONE"
     private var whatsNewNav: WKNavigation? = nil
 
+    
     // MARK:- Class Lifecycle Functions
 
     func applicationDidFinishLaunching(_ notification: Notification) {
