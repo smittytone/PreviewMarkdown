@@ -22,7 +22,36 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     setBaseValues(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
     processed = convertSpaces(processed)
-    return swiftyMarkdown.attributedString(from: processSymbols(processed))
+    
+    // FROM 1.3.0
+    // Check for front matter
+    var output: NSMutableAttributedString = swiftyMarkdown.attributedString(from: processSymbols(processed)) as! NSMutableAttributedString
+    
+    let frontMatter: [String:String] = swiftyMarkdown.frontMatterAttributes
+    output.append(NSAttributedString.init(string: "\nFMC: \(frontMatter.count)"))
+    
+    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        
+        if defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
+            if frontMatter.count > 0 {
+                // Assemble the front matter string:
+                let fms: NSMutableAttributedString = NSMutableAttributedString();
+                for (key, value) in frontMatter {
+                    let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " ")
+                    item.addAttribute(NSAttributedString.Key.foregroundColor, value: NSColor.systemRed, range: NSMakeRange(0, key.count))
+                    item.append(NSAttributedString.init(string: value + "\n"))
+                    fms.append(item)
+                }
+                
+                let hr = NSAttributedString(string: "\n\r\u{00A0} \u{0009} \u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.systemGray])
+                fms.append(hr)
+                fms.append(output)
+                output = fms
+            }
+        }
+    }
+        
+    return output;
 }
 
 

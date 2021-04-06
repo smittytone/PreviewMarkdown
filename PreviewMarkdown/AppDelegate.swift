@@ -50,6 +50,9 @@ class AppDelegate: NSObject,
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
     @IBOutlet weak var codeColourPopup: NSPopUpButton!
+    
+    // FROM 1.3.0
+    @IBOutlet weak var showFrontMatterCheckbox: NSButton!
 
     // FROM 1.2.0
     // What's New Sheet
@@ -70,6 +73,9 @@ class AppDelegate: NSObject,
     private var doShowTag: Bool = false
     private var localMarkdownUTI: String = "NONE"
     private var whatsNewNav: WKNavigation? = nil
+    
+    // FROM 1.3.0
+    private var doShowFrontMatter: Bool = false
 
     
     // MARK:- Class Lifecycle Functions
@@ -280,6 +286,9 @@ class AppDelegate: NSObject,
             self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
             self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
             self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+            
+            // FROM 1.3.0
+            self.doShowFrontMatter = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter")
         }
 
         // Get the menu item index from the stored value
@@ -293,6 +302,9 @@ class AppDelegate: NSObject,
         self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
         self.doShowTagCheckbox.state = self.doShowTag ? .on : .off
+        
+        // FROM 1.3.0
+        self.showFrontMatterCheckbox.state = self.doShowFrontMatter ? .on : .off
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -353,6 +365,13 @@ class AppDelegate: NSObject,
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
                                   forKey: "com-bps-previewmarkdown-base-font-size")
+            }
+            
+            // FROM 1.3.0
+            state = self.showFrontMatterCheckbox.state == .on
+            if self.doShowFrontMatter != state {
+                defaults.setValue(state,
+                                  forKey: "com-bps-previewmarkdown-do-show-front-matter")
             }
 
             // Sync any changes
@@ -642,6 +661,14 @@ class AppDelegate: NSObject,
             let showNewDefault: Any? = defaults.object(forKey: key)
             if showNewDefault == nil {
                 defaults.setValue(true, forKey: key)
+            }
+            
+            // FROM 1.3.0
+            // Show any YAML front matter, if present
+            // Default: false
+            let showFrontMatterDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            if showFrontMatterDefault == nil {
+                defaults.setValue(true, forKey: "com-bps-previewmarkdown-do-show-front-matter")
             }
 
             // Sync any additions
