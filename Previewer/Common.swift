@@ -41,41 +41,47 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     let frontMatter: [String:String] = swiftyMarkdown.frontMatterAttributes
     
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        if defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") && frontMatter.count > 0 && !isThumbnail {
-            // Assemble the front matter string:
-
+        if !isThumbnail && defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") && frontMatter.count > 0 {
+            
+            // Front Matter string attributes...
             let keyAtts: [NSAttributedString.Key:Any] = [
                 NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
                 NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
             ]
-
+            
+            // ...and attribute values
             let valAtts: [NSAttributedString.Key:Any] = [
                 NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
                 NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
             ]
-
-            let fms: NSMutableAttributedString = NSMutableAttributedString();
-
+            
+            let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: (doShowLightBackground ? NSColor.systemGray : NSColor.labelColor)])
+            
+            // Assemble the front matter string
+            let fms: NSMutableAttributedString = NSMutableAttributedString()
+            
+            // Initial line
+            fms.append(hr)
+            
+            // Add the keys and values
             for (key, value) in frontMatter {
-                let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " ")
-                //item.addAttribute(NSAttributedString.Key.foregroundColor, value: NSColor.systemRed, range: NSMakeRange(0, key.count))
+                let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " " + value + "\n")
                 item.addAttributes(keyAtts, range: NSMakeRange(0, key.count))
-                item.append(NSAttributedString.init(string: value + "\n"))
                 item.addAttributes(valAtts, range: NSMakeRange(key.count + 1, value.count))
                 fms.append(item)
             }
 
             // Add a line after the front matter
-            let hr = NSAttributedString(string: "\n\u{00A0} \u{0009} \u{00A0}\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.systemGray])
             fms.append(hr)
 
-            // Add in the rendered markdown
+            // Add in the rendered markdown and then set the
+            // output string to the combined string
             fms.append(output)
             output = fms
         }
     }
         
-    return output;
+    return output
 }
 
 

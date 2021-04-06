@@ -17,6 +17,7 @@ class PreviewViewController: NSViewController,
 
     @IBOutlet var errorReportField: NSTextField!
     @IBOutlet var renderTextView: NSTextView!
+    @IBOutlet var renderTextScrollView: NSScrollView!
 
     override var nibName: NSNib.Name? {
         return NSNib.Name("PreviewViewController")
@@ -52,13 +53,22 @@ class PreviewViewController: NSViewController,
                         defaults.synchronize()
                         doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
                     }
-
-                    self.renderTextView.backgroundColor = doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
+                    
+                    // FROM 1.3.0
+                    // Knock back the light background to make the scroll bars visible in dark mode
+                    // NOTE If !doShowLightBackground,
+                    //              in light mode, the scrollers show up dark-on-light, in dark mode light-on-dark
+                    //      If doShowLightBackground,
+                    //              in light mode, the scrollers show up light-on-light, in dark mode light-on-dark
+                    // NOTE Changing the scrollview scroller knob style has no effect
+                    self.renderTextView.backgroundColor = doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                    
+                    self.renderTextScrollView.scrollerKnobStyle = doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
                     }
-
+                    
                     // Add the subview to the instance's own view and draw
                     self.view.display()
 

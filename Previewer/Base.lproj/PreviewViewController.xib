@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Previewer" customModuleProvider="target">
             <connections>
                 <outlet property="errorReportField" destination="CPg-cs-coC" id="2IY-Jg-Tvr"/>
+                <outlet property="renderTextScrollView" destination="pRc-gN-4bi" id="yFP-Iy-SeQ"/>
                 <outlet property="renderTextView" destination="uBe-Ep-G4B" id="mft-4j-mp7"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
             </connections>

@@ -128,7 +128,11 @@ class AppDelegate: NSObject,
     // MARK:- Action Functions
 
     @IBAction func doClose(_ sender: Any) {
-
+        
+        // FROM 1.3.0
+        // Reset the QL thumbnail cache... just in case
+        _ = runProcess(app: "/usr/bin/qlmanage", with: ["-r", "cache"])
+        
         // Close the window... which will trigger an app closure
         self.window.close()
     }
