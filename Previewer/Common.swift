@@ -11,6 +11,18 @@ import SwiftyMarkdown
 import AppKit
 
 
+// FROM 1.2.0
+// Use defaults for some user-selectable values
+private var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+private var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
+private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
+private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+private var doShowLightBackground: Bool = false
+private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
+private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
+
+
 func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
     // FROM 1.1.0
@@ -26,28 +38,40 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // FROM 1.3.0
     // Check for front matter
     var output: NSMutableAttributedString = swiftyMarkdown.attributedString(from: processSymbols(processed)) as! NSMutableAttributedString
-    
     let frontMatter: [String:String] = swiftyMarkdown.frontMatterAttributes
-    output.append(NSAttributedString.init(string: "\nFMC: \(frontMatter.count)"))
     
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        
-        if defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
-            if frontMatter.count > 0 {
-                // Assemble the front matter string:
-                let fms: NSMutableAttributedString = NSMutableAttributedString();
-                for (key, value) in frontMatter {
-                    let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " ")
-                    item.addAttribute(NSAttributedString.Key.foregroundColor, value: NSColor.systemRed, range: NSMakeRange(0, key.count))
-                    item.append(NSAttributedString.init(string: value + "\n"))
-                    fms.append(item)
-                }
-                
-                let hr = NSAttributedString(string: "\n\r\u{00A0} \u{0009} \u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.systemGray])
-                fms.append(hr)
-                fms.append(output)
-                output = fms
+        if defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") && frontMatter.count > 0 && !isThumbnail {
+            // Assemble the front matter string:
+
+            let keyAtts: [NSAttributedString.Key:Any] = [
+                NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
+                NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+            ]
+
+            let valAtts: [NSAttributedString.Key:Any] = [
+                NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
+                NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+            ]
+
+            let fms: NSMutableAttributedString = NSMutableAttributedString();
+
+            for (key, value) in frontMatter {
+                let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " ")
+                //item.addAttribute(NSAttributedString.Key.foregroundColor, value: NSColor.systemRed, range: NSMakeRange(0, key.count))
+                item.addAttributes(keyAtts, range: NSMakeRange(0, key.count))
+                item.append(NSAttributedString.init(string: value + "\n"))
+                item.addAttributes(valAtts, range: NSMakeRange(key.count + 1, value.count))
+                fms.append(item)
             }
+
+            // Add a line after the front matter
+            let hr = NSAttributedString(string: "\n\u{00A0} \u{0009} \u{00A0}\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.systemGray])
+            fms.append(hr)
+
+            // Add in the rendered markdown
+            fms.append(output)
+            output = fms
         }
     }
         
@@ -176,20 +200,6 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     // Set common base style values for the markdown render
 
     // FROM 1.2.0
-    // Set possible font values
-    // NOTE The strings are PostScript names
-    let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
-    let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
-
-    // FROM 1.2.0
-    // Use defaults for some user-selectable values
-    var fontSizeBase: CGFloat = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
-    var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
-    var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
-    var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
-    var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
-    var doShowLightBackground = false
-
     // The suite name is the app group name, set in each extension's entitlements, and the host app's
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
         defaults.synchronize()
