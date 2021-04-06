@@ -12,7 +12,7 @@ You can disable and re-enable the Previewer and Thumbnailer extensions at any ti
 
 ### Adjusting the Preview ###
 
-Version 1.2.0 adds a Preferences panel, which allows you to alter some of the key elements of the preview:
+You can alter some of the key elements of the preview by using the **Preferences** panel:
 
 - The colour of code blocks.
 - Code blocks’ monospaced font.
@@ -24,12 +24,17 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
 
+### YAML Front Matter ###
+
+Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. This is disabled by default — to enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
+
 ## Release Notes ##
 
 - 1.3.0 *Unreleased*
-    - Add optional YAML front matter display
+    - Add optional presentation of YAML front matter to previews.
+    - Rebuild QuickLook thumbnail cache on main app exit to hopefully deal with Visual Studio Code icon ‘hijacking’.
     - Update user-agent string.
-    - Small code improvements.
+    - Minor code and UI improvements.
 - 1.2.0 *4 February 2021*
     - Add preview display preferences (requested by various anonymous feedback senders)
     - Add file type ident tag to thumbnails (requested by @chamiu).
