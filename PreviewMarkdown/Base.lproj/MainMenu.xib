@@ -364,13 +364,13 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="w0K-Yc-i1c">
-                        <rect key="frame" x="18" y="47" width="524" height="40"/>
+                        <rect key="frame" x="18" y="59" width="524" height="28"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="40" id="VdR-KW-Mc5"/>
+                            <constraint firstAttribute="height" constant="28" id="VdR-KW-Mc5"/>
                         </constraints>
                         <textFieldCell key="cell" controlSize="small" id="rWk-kR-Tjj">
                             <font key="font" metaFont="message" size="11"/>
-                            <string key="title">We respect your privacy and we will not record or store any supplied email addresses, use them for marketing purposes, or pass them to third-parties.</string>
+                            <string key="title">We respect your privacy and will not retain any supplied email addresses, use them for marketing purposes, or pass them to third-parties. However, we can’t contact you without an email address.</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
