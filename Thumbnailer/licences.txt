@@ -28,7 +28,7 @@ SOFTWARE.
 
 ----------------------------------------
 
-MIT License
+MIT Licence
 
 SwiftyMarkdown Copyright (c) 2016-21 Simon Fairbairn
 
