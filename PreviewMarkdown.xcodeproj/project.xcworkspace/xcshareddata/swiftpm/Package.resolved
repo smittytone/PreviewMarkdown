@@ -9,6 +9,15 @@
           "revision": "5b0a1e76332a633726f9f9a00b4bbd840166bccf",
           "version": "1.2.3"
         }
+      },
+      {
+        "package": "Yaml",
+        "repositoryURL": "https://github.com/behrang/YamlSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "287f5cab7da0d92eb947b5fd8151b203ae04a9a3",
+          "version": "3.4.4"
+        }
       }
     ]
   },

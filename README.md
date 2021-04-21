@@ -28,6 +28,10 @@ For more information on the background to this app, please see this [blog post](
 
 Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. This is disabled by default — to enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
 
+## Source Code ##
+
+This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
+
 ## Release Notes ##
 
 - 1.3.0 *Unreleased*
@@ -72,4 +76,4 @@ Version 1.3.0 adds optional support for rendering YAML front matter in Markdown 
 
 Primary app code and UI design &copy; 2021, Tony Smith.
 
-Code portions &copy; 2021 Simon Fairbairn.
+Code portions &copy; 2021 Simon Fairbairn. Code portions &copy;2021 Behrang Noruzi Niya.
