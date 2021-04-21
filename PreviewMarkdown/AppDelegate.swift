@@ -27,6 +27,8 @@ class AppDelegate: NSObject,
     @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
     @IBOutlet var creditMenuAcknowlegdments: NSMenuItem!
     @IBOutlet var creditAppStoreRating: NSMenuItem!
+    // FROM 1.3.0
+    @IBOutlet var creditMenuYaml: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -155,6 +157,9 @@ class AppDelegate: NSObject,
             path += "#acknowledgements"
         } else if item == self.creditAppStoreRating {
             path = "https://apps.apple.com/gb/app/previewmarkdown/id1492280469?action=write-review"
+        } else if item == self.creditMenuYaml {
+            // FROM 1.3.0
+            path = "https://github.com/behrang/YamlSwift"
         }
         
         // Open the selected website

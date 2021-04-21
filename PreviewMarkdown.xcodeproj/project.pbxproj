@@ -19,6 +19,8 @@
 		3B223FD925AF4AB200BC46E8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B223FD825AF4AB200BC46E8 /* Secrets.swift */; };
 		3B223FDA25AF4AB200BC46E8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B223FD825AF4AB200BC46E8 /* Secrets.swift */; };
 		3B3D98D025B20AF500A92A8B /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3D98CF25B20AF500A92A8B /* Secrets.swift */; };
+		3B5181FB26296FD20092DF87 /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B5181FA26296FD20092DF87 /* Yaml */; };
+		3B51820126296FDE0092DF87 /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B51820026296FDE0092DF87 /* Yaml */; };
 		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
@@ -137,6 +139,7 @@
 			files = (
 				3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */,
 				3B0CC89924EADF0C006AC907 /* SwiftyMarkdown in Frameworks */,
+				3B5181FB26296FD20092DF87 /* Yaml in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +150,7 @@
 				3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */,
 				3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */,
 				3B0CC89B24EADF2E006AC907 /* SwiftyMarkdown in Frameworks */,
+				3B51820126296FDE0092DF87 /* Yaml in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +300,7 @@
 			name = Previewer;
 			packageProductDependencies = (
 				3B0CC89824EADF0C006AC907 /* SwiftyMarkdown */,
+				3B5181FA26296FD20092DF87 /* Yaml */,
 			);
 			productName = Previewer;
 			productReference = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */;
@@ -316,6 +321,7 @@
 			name = Thumbnailer;
 			packageProductDependencies = (
 				3B0CC89A24EADF2E006AC907 /* SwiftyMarkdown */,
+				3B51820026296FDE0092DF87 /* Yaml */,
 			);
 			productName = Thumbnailer;
 			productReference = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */;
@@ -357,6 +363,7 @@
 			mainGroup = 3BBAEA0C236ADEB0009BAA05;
 			packageReferences = (
 				3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
+				3B5181F926296FD20092DF87 /* XCRemoteSwiftPackageReference "YamlSwift" */,
 			);
 			productRefGroup = 3BBAEA16236ADEB0009BAA05 /* Products */;
 			projectDirPath = "";
@@ -659,7 +666,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -685,7 +692,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -709,7 +716,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -737,7 +744,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -764,7 +771,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -791,7 +798,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 84;
+				CURRENT_PROJECT_VERSION = 85;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -871,6 +878,14 @@
 				minimumVersion = 1.2.2;
 			};
 		};
+		3B5181F926296FD20092DF87 /* XCRemoteSwiftPackageReference "YamlSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/behrang/YamlSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -883,6 +898,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B0CC89724EADF0C006AC907 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
 			productName = SwiftyMarkdown;
+		};
+		3B5181FA26296FD20092DF87 /* Yaml */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B5181F926296FD20092DF87 /* XCRemoteSwiftPackageReference "YamlSwift" */;
+			productName = Yaml;
+		};
+		3B51820026296FDE0092DF87 /* Yaml */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B5181F926296FD20092DF87 /* XCRemoteSwiftPackageReference "YamlSwift" */;
+			productName = Yaml;
 		};
 		3B7D30A9251507CF00A37F96 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyMarkdown
+import Yaml
 import AppKit
 
 
@@ -21,7 +22,22 @@ private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
 private var doShowLightBackground: Bool = false
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
+// FROM 1.3.0
+// Front Matter string attributes...
+private let keyAtts: [NSAttributedString.Key:Any] = [
+    NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
+    NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+]
+private let valAtts: [NSAttributedString.Key:Any] = [
+    NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
+    NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+]
+private let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: (doShowLightBackground ? NSColor.systemGray : NSColor.labelColor)])
 
+
+    
+
+// MARK: Primary Function
 
 func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
@@ -38,52 +54,55 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // FROM 1.3.0
     // Check for front matter
     var output: NSMutableAttributedString = swiftyMarkdown.attributedString(from: processSymbols(processed)) as! NSMutableAttributedString
-    let frontMatter: [String:String] = swiftyMarkdown.frontMatterAttributes
     
+    // Only attempt to render front matter if the user wants to show it
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        if !isThumbnail && defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") && frontMatter.count > 0 {
-            
-            // Front Matter string attributes...
-            let keyAtts: [NSAttributedString.Key:Any] = [
-                NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
-                NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
-            ]
-            
-            // ...and attribute values
-            let valAtts: [NSAttributedString.Key:Any] = [
-                NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
-                NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
-            ]
-            
-            let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: (doShowLightBackground ? NSColor.systemGray : NSColor.labelColor)])
-            
-            // Assemble the front matter string
-            let fms: NSMutableAttributedString = NSMutableAttributedString()
-            
-            // Initial line
-            fms.append(hr)
-            
-            // Add the keys and values
-            for (key, value) in frontMatter {
-                let item: NSMutableAttributedString = NSMutableAttributedString.init(string: key + " " + value + "\n")
-                item.addAttributes(keyAtts, range: NSMakeRange(0, key.count))
-                item.addAttributes(valAtts, range: NSMakeRange(key.count + 1, value.count))
-                fms.append(item)
+        if !isThumbnail && defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
+            // Extract the front matter
+            let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#)
+            if frontMatter.count > 0 {
+                // Only attempt to render the front matter if there is any
+                do {
+                    let yaml = try Yaml.load(frontMatter)
+                    
+                    // Assemble the front matter string
+                    let renderedString: NSMutableAttributedString = NSMutableAttributedString()
+                    
+                    // Initial line
+                    renderedString.append(hr)
+                    
+                    // Render the YAML to NSAttributedString
+                    if let yamlString = renderYaml(yaml, 0, false) {
+                        renderedString.append(yamlString)
+                    }
+                    
+                    // Add a line after the front matter
+                    renderedString.append(hr)
+
+                    // Add in the orignal rendered markdown and then set the
+                    // output string to the combined string
+                    renderedString.append(output)
+                    output = renderedString
+                }
+                catch {
+                    // No YAML to render, or mis-formatted
+#if DEBUG
+                    let errorString: NSMutableAttributedString = NSMutableAttributedString()
+                    errorString.append(NSAttributedString.init(string: error.localizedDescription + "\n"))
+                    errorString.append(NSAttributedString.init(string: frontMatter + "\n"))
+                    errorString.append(output)
+                    output = errorString
+#endif
+                }
             }
-
-            // Add a line after the front matter
-            fms.append(hr)
-
-            // Add in the rendered markdown and then set the
-            // output string to the combined string
-            fms.append(output)
-            output = fms
         }
     }
         
     return output
 }
 
+
+// MARK: SwiftyMarkdown Rendering Support Functions
 
 func processSymbols(_ base: String) -> String {
 
@@ -200,6 +219,157 @@ func convertSpaces(_ base: String) -> String {
     return result as String
 }
 
+
+// MARK: Front Matter Functions
+
+func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
+    
+    // FROM 1.3.0
+    // Extract and return initial front matter
+    // 'markerPattern' is a string literal specifying the front matter boundary
+    // marker Reg Ex, eg. #"^(-)+"# for ---.
+    // Returns an empty string on error, or no front matter
+    
+    let lines = markdown.components(separatedBy: CharacterSet.newlines)
+    var fm: [String] = []
+    var doAdd: Bool = false
+    
+    for line in lines {
+        // Look for the pattern on the current line
+        let dashRange: NSRange = (line as NSString).range(of: markerPattern, options: .regularExpression)
+        
+        if !doAdd && line.count > 0 {
+            if dashRange.location == 0 {
+                // Front matter start
+                doAdd = true
+                continue
+            } else {
+                // Some other text than front matter at the start
+                // so break
+                break
+            }
+        }
+        
+        if doAdd && dashRange.location == 0 {
+            // End of front matter
+            var rs: String = ""
+            for item in fm {
+                rs += item + "\n"
+            }
+            
+            return rs
+        }
+        
+        if doAdd && line.count > 0 {
+            // Add the line of front matter to the store
+            fm.append(line)
+        }
+    }
+    
+    return ""
+}
+
+
+func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
+    
+    // FROM 1.3.0
+    // Render a supplied YAML sub-component ('part') to an NSAttributedString,
+    // indenting as required, and using a different text format for keys.
+    // This is called recursively as it drills down through YAML values.
+    // Returns nil on error
+    
+    let returnString: NSMutableAttributedString = NSMutableAttributedString.init()
+    
+    switch (part) {
+    case .string:
+        if let keyOrValue = part.string {
+            returnString.append(getIndentedString(keyOrValue, indent))
+            returnString.addAttributes((isKey ? keyAtts : valAtts),
+                                       range: NSMakeRange(0, returnString.length))
+            returnString.append(isKey ? NSAttributedString.init(string: " ") : NSAttributedString.init(string: "\n"))
+            return returnString
+        }
+    case .array:
+        if let value = part.array {
+            // Iterate through array elements
+            // NOTE A given element can be of any YAML type
+            for i in 0..<value.count {
+                if let yamlString = renderYaml(value[i], indent + BUFFOON_CONSTANTS.YAML_INDENT, false) {
+                    returnString.append(yamlString)
+                    if i < value.count - 1 && (value[i].array != nil || value[i].dictionary != nil) {
+                        // Separate items with a space
+                        // TODO Move this to where we know what the type is
+                        returnString.append(NSAttributedString.init(string: "\n"))
+                    }
+                }
+            }
+            return returnString
+        }
+    case .dictionary:
+        if let dictValue = part.dictionary {
+            // Iterate through the dictionary's keys and their values
+            // NOTE A given value can be of any YAML type
+            for (key, value) in dictValue {
+                // Render the key
+                if let yamlString = renderYaml(key, indent, true) {
+                    returnString.append(yamlString)
+                }
+                
+                // If the value is a collection, we drop to the next line and indent
+                var valueIndent = 0
+                if value.array != nil || value.dictionary != nil {
+                    returnString.append(NSAttributedString.init(string: "\n"))
+                    valueIndent = indent
+                }
+                
+                // Render the key's value
+                if let yamlString = renderYaml(value, valueIndent, false) {
+                    returnString.append(yamlString)
+                }
+                
+                // Hack: if this is the root dictionary, add a blank line between keys
+                if (indent == 0) {
+                    returnString.append(NSAttributedString.init(string: "\n"))
+                }
+            }
+            return returnString
+        }
+    default:
+        // Place all the scalar values here
+        // TODO These *may* be keys too, so we need to check that
+        if let val = part.int {
+            returnString.append(getIndentedString("\(val)\n", indent))
+        } else if let val = part.bool {
+            returnString.append(getIndentedString((val ? "true\n" : "false\n"), indent))
+        } else if let val = part.double {
+            returnString.append(getIndentedString("\(val)\n", indent))
+        }
+        
+        returnString.addAttributes(valAtts, range: NSMakeRange(0, returnString.length))
+        return returnString
+    }
+    
+    // Error condition
+    return nil
+}
+
+
+func getIndentedString(_ s: String, _ indent: Int) -> NSAttributedString {
+    
+    // FROM 1.3.0
+    // Return a suitably space-indented NSAttributedString
+    
+    let trimmedString = s.trimmingCharacters(in: .whitespaces)
+    let spacer = "                                                     "
+    let spaceString = String(spacer.suffix(indent))
+    let nsm: NSMutableAttributedString = NSMutableAttributedString.init()
+    nsm.append(NSAttributedString.init(string: spaceString))
+    nsm.append(NSAttributedString.init(string: trimmedString))
+    return nsm.attributedSubstring(from: NSMakeRange(0, nsm.length))
+}
+
+
+// MARK: Formatting Functions
 
 func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 

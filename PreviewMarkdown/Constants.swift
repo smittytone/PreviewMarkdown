@@ -51,5 +51,7 @@ struct BUFFOON_CONSTANTS {
     static let BODY_FONT_INDEX             = 0
 
     static let FONT_SIZE_OPTIONS: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
-
+    
+    // FROM 1.3.0
+    static let YAML_INDENT                  = 2
 }
