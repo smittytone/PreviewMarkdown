@@ -23,7 +23,7 @@ private var doShowLightBackground: Bool = false
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
 // FROM 1.3.0
-private let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: NSColor.labelColor])
+private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
@@ -468,10 +468,15 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
         NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
         NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
     ]
+    
     valAtts = [
         NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
         NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
     ]
+    
+    hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
+                            attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
+                                         .strikethroughColor: (doShowLightBackground ? NSColor.black : NSColor.white)])
 
 }
 
