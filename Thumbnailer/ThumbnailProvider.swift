@@ -50,6 +50,13 @@ class ThumbnailProvider: QLThumbnailProvider {
                     // Write the markdown rendered as an NSAttributedString into the view's text storage
                     if let markdownTextStorage: NSTextStorage = markdownTextView.textStorage {
                         markdownTextStorage.setAttributedString(getAttributedString(markdownString, true))
+                    } else {
+                        // Error
+                        reportError = NSError(domain: "com.bps.PreviewMarkdown.Thumbnailer",
+                                              code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING,
+                                              userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING])
+                        handler(nil, reportError)
+                        return
                     }
 
                     // FROM 1.2.0

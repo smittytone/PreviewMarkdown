@@ -19,6 +19,7 @@ struct BUFFOON_CONSTANTS {
             static let FILE_INACCESSIBLE    = 400
             static let FILE_WONT_OPEN       = 401
             static let BAD_MD_STRING        = 402
+            static let BAD_TS_STRING        = 403
         }
 
         struct MESSAGES {
@@ -26,6 +27,7 @@ struct BUFFOON_CONSTANTS {
             static let FILE_INACCESSIBLE    = "Can't access file"
             static let FILE_WONT_OPEN       = "Can't open file"
             static let BAD_MD_STRING        = "Can't get markdown data"
+            static let BAD_TS_STRING        = "Can't access NSTextView's TextStorage"
         }
     }
 
