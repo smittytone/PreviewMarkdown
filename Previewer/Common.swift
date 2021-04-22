@@ -23,16 +23,16 @@ private var doShowLightBackground: Bool = false
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
 // FROM 1.3.0
+private let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: (doShowLightBackground ? NSColor.systemGray : NSColor.labelColor)])
 // Front Matter string attributes...
-private let keyAtts: [NSAttributedString.Key:Any] = [
+private var keyAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
     NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
-private let valAtts: [NSAttributedString.Key:Any] = [
+private var valAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
     NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
-private let hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue, .strikethroughColor: (doShowLightBackground ? NSColor.systemGray : NSColor.labelColor)])
 
 
     
@@ -309,7 +309,48 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
         if let dictValue = part.dictionary {
             // Iterate through the dictionary's keys and their values
             // NOTE A given value can be of any YAML type
-            for (key, value) in dictValue {
+            
+            // Sort the dictionary's keys (ascending)
+            // We assume all keys will be strings, ints, doubles or bools
+            var dkeys: [Yaml] = Array(dictValue.keys)
+            dkeys = dkeys.sorted(by: { (a, b) -> Bool in
+                // Strings?
+                if let a_s: String = a.string {
+                    if let b_s: String = b.string {
+                        return (a_s.lowercased() < b_s.lowercased())
+                    }
+                }
+                
+                // Ints?
+                if let a_i: Int = a.int {
+                    if let b_i: Int = b.int {
+                        return (a_i < b_i)
+                    }
+                }
+                
+                // Doubles?
+                if let a_d: Double = a.double {
+                    if let b_d: Double = b.double {
+                        return (a_d < b_d)
+                    }
+                }
+                
+                // Bools
+                if let a_b: Bool = a.bool {
+                    if let b_b: Bool = b.bool {
+                        return (a_b && !b_b)
+                    }
+                }
+                
+                return false
+            })
+            
+            // Iterate through the sorted keys array
+            for i in 0..<dkeys.count {
+                // Get the key:value pairs
+                let key: Yaml = dkeys[i]
+                let value: Yaml = dictValue[key] ?? ""
+                
                 // Render the key
                 if let yamlString = renderYaml(key, indent, true) {
                     returnString.append(yamlString)
@@ -419,6 +460,19 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     //      a bug or issue with SwiftyMarkdown 1.2.3
     sm.link.color = getColour(linkColourIndex)
     sm.link.underlineColor = sm.link.color
+    
+    // FROM 1.3.0
+    // Set the front matter key:value fonts and sizes
+    // Front Matter string attributes...
+    keyAtts = [
+        NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
+        NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    ]
+    valAtts = [
+        NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
+        NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    ]
+
 }
 
 
