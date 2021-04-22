@@ -160,6 +160,9 @@ class AppDelegate: NSObject,
         } else if item == self.creditMenuYaml {
             // FROM 1.3.0
             path = "https://github.com/behrang/YamlSwift"
+        } else if item == self.creditMenuPM {
+            // FROM 1.3.0
+            path += "#how-to-use-previewmarkdown"
         }
         
         // Open the selected website

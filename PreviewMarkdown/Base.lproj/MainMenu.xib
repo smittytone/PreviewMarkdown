@@ -266,11 +266,11 @@ DQ
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0g-rH-b3T">
-                        <rect key="frame" x="18" y="61" width="544" height="11"/>
+                        <rect key="frame" x="18" y="61" width="544" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="11" id="wZ0-9P-Rv3"/>
+                            <constraint firstAttribute="height" constant="24" id="wZ0-9P-Rv3"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" title="PreviewMarkdown © 2021, Tony Smith. Contains SwiftyMarkdown © 2021, Simon Fairbairn" id="aj6-5q-zC1">
+                        <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="center" title="PreviewMarkdown © 2021, Tony Smith.  Contains SwiftyMarkdown © 2021, Simon Fairbairn; YamlSwift © 2021 Behrang Noruzi Niya" id="aj6-5q-zC1">
                             <font key="font" metaFont="menu" size="9"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -291,7 +291,7 @@ DQ
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="194" y="85" width="192" height="33"/>
+                        <rect key="frame" x="194" y="98" width="192" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="bxE-yY-xN1"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="178" id="dql-2V-212"/>
@@ -694,8 +694,16 @@ Gw
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
+                        <rect key="frame" x="39" y="69" width="371" height="28"/>
+                        <textFieldCell key="cell" controlSize="small" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Czd-zZ-ZiW">
-                        <rect key="frame" x="18" y="98" width="390" height="18"/>
+                        <rect key="frame" x="18" y="100" width="390" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="7b2-1S-8nE"/>
                         </constraints>
@@ -704,14 +712,6 @@ Gw
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
-                        <rect key="frame" x="40" y="63" width="370" height="28"/>
-                        <textFieldCell key="cell" controlSize="small" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
-                            <font key="font" metaFont="smallSystem"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Kxb-3y-zsN" firstAttribute="leading" secondItem="FEy-oZ-Q0b" secondAttribute="trailing" constant="12" symbolic="YES" id="3KD-rV-5yI"/>
@@ -731,13 +731,13 @@ Gw
                     <constraint firstItem="tRc-8d-s8h" firstAttribute="top" secondItem="QOR-Nq-yfj" secondAttribute="bottom" constant="17" id="O3X-Bh-avY"/>
                     <constraint firstItem="VOV-CD-l3R" firstAttribute="top" secondItem="8lH-dZ-QNI" secondAttribute="bottom" constant="14" id="PWj-PG-mdm"/>
                     <constraint firstAttribute="trailing" secondItem="QOR-Nq-yfj" secondAttribute="trailing" constant="20" symbolic="YES" id="Ruz-Gh-TOg"/>
-                    <constraint firstItem="vXh-Dj-3xv" firstAttribute="top" secondItem="Czd-zZ-ZiW" secondAttribute="bottom" constant="8" symbolic="YES" id="SAz-vW-ahN"/>
+                    <constraint firstItem="vXh-Dj-3xv" firstAttribute="top" secondItem="Czd-zZ-ZiW" secondAttribute="bottom" constant="4" id="SAz-vW-ahN"/>
                     <constraint firstAttribute="trailing" secondItem="zA0-sU-GAt" secondAttribute="trailing" constant="20" symbolic="YES" id="STo-oK-nd3"/>
                     <constraint firstAttribute="trailing" secondItem="G17-HD-NQR" secondAttribute="trailing" constant="20" symbolic="YES" id="Tha-kB-7ca"/>
                     <constraint firstItem="L3v-ZW-rI5" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="Tyw-Rh-12e"/>
                     <constraint firstItem="AWW-Kb-vnd" firstAttribute="top" secondItem="DTJ-no-zbr" secondAttribute="top" constant="20" symbolic="YES" id="Wd9-6T-nOc"/>
                     <constraint firstAttribute="trailing" secondItem="Kxb-3y-zsN" secondAttribute="trailing" constant="20" symbolic="YES" id="YwS-Xk-yMK"/>
-                    <constraint firstItem="Czd-zZ-ZiW" firstAttribute="top" secondItem="L3v-ZW-rI5" secondAttribute="bottom" constant="8" id="Z1i-y5-d1u"/>
+                    <constraint firstItem="Czd-zZ-ZiW" firstAttribute="top" secondItem="L3v-ZW-rI5" secondAttribute="bottom" constant="6" id="Z1i-y5-d1u"/>
                     <constraint firstAttribute="trailing" secondItem="SgA-x8-lRK" secondAttribute="trailing" constant="20" symbolic="YES" id="Z4R-WN-tqm"/>
                     <constraint firstItem="Mls-DP-Cdx" firstAttribute="top" secondItem="SEM-cm-6Zx" secondAttribute="bottom" constant="20" id="b8a-Gh-xOu"/>
                     <constraint firstItem="SgA-x8-lRK" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="fdI-vs-PZL"/>
@@ -751,7 +751,7 @@ Gw
                     <constraint firstItem="G17-HD-NQR" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="qJC-wT-Xs8"/>
                     <constraint firstItem="QOR-Nq-yfj" firstAttribute="top" secondItem="DUw-vA-tdu" secondAttribute="bottom" constant="8" id="qfo-8q-ykF"/>
                     <constraint firstItem="DUw-vA-tdu" firstAttribute="top" secondItem="AWW-Kb-vnd" secondAttribute="bottom" constant="8" id="rqw-ZH-qc8"/>
-                    <constraint firstItem="vXh-Dj-3xv" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="42" id="shK-QW-LLW"/>
+                    <constraint firstItem="vXh-Dj-3xv" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="41" id="shK-QW-LLW"/>
                     <constraint firstItem="B9Z-CV-0mo" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="u1k-zM-Xqx"/>
                     <constraint firstItem="SgA-x8-lRK" firstAttribute="top" secondItem="DUw-vA-tdu" secondAttribute="bottom" constant="14" id="vh4-bX-9Hk"/>
                     <constraint firstAttribute="trailing" secondItem="DUw-vA-tdu" secondAttribute="trailing" constant="20" id="w8d-Qe-3G5"/>
@@ -765,9 +765,6 @@ Gw
             </view>
             <point key="canvasLocation" x="-119" y="654"/>
         </window>
-        <menuItem title="Item" id="iQi-XH-uTb">
-            <modifierMask key="keyEquivalentModifierMask"/>
-        </menuItem>
         <window title="What's New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9wj-wl-UO6">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
