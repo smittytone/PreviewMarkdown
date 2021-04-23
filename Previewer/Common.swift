@@ -368,7 +368,7 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
                     returnString.append(yamlString)
                 }
                 
-                // Hack: if this is the root dictionary, add a blank line between keys
+                // If this is the root dictionary, add a blank line between keys
                 if (indent == 0) {
                     returnString.append(NSAttributedString.init(string: "\n"))
                 }
@@ -377,7 +377,8 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
         }
     default:
         // Place all the scalar values here
-        // TODO These *may* be keys too, so we need to check that
+        // NOTE The indent will typically be zero because the value appears
+        //      immediately after a key (indent set by calling function)
         if let val = part.int {
             returnString.append(getIndentedString("\(val)\n", indent))
         } else if let val = part.bool {
@@ -395,18 +396,18 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
 }
 
 
-func getIndentedString(_ s: String, _ indent: Int) -> NSAttributedString {
+func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
     
     // FROM 1.3.0
     // Return a suitably space-indented NSAttributedString
     
-    let trimmedString = s.trimmingCharacters(in: .whitespaces)
-    let spacer = "                                                     "
-    let spaceString = String(spacer.suffix(indent))
-    let nsm: NSMutableAttributedString = NSMutableAttributedString.init()
-    nsm.append(NSAttributedString.init(string: spaceString))
-    nsm.append(NSAttributedString.init(string: trimmedString))
-    return nsm.attributedSubstring(from: NSMakeRange(0, nsm.length))
+    let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
+    let spaces = "                                                     "
+    let spaceString = indent > 0 ? String(spaces.suffix(indent)) : ""
+    let indentedString: NSMutableAttributedString = NSMutableAttributedString.init()
+    indentedString.append(NSAttributedString.init(string: spaceString))
+    indentedString.append(NSAttributedString.init(string: trimmedString))
+    return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
 }
 
 
