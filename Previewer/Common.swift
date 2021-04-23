@@ -86,13 +86,13 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
                 }
                 catch {
                     // No YAML to render, or mis-formatted
+                    let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. It may be mis-formed.\n", attributes: keyAtts)
 #if DEBUG
-                    let errorString: NSMutableAttributedString = NSMutableAttributedString()
-                    errorString.append(NSAttributedString.init(string: error.localizedDescription + "\n"))
-                    errorString.append(NSAttributedString.init(string: frontMatter + "\n"))
+                    errorString.append(NSMutableAttributedString.init(string: error.localizedDescription + "\n", attributes: keyAtts))
+                    errorString.append(NSMutableAttributedString.init(string: frontMatter + "\n", attributes: valAtts))
+#endif
                     errorString.append(output)
                     output = errorString
-#endif
                 }
             }
         }
