@@ -33,7 +33,7 @@ private var valAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
     NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
-
+private let newLine: NSAttributedString = NSAttributedString.init(string: "\n")
 
     
 
@@ -272,7 +272,6 @@ func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
 
 func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
     
-    // FROM 1.3.0
     // Render a supplied YAML sub-component ('part') to an NSAttributedString,
     // indenting as required, and using a different text format for keys.
     // This is called recursively as it drills down through YAML values.
@@ -281,39 +280,33 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
     let returnString: NSMutableAttributedString = NSMutableAttributedString.init()
     
     switch (part) {
-    case .string:
-        if let keyOrValue = part.string {
-            returnString.append(getIndentedString(keyOrValue, indent))
-            returnString.addAttributes((isKey ? keyAtts : valAtts),
-                                       range: NSMakeRange(0, returnString.length))
-            returnString.append(isKey ? NSAttributedString.init(string: " ") : NSAttributedString.init(string: "\n"))
-            return returnString
-        }
     case .array:
         if let value = part.array {
             // Iterate through array elements
             // NOTE A given element can be of any YAML type
             for i in 0..<value.count {
-                if let yamlString = renderYaml(value[i], indent + BUFFOON_CONSTANTS.YAML_INDENT, false) {
-                    returnString.append(yamlString)
-                    if i < value.count - 1 && (value[i].array != nil || value[i].dictionary != nil) {
-                        // Separate items with a space
-                        // TODO Move this to where we know what the type is
-                        returnString.append(NSAttributedString.init(string: "\n"))
+                if let yamlString = renderYaml(value[i], indent, false) {
+                    // Apply a prefix to separate array and dictionary elements
+                    if i > 0 && (value[i].array != nil || value[i].dictionary != nil) {
+                        returnString.append(newLine)
                     }
+                    
+                    // Add the element itself
+                    returnString.append(yamlString)
                 }
             }
+            
             return returnString
         }
     case .dictionary:
-        if let dictValue = part.dictionary {
+        if let dict = part.dictionary {
             // Iterate through the dictionary's keys and their values
             // NOTE A given value can be of any YAML type
             
             // Sort the dictionary's keys (ascending)
             // We assume all keys will be strings, ints, doubles or bools
-            var dkeys: [Yaml] = Array(dictValue.keys)
-            dkeys = dkeys.sorted(by: { (a, b) -> Bool in
+            var keys: [Yaml] = Array(dict.keys)
+            keys = keys.sorted(by: { (a, b) -> Bool in
                 // Strings?
                 if let a_s: String = a.string {
                     if let b_s: String = b.string {
@@ -346,10 +339,15 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
             })
             
             // Iterate through the sorted keys array
-            for i in 0..<dkeys.count {
+            for i in 0..<keys.count {
+                // Prefix root-level key:value pairs after the first with a new line
+                if indent == 0 && i > 0 {
+                    returnString.append(newLine)
+                }
+                
                 // Get the key:value pairs
-                let key: Yaml = dkeys[i]
-                let value: Yaml = dictValue[key] ?? ""
+                let key: Yaml = keys[i]
+                let value: Yaml = dict[key] ?? ""
                 
                 // Render the key
                 if let yamlString = renderYaml(key, indent, true) {
@@ -357,28 +355,37 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
                 }
                 
                 // If the value is a collection, we drop to the next line and indent
-                var valueIndent = 0
+                var valueIndent: Int = 0
                 if value.array != nil || value.dictionary != nil {
-                    returnString.append(NSAttributedString.init(string: "\n"))
-                    valueIndent = indent
+                    valueIndent = indent + BUFFOON_CONSTANTS.YAML_INDENT
+                    returnString.append(newLine)
                 }
                 
                 // Render the key's value
                 if let yamlString = renderYaml(value, valueIndent, false) {
                     returnString.append(yamlString)
                 }
-                
-                // If this is the root dictionary, add a blank line between keys
-                if (indent == 0) {
-                    returnString.append(NSAttributedString.init(string: "\n"))
-                }
             }
+            
+            return returnString
+        }
+    case .string:
+        if let keyOrValue = part.string {
+            returnString.append(getIndentedString(keyOrValue, indent))
+            returnString.addAttributes((isKey ? keyAtts : valAtts),
+                                       range: NSMakeRange(0, returnString.length))
+
+            if (isKey) {
+                returnString.append(NSAttributedString.init(string: " "))
+            } else {
+                returnString.append(newLine)
+            }
+
             return returnString
         }
     default:
         // Place all the scalar values here
-        // NOTE The indent will typically be zero because the value appears
-        //      immediately after a key (indent set by calling function)
+        // TODO These *may* be keys too, so we need to check that
         if let val = part.int {
             returnString.append(getIndentedString("\(val)\n", indent))
         } else if let val = part.bool {
@@ -398,12 +405,12 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
 
 func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
     
-    // FROM 1.3.0
-    // Return a suitably space-indented NSAttributedString
+    // Return a space-prefix NSAttributedString where 'indent' specifies
+    // the number of spaces to add
     
     let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
     let spaces = "                                                     "
-    let spaceString = indent > 0 ? String(spaces.suffix(indent)) : ""
+    let spaceString = String(spaces.suffix(indent))
     let indentedString: NSMutableAttributedString = NSMutableAttributedString.init()
     indentedString.append(NSAttributedString.init(string: spaceString))
     indentedString.append(NSAttributedString.init(string: trimmedString))
