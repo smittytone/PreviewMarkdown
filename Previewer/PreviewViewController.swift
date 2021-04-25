@@ -76,7 +76,7 @@ class PreviewViewController: NSViewController,
                     handler(nil)
                     return
                 } else {
-                    // We couldn't get the markdwn string so set an appropriate error to report back
+                    // We couldn't get the Markdown string so set an appropriate error to report back
                     reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
                                           code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
                                           userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING])
@@ -87,14 +87,17 @@ class PreviewViewController: NSViewController,
                                       code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN,
                                       userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN])
             }
-
-            handler(reportError)
+        } else {
+            // File passed isn't readable
+            reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
+                                  code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE,
+                                  userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE])
         }
 
         // Display the error locally in the window
         showError(reportError!.userInfo[NSLocalizedDescriptionKey] as! String)
 
-        // Call the QLPreviewingController indicating no error (nil)
+        // Call the QLPreviewingController indicating an error (!nil)
         handler(nil)
     }
 
@@ -116,7 +119,7 @@ class PreviewViewController: NSViewController,
 
         // Relay an error message to its various outlets
 
-        NSLog("BUFFOON " + errString)
+        NSLog("BUFFOON \(errString)")
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
     }

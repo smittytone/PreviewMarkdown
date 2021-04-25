@@ -13,7 +13,7 @@ import AppKit
 
 
 // FROM 1.2.0
-// Use defaults for some user-selectable values
+// Set defaults for the user-selectable values
 private var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
 private var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
 private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
@@ -23,7 +23,6 @@ private var doShowLightBackground: Bool = false
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
 // FROM 1.3.0
-private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
@@ -33,6 +32,8 @@ private var valAtts: [NSAttributedString.Key:Any] = [
     NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
     NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
+// Front Matter rendering artefacts...
+private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
 private let newLine: NSAttributedString = NSAttributedString.init(string: "\n")
 
     
@@ -51,11 +52,13 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     var processed = processCodeTags(markdownString)
     processed = convertSpaces(processed)
     
-    // FROM 1.3.0
-    // Check for front matter
-    var output: NSMutableAttributedString = swiftyMarkdown.attributedString(from: processSymbols(processed)) as! NSMutableAttributedString
+    // Process the markdown string
+    var output: NSMutableAttributedString = NSMutableAttributedString.init()
+    output.append(swiftyMarkdown.attributedString(from: processSymbols(processed)))
     
-    // Only attempt to render front matter if the user wants to show it
+    // FROM 1.3.0
+    // Render YAML front matter if requested by the user, and we're not
+    // rendering a thumbnail image (this is for previews only)
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
         if !isThumbnail && defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
             // Extract the front matter
@@ -97,7 +100,14 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
             }
         }
     }
-        
+    
+    // FROM 1.3.0
+    // Guard against non-trapped errors
+    if output.length == 0 {
+        output.append(NSAttributedString.init(string: "No valid Markdown to render."))
+    }
+    
+    // Return the rendered NSAttributedString to Previewer or Thumbnailer
     return output
 }
 
@@ -374,27 +384,29 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
             returnString.append(getIndentedString(keyOrValue, indent))
             returnString.addAttributes((isKey ? keyAtts : valAtts),
                                        range: NSMakeRange(0, returnString.length))
-
-            if (isKey) {
-                returnString.append(NSAttributedString.init(string: " "))
-            } else {
-                returnString.append(newLine)
-            }
-
+            returnString.append(isKey ? NSAttributedString.init(string: " ") : newLine)
             return returnString
         }
+    case .null:
+        returnString.append(getIndentedString("NULL/n", indent))
+        returnString.addAttributes((isKey ? keyAtts : valAtts),
+                                   range: NSMakeRange(0, returnString.length))
+        return returnString
     default:
         // Place all the scalar values here
         // TODO These *may* be keys too, so we need to check that
         if let val = part.int {
             returnString.append(getIndentedString("\(val)\n", indent))
         } else if let val = part.bool {
-            returnString.append(getIndentedString((val ? "true\n" : "false\n"), indent))
+            returnString.append(getIndentedString((val ? "TRUE\n" : "FALSE\n"), indent))
         } else if let val = part.double {
             returnString.append(getIndentedString("\(val)\n", indent))
+        } else {
+            returnString.append(getIndentedString("UNKNOWN-TYPE\n", indent))
         }
         
-        returnString.addAttributes(valAtts, range: NSMakeRange(0, returnString.length))
+        returnString.addAttributes(valAtts,
+                                   range: NSMakeRange(0, returnString.length))
         return returnString
     }
     

@@ -130,6 +130,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                       code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN,
                                       userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN])
             }
+        } else {
+            // File passed isn't readable
+            reportError = NSError(domain: "com.bps.PreviewMarkdown.Thumbnailer",
+                                  code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE,
+                                  userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE])
         }
 
         // We couldn't do any so set an appropriate error to report back
