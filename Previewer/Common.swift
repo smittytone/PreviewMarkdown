@@ -388,9 +388,10 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
             return returnString
         }
     case .null:
-        returnString.append(getIndentedString("NULL/n", indent))
+        returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
         returnString.addAttributes((isKey ? keyAtts : valAtts),
                                    range: NSMakeRange(0, returnString.length))
+        returnString.append(isKey ? NSAttributedString.init(string: " ") : newLine)
         return returnString
     default:
         // Place all the scalar values here
