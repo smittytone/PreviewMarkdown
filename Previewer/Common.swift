@@ -21,7 +21,9 @@ private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_
 private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
 private var doShowLightBackground: Bool = false
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
-private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue", "LucidaGrande", "Times-Roman", "Verdana"]
+private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue",
+                                   "LucidaGrande", "Times-Roman", "Verdana"]
+
 // FROM 1.3.0
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
@@ -51,10 +53,11 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     setBaseValues(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
     processed = convertSpaces(processed)
+    processed = processSymbols(processed)
     
     // Process the markdown string
     var output: NSMutableAttributedString = NSMutableAttributedString.init()
-    output.append(swiftyMarkdown.attributedString(from: processSymbols(processed)))
+    output.append(swiftyMarkdown.attributedString(from: processed))
     
     // FROM 1.3.0
     // Render YAML front matter if requested by the user, and we're not
@@ -105,11 +108,11 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // FROM 1.3.0
     // Guard against non-trapped errors
     if output.length == 0 {
-        output.append(NSAttributedString.init(string: "No valid Markdown to render."))
+        output = NSMutableAttributedString.init(string: "No valid Markdown to render.", attributes: keyAtts)
     }
     
     // Return the rendered NSAttributedString to Previewer or Thumbnailer
-    return output
+    return output as NSAttributedString
 }
 
 
@@ -383,14 +386,14 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
     case .string:
         if let keyOrValue = part.string {
             returnString.append(getIndentedString(keyOrValue, indent))
-            returnString.addAttributes((isKey ? keyAtts : valAtts),
+            returnString.setAttributes((isKey ? keyAtts : valAtts),
                                        range: NSMakeRange(0, returnString.length))
             returnString.append(isKey ? NSAttributedString.init(string: " ") : newLine)
             return returnString
         }
     case .null:
         returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
-        returnString.addAttributes((isKey ? keyAtts : valAtts),
+        returnString.setAttributes((isKey ? keyAtts : valAtts),
                                    range: NSMakeRange(0, returnString.length))
         returnString.append(isKey ? NSAttributedString.init(string: " ") : newLine)
         return returnString
@@ -407,7 +410,7 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
             returnString.append(getIndentedString("UNKNOWN-TYPE\n", indent))
         }
         
-        returnString.addAttributes(valAtts,
+        returnString.setAttributes(valAtts,
                                    range: NSMakeRange(0, returnString.length))
         return returnString
     }
@@ -445,6 +448,7 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
         fontSizeBase = CGFloat(isThumbnail
                                 ? defaults.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
                                 : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+
         codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
         linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
         codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
@@ -486,14 +490,11 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     // FROM 1.3.0
     // Set the front matter key:value fonts and sizes
     var font: NSFont
-    if codeFontIndex == 0 {
-        font = NSFont.systemFont(ofSize: fontSizeBase)
+    if let otherFont = NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) {
+        font = otherFont
     } else {
-        if let otherFont = NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) {
-            font = otherFont
-        } else {
-            font = NSFont.systemFont(ofSize: fontSizeBase)
-        }
+        // This should not be hit, but just in case...
+        font = NSFont.systemFont(ofSize: fontSizeBase)
     }
     
     keyAtts = [
