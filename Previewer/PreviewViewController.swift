@@ -66,7 +66,9 @@ class PreviewViewController: NSViewController,
                     self.renderTextScrollView.scrollerKnobStyle = doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
+                        renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
+                        renderTextStorage.endEditing()
                     }
                     
                     // Add the subview to the instance's own view and draw
@@ -122,6 +124,7 @@ class PreviewViewController: NSViewController,
         NSLog("BUFFOON \(errString)")
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
+        self.view.display()
     }
 
 }

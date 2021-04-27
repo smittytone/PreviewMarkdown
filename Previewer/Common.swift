@@ -25,16 +25,16 @@ private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaN
 // FROM 1.3.0
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
-    NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
-    NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    .foregroundColor: getColour(codeColourIndex),
+    .font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
 private var valAtts: [NSAttributedString.Key:Any] = [
-    NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
-    NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    .foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
+    .font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
 // Front Matter rendering artefacts...
 private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
-private let newLine: NSAttributedString = NSAttributedString.init(string: "\n")
+private var newLine: NSAttributedString = NSAttributedString.init(string: "\n")
 
     
 
@@ -69,7 +69,8 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
                     let yaml = try Yaml.load(frontMatter)
                     
                     // Assemble the front matter string
-                    let renderedString: NSMutableAttributedString = NSMutableAttributedString()
+                    let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
+                                                                                                   attributes: valAtts)
                     
                     // Initial line
                     renderedString.append(hr)
@@ -484,20 +485,33 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     
     // FROM 1.3.0
     // Set the front matter key:value fonts and sizes
-    // Front Matter string attributes...
+    var font: NSFont
+    if codeFontIndex == 0 {
+        font = NSFont.systemFont(ofSize: fontSizeBase)
+    } else {
+        if let otherFont = NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) {
+            font = otherFont
+        } else {
+            font = NSFont.systemFont(ofSize: fontSizeBase)
+        }
+    }
+    
     keyAtts = [
-        NSAttributedString.Key.foregroundColor: getColour(codeColourIndex),
-        NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+        .foregroundColor: getColour(codeColourIndex),
+        .font: font
     ]
     
     valAtts = [
-        NSAttributedString.Key.foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
-        NSAttributedString.Key.font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+        .foregroundColor: (isThumbnail || doShowLightBackground ? NSColor.black : NSColor.labelColor),
+        .font: font
     ]
     
     hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                             attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                          .strikethroughColor: (doShowLightBackground ? NSColor.black : NSColor.white)])
+    
+    newLine = NSAttributedString.init(string: "\n",
+                                      attributes: valAtts)
 
 }
 
