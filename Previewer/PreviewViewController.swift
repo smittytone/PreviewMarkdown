@@ -66,9 +66,7 @@ class PreviewViewController: NSViewController,
                     self.renderTextScrollView.scrollerKnobStyle = doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
-                        renderTextStorage.endEditing()
                     } else {
                         handler(setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING))
                     }

@@ -90,14 +90,29 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
                     // output string to the combined string
                     renderedString.append(output)
                     output = renderedString
-                }
-                catch {
+                } catch {
                     // No YAML to render, or mis-formatted
-                    let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. It may be mis-formed.\n", attributes: keyAtts)
-#if DEBUG
-                    errorString.append(NSMutableAttributedString.init(string: error.localizedDescription + "\n", attributes: keyAtts))
-                    errorString.append(NSMutableAttributedString.init(string: frontMatter + "\n", attributes: valAtts))
-#endif
+                    // No YAML to render, or the YAML was mis-formatted
+                    // Get the error as reported by YamlSwift
+                    let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
+                    var yamlErrString: String
+                    switch(yamlErr) {
+                        case .message(let s):
+                            yamlErrString = s ?? "unknown"
+                    }
+
+                    // Assemble the error string
+                    let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString, attributes: keyAtts)
+
+                    // Should we include the raw text?
+                    // At least the user can see the data this way
+                    #if DEBUG
+                        errorString.append(hr)
+                        errorString.append(NSMutableAttributedString.init(string: frontMatter,
+                                                                          attributes: valAtts))
+                    #endif
+                    
+                    errorString.append(hr)
                     errorString.append(output)
                     output = errorString
                 }
@@ -291,7 +306,8 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
     // This is called recursively as it drills down through YAML values.
     // Returns nil on error
     
-    let returnString: NSMutableAttributedString = NSMutableAttributedString.init()
+    let returnString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
+                                                                                 attributes: keyAtts)
     
     switch (part) {
     case .array:
