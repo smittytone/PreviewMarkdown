@@ -177,7 +177,9 @@ class AppDelegate: NSObject,
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
     }
 
-
+    
+    // MARK: Reporting Functions
+    
     @IBAction @objc func showFeedbackWindow(sender: Any?) {
 
         // FROM 1.1.1
@@ -283,7 +285,9 @@ class AppDelegate: NSObject,
         return nil
     }
 
-
+    
+    // MARK: Preferences Functions
+    
     @IBAction func doShowPreferences(sender: Any) {
 
         // FROM 1.2.0
