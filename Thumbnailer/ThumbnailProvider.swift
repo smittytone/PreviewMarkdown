@@ -136,7 +136,9 @@ class ThumbnailProvider: QLThumbnailProvider {
         let tagAtts: [NSAttributedString.Key : Any] = [
             .paragraphStyle: style,
             .font: NSFont.systemFont(ofSize: 120.0),
-            .foregroundColor: (width < 128 ? NSColor.black : NSColor.gray)
+            .foregroundColor: (width < 128
+                                ? NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+                                : NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0))
         ]
 
         // Return the attributed string built from the tag
