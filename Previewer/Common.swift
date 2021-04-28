@@ -547,3 +547,29 @@ func getColour(_ index: Int) -> NSColor {
             return NSColor.systemGray
     }
 }
+
+
+func setError(_ code: Int) -> NSError {
+    
+    // NSError generation function
+    
+    var errDesc: String
+    
+    switch(code) {
+    case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
+        errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
+    case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN:
+        errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
+    case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
+        errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
+    case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
+        errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
+    default:
+        errDesc = "UNKNOWN ERROR"
+    }
+    
+    let bundleID = Bundle.main.object(forInfoDictionaryKey: "CFBundleID") as! String
+    return NSError(domain: bundleID,
+                   code: code,
+                   userInfo: [NSLocalizedDescriptionKey: errDesc])
+}

@@ -42,7 +42,7 @@ class PreviewViewController: NSViewController,
             // Only proceed if the file is accessible from here
             do {
                 // Get the file contents as a string
-                let data: Data = try Data.init(contentsOf: url)
+                let data: Data = try Data.init(contentsOf: url, options: [.uncached])
                 if let markdownString: String = String.init(data: data, encoding: .utf8) {
 
                     // Update the NSTextView
@@ -69,6 +69,8 @@ class PreviewViewController: NSViewController,
                         renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(getAttributedString(markdownString, false))
                         renderTextStorage.endEditing()
+                    } else {
+                        handler(setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING))
                     }
                     
                     // Add the subview to the instance's own view and draw
@@ -79,21 +81,15 @@ class PreviewViewController: NSViewController,
                     return
                 } else {
                     // We couldn't get the Markdown string so set an appropriate error to report back
-                    reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
-                                          code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
-                                          userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING])
+                    reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING)
                 }
             } catch {
                 // We couldn't read the file so set an appropriate error to report back
-                reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
-                                      code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN,
-                                      userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN])
+                reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
             }
         } else {
             // File passed isn't readable
-            reportError = NSError(domain: "com.bps.PreviewMarkdown.Previewer",
-                                  code: BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE,
-                                  userInfo: [NSLocalizedDescriptionKey: BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE])
+            reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE)
         }
 
         // Display the error locally in the window
