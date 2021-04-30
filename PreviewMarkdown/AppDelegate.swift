@@ -208,6 +208,7 @@ class AppDelegate: NSObject,
 
         // FROM 1.1.1
         // User clicked 'Send' so get the message (if there is one) from the text field and send it
+        
         let feedback: String = self.feedbackText.stringValue
 
         if feedback.count > 0 {
@@ -278,7 +279,7 @@ class AppDelegate: NSObject,
                                                           delegateQueue: OperationQueue.main)
                 return session.dataTask(with: request)
             } catch {
-                // NOP
+                // Fall through to error condition
             }
         }
         
@@ -481,10 +482,10 @@ class AppDelegate: NSObject,
 
         let app: String = "/usr/bin/osascript"
         let args: [String] = ["-e", "tell application \"System Events\" to log out"]
-
+        
         // Run the process
         // NOTE This time we wait for its conclusion
-        let success = runProcess(app: app, with: (args.count > 0 ? args : []))
+        let success: Bool = runProcess(app: app, with: (args.count > 0 ? args : []))
         if !success {
             // Log out request failed for some reason
             let alert: NSAlert = NSAlert.init()
@@ -681,7 +682,7 @@ class AppDelegate: NSObject,
             
             // FROM 1.3.0
             // Show any YAML front matter, if present
-            // Default: false
+            // Default: true
             let showFrontMatterDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-front-matter")
             if showFrontMatterDefault == nil {
                 defaults.setValue(true, forKey: "com-bps-previewmarkdown-do-show-front-matter")
