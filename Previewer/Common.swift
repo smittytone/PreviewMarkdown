@@ -20,7 +20,7 @@ private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
 private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
 private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
 private var doShowLightBackground: Bool = false
-private var doIndentScalars: Bool true
+private var doIndentScalars: Bool = true
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue",
                                    "LucidaGrande", "Times-Roman", "Verdana"]
@@ -50,7 +50,7 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // NOTE Set the font colour according to whether we're rendering a thumbail or a preview
     //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-    setBaseValues(swiftyMarkdown, isThumbnail)
+    setSwiftStyles(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
     processed = convertSpaces(processed)
     processed = processSymbols(processed)
@@ -453,30 +453,9 @@ func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedStrin
 
 // MARK: Formatting Functions
 
-func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
+func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 
     // Set common base style values for the markdown render
-
-    // FROM 1.2.0
-    // The suite name is the app group name, set in each extension's entitlements, and the host app's
-    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        defaults.synchronize()
-        fontSizeBase = CGFloat(isThumbnail
-                                ? defaults.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
-                                : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
-
-        codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
-        linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
-        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
-        bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
-        doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
-    }
-
-    // Just in case the above block reads in zero values
-    // NOTE The other valyes CAN be zero
-    if fontSizeBase < 1.0 || fontSizeBase > 28.0 {
-        fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
-    }
 
     sm.setFontColorForAllStyles(with: (isThumbnail || doShowLightBackground) ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
@@ -502,7 +481,34 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     //      a bug or issue with SwiftyMarkdown 1.2.3
     sm.link.color = getColour(linkColourIndex)
     sm.link.underlineColor = sm.link.color
+}
+
+
+func setBaseValues(_ isThumbnail: Bool) {
     
+    // Read in the key values from the preferences (or keep defaults)
+    // FROM 1.3.0 -- moved into separate function
+    
+    // The suite name is the app group name, set in each extension's entitlements, and the host app's
+    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        defaults.synchronize()
+        fontSizeBase = CGFloat(isThumbnail
+                                ? defaults.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
+                                : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+
+        codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
+        linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+        bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
+        doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
+    }
+    
+    // Just in case the above block reads in zero values
+    // NOTE The other valyes CAN be zero
+    if fontSizeBase < 1.0 || fontSizeBase > 28.0 {
+        fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    }
+
     // FROM 1.3.0
     // Set the front matter key:value fonts and sizes
     var font: NSFont
@@ -529,7 +535,6 @@ func setBaseValues(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     
     newLine = NSAttributedString.init(string: "\n",
                                       attributes: valAtts)
-
 }
 
 

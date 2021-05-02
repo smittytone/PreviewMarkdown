@@ -34,7 +34,11 @@ class PreviewViewController: NSViewController,
         // FROM 1.1.0
         // Get an error message ready for use
         var reportError: NSError? = nil
-
+        
+        // FROM 1.3.0
+        // Set the base values once per call
+        setBaseValues(false)
+        
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
         // NOTE From 1.1.0 we use plain old FileManager for this
@@ -62,7 +66,6 @@ class PreviewViewController: NSViewController,
                     //              in light mode, the scrollers show up light-on-light, in dark mode light-on-dark
                     // NOTE Changing the scrollview scroller knob style has no effect
                     self.renderTextView.backgroundColor = doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
-                    
                     self.renderTextScrollView.scrollerKnobStyle = doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
