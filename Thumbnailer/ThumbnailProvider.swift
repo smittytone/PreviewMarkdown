@@ -82,12 +82,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                             markdownTextView.backgroundColor = NSColor.white
                             
                             // Write the markdown NSAttributedString into the NSTextView's text storage
-                            if let markdownTextStorage: NSTextStorage = markdownTextView.textStorage {
-                                markdownTextStorage.setAttributedString(markdownAttString)
-                            } else {
-                                // Just in case...
-                                return false
-                            }
+                            guard let markdownTextStorage: NSTextStorage = markdownTextView.textStorage else { return false }
+                            markdownTextStorage.setAttributedString(markdownAttString)
                             
                             /*
                             let markdownTextStorage: NSTextStorage = NSTextStorage.init(attributedString: getAttributedString(markdownString, true))
@@ -118,9 +114,13 @@ class ThumbnailProvider: QLThumbnailProvider {
                                 tagTextView!.backgroundColor = NSColor.clear
 
                                 // Write the tag rendered as an NSAttributedString into the view's text storage
-                                guard let tagTextStorage: NSTextStorage = tagTextView!.textStorage else { return false }
-                                // NOTE We use 'request.maximumSize' for more accurate results
-                                tagTextStorage.setAttributedString(self.getTagString("MARKDOWN", request.maximumSize.width))
+                                if let tagTextStorage: NSTextStorage = tagTextView!.textStorage {
+                                    // NOTE We use 'request.maximumSize' for more accurate results
+                                    tagTextStorage.setAttributedString(self.getTagString("MARKDOWN", request.maximumSize.width))
+                                } else {
+                                    // Set this on error so we don't try and draw the tag later
+                                    self.doShowTag = false
+                                }
                             }
 
                             // Generate the bitmap from the rendered markdown text view
