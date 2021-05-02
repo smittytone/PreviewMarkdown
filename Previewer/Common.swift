@@ -20,6 +20,7 @@ private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
 private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
 private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
 private var doShowLightBackground: Bool = false
+private var doIndentScalars: Bool true
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue",
                                    "LucidaGrande", "Times-Roman", "Verdana"]
@@ -48,7 +49,6 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // Use SwiftyMarkdown to render the input markdown as an NSAttributedString, which is returned
     // NOTE Set the font colour according to whether we're rendering a thumbail or a preview
     //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
-
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
     setBaseValues(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
@@ -386,7 +386,7 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
                 
                 // If the value is a collection, we drop to the next line and indent
                 var valueIndent: Int = 0
-                if value.array != nil || value.dictionary != nil {
+                if value.array != nil || value.dictionary != nil || doIndentScalars {
                     valueIndent = indent + BUFFOON_CONSTANTS.YAML_INDENT
                     returnString.append(newLine)
                 }
