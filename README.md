@@ -32,11 +32,15 @@ Version 1.3.0 adds optional support for rendering YAML front matter in Markdown 
 
 This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
 
+## Acknowledgements ##
+
+When built, PreviewMarkdown contains SwiftyMarkdown by Simon Fairbairn and other contributors, and YamlSwift by Behrang Noruzi Niya and other contributors.
+
 ## Release Notes ##
 
 - 1.3.0 *Unreleased*
     - Add optional presentation of YAML front matter to previews.
-    - Rebuild QuickLook thumbnail cache on main app exit to hopefully deal with Visual Studio Code icon ‘hijacking’.
+    - Rebuild QuickLook thumbnail cache on main app exit.
     - Update user-agent string.
     - Minor code and UI improvements.
 - 1.2.0 *4 February 2021*
