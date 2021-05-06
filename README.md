@@ -34,13 +34,13 @@ This repository contains the primary source code for PreviewMarkdown. Certain gr
 
 ## Acknowledgements ##
 
-When built, PreviewMarkdown contains SwiftyMarkdown by Simon Fairbairn and other contributors, and YamlSwift by Behrang Noruzi Niya and other contributors.
+PreviewMarkdown’s app extensions contain SwiftyMarkdown by Simon Fairbairn and other contributors, and YamlSwift by Behrang Noruzi Niya and other contributors.
 
 ## Release Notes ##
 
 - 1.3.0 *Unreleased*
     - Add optional presentation of YAML front matter to previews.
-    - Rebuild QuickLook thumbnail cache on main app exit.
+    - Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
     - Update user-agent string.
     - Minor code and UI improvements.
 - 1.2.0 *4 February 2021*
