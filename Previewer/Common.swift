@@ -56,65 +56,67 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     processed = processSymbols(processed)
     
     // Process the markdown string
-    var output: NSMutableAttributedString = NSMutableAttributedString.init()
-    output.append(swiftyMarkdown.attributedString(from: processed))
+    var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
     
     // FROM 1.3.0
     // Render YAML front matter if requested by the user, and we're not
     // rendering a thumbnail image (this is for previews only)
-    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        if !isThumbnail && defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
-            // Extract the front matter
-            let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#)
-            if frontMatter.count > 0 {
-                // Only attempt to render the front matter if there is any
-                do {
-                    let yaml = try Yaml.load(frontMatter)
-                    
-                    // Assemble the front matter string
-                    let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                                   attributes: valAtts)
-                    
-                    // Initial line
-                    renderedString.append(hr)
-                    
-                    // Render the YAML to NSAttributedString
-                    if let yamlString = renderYaml(yaml, 0, false) {
-                        renderedString.append(yamlString)
-                    }
-                    
-                    // Add a line after the front matter
-                    renderedString.append(hr)
+    if !isThumbnail {
+        // Don't read in the preference unless we're sure we have to
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            if defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter") {
+                // Extract the front matter
+                let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#)
+                if frontMatter.count > 0 {
+                    // Only attempt to render the front matter if there is any
+                    do {
+                        let yaml = try Yaml.load(frontMatter)
+                        
+                        // Assemble the front matter string
+                        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
+                                                                                                       attributes: valAtts)
+                        
+                        // Initial line
+                        renderedString.append(hr)
+                        
+                        // Render the YAML to NSAttributedString
+                        if let yamlString = renderYaml(yaml, 0, false) {
+                            renderedString.append(yamlString)
+                        }
+                        
+                        // Add a line after the front matter
+                        renderedString.append(hr)
 
-                    // Add in the orignal rendered markdown and then set the
-                    // output string to the combined string
-                    renderedString.append(output)
-                    output = renderedString
-                } catch {
-                    // No YAML to render, or mis-formatted
-                    // No YAML to render, or the YAML was mis-formatted
-                    // Get the error as reported by YamlSwift
-                    let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
-                    var yamlErrString: String
-                    switch(yamlErr) {
-                        case .message(let s):
-                            yamlErrString = s ?? "unknown"
-                    }
+                        // Add in the orignal rendered markdown and then set the
+                        // output string to the combined string
+                        renderedString.append(output)
+                        output = renderedString
+                    } catch {
+                        // No YAML to render, or mis-formatted
+                        // No YAML to render, or the YAML was mis-formatted
+                        // Get the error as reported by YamlSwift
+                        let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
+                        var yamlErrString: String
+                        switch(yamlErr) {
+                            case .message(let s):
+                                yamlErrString = s ?? "unknown"
+                        }
 
-                    // Assemble the error string
-                    let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString, attributes: keyAtts)
+                        // Assemble the error string
+                        let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString, attributes: keyAtts)
 
-                    // Should we include the raw text?
-                    // At least the user can see the data this way
-                    #if DEBUG
+                        // Should we include the raw text?
+                        // At least the user can see the data this way
+                        #if DEBUG
+                            errorString.append(hr)
+                            errorString.append(NSMutableAttributedString.init(string: frontMatter,
+                                                                              attributes: valAtts))
+                        #endif
+                        
                         errorString.append(hr)
-                        errorString.append(NSMutableAttributedString.init(string: frontMatter,
-                                                                          attributes: valAtts))
-                    #endif
-                    
-                    errorString.append(hr)
-                    errorString.append(output)
-                    output = errorString
+                        errorString.append(output)
+                        output = errorString
+                    }
                 }
             }
         }

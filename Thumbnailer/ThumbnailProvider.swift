@@ -27,7 +27,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         super.init()
         
         // Set the base values once per instantiation, not every
-        // time a string is rendered (which risksa race condition)
+        // time a string is rendered (which risks race condition)
         setBaseValues(true)
         
         // Get the preference for showing a tag and do it once,
@@ -45,7 +45,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         
         // FROM 1.3.0
         // Run everything from this point on the main thread
-        DispatchQueue.main.async {
+        //DispatchQueue.main.async {
             // Set the thumbnail frame
             // NOTE This is always square, with height matched to width, so adjust
             //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
@@ -71,6 +71,10 @@ class ThumbnailProvider: QLThumbnailProvider {
                             guard let markdownString: String = String.init(data: data, encoding: .utf8) else { return false }
                             
                             // Get the Attributed String
+                            // TODO Can we save some time by reducing the length of the string before
+                            //      processing? We don't need all of a long file for the thumbnail, eg.
+                            //      3000 chars or 50 lines?
+                            // let mds = String(markdownString.prefix(3000))
                             let markdownAttString: NSAttributedString = getAttributedString(markdownString, true)
 
                             // Set the primary NSTextView drawing frame and a base font size
@@ -155,7 +159,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // pool code to the handler
                 return success
             }, nil)
-        }
+        //}
     }
 
 
