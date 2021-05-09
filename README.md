@@ -26,7 +26,7 @@ For more information on the background to this app, please see this [blog post](
 
 ### YAML Front Matter ###
 
-Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. This is disabled by default — to enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
+Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
 
 ## Source Code ##
 
@@ -34,11 +34,11 @@ This repository contains the primary source code for PreviewMarkdown. Certain gr
 
 ## Acknowledgements ##
 
-PreviewMarkdown’s app extensions contain SwiftyMarkdown by Simon Fairbairn and other contributors, and YamlSwift by Behrang Noruzi Niya and other contributors.
+PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
 
 ## Release Notes ##
 
-- 1.3.0 *Unreleased*
+- 1.3.0 *9 May 2021*
     - Add optional presentation of YAML front matter to previews.
     - Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
     - Update user-agent string.
