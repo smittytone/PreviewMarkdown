@@ -22,9 +22,10 @@
                 <outlet property="connectionProgress" destination="wmC-QI-6Qu" id="g61-ar-tEi"/>
                 <outlet property="creditAppStoreRating" destination="Poi-jo-cDz" id="WQs-yG-55G"/>
                 <outlet property="creditMenuAcknowlegdments" destination="FKE-Sm-Kum" id="Mi1-3q-c9I"/>
+                <outlet property="creditMenuOthersPreviewYaml" destination="A8d-f6-JOo" id="NH7-r3-QKG"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
                 <outlet property="creditMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="s3a-nj-rUO"/>
-                <outlet property="creditMenuYaml" destination="O46-Mu-Ivb" id="PhD-fs-zyR"/>
+                <outlet property="creditMenuYamlSwift" destination="O46-Mu-Ivb" id="BfK-3U-KNX"/>
                 <outlet property="doShowTagCheckbox" destination="Czd-zZ-ZiW" id="BnB-2W-7zY"/>
                 <outlet property="feedbackText" destination="TYV-nH-BBy" id="Yaf-kB-Der"/>
                 <outlet property="fontSizeLabel" destination="G17-HD-NQR" id="MvV-uv-FDW"/>
@@ -135,6 +136,19 @@
                                 <connections>
                                     <action selector="doShowWhatsNew:" target="Voe-Tx-rLC" id="xSQ-2B-eGW"/>
                                 </connections>
+                            </menuItem>
+                            <menuItem title="Other Preview Apps" id="2re-SY-Wwu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" id="aTi-bA-2As">
+                                    <items>
+                                        <menuItem title="PreviewYaml" id="A8d-f6-JOo">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="Ip6-wC-Yb7"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="PKG-sv-SKa"/>
                             <menuItem title="Report a Bug..." id="WK3-2e-U4U">

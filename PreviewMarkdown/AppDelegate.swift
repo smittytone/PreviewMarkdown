@@ -28,7 +28,9 @@ class AppDelegate: NSObject,
     @IBOutlet var creditMenuAcknowlegdments: NSMenuItem!
     @IBOutlet var creditAppStoreRating: NSMenuItem!
     // FROM 1.3.0
-    @IBOutlet var creditMenuYaml: NSMenuItem!
+    @IBOutlet var creditMenuYamlSwift: NSMenuItem!
+    // FROM 1.3.1
+    @IBOutlet var creditMenuOthersPreviewYaml: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -157,12 +159,15 @@ class AppDelegate: NSObject,
             path += "#acknowledgements"
         } else if item == self.creditAppStoreRating {
             path = "https://apps.apple.com/gb/app/previewmarkdown/id1492280469?action=write-review"
-        } else if item == self.creditMenuYaml {
+        } else if item == self.creditMenuYamlSwift {
             // FROM 1.3.0
             path = "https://github.com/behrang/YamlSwift"
         } else if item == self.creditMenuPM {
             // FROM 1.3.0
             path += "#how-to-use-previewmarkdown"
+        } else if item == self.creditMenuOthersPreviewYaml {
+            // FROM 1.3.1
+            path = "https://smittytone.net/previewyaml/index.html"
         }
         
         // Open the selected website
