@@ -158,7 +158,7 @@ class AppDelegate: NSObject,
         } else if item == self.creditMenuAcknowlegdments {
             path += "#acknowledgements"
         } else if item == self.creditAppStoreRating {
-            path = "https://apps.apple.com/gb/app/previewmarkdown/id1492280469?action=write-review"
+            path = PVM_SECRETS.APP_STORE + "?action=write-review"
         } else if item == self.creditMenuYamlSwift {
             // FROM 1.3.0
             path = "https://github.com/behrang/YamlSwift"
