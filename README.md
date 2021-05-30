@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.3.0 #
+# PreviewMarkdown 1.3.1 #
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -14,11 +14,11 @@ You can disable and re-enable the Previewer and Thumbnailer extensions at any ti
 
 You can alter some of the key elements of the preview by using the **Preferences** panel:
 
-- The colour of code blocks.
-- Code blocks’ monospaced font.
-- The base body text size.
-- The body text font.
-- Whether preview should be display white-on-black even in Dark Mode.
+* The colour of code blocks.
+* Code blocks’ monospaced font.
+* The base body text size.
+* The body text font.
+* Whether preview should be display white-on-black even in Dark Mode.
 
 Changing these settings will affect previews immediately, but may not affect thumbnail until you open a folder that has not been previously opened in the current login session.
 
@@ -38,43 +38,45 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
-- 1.3.0 *9 May 2021*
-    - Add optional presentation of YAML front matter to previews.
-    - Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
-    - Update user-agent string.
-    - Minor code and UI improvements.
-- 1.2.0 *4 February 2021*
-    - Add preview display preferences (requested by various anonymous feedback senders)
-    - Add file type ident tag to thumbnails (requested by @chamiu).
-    - Add **What’s New** sheet to be shown with new major/minor versions.
-    - Include local markdown UTI with user-submitted feedback.
-    - Add link for app reviews.
-- 1.1.4 *16 January 2021*
-    - Add UTI `net.ia.markdown`.
-- 1.1.3 *14 January 2021*
-    - Add UTI `pro.writer.markdown`.
-- 1.1.2 *18 November 2020*
-    - Apple Silicon version included.
-- 1.1.1 *1 October 2020*
-    - Add report bugs/send feedback mechanism.
-    - Add usage advice to main window.
-    - Handle markdown formatting not yet rendered by SwiftyMarkdown: three-tick code blocks, HTML symbols, space-inset lists.
-- 1.1.0 *25 September 2020*
-    - Add macOS Big Sur support.
-    - Better macOS dark/light mode support.
-    - Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
-- 1.0.5 *9 April 2020*
-    - App Store release version.
-- 1.0.4 *Unreleased*
-    - Minor cosmetic changes to app menus.
-- 1.0.3 *10 December 2019*
-    - Add version number to app’s info panel.
-- 1.0.2 *4 December 2019*
-    - Fix random crash (`string index out of range` in SwiftyMarkdown).
-- 1.0.1 *20 November 2019*
-    - Correct thumbnailer styles.
-- 1.0.0 *8 November 2019*
-    - Initial public release.
+* 1.3.1 *Unreleased*
+    * Add links to other PreviewApps.
+* 1.3.0 *9 May 2021*
+    * Add optional presentation of YAML front matter to previews.
+    * Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
+    * Update user-agent string.
+    * Minor code and UI improvements.
+* 1.2.0 *4 February 2021*
+    * Add preview display preferences (requested by various anonymous feedback senders)
+    * Add file type ident tag to thumbnails (requested by @chamiu).
+    * Add **What’s New** sheet to be shown with new major/minor versions.
+    * Include local markdown UTI with user-submitted feedback.
+    * Add link for app reviews.
+* 1.1.4 *16 January 2021*
+    * Add UTI `net.ia.markdown`.
+* 1.1.3 *14 January 2021*
+    * Add UTI `pro.writer.markdown`.
+* 1.1.2 *18 November 2020*
+    * Apple Silicon version included.
+* 1.1.1 *1 October 2020*
+    * Add report bugs/send feedback mechanism.
+    * Add usage advice to main window.
+    * Handle markdown formatting not yet rendered by SwiftyMarkdown: three-tick code blocks, HTML symbols, space-inset lists.
+* 1.1.0 *25 September 2020*
+    * Add macOS Big Sur support.
+    * Better macOS dark/light mode support.
+    * Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
+* 1.0.5 *9 April 2020*
+    * App Store release version.
+* 1.0.4 *Unreleased*
+    * Minor cosmetic changes to app menus.
+* 1.0.3 *10 December 2019*
+    * Add version number to app’s info panel.
+* 1.0.2 *4 December 2019*
+    * Fix random crash (`string index out of range` in SwiftyMarkdown).
+* 1.0.1 *20 November 2019*
+    * Correct thumbnailer styles.
+* 1.0.0 *8 November 2019*
+    * Initial public release.
 
 ## Copyright and Credits ##
 
