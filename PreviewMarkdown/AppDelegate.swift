@@ -574,7 +574,9 @@ class AppDelegate: NSObject,
                                            "Your comments have been received and we’ll take a look at them shortly.")
             alert.beginSheetModal(for: self.reportWindow) { (resp) in
                 // Close the feedback window when the modal alert returns
-                self.window.endSheet(self.reportWindow)
+                let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
+                    self.window.endSheet(self.reportWindow)
+                }
             }
         }
     }
