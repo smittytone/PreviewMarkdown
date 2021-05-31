@@ -23,6 +23,9 @@ class PreviewViewController: NSViewController,
         return NSNib.Name("PreviewViewController")
     }
 
+    // FROM 1.3.1
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+
 
     // MARK:- QLPreviewingController Required Functions
 
@@ -53,7 +56,7 @@ class PreviewViewController: NSViewController,
                     // FROM 1.2.0 -- Use a preference to govern this
                     var doShowLightBackground: Bool = false
 
-                    if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+                    if let defaults = UserDefaults(suiteName: self.appSuiteName) {
                         defaults.synchronize()
                         doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
                     }

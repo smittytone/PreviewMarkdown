@@ -68,11 +68,11 @@ class AppDelegate: NSObject,
     private var feedbackTask: URLSessionTask? = nil
 
     // FROM 1.2.0 -- stores for preferences
-    private var previewFontSize: CGFloat = 16.0
-    private var previewCodeColour: Int = 1
-    private var previewLinkColour: Int = 2
-    private var previewCodeFont: Int = 0
-    private var previewBodyFont: Int = 0
+    private var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    private var previewCodeColour: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+    private var previewLinkColour: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+    private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
+    private var previewBodyFont: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     private var doShowLightBackground: Bool = false
     private var doShowTag: Bool = false
     private var localMarkdownUTI: String = "NONE"
@@ -82,6 +82,7 @@ class AppDelegate: NSObject,
     private var doShowFrontMatter: Bool = false
 
     // FROM 1.3.1
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
     private var feedbackPath: String = MNU_SECRETS.ADDRESS.A
 
     
@@ -149,7 +150,7 @@ class AppDelegate: NSObject,
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = PVM_SECRETS.URL_MAIN
+        var path: String = BUFFOON_CONSTANTS.URL_MAIN
 
         // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
@@ -161,7 +162,7 @@ class AppDelegate: NSObject,
         } else if item == self.creditMenuAcknowlegdments {
             path += "#acknowledgements"
         } else if item == self.creditAppStoreRating {
-            path = PVM_SECRETS.APP_STORE + "?action=write-review"
+            path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
         } else if item == self.creditMenuYamlSwift {
             // FROM 1.3.0
             path = "https://github.com/behrang/YamlSwift"
@@ -170,7 +171,7 @@ class AppDelegate: NSObject,
             path += "#how-to-use-previewmarkdown"
         } else if item == self.creditMenuOthersPreviewYaml {
             // FROM 1.3.1
-            path = PVY_SECRETS.URL_MAIN
+            path = "https://smittytone.net/previewyaml/index.html"
         }
         
         // Open the selected website
@@ -304,7 +305,7 @@ class AppDelegate: NSObject,
         // Display the Preferences... sheet
 
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
             self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
             self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
@@ -359,7 +360,7 @@ class AppDelegate: NSObject,
         // FROM 1.2.0
         // Close the Preferences... sheet and save the prefs, if they have changed
 
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             if self.codeColourPopup.indexOfSelectedItem != self.previewCodeColour {
                 defaults.setValue(self.codeColourPopup.indexOfSelectedItem,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
@@ -421,7 +422,7 @@ class AppDelegate: NSObject,
         if !doShowSheet {
             // We are coming from the 'appDidFinishLoading()' so check
             // if we need to show the sheet by the checking the prefs
-            if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+            if let defaults = UserDefaults(suiteName: self.appSuiteName) {
                 // Get the version-specific preference key
                 let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
                 doShowSheet = defaults.bool(forKey: key)
@@ -470,7 +471,7 @@ class AppDelegate: NSObject,
         self.whatsNewWebView.evaluateJavaScript("window.scrollTo(0,0)", completionHandler: nil)
 
         // Set this version's preference
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
             defaults.setValue(false, forKey: key)
 
@@ -611,7 +612,7 @@ class AppDelegate: NSObject,
         // FROM 1.2.0
         // Called by the app at launch to register its initial defaults
 
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             // Check if each preference value exists -- set if it doesn't
             // Preview body font size, stored as a CGFloat
             // Default: 16.0

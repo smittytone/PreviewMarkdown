@@ -17,8 +17,11 @@ class ThumbnailProvider: QLThumbnailProvider {
     // FROM 1.3.0
     // Add key required values to self
     var doShowTag: Bool = true
-    
-    
+
+    // FROM 1.3.1
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+
+
     // MARK:- Lifecycle Required Functions
     
     override init() {
@@ -32,7 +35,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         
         // Get the preference for showing a tag and do it once,
         // so it's only every read once
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             defaults.synchronize()
             self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
         }

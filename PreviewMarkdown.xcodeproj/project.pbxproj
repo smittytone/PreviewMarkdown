@@ -18,8 +18,8 @@
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
 		3B218E122637F5C30024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E112637F5C30024446B /* Yaml */; };
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
-		3B223FD925AF4AB200BC46E8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B223FD825AF4AB200BC46E8 /* Secrets.swift */; };
-		3B223FDA25AF4AB200BC46E8 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B223FD825AF4AB200BC46E8 /* Secrets.swift */; };
+		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
+		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B3D98D025B20AF500A92A8B /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3D98CF25B20AF500A92A8B /* Secrets.swift */; };
 		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
@@ -88,7 +88,6 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
-		3B223FD825AF4AB200BC46E8 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = /Users/smitty/GitHub/PreviewMarkdown/Previewer/../../../OneDrive/Programming/mnu/Secrets.swift; sourceTree = "<absolute>"; };
 		3B3D98CF25B20AF500A92A8B /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../../../OneDrive/Programming/mnu/Secrets.swift; sourceTree = "<group>"; };
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
@@ -219,7 +218,6 @@
 		3BBAEA2E236ADECB009BAA05 /* Previewer */ = {
 			isa = PBXGroup;
 			children = (
-				3B223FD825AF4AB200BC46E8 /* Secrets.swift */,
 				3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */,
 				3B0E8DCE251B8775001AC5BC /* Common.swift */,
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
@@ -444,7 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
-				3B223FD925AF4AB200BC46E8 /* Secrets.swift in Sources */,
+				3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
@@ -455,7 +453,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
-				3B223FDA25AF4AB200BC46E8 /* Secrets.swift in Sources */,
+				3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
