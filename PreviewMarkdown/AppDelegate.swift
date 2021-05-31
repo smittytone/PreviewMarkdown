@@ -81,6 +81,9 @@ class AppDelegate: NSObject,
     // FROM 1.3.0
     private var doShowFrontMatter: Bool = false
 
+    // FROM 1.3.1
+    private var feedbackPath: String = MNU_SECRETS.ADDRESS.A
+
     
     // MARK:- Class Lifecycle Functions
 
@@ -146,7 +149,7 @@ class AppDelegate: NSObject,
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = "https://smittytone.net/previewmarkdown/index.html"
+        var path: String = PVM_SECRETS.URL_MAIN
 
         // FROM 1.1.0 -- bypass unused items
         if item == self.creditMenuDiscount {
@@ -167,7 +170,7 @@ class AppDelegate: NSObject,
             path += "#how-to-use-previewmarkdown"
         } else if item == self.creditMenuOthersPreviewYaml {
             // FROM 1.3.1
-            path = "https://smittytone.net/previewyaml/index.html"
+            path = PVY_SECRETS.URL_MAIN
         }
         
         // Open the selected website
@@ -246,6 +249,7 @@ class AppDelegate: NSObject,
         // Send the string etc.
         // First get the data we need to build the user agent string
         let userAgent: String = getUserAgentForFeedback()
+        let endPoint: String = MNU_SECRETS.ADDRESS.B
         
         // Get the date as a string
         let dateString: String = getDateForFeedback()
@@ -267,7 +271,7 @@ class AppDelegate: NSObject,
         dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
         
         // Make and return the HTTPS request for sending
-        if let url: URL = URL.init(string: MNU_SECRETS.ADDRESS.A + MNU_SECRETS.ADDRESS.B) {
+        if let url: URL = URL.init(string: self.feedbackPath + endPoint) {
             var request: URLRequest = URLRequest.init(url: url)
             request.httpMethod = "POST"
 
