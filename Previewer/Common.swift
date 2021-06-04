@@ -6,6 +6,7 @@
 //  Copyright © 2021 Tony Smith. All rights reserved.
 //
 
+
 import Foundation
 import SwiftyMarkdown
 import Yaml
@@ -41,7 +42,7 @@ private var newLine: NSAttributedString = NSAttributedString.init(string: "\n")
 
     
 
-// MARK: Primary Function
+// MARK:- Primary Function
 
 func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
@@ -133,7 +134,7 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
 }
 
 
-// MARK: SwiftyMarkdown Rendering Support Functions
+// MARK:- SwiftyMarkdown Rendering Support Functions
 
 func processSymbols(_ base: String) -> String {
 
@@ -251,7 +252,7 @@ func convertSpaces(_ base: String) -> String {
 }
 
 
-// MARK: Front Matter Functions
+// MARK:- Front Matter Functions
 
 func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
     
@@ -453,7 +454,7 @@ func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedStrin
 }
 
 
-// MARK: Formatting Functions
+// MARK:- Formatting Functions
 
 func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 
@@ -572,6 +573,7 @@ func getColour(_ index: Int) -> NSColor {
 }
 
 
+// MARK:- Misc Functions
 func setError(_ code: Int) -> NSError {
     
     // NSError generation function

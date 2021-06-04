@@ -12,11 +12,11 @@ import WebKit
 
 
 @NSApplicationMain
-class AppDelegate: NSObject,
-                   NSApplicationDelegate,
-                   URLSessionDelegate,
-                   URLSessionDataDelegate,
-                   WKNavigationDelegate {
+final class AppDelegate: NSObject,
+                         NSApplicationDelegate,
+                         URLSessionDelegate,
+                         URLSessionDataDelegate,
+                         WKNavigationDelegate {
 
 
     // MARK:- Class UI Properies
@@ -135,7 +135,7 @@ class AppDelegate: NSObject,
 
     // MARK:- Action Functions
 
-    @IBAction func doClose(_ sender: Any) {
+    @IBAction private func doClose(_ sender: Any) {
         
         // FROM 1.3.0
         // Reset the QL thumbnail cache... just in case
@@ -146,7 +146,7 @@ class AppDelegate: NSObject,
     }
     
     
-    @IBAction @objc func doShowSites(sender: Any) {
+    @IBAction @objc private func doShowSites(sender: Any) {
         
         // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
@@ -179,7 +179,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func openSysPrefs(sender: Any) {
+    @IBAction private func openSysPrefs(sender: Any) {
 
         // FROM 1.1.0
         // Open the System Preferences app at the Extensions pane
@@ -189,7 +189,7 @@ class AppDelegate: NSObject,
     
     // MARK: Reporting Functions
     
-    @IBAction @objc func showFeedbackWindow(sender: Any?) {
+    @IBAction @objc private func showFeedbackWindow(sender: Any?) {
 
         // FROM 1.1.1
         // Display a window in which the user can submit feedback
@@ -203,7 +203,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction @objc func doCancelReportWindow(sender: Any) {
+    @IBAction @objc private func doCancelReportWindow(sender: Any) {
 
         // FROM 1.1.1
         // User has clicked 'Cancel', so just close the sheet
@@ -213,7 +213,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction @objc func doSendFeedback(sender: Any) {
+    @IBAction @objc private func doSendFeedback(sender: Any) {
 
         // FROM 1.1.1
         // User clicked 'Send' so get the message (if there is one) from the text field and send it
@@ -242,7 +242,7 @@ class AppDelegate: NSObject,
     }
     
     
-    func sendFeedback(_ feedback: String) -> URLSessionTask? {
+    private func sendFeedback(_ feedback: String) -> URLSessionTask? {
         
         // FROM 1.2.0
         // Break out into separate function
@@ -299,7 +299,7 @@ class AppDelegate: NSObject,
     
     // MARK: Preferences Functions
     
-    @IBAction func doShowPreferences(sender: Any) {
+    @IBAction private func doShowPreferences(sender: Any) {
 
         // FROM 1.2.0
         // Display the Preferences... sheet
@@ -338,7 +338,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doMoveSlider(sender: Any) {
+    @IBAction private func doMoveSlider(sender: Any) {
 
         // FROM 1.2.0
         let index: Int = Int(self.fontSizeSlider.floatValue)
@@ -346,7 +346,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doClosePreferences(sender: Any) {
+    @IBAction private func doClosePreferences(sender: Any) {
 
         // FROM 1.2.0
         // Close the Preferences... sheet
@@ -355,7 +355,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doSavePreferences(sender: Any) {
+    @IBAction private func doSavePreferences(sender: Any) {
 
         // FROM 1.2.0
         // Close the Preferences... sheet and save the prefs, if they have changed
@@ -410,7 +410,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doShowWhatsNew(_ sender: Any) {
+    @IBAction private func doShowWhatsNew(_ sender: Any) {
 
         // FROM 1.2.0
         // Show the 'What's New' sheet, if we're on a new, non-patch version
@@ -443,22 +443,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
-        // FROM 1.2.0
-        // Asynchronously show the sheet once the HTML has loaded
-        // (triggered by delegate method)
-
-        if let nav = self.whatsNewNav {
-            if nav == navigation {
-                // Display the sheet
-                self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
-            }
-        }
-    }
-
-
-    @IBAction func doCloseWhatsNew(_ sender: Any) {
+    @IBAction private func doCloseWhatsNew(_ sender: Any) {
 
         // FROM 1.2.0
         // Close the 'What's New' sheet, making sure we clear the preference flag for this minor version,
@@ -485,7 +470,7 @@ class AppDelegate: NSObject,
     }
 
 
-    @IBAction func doLogOut(_ sender: Any) {
+    @IBAction private func doLogOut(_ sender: Any) {
 
         // FROM 1.2.0
         // Run a log out sequence if the user requests it
@@ -506,7 +491,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func runProcess(app path: String, with args: [String]) -> Bool {
+    private func runProcess(app path: String, with args: [String]) -> Bool {
 
         // FROM 1.2.0
         // Generic task creation and run function
@@ -582,9 +567,26 @@ class AppDelegate: NSObject,
     }
 
 
+    // MARK: - WKWebViewNavigation Delegate Functions
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+        // FROM 1.2.0
+        // Asynchronously show the sheet once the HTML has loaded
+        // (triggered by delegate method)
+
+        if let nav = self.whatsNewNav {
+            if nav == navigation {
+                // Display the sheet
+                self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+            }
+        }
+    }
+
+
     // MARK: - Misc Functions
 
-    func sendFeedbackError() {
+    private func sendFeedbackError() {
 
         // Present an error message specific to sending feedback
         // This is called from multiple locations: if the initial request can't be created,
@@ -597,7 +599,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func showAlert(_ head: String, _ message: String) -> NSAlert {
+    private func showAlert(_ head: String, _ message: String) -> NSAlert {
 
         // FROM 1.1.1
         // Generic alert presentation
@@ -609,7 +611,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func registerPreferences() {
+    private func registerPreferences() {
 
         // FROM 1.2.0
         // Called by the app at launch to register its initial defaults
@@ -707,7 +709,7 @@ class AppDelegate: NSObject,
     }
     
     
-    func getLocalMarkdownUTI() -> String {
+    private func getLocalMarkdownUTI() -> String {
         
         // FROM 1.2.0
         // Read back the host system's registered UTI for markdown files.
@@ -734,7 +736,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func getVersion() -> String {
+    private func getVersion() -> String {
 
         // FROM 1.2.0
         // Build a basic 'major.manor' version string for prefs usage
@@ -745,7 +747,7 @@ class AppDelegate: NSObject,
     }
     
     
-    func getDateForFeedback() -> String {
+    private func getDateForFeedback() -> String {
 
         // FROM 1.2.0
         // Refactor code out into separate function for clarity
@@ -759,7 +761,7 @@ class AppDelegate: NSObject,
     }
 
 
-    func getUserAgentForFeedback() -> String {
+    private func getUserAgentForFeedback() -> String {
 
         // FROM 1.2.0
         // Refactor code out into separate function for clarity
