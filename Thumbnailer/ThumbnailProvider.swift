@@ -191,7 +191,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // FROM 1.3.0 -- do this as a literal
         let tagAtts: [NSAttributedString.Key : Any] = [
             .paragraphStyle: style as NSParagraphStyle,
-            .font: NSFont.systemFont(ofSize: CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE)),
+            .font: NSFont.systemFont(ofSize: fontSize),
             .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
         ]
 
