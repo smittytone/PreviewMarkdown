@@ -94,15 +94,9 @@ class ThumbnailProvider: QLThumbnailProvider {
                             
                             // Write the markdown NSAttributedString into the NSTextView's text storage
                             guard let markdownTextStorage: NSTextStorage = markdownTextView.textStorage else { return false }
+                            markdownTextStorage.beginEditing()
                             markdownTextStorage.setAttributedString(markdownAttString)
-                            
-                            /*
-                            let markdownTextStorage: NSTextStorage = NSTextStorage.init(attributedString: getAttributedString(markdownString, true))
-                            let mdLayoutManger: NSLayoutManager = NSLayoutManager.init()
-                            let mdTextContainer: NSTextContainer = NSTextContainer.init()
-                            mdLayoutManger.addTextContainer(mdTextContainer)
-                            markdownTextStorage.addLayoutManager(mdLayoutManger)
-                            */
+                            markdownTextStorage.endEditing()
                             
                             // FROM 1.2.0
                             // Also generate text for the bottom-of-thumbnail file type tag,
@@ -126,8 +120,14 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                                 // Write the tag rendered as an NSAttributedString into the view's text storage
                                 if let tagTextStorage: NSTextStorage = tagTextView!.textStorage {
+                                    // Remove offsets
+                                    tagTextView!.textContainer!.lineFragmentPadding = 0.0
+                                    tagTextView!.textContainer!.maximumNumberOfLines = 1
+                                    
                                     // NOTE We use 'request.maximumSize' for more accurate results
+                                    tagTextStorage.beginEditing()
                                     tagTextStorage.setAttributedString(self.getTagString("MARKDOWN", request.maximumSize.width))
+                                    tagTextStorage.endEditing()
                                 } else {
                                     // Set this on error so we don't try and draw the tag later
                                     tagFrame = nil
@@ -175,14 +175,24 @@ class ThumbnailProvider: QLThumbnailProvider {
         let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
         style.alignment = .center
 
+        // FROM 1.3.1
+        // Set the point size
+        var fontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_SIZE)
+        let renderSize: NSSize = (tag as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: fontSize)])
+        if renderSize.width > CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH) - 20 {
+            let ratio: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH - 20) / renderSize.width
+            fontSize *= ratio;
+            if fontSize < CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_MIN_SIZE) {
+                fontSize = CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_MIN_SIZE)
+            }
+        }
+        
         // Build the string attributes
         // FROM 1.3.0 -- do this as a literal
         let tagAtts: [NSAttributedString.Key : Any] = [
             .paragraphStyle: style as NSParagraphStyle,
             .font: NSFont.systemFont(ofSize: CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE)),
-            .foregroundColor: (width < 128
-                                ? NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-                                : NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0))
+            .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
         ]
 
         // Return the attributed string built from the tag
