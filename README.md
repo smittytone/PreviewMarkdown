@@ -40,6 +40,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 * 1.3.1 *Unreleased*
     * Add links to other PreviewApps.
+    * Minor code improvements.
 * 1.3.0 *9 May 2021*
     * Add optional presentation of YAML front matter to previews.
     * Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
