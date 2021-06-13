@@ -101,7 +101,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                             // FROM 1.2.0
                             // Also generate text for the bottom-of-thumbnail file type tag,
                             // if the user has this set as a preference
-                            var tagTextView: NSTextView? = nil
+                            var tagTextField: NSTextField? = nil
                             var tagFrame: CGRect? = nil
 
                             if self.doShowTag {
@@ -111,6 +111,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                        width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                        height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
 
+                                /*
                                 // Instantiate an NSTextView to display the NSAttributedString render of the tag,
                                 // this time with a clear background
                                 // FROM 1.3.0 -- make sure it's not selectable, ie. non-interactive
@@ -132,6 +133,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                     // Set this on error so we don't try and draw the tag later
                                     tagFrame = nil
                                 }
+                                */
+                                
+                                tagTextField = NSTextField.init(labelWithAttributedString: self.getTagString("MARKDOWN", request.maximumSize.width))
+                                tagTextField!.alignment = .center
+                                tagTextField!.frame = tagFrame!
                             }
 
                             // Generate the bitmap from the rendered markdown text view
@@ -141,8 +147,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                             markdownTextView.cacheDisplay(in: markdownFrame, to: imageRep)
 
                             // ...then the tag view
-                            if tagFrame != nil && tagTextView != nil {
-                                tagTextView!.cacheDisplay(in: tagFrame!, to: imageRep)
+                            if tagFrame != nil && tagTextField != nil {
+                                tagTextField!.cacheDisplay(in: tagFrame!, to: imageRep)
                             }
                             
                             // This is the drawing block. It returns true (thumbnail drawn into current context)
