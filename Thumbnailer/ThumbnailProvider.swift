@@ -72,7 +72,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                             // as we're not going to read it again any time soon
                             let data: Data = try Data.init(contentsOf: request.fileURL, options: [.uncached])
                             guard let markdownString: String = String.init(data: data, encoding: .utf8) else { return false }
-                            
+
+
                             // Get the Attributed String
                             // TODO Can we save some time by reducing the length of the string before
                             //      processing? We don't need all of a long file for the thumbnail, eg.
@@ -85,7 +86,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                                     y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
                                                                     width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                                     height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
-                            
+
+                            /*
                             // Instantiate an NSTextView to display the NSAttributedString render of the markdown
                             // FROM 1.3.0 -- make sure it's not selectable, ie. non-interactive
                             let markdownTextView: NSTextView = NSTextView.init(frame: markdownFrame)
@@ -97,10 +99,18 @@ class ThumbnailProvider: QLThumbnailProvider {
                             markdownTextStorage.beginEditing()
                             markdownTextStorage.setAttributedString(markdownAttString)
                             markdownTextStorage.endEditing()
-                            
+                            */
+
+                            // FROM 1.3.1
+                            // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
+                            // and extend the size of its frame
+                            let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAttString)
+                            markdownTextField.frame = markdownFrame
+
                             // FROM 1.2.0
                             // Also generate text for the bottom-of-thumbnail file type tag,
                             // if the user has this set as a preference
+                            // FROM 1.3.1 -- implement tag as NSTextField label
                             var tagTextField: NSTextField? = nil
                             var tagFrame: CGRect? = nil
 
@@ -134,17 +144,19 @@ class ThumbnailProvider: QLThumbnailProvider {
                                     tagFrame = nil
                                 }
                                 */
-                                
+
+                                // FROM 1.3.1
+                                // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
+                                // and extend the size of its frame
                                 tagTextField = NSTextField.init(labelWithAttributedString: self.getTagString("MARKDOWN", request.maximumSize.width))
-                                tagTextField!.alignment = .center
                                 tagTextField!.frame = tagFrame!
                             }
 
                             // Generate the bitmap from the rendered markdown text view
-                            guard let imageRep: NSBitmapImageRep = markdownTextView.bitmapImageRepForCachingDisplay(in: markdownFrame) else { return false }
+                            guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else { return false }
                             
                             // Draw into the bitmap first the markdown view...
-                            markdownTextView.cacheDisplay(in: markdownFrame, to: imageRep)
+                            markdownTextField.cacheDisplay(in: markdownFrame, to: imageRep)
 
                             // ...then the tag view
                             if tagFrame != nil && tagTextField != nil {
@@ -181,23 +193,11 @@ class ThumbnailProvider: QLThumbnailProvider {
         let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
         style.alignment = .center
 
-        // FROM 1.3.1
-        // Set the point size
-        var fontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_SIZE)
-        let renderSize: NSSize = (tag as NSString).size(withAttributes: [.font: NSFont.systemFont(ofSize: fontSize)])
-        if renderSize.width > CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH) - 20 {
-            let ratio: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH - 20) / renderSize.width
-            fontSize *= ratio;
-            if fontSize < CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_MIN_SIZE) {
-                fontSize = CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_MIN_SIZE)
-            }
-        }
-        
         // Build the string attributes
         // FROM 1.3.0 -- do this as a literal
         let tagAtts: [NSAttributedString.Key : Any] = [
             .paragraphStyle: style as NSParagraphStyle,
-            .font: NSFont.systemFont(ofSize: fontSize),
+            .font: NSFont.systemFont(ofSize: CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_SIZE)),
             .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
         ]
 
