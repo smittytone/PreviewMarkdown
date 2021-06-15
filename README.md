@@ -40,6 +40,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 * 1.3.1 *Unreleased*
     * Add links to other PreviewApps.
+    * Support macOS 11 Big Sur’s UTType API.
     * Minor code improvements.
 * 1.3.0 *9 May 2021*
     * Add optional presentation of YAML front matter to previews.
