@@ -63,6 +63,6 @@ struct BUFFOON_CONSTANTS {
     static let APP_STORE = "https://apps.apple.com/us/app/previewmarkdown/id1492280469"
     static let SUITE_NAME = ".suite.previewmarkdown"
     
-    static let TAG_TEXT_SIZE                = 124
+    static let TAG_TEXT_SIZE                = 180 //124
 
 }

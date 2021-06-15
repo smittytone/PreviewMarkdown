@@ -148,7 +148,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                                 // FROM 1.3.1
                                 // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                                 // and extend the size of its frame
-                                tagTextField = NSTextField.init(labelWithAttributedString: self.getTagString("MARKDOWN", request.maximumSize.width))
+                                tagTextField = NSTextField.init(labelWithAttributedString: self.getTagString("MD", request.maximumSize.width))
                                 tagTextField!.frame = tagFrame!
                             }
 
