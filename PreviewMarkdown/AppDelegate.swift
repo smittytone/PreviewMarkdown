@@ -9,6 +9,7 @@
 import Cocoa
 import CoreServices
 import WebKit
+import UniformTypeIdentifiers
 
 
 @NSApplicationMain
@@ -724,8 +725,16 @@ final class AppDelegate: NSObject,
             
             do {
                 // Read back the UTI from the URL
-                if let uti = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
-                    localMarkdownUTI = uti
+                // Use Big Sur's UTType API
+                if #available(macOS 11, *) {
+                    if let uti: UTType = try sampleURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+                        localMarkdownUTI = uti.identifier
+                    }
+                } else {
+                    // NOTE '.typeIdentifier' yields an optional
+                    if let uti: String = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+                        localMarkdownUTI = uti
+                    }
                 }
             } catch {
                 // NOP
