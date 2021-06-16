@@ -1,9 +1,10 @@
-
-//  Constants.swift
-//  PreviewMarkdown
-//
-//  Created by Tony Smith on 12/08/2020.
-//  Copyright © 2021 Tony Smith. All rights reserved.
+/*
+ *  Constants.swift
+ *  PreviewMarkdown
+ *
+ *  Created by Tony Smith on 12/08/2020.
+ *  Copyright © 2021 Tony Smith. All rights reserved.
+ */
 
 
 // Combine the app's various constants into a struct
@@ -54,15 +55,15 @@ struct BUFFOON_CONSTANTS {
     static let BODY_FONT_INDEX              = 0
 
     static let FONT_SIZE_OPTIONS: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
-    
+
     // FROM 1.3.0
     static let YAML_INDENT                  = 2
-    
+
     // FROM 1.3.1
     static let URL_MAIN  = "https://smittytone.net/previewmarkdown/index.html"
     static let APP_STORE = "https://apps.apple.com/us/app/previewmarkdown/id1492280469"
     static let SUITE_NAME = ".suite.previewmarkdown"
-    
-    static let TAG_TEXT_SIZE                = 180 //124
 
+    static let TAG_TEXT_SIZE                = 180 //124
+    static let TAG_TEXT_MIN_SIZE            = 118
 }

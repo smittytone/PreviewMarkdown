@@ -1,10 +1,10 @@
-//
-//  Common.swift
-//  Code common to Previewer and Thumbnailer
-//
-//  Created by Tony Smith on 23/09/2020.
-//  Copyright © 2021 Tony Smith. All rights reserved.
-//
+/*
+ *  Common.swift
+ *  Code common to Previewer and Thumbnailer
+ *
+ *  Created by Tony Smith on 23/09/2020.
+ *  Copyright © 2021 Tony Smith. All rights reserved.
+ */
 
 
 import Foundation
