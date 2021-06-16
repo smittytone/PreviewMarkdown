@@ -173,7 +173,7 @@ final class AppDelegate: NSObject,
             path += "#how-to-use-previewmarkdown"
         } else if item == self.creditMenuOthersPreviewYaml {
             // FROM 1.3.1
-            path = "https://smittytone.net/previewyaml/index.html"
+            path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
         }
         
         // Open the selected website
