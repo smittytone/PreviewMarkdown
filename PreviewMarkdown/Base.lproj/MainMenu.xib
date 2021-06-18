@@ -22,6 +22,7 @@
                 <outlet property="connectionProgress" destination="wmC-QI-6Qu" id="g61-ar-tEi"/>
                 <outlet property="creditAppStoreRating" destination="Poi-jo-cDz" id="WQs-yG-55G"/>
                 <outlet property="creditMenuAcknowlegdments" destination="FKE-Sm-Kum" id="Mi1-3q-c9I"/>
+                <outlet property="creditMenuOthersPreviewCode" destination="s6y-wo-6b3" id="Gfp-CB-dbi"/>
                 <outlet property="creditMenuOthersPreviewYaml" destination="A8d-f6-JOo" id="NH7-r3-QKG"/>
                 <outlet property="creditMenuPM" destination="NdQ-kU-ZWH" id="yOA-Ma-OOQ"/>
                 <outlet property="creditMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="s3a-nj-rUO"/>
@@ -141,6 +142,12 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" id="aTi-bA-2As">
                                     <items>
+                                        <menuItem title="PreviewCode" id="s6y-wo-6b3">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="tri-dt-wgD"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="PreviewYaml" id="A8d-f6-JOo">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

@@ -33,6 +33,8 @@ final class AppDelegate: NSObject,
     @IBOutlet var creditMenuYamlSwift: NSMenuItem!
     // FROM 1.3.1
     @IBOutlet var creditMenuOthersPreviewYaml: NSMenuItem!
+    // FROM 1.3.2
+    @IBOutlet var creditMenuOthersPreviewCode: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -174,6 +176,8 @@ final class AppDelegate: NSObject,
         } else if item == self.creditMenuOthersPreviewYaml {
             // FROM 1.3.1
             path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
+        } else if item == self.helpMenuOthersPreviewCode {
+            path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
         }
         
         // Open the selected website
