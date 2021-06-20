@@ -43,17 +43,15 @@ struct BUFFOON_CONSTANTS {
         static let FONT_SIZE                = 130.0
     }
 
-    static let BASE_PREVIEW_FONT_SIZE       = 16.0
-    static let BASE_THUMB_FONT_SIZE         = 14.0
+    static let PREVIEW_FONT_SIZE            = 16.0
+    static let THUMBNAIL_FONT_SIZE          = 14.0
     static let SPACES_FOR_A_TAB             = 4
 
     // FROM 1.2.0
     static let CODE_COLOUR_INDEX            = 0
     static let LINK_COLOUR_INDEX            = 2
-
     static let CODE_FONT_INDEX              = 0
     static let BODY_FONT_INDEX              = 0
-
     static let FONT_SIZE_OPTIONS: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
 
     // FROM 1.3.0
@@ -66,4 +64,12 @@ struct BUFFOON_CONSTANTS {
 
     static let TAG_TEXT_SIZE                = 180 //124
     static let TAG_TEXT_MIN_SIZE            = 118
+    
+    // FROM 1.4.0
+    static let LINK_COLOUR_HEX                = "0096FFFF"
+    static let HEAD_COLOUR_HEX                = "941751FF"
+    static let CODE_COLOUR_HEX                = "00FF00FF"
+    static let BODY_FONT_NAME                 = "System"
+    static let CODE_FONT_NAME                 = "Courier"
+    
 }

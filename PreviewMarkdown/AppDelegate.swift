@@ -57,7 +57,10 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var doShowTagCheckbox: NSButton!
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
-    @IBOutlet weak var codeColourPopup: NSPopUpButton!
+    //@IBOutlet weak var codeColourPopup: NSPopUpButton!
+    // FROM 1.4.0
+    @IBOutlet weak var codeColourWell: NSColorWell!
+    @IBOutlet weak var headColourWell: NSColorWell!
     
     // FROM 1.3.0
     @IBOutlet weak var showFrontMatterCheckbox: NSButton!
@@ -72,7 +75,8 @@ final class AppDelegate: NSObject,
     private var feedbackTask: URLSessionTask? = nil
 
     // FROM 1.2.0 -- stores for preferences
-    private var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    internal var whatsNewNav: WKNavigation? = nil
+    private var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     private var previewCodeColour: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
     private var previewLinkColour: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
     private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
@@ -80,7 +84,6 @@ final class AppDelegate: NSObject,
     private var doShowLightBackground: Bool = false
     private var doShowTag: Bool = false
     private var localMarkdownUTI: String = "NONE"
-    private var whatsNewNav: WKNavigation? = nil
     
     // FROM 1.3.0
     private var doShowFrontMatter: Bool = false
@@ -88,6 +91,12 @@ final class AppDelegate: NSObject,
     // FROM 1.3.1
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
     private var feedbackPath: String = MNU_SECRETS.ADDRESS.A
+    
+    // FROM 1.4.0
+    private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    private var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    private var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
 
     
     // MARK:- Class Lifecycle Functions
@@ -176,7 +185,7 @@ final class AppDelegate: NSObject,
         } else if item == self.creditMenuOthersPreviewYaml {
             // FROM 1.3.1
             path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
-        } else if item == self.helpMenuOthersPreviewCode {
+        } else if item == self.creditMenuOthersPreviewCode {
             path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
         }
         
@@ -305,10 +314,15 @@ final class AppDelegate: NSObject,
     
     // MARK: Preferences Functions
     
-    @IBAction private func doShowPreferences(sender: Any) {
+    /**
+     Initialise and display the **Preferences** sheet.
+     
+     FROM 1.2.0
 
-        // FROM 1.2.0
-        // Display the Preferences... sheet
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doShowPreferences(sender: Any) {
 
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
@@ -322,15 +336,19 @@ final class AppDelegate: NSObject,
             
             // FROM 1.3.0
             self.doShowFrontMatter = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            
+            // FROM 1.4.0
+            self.codeColourHex = defaults.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
         }
 
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
         //let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+        //self.codeColourPopup.selectItem(at: self.previewCodeColour)
         let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: self.previewFontSize) ?? 3
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
-        self.codeColourPopup.selectItem(at: self.previewCodeColour)
         self.codeFontPopup.selectItem(at: self.previewCodeFont)
         self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
@@ -338,40 +356,76 @@ final class AppDelegate: NSObject,
         
         // FROM 1.3.0
         self.showFrontMatterCheckbox.state = self.doShowFrontMatter ? .on : .off
+        
+        // FROM 1.4.0
+        // Set the two colour wells
+        self.codeColourWell.color = NSColor.hexToColour(self.codeColourHex)
+        self.headColourWell.color = NSColor.hexToColour(self.headColourHex)
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
 
+    
+    /**
+     When the font size slider is moved and released, this function updates the font size readout.
+ 
+     FROM 1.2.0
 
+     - Parameters:
+        - sender: The source of the action.
+     */
     @IBAction private func doMoveSlider(sender: Any) {
 
-        // FROM 1.2.0
         let index: Int = Int(self.fontSizeSlider.floatValue)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
     }
 
 
+    /**
+     Close the **Preferences** sheet without saving.
+     
+     FROM 1.2.0
+
+     - Parameters:
+        - sender: The source of the action.
+     */
     @IBAction private func doClosePreferences(sender: Any) {
 
-        // FROM 1.2.0
-        // Close the Preferences... sheet
+        // FROM 1.4.0
+        // Close the colour selection panel if it's open
+        if self.codeColourWell.isActive {
+            NSColorPanel.shared.close()
+            self.codeColourWell.deactivate()
+        }
+                
+        if self.headColourWell.isActive {
+            NSColorPanel.shared.close()
+            self.headColourWell.deactivate()
+        }
 
         self.window.endSheet(self.preferencesWindow)
     }
 
 
+    /**
+     Close the **Preferences** sheet and save any settings that have changed.
+     
+     FROM 1.2.0
+     
+     - Parameters:
+        - sender: The source of the action.
+     */
     @IBAction private func doSavePreferences(sender: Any) {
 
-        // FROM 1.2.0
-        // Close the Preferences... sheet and save the prefs, if they have changed
-
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
+            /* REMOVE IN 1.4.0
             if self.codeColourPopup.indexOfSelectedItem != self.previewCodeColour {
                 defaults.setValue(self.codeColourPopup.indexOfSelectedItem,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
-
+            */
+            
             if self.codeFontPopup.indexOfSelectedItem != self.previewCodeFont {
                 defaults.setValue(self.codeFontPopup.indexOfSelectedItem,
                                   forKey: "com-bps-previewmarkdown-code-font-index")
@@ -382,6 +436,12 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-body-font-index")
             }
 
+            let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
+            if newValue != self.previewFontSize {
+                defaults.setValue(newValue,
+                                  forKey: "com-bps-previewmarkdown-base-font-size")
+            }
+            
             var state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
@@ -394,33 +454,65 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
-            let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
-            if newValue != self.previewFontSize {
-                defaults.setValue(newValue,
-                                  forKey: "com-bps-previewmarkdown-base-font-size")
-            }
-            
             // FROM 1.3.0
+            // Get the YAML checkbox value and update
             state = self.showFrontMatterCheckbox.state == .on
             if self.doShowFrontMatter != state {
                 defaults.setValue(state,
                                   forKey: "com-bps-previewmarkdown-do-show-front-matter")
             }
-
+            
+            // FROM 1.4.0
+            // Get any colour changes
+            let newCodeColour: String = self.codeColourWell.color.hexString
+            if newCodeColour != self.codeColourHex {
+                self.codeColourHex = newCodeColour
+                defaults.setValue(newCodeColour,
+                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
+            }
+            
+            let newHeadColour: String = self.headColourWell.color.hexString
+            if newHeadColour != self.headColourHex {
+                self.headColourHex = newHeadColour
+                defaults.setValue(newHeadColour,
+                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
+            }
+                        
             // Sync any changes
             defaults.synchronize()
+        }
+
+        // FROM 1.4.0
+        // Close the colour selection panel if it's open
+        if self.codeColourWell.isActive {
+            NSColorPanel.shared.close()
+            self.codeColourWell.deactivate()
+        }
+                
+        if self.headColourWell.isActive {
+            NSColorPanel.shared.close()
+            self.headColourWell.deactivate()
         }
 
         // Remove the sheet now we have the data
         self.window.endSheet(self.preferencesWindow)
     }
 
+    
+    // MARK: What's New Functions
+    /**
+     Show the **What's New** sheet.
 
+     If we're on a new, non-patch version, of the user has explicitly
+     asked to see it with a menu click See if we're coming from a menu click
+     (`sender != self`) or directly in code from *appDidFinishLoading()*
+     (`sender == self`)
+
+     - Parameters:
+        - sender: The source of the action.
+     */
     @IBAction private func doShowWhatsNew(_ sender: Any) {
 
-        // FROM 1.2.0
-        // Show the 'What's New' sheet, if we're on a new, non-patch version
-           
         // See if we're coming from a menu click (sender != self) or
         // directly in code from 'appDidFinishLoading()' (sender == self)
         var doShowSheet: Bool = type(of: self) != type(of: sender)
@@ -476,146 +568,7 @@ final class AppDelegate: NSObject,
     }
 
 
-    @IBAction private func doLogOut(_ sender: Any) {
-
-        // FROM 1.2.0
-        // Run a log out sequence if the user requests it
-
-        let app: String = "/usr/bin/osascript"
-        let args: [String] = ["-e", "tell application \"System Events\" to log out"]
-        
-        // Run the process
-        // NOTE This time we wait for its conclusion
-        let success: Bool = runProcess(app: app, with: (args.count > 0 ? args : []))
-        if !success {
-            // Log out request failed for some reason
-            let alert: NSAlert = NSAlert.init()
-            alert.messageText = "Log out request failed"
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
-        }
-    }
-
-
-    private func runProcess(app path: String, with args: [String]) -> Bool {
-
-        // FROM 1.2.0
-        // Generic task creation and run function
-
-        let task: Process = Process()
-        task.executableURL = URL.init(fileURLWithPath: path)
-        task.arguments = args
-
-        // Pipe out the output to avoid putting it in the log
-        let outputPipe = Pipe()
-        task.standardOutput = outputPipe
-        task.standardError = outputPipe
-
-        do {
-            try task.run()
-        } catch {
-            return false
-        }
-
-        // Block until the task has completed (short tasks ONLY)
-        task.waitUntilExit()
-
-        if !task.isRunning {
-            if (task.terminationStatus != 0) {
-                // Command failed -- collect the output if there is any
-                let outputHandle = outputPipe.fileHandleForReading
-                var outString: String = ""
-                if let line = String(data: outputHandle.availableData, encoding: String.Encoding.utf8) {
-                    outString = line
-                }
-
-                if outString.count > 0 {
-                    print("\(outString)")
-                } else {
-                    print("Error", "Exit code \(task.terminationStatus)")
-                }
-                return false
-            }
-        }
-
-        return true
-    }
-
-
-    // MARK: - URLSession Delegate Functions
-
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-
-        // Some sort of connection error - report it
-        self.connectionProgress.stopAnimation(self)
-        sendFeedbackError()
-    }
-
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-
-        // The operation to send the comment completed
-        self.connectionProgress.stopAnimation(self)
-        if let _ = error {
-            // An error took place - report it
-            sendFeedbackError()
-        } else {
-            // The comment was submitted successfully
-            let alert: NSAlert = showAlert("Thanks For Your Feedback!",
-                                           "Your comments have been received and we’ll take a look at them shortly.")
-            alert.beginSheetModal(for: self.reportWindow) { (resp) in
-                // Close the feedback window when the modal alert returns
-                let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
-                    self.window.endSheet(self.reportWindow)
-                }
-            }
-        }
-    }
-
-
-    // MARK: - WKWebViewNavigation Delegate Functions
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
-        // FROM 1.2.0
-        // Asynchronously show the sheet once the HTML has loaded
-        // (triggered by delegate method)
-
-        if let nav = self.whatsNewNav {
-            if nav == navigation {
-                // Display the sheet
-                self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
-            }
-        }
-    }
-
-
     // MARK: - Misc Functions
-
-    private func sendFeedbackError() {
-
-        // Present an error message specific to sending feedback
-        // This is called from multiple locations: if the initial request can't be created,
-        // there was a send failure, or a server error
-        let alert: NSAlert = showAlert("Feedback Could Not Be Sent",
-                                       "Unfortunately, your comments could not be send at this time. Please try again later.")
-        alert.beginSheetModal(for: self.reportWindow,
-                              completionHandler: nil)
-        
-    }
-
-
-    private func showAlert(_ head: String, _ message: String) -> NSAlert {
-
-        // FROM 1.1.1
-        // Generic alert presentation
-        let alert: NSAlert = NSAlert()
-        alert.messageText = head
-        alert.informativeText = message
-        alert.addButton(withTitle: "OK")
-        return alert
-    }
-
 
     private func registerPreferences() {
 
@@ -628,26 +581,19 @@ final class AppDelegate: NSObject,
             // Default: 16.0
             let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
             if bodyFontSizeDefault == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE),
                                   forKey: "com-bps-previewmarkdown-base-font-size")
-            }
-
-            // Font for body blocks in the preview, stored as in integer array index
-            // Default: 0 (System)
-            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-index")
-            if bodyFontDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_INDEX,
-                                  forKey: "com-bps-previewmarkdown-body-font-index")
             }
 
             // Thumbnail view base font size, stored as a CGFloat, not currently used
             // Default: 14.0
             let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-thumb-font-size")
             if thumbFontSizeDefault == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE),
                                   forKey: "com-bps-previewmarkdown-thumb-font-size")
             }
-
+            
+            // REMOVED IN 1.4.0
             // Colour of links in the preview, stored as in integer array index, not currently used
             // Reason: see Common.swift
             let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-index")
@@ -655,7 +601,8 @@ final class AppDelegate: NSObject,
                 defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-link-colour-index")
             }
-
+            
+            // REMOVED IN 1.4.0
             // Colour of code blocks in the preview, stored as in integer array index
             // Default: 0 (purple)
             let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-index")
@@ -663,7 +610,38 @@ final class AppDelegate: NSObject,
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
-
+            
+            // FROM 1.4.0
+            let linkColourDefautlt2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-hex")
+            if linkColourDefautlt2 == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-link-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            let codeColourDefautlt2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-hex")
+            if codeColourDefautlt2 == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            let headColourDefautlt: Any? = defaults.object(forKey: "com-bps-previewmarkdown-head-colour-hex")
+            if headColourDefautlt == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
+            }
+            
+            // REMOVED IN 1.4.0
+            // Font for body blocks in the preview, stored as in integer array index
+            // Default: 0 (System)
+            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-index")
+            if bodyFontDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_INDEX,
+                                  forKey: "com-bps-previewmarkdown-body-font-index")
+            }
+            
+            // REMOVED IN 1.4.0
             // Font for code blocks in the preview, stored as in integer array index
             // Default: 0 (Andale Mono)
             let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-index")
@@ -672,6 +650,21 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-index")
             }
 
+            // FROM 1.4.0
+            let bodyFontDefault2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-name")
+            if bodyFontDefault2 == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
+                                  forKey: "com-bps-previewmarkdown-body-font-name")
+            }
+
+            // FROM 1.4.0
+            let codeFontDefault2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-name")
+            if codeFontDefault2 == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
+                                  forKey: "com-bps-previewmarkdown-code-font-name")
+            }
+
+            
             // Use light background even in dark mode, stored as a bool
             // Default: false
             let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-use-light")
@@ -749,44 +742,6 @@ final class AppDelegate: NSObject,
         return localMarkdownUTI
     }
 
-
-    private func getVersion() -> String {
-
-        // FROM 1.2.0
-        // Build a basic 'major.manor' version string for prefs usage
-
-        let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let parts: [String] = (version as NSString).components(separatedBy: ".")
-        return parts[0] + "-" + parts[1]
-    }
-    
-    
-    private func getDateForFeedback() -> String {
-
-        // FROM 1.2.0
-        // Refactor code out into separate function for clarity
-
-        let date: Date = Date()
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return dateFormatter.string(from: date)
-    }
-
-
-    private func getUserAgentForFeedback() -> String {
-
-        // FROM 1.2.0
-        // Refactor code out into separate function for clarity
-
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        let bundle: Bundle = Bundle.main
-        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
-        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        return "\(app)/\(version).\(build) (Mac macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
-    }
 
 }
 

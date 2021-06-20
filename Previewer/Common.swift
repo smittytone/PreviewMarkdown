@@ -15,21 +15,28 @@ import AppKit
 
 // FROM 1.2.0
 // Set defaults for the user-selectable values
-private var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+//private var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+//private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
 private var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
 private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
-private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
-private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
-private var doShowLightBackground: Bool = false
-private var doIndentScalars: Bool = true
 private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue",
                                    "LucidaGrande", "Times-Roman", "Verdana"]
 
+private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+private var doShowLightBackground: Bool = false
+private var doIndentScalars: Bool = true
+
+
+// FROM 1.4.0
+private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+
 // FROM 1.3.0
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
-    .foregroundColor: getColour(codeColourIndex),
+    .foregroundColor: NSColor.hexToColour(codeColourHex),
     .font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
 ]
 private var valAtts: [NSAttributedString.Key:Any] = [
@@ -40,16 +47,21 @@ private var valAtts: [NSAttributedString.Key:Any] = [
 private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
 private var newLine: NSAttributedString = NSAttributedString.init(string: "\n")
 
-    
 
-// MARK:- Primary Function
 
+// MARK:- The Primary Function
+
+/**
+ Use SwiftyMarkdown to render the input markdown.
+ 
+ - parameters:
+    - markdownString: The markdown file contents.
+    - isThumbnail:    Are we rendering for a thumbnail (`true`) or a preview (`false`)?
+ 
+ - returns: The rendered markdown as an NSAttributedString.
+ */
 func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
-    // FROM 1.1.0
-    // Use SwiftyMarkdown to render the input markdown as an NSAttributedString, which is returned
-    // NOTE Set the font colour according to whether we're rendering a thumbail or a preview
-    //      (thumbnails always rendered black on white; previews may be the opposite [dark mode])
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
     setSwiftStyles(swiftyMarkdown, isThumbnail)
     var processed = processCodeTags(markdownString)
@@ -254,13 +266,18 @@ func convertSpaces(_ base: String) -> String {
 
 // MARK:- Front Matter Functions
 
+/**
+ Extract and return initial front matter.
+
+ FROM 1.3.0
+
+ - Parameters:
+    - markdown:      The markdown file content.
+    - markerPattern: A string literal specifying the front matter boundary marker Reg Ex, eg. #"^(-)+"# for ---.
+
+ - Returns: The parsed string, or an empty string (`""`) on error.
+ */
 func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
-    
-    // FROM 1.3.0
-    // Extract and return initial front matter
-    // 'markerPattern' is a string literal specifying the front matter boundary
-    // marker Reg Ex, eg. #"^(-)+"# for ---.
-    // Returns an empty string on error, or no front matter
     
     let lines = markdown.components(separatedBy: CharacterSet.newlines)
     var fm: [String] = []
@@ -302,12 +319,21 @@ func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
 }
 
 
+/**
+ Render a supplied YAML sub-component ('part') to an NSAttributedString.
+
+ Indents the value as required.
+ 
+ FROM 1.3.0
+
+ - Parameters:
+    - part:   A partial Yaml object.
+    - indent: The number of indent spaces to add.
+    - isKey:  Is the Yaml part a key?
+
+ - Returns: The rendered string as an NSAttributedString, or nil on error.
+ */
 func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
-    
-    // Render a supplied YAML sub-component ('part') to an NSAttributedString,
-    // indenting as required, and using a different text format for keys.
-    // This is called recursively as it drills down through YAML values.
-    // Returns nil on error
     
     let returnString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
                                                                                  attributes: keyAtts)
@@ -404,10 +430,19 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
         }
     case .string:
         if let keyOrValue = part.string {
-            returnString.append(getIndentedString(keyOrValue, indent))
+            let parts: [String] = keyOrValue.components(separatedBy: "\n")
+            if parts.count > 2 {
+                for i in 0..<parts.count {
+                    let part: String = parts[i]
+                    returnString.append(getIndentedString(part + (i < parts.count - 2 ? "\n" : ""), indent))
+                }
+            } else {
+                returnString.append(getIndentedString(keyOrValue, indent))
+            }
+
             returnString.setAttributes((isKey ? keyAtts : valAtts),
                                        range: NSMakeRange(0, returnString.length))
-            returnString.append(isKey ? NSAttributedString.init(string: " ") : newLine)
+            returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: valAtts) : newLine)
             return returnString
         }
     case .null:
@@ -439,10 +474,18 @@ func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedStrin
 }
 
 
+/**
+ Return a space-prefix NSAttributedString.
+ 
+ FROM 1.3.0
+
+ - Parameters:
+    - baseString: The string to be indented.
+    - indent:     The number of indent spaces to add.
+
+ - Returns: The indented string as an NSAttributedString.
+ */
 func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
-    
-    // Return a space-prefix NSAttributedString where 'indent' specifies
-    // the number of spaces to add
     
     let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
     let spaces = "                                                     "
@@ -456,18 +499,28 @@ func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedStrin
 
 // MARK:- Formatting Functions
 
-func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
+/**
+ Set common style values for the markdown render.
 
-    // Set common base style values for the markdown render
+ - Parameters:
+    - sm:          The SwiftyMarkdown instance used for rendering
+    - isThumbnail: Are we rendering a thumbnail (`true`) or a preview (`false`).
+ */
+func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
 
     sm.setFontColorForAllStyles(with: (isThumbnail || doShowLightBackground) ? NSColor.black : NSColor.labelColor)
     sm.setFontSizeForAllStyles(with: fontSizeBase)
 
+    // FROM 1.4.0 -- add colour settings for headings too
     sm.h4.fontSize = fontSizeBase * 1.2
+    sm.h4.color = NSColor.hexToColour(headColourHex)
     sm.h3.fontSize = fontSizeBase * 1.4
+    sm.h3.color = sm.h4.color
     sm.h2.fontSize = fontSizeBase * 1.6
+    sm.h2.color = sm.h4.color
     sm.h1.fontSize = fontSizeBase * 2.0
-
+    sm.h1.color = sm.h4.color
+    
     if bodyFontIndex > 0 && bodyFontIndex < bodyFonts.count {
         // NOTE We ignore 0 because that indicates the System font,
         //      which is the default
@@ -478,38 +531,51 @@ func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
         sm.code.fontName = codeFonts[codeFontIndex]
     }
 
-    sm.code.color = getColour(codeColourIndex)
+    // Set the code colour
+    sm.code.color = NSColor.hexToColour(codeColourHex) // getColour(codeColourIndex)
 
     // NOTE The following do not set link colour - this is
     //      a bug or issue with SwiftyMarkdown 1.2.3
-    sm.link.color = getColour(linkColourIndex)
+    sm.link.color = NSColor.hexToColour(linkColourHex) // getColour(linkColourIndex)
     sm.link.underlineColor = sm.link.color
 }
 
 
+/**
+ Set common base style values for the markdown render.
+
+ **NOTE** This should now be called only **once**, before the code is rendered
+          to avoid threading race conditions.
+
+ - Parameters:
+    - isThumbnail:    Are we rendering a thumbnail (`true`) or a preview (`false`).
+ */
 func setBaseValues(_ isThumbnail: Bool) {
-    
-    // Read in the key values from the preferences (or keep defaults)
-    // FROM 1.3.0 -- moved into separate function
     
     // The suite name is the app group name, set in each extension's entitlements, and the host app's
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
         defaults.synchronize()
+        //codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
+        //linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+        bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
+        
         fontSizeBase = CGFloat(isThumbnail
                                 ? defaults.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
                                 : defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
 
-        codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
-        linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
-        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
-        bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
         doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
+        
+        // FROM 1.4.0
+        codeColourHex = defaults.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+        headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+        linkColourHex = defaults.string(forKey: "com-bps-previewmarkdown-link-colour-hex") ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
     }
     
     // Just in case the above block reads in zero values
-    // NOTE The other valyes CAN be zero
-    if fontSizeBase < 1.0 || fontSizeBase > 28.0 {
-        fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+    // NOTE The other values CAN be zero
+    if fontSizeBase < 10.0 || fontSizeBase > 28.0 {
+        fontSizeBase = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE : BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     }
 
     // FROM 1.3.0
@@ -523,7 +589,7 @@ func setBaseValues(_ isThumbnail: Bool) {
     }
     
     keyAtts = [
-        .foregroundColor: getColour(codeColourIndex),
+        .foregroundColor: NSColor.hexToColour(codeColourHex), //getColour(codeColourIndex),
         .font: font
     ]
     
@@ -541,6 +607,7 @@ func setBaseValues(_ isThumbnail: Bool) {
 }
 
 
+/* REMOVE IN 1.4.0
 func getColour(_ index: Int) -> NSColor {
 
     // FROM 1.2.0
@@ -571,9 +638,21 @@ func getColour(_ index: Int) -> NSColor {
             return NSColor.systemGray
     }
 }
+*/
 
 
 // MARK:- Misc Functions
+
+/**
+ Generate an NSError for an internal error, specified by its code.
+
+ Codes are listed in `Constants.swift`
+
+ - Parameters:
+    - code: The internal error code.
+
+ - Returns: The described error as an NSError.
+ */
 func setError(_ code: Int) -> NSError {
     
     // NSError generation function
