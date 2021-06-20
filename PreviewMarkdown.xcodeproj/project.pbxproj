@@ -21,6 +21,10 @@
 		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B3D98D025B20AF500A92A8B /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3D98CF25B20AF500A92A8B /* Secrets.swift */; };
+		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
+		3B71BD45267F504E005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
+		3B71BD46267F550D005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
+		3B71BD47267F550D005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
 		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
@@ -89,6 +93,8 @@
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B3D98CF25B20AF500A92A8B /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../../../OneDrive/Programming/mnu/Secrets.swift; sourceTree = "<group>"; };
+		3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExtensions.swift; sourceTree = "<group>"; };
+		3B71BD44267F504E005F7FFC /* NSColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorExtension.swift; sourceTree = "<group>"; };
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
 		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -195,6 +201,8 @@
 				3B898D99251DD2D700206BAE /* Secrets.swift */,
 				3B8865D624E3E99700435B1C /* Constants.swift */,
 				3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */,
+				3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */,
+				3B71BD44267F504E005F7FFC /* NSColorExtension.swift */,
 				3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
@@ -433,7 +441,9 @@
 			files = (
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
 				3B898D9A251DD2D700206BAE /* Secrets.swift in Sources */,
+				3B71BD45267F504E005F7FFC /* NSColorExtension.swift in Sources */,
 				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
+				3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +453,7 @@
 			files = (
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
 				3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */,
+				3B71BD46267F550D005F7FFC /* NSColorExtension.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
@@ -454,6 +465,7 @@
 			files = (
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
 				3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */,
+				3B71BD47267F550D005F7FFC /* NSColorExtension.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
@@ -666,7 +678,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -675,7 +687,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				OTHER_LIBTOOLFLAGS = "$(inhertited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -693,7 +705,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
@@ -702,7 +714,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				OTHER_LIBTOOLFLAGS = "$(inhertited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -718,7 +730,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -728,7 +740,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -746,7 +758,7 @@
 				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Previewer/Info.plist;
@@ -756,7 +768,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -773,7 +785,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -783,7 +795,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -800,7 +812,7 @@
 				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Thumbnailer/Info.plist;
@@ -810,7 +822,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
