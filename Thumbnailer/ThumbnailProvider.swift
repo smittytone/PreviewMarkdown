@@ -13,14 +13,14 @@ import QuickLookThumbnailing
 
 class ThumbnailProvider: QLThumbnailProvider {
 
-    // MARK: Public Properties
+    // MARK:- Public Properties
 
     // FROM 1.3.0
     // Add key required values to self
     var doShowTag: Bool = true
 
 
-    // MARK: Private Properties
+    // MARK:- Private Properties
 
     // FROM 1.3.1
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
@@ -63,10 +63,12 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Set the thumbnail frame
         // NOTE This is always square, with height matched to width, so adjust
         //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
+        let targetWidth: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height
+        let targetHeight: CGFloat = request.maximumSize.height
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                 0.0,
-                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
-                                                request.maximumSize.height)
+                                                targetWidth,
+                                                targetHeight)
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
@@ -98,20 +100,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                                 width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                                 height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
 
-                        /*
-                        // Instantiate an NSTextView to display the NSAttributedString render of the markdown
-                        // FROM 1.3.0 -- make sure it's not selectable, ie. non-interactive
-                        let markdownTextView: NSTextView = NSTextView.init(frame: markdownFrame)
-                        markdownTextView.isSelectable = false
-                        markdownTextView.backgroundColor = NSColor.white
-
-                        // Write the markdown NSAttributedString into the NSTextView's text storage
-                        guard let markdownTextStorage: NSTextStorage = markdownTextView.textStorage else { return false }
-                        markdownTextStorage.beginEditing()
-                        markdownTextStorage.setAttributedString(markdownAttString)
-                        markdownTextStorage.endEditing()
-                        */
-
                         // FROM 1.3.1
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
@@ -131,30 +119,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                     y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
                                                     width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                     height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
-
-                            /*
-                            // Instantiate an NSTextView to display the NSAttributedString render of the tag,
-                            // this time with a clear background
-                            // FROM 1.3.0 -- make sure it's not selectable, ie. non-interactive
-                            tagTextView = NSTextView.init(frame: tagFrame!)
-                            tagTextView!.isSelectable = false
-                            tagTextView!.backgroundColor = NSColor.clear
-
-                            // Write the tag rendered as an NSAttributedString into the view's text storage
-                            if let tagTextStorage: NSTextStorage = tagTextView!.textStorage {
-                                // Remove offsets
-                                tagTextView!.textContainer!.lineFragmentPadding = 0.0
-                                tagTextView!.textContainer!.maximumNumberOfLines = 1
-
-                                // NOTE We use 'request.maximumSize' for more accurate results
-                                tagTextStorage.beginEditing()
-                                tagTextStorage.setAttributedString(self.getTagString("MARKDOWN", request.maximumSize.width))
-                                tagTextStorage.endEditing()
-                            } else {
-                                // Set this on error so we don't try and draw the tag later
-                                tagFrame = nil
-                            }
-                            */
 
                             // FROM 1.3.1
                             // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
@@ -196,12 +160,18 @@ class ThumbnailProvider: QLThumbnailProvider {
 
     // MARK:- Misc Functions
 
-    func getTagString(_ tag: String, _ width: CGFloat) -> NSAttributedString {
+    /**
+     Create an attributed string for a file icon tag.
+     
+     FROM 1.2.0
 
-        /*
-         * FROM 1.2.0
-         * Set the text for the bottom-of-thumbnail file type tag
-         */
+     - Parameters:
+        - tag:   The text of the tag.
+        - width: The fractional pixel width we need to tag to fit into.
+
+     - Returns: The tag as an NSAttributedString.
+     */
+    func getTagString(_ tag: String, _ width: CGFloat) -> NSAttributedString {
 
         // Set the paraghraph style we'll use -- just centred text
         let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()

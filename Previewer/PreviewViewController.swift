@@ -14,13 +14,15 @@ import Quartz
 class PreviewViewController: NSViewController,
                              QLPreviewingController {
 
-    // MARK:- Class Properties
+    // MARK:- Class UI Properties
 
     @IBOutlet var errorReportField: NSTextField!
     @IBOutlet var renderTextView: NSTextView!
     @IBOutlet var renderTextScrollView: NSScrollView!
 
+
     // MARK:- Private Properties
+    
     override var nibName: NSNib.Name? {
         return NSNib.Name("PreviewViewController")
     }
@@ -120,10 +122,14 @@ class PreviewViewController: NSViewController,
 
 
     // MARK:- Utility Functions
-
+    
+    /**
+     Place an error message in its various outlets.
+     
+     - parameters:
+        - errString: The error message.
+     */
     func showError(_ errString: String) {
-
-        // Relay an error message to its various outlets
 
         NSLog("BUFFOON \(errString)")
         self.errorReportField.stringValue = errString
