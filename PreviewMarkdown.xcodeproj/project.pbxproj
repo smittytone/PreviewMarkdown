@@ -20,11 +20,11 @@
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
 		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
-		3B3D98D025B20AF500A92A8B /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3D98CF25B20AF500A92A8B /* Secrets.swift */; };
 		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
 		3B71BD45267F504E005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
 		3B71BD46267F550D005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
 		3B71BD47267F550D005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
+		3B71BD48267F9E0E005F7FFC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
@@ -92,7 +92,6 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
-		3B3D98CF25B20AF500A92A8B /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../../../OneDrive/Programming/mnu/Secrets.swift; sourceTree = "<group>"; };
 		3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExtensions.swift; sourceTree = "<group>"; };
 		3B71BD44267F504E005F7FFC /* NSColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorExtension.swift; sourceTree = "<group>"; };
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,7 +164,6 @@
 		3B7D3087251504A900A37F96 /* PreviewMarkdownTests */ = {
 			isa = PBXGroup;
 			children = (
-				3B3D98CF25B20AF500A92A8B /* Secrets.swift */,
 				3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */,
 				3B7D308A251504A900A37F96 /* Info.plist */,
 			);
@@ -427,7 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */,
-				3B3D98D025B20AF500A92A8B /* Secrets.swift in Sources */,
+				3B71BD48267F9E0E005F7FFC /* Secrets.swift in Sources */,
 				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
 				3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */,
 				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,

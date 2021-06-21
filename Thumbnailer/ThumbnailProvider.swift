@@ -17,7 +17,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
     // FROM 1.3.0
     // Add key required values to self
-    var doShowTag: Bool = true
+    private var doShowTag: Bool = true
 
 
     // MARK:- Private Properties
@@ -46,7 +46,6 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Get the preference for showing a tag and do it once,
         // so it's only every read once
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            defaults.synchronize()
             self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
         }
     }
@@ -63,6 +62,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Set the thumbnail frame
         // NOTE This is always square, with height matched to width, so adjust
         //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
+        let doShowTag: Bool = self.doShowTag
         let targetWidth: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height
         let targetHeight: CGFloat = request.maximumSize.height
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
@@ -113,17 +113,31 @@ class ThumbnailProvider: QLThumbnailProvider {
                         var tagTextField: NSTextField? = nil
                         var tagFrame: CGRect? = nil
 
-                        if self.doShowTag {
+                        if doShowTag {
                             // Define the frame of the tag area
                             tagFrame = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
                                                     y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
                                                     width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
                                                     height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
+                            
+                            // Build the tag
+                            let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
+                            style.alignment = .center
 
+                            // Build the string attributes
+                            // FROM 1.3.0 -- do this as a literal
+                            let tagAtts: [NSAttributedString.Key: Any] = [
+                                .paragraphStyle: style as NSParagraphStyle,
+                                .font: NSFont.systemFont(ofSize: CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_SIZE)),
+                                .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
+                            ]
+
+                            let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
+                            
                             // FROM 1.3.1
                             // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                             // and extend the size of its frame
-                            tagTextField = NSTextField.init(labelWithAttributedString: self.getTagString("MD", request.maximumSize.width))
+                            tagTextField = NSTextField.init(labelWithAttributedString: tag)
                             tagTextField!.frame = tagFrame!
                         }
 
@@ -171,7 +185,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
      - Returns: The tag as an NSAttributedString.
      */
-    func getTagString(_ tag: String, _ width: CGFloat) -> NSAttributedString {
+    /*func getTagString(_ tag: String, _ width: CGFloat) -> NSAttributedString {
 
         // Set the paraghraph style we'll use -- just centred text
         let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
@@ -188,5 +202,6 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Return the attributed string built from the tag
         return NSAttributedString.init(string: tag, attributes: tagAtts)
     }
+    */
 
 }

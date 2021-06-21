@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.3.2 #
+# PreviewMarkdown 1.4.0 #
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -38,7 +38,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
-* 1.3.2 *Unreleased*
+* 1.4.0 *Unreleased*
     * Better scaling for retina displays.
 * 1.3.1 *18 June 2021*
     * Add links to other PreviewApps.

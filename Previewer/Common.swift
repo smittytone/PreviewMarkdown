@@ -17,9 +17,9 @@ import AppKit
 // Set defaults for the user-selectable values
 //private var codeColourIndex: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
 //private var linkColourIndex: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
-private var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
+//private var codeFontIndex: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
 private var bodyFontIndex: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
-private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
+//private let codeFonts: [String] = ["AndaleMono", "Courier", "Menlo-Regular", "Monaco"]
 private let bodyFonts: [String] = ["system", "ArialMT", "Helvetica", "HelveticaNeue",
                                    "LucidaGrande", "Times-Roman", "Verdana"]
 
@@ -27,21 +27,23 @@ private var fontSizeBase: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
 private var doShowLightBackground: Bool = false
 private var doIndentScalars: Bool = true
 
-
 // FROM 1.4.0
 private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
 private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
 private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+private var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
+private var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
+
 
 // FROM 1.3.0
 // Front Matter string attributes...
 private var keyAtts: [NSAttributedString.Key:Any] = [
     .foregroundColor: NSColor.hexToColour(codeColourHex),
-    .font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    .font: NSFont.init(name: codeFontName, size: fontSizeBase) ?? NSFont.systemFont(ofSize: fontSizeBase)
 ]
 private var valAtts: [NSAttributedString.Key:Any] = [
-    .foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor),
-    .font: NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) as Any
+    .foregroundColor: (doShowLightBackground ? NSColor.black : NSColor.labelColor) ,
+    .font: NSFont.init(name: codeFontName, size: fontSizeBase) ?? NSFont.systemFont(ofSize: fontSizeBase)
 ]
 // Front Matter rendering artefacts...
 private var hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n", attributes: [.strikethroughStyle: NSUnderlineStyle.patternDot.rawValue, .strikethroughColor: NSColor.labelColor])
@@ -64,7 +66,7 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
 
     let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
     setSwiftStyles(swiftyMarkdown, isThumbnail)
-    var processed = processCodeTags(markdownString)
+    var processed: String = processCodeTags(markdownString)
     processed = convertSpaces(processed)
     processed = processSymbols(processed)
     
@@ -83,7 +85,7 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
                 if frontMatter.count > 0 {
                     // Only attempt to render the front matter if there is any
                     do {
-                        let yaml = try Yaml.load(frontMatter)
+                        let yaml: Yaml = try Yaml.load(frontMatter)
                         
                         // Assemble the front matter string
                         let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
@@ -138,7 +140,7 @@ func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAtt
     // FROM 1.3.0
     // Guard against non-trapped errors
     if output.length == 0 {
-        output = NSMutableAttributedString.init(string: "No valid Markdown to render.", attributes: keyAtts)
+        return NSAttributedString.init(string: "No valid Markdown to render.", attributes: keyAtts)
     }
     
     // Return the rendered NSAttributedString to Previewer or Thumbnailer
@@ -521,6 +523,7 @@ func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     sm.h1.fontSize = fontSizeBase * 2.0
     sm.h1.color = sm.h4.color
     
+    /*
     if bodyFontIndex > 0 && bodyFontIndex < bodyFonts.count {
         // NOTE We ignore 0 because that indicates the System font,
         //      which is the default
@@ -530,7 +533,10 @@ func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
     if codeFontIndex >= 0 && codeFontIndex < codeFonts.count {
         sm.code.fontName = codeFonts[codeFontIndex]
     }
-
+    */
+    sm.setFontNameForAllStyles(with: isThumbnail ? "System" : bodyFontName )    
+    sm.code.fontName = codeFontName
+    
     // Set the code colour
     sm.code.color = NSColor.hexToColour(codeColourHex) // getColour(codeColourIndex)
 
@@ -557,7 +563,7 @@ func setBaseValues(_ isThumbnail: Bool) {
         defaults.synchronize()
         //codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
         //linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
-        codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+        //codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
         bodyFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
         
         fontSizeBase = CGFloat(isThumbnail
@@ -570,6 +576,8 @@ func setBaseValues(_ isThumbnail: Bool) {
         codeColourHex = defaults.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
         headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
         linkColourHex = defaults.string(forKey: "com-bps-previewmarkdown-link-colour-hex") ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+        codeFontName = defaults.string(forKey: "com-bps-previewmarkdown-code-font-name") ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+        bodyFontName = defaults.string(forKey: "com-bps-previewmarkdown-body-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
     }
     
     // Just in case the above block reads in zero values
@@ -581,7 +589,7 @@ func setBaseValues(_ isThumbnail: Bool) {
     // FROM 1.3.0
     // Set the front matter key:value fonts and sizes
     var font: NSFont
-    if let otherFont = NSFont.init(name: codeFonts[codeFontIndex], size: fontSizeBase) {
+    if let otherFont = NSFont.init(name: codeFontName, size: fontSizeBase) {
         font = otherFont
     } else {
         // This should not be hit, but just in case...

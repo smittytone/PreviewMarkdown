@@ -75,12 +75,12 @@ final class AppDelegate: NSObject,
     private var feedbackTask: URLSessionTask? = nil
 
     // FROM 1.2.0 -- stores for preferences
+    //private var previewCodeColour: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
+    //private var previewLinkColour: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
+    //private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
+    //private var previewBodyFont: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     internal var whatsNewNav: WKNavigation? = nil
     private var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
-    private var previewCodeColour: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
-    private var previewLinkColour: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
-    private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
-    private var previewBodyFont: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     private var doShowLightBackground: Bool = false
     private var doShowTag: Bool = false
     private var localMarkdownUTI: String = "NONE"
@@ -326,12 +326,13 @@ final class AppDelegate: NSObject,
 
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
+            //self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
+            //self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
+            //self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
+            //self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
+            
             self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
-            self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
-            self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
             self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
-            self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
-            self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
             self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
             
             // FROM 1.3.0
@@ -340,17 +341,18 @@ final class AppDelegate: NSObject,
             // FROM 1.4.0
             self.codeColourHex = defaults.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
             self.headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.codeFontName = defaults.string(forKey: "com-bps-previewmarkdown-code-font-name") ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            self.bodyFontName = defaults.string(forKey: "com-bps-previewmarkdown-body-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
         }
 
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
-        //let options: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
         //self.codeColourPopup.selectItem(at: self.previewCodeColour)
+        //self.codeFontPopup.selectItem(at: self.previewCodeFont)
+        //self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: self.previewFontSize) ?? 3
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
-        self.codeFontPopup.selectItem(at: self.previewCodeFont)
-        self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
         self.doShowTagCheckbox.state = self.doShowTag ? .on : .off
         
@@ -361,7 +363,99 @@ final class AppDelegate: NSObject,
         // Set the two colour wells
         self.codeColourWell.color = NSColor.hexToColour(self.codeColourHex)
         self.headColourWell.color = NSColor.hexToColour(self.headColourHex)
-
+        
+        // FROM 1.4.0
+        let fm: NSFontManager = NSFontManager.shared
+        self.codeFontPopup.removeAllItems()
+        self.bodyFontPopup.removeAllItems()
+        
+        // Set the code font list of monospace fonts
+        if let fonts: [String] = fm.availableFontNames(with: .fixedPitchFontMask) {
+            for font in fonts {
+                if font.hasPrefix(".") || font == "AppleColorEmoji" || font.hasPrefix("AppleBraille") {
+                    continue
+                }
+                
+                let fd: NSFontDescriptor = NSFontDescriptor.init(name: font, size: 10.0)
+                if fd.symbolicTraits.contains(.italic) || fd.symbolicTraits.contains(.bold) {
+                    continue
+                }
+                
+                // Set the font's display name...
+                var fontDisplayName: String? = nil
+                if let namedFont: NSFont = NSFont.init(name: font, size: self.previewFontSize) {
+                    fontDisplayName = namedFont.displayName
+                } else {
+                    fontDisplayName = font.replacingOccurrences(of: "-", with: " ")
+                }
+                
+                // ...and add it to the popup
+                self.codeFontPopup.addItem(withTitle: fontDisplayName!)
+                
+                // Retain the font's PostScript name for use later
+                if let addedMenuItem: NSMenuItem = self.codeFontPopup.item(at: self.codeFontPopup.itemArray.count - 1) {
+                    addedMenuItem.representedObject = font
+                    
+                    if font == self.codeFontName {
+                        self.codeFontPopup.select(addedMenuItem)
+                    }
+                }
+            }
+        } else {
+            // Just in case the user has no monospace fonts
+            self.codeFontPopup.addItem(withTitle: "System")
+            self.codeFontPopup.selectItem(at: 0)
+        }
+        
+        // Set the code font list of regular (and light/medium) fonts
+        let a = NSDate.timeIntervalSinceReferenceDate
+        let fonts: [String] = fm.availableFonts
+        let b = NSDate.timeIntervalSinceReferenceDate
+        print((b - a) * 1000)
+        for font in fonts {
+            // Reject fonts by name -- where are these?!?
+            if font.hasPrefix(".") {
+                continue
+            }
+            
+            // Reject fonts by type
+            let fd: NSFontDescriptor = NSFontDescriptor.init(name: font, size: 10.0)
+            if fd.symbolicTraits.contains(.italic) ||
+                fd.symbolicTraits.contains(.bold) ||
+                fd.symbolicTraits.contains(.monoSpace) ||
+                fd.symbolicTraits.contains(.classSymbolic) ||
+                fd.symbolicTraits.contains(.vertical) ||
+                fd.symbolicTraits.contains(.classScripts) {
+                continue
+            }
+            
+            // Set the font's display name...
+            var fontDisplayName: String? = font
+            if let namedFont: NSFont = NSFont.init(descriptor: fd, size: 10.0) {
+                fontDisplayName = namedFont.displayName
+            } else {
+                fontDisplayName = font.replacingOccurrences(of: "-", with: " ")
+            }
+            
+            // Just in case...
+            if fontDisplayName!.hasPrefix(".") {
+                continue
+            }
+            
+            // ...and add it to the popup
+            self.bodyFontPopup.addItem(withTitle: fontDisplayName!)
+            
+            // Retain the font's PostScript name for use later
+            if let addedMenuItem: NSMenuItem = self.bodyFontPopup.lastItem {
+                addedMenuItem.representedObject = font
+                
+                if font == self.bodyFontName {
+                    self.bodyFontPopup.select(addedMenuItem)
+                }
+            }
+        }
+        print((NSDate.timeIntervalSinceReferenceDate - b) * 1000)
+        
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
@@ -424,7 +518,6 @@ final class AppDelegate: NSObject,
                 defaults.setValue(self.codeColourPopup.indexOfSelectedItem,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
             }
-            */
             
             if self.codeFontPopup.indexOfSelectedItem != self.previewCodeFont {
                 defaults.setValue(self.codeFontPopup.indexOfSelectedItem,
@@ -435,7 +528,8 @@ final class AppDelegate: NSObject,
                 defaults.setValue(self.bodyFontPopup.indexOfSelectedItem,
                                   forKey: "com-bps-previewmarkdown-body-font-index")
             }
-
+             */
+            
             let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
@@ -476,6 +570,24 @@ final class AppDelegate: NSObject,
                 self.headColourHex = newHeadColour
                 defaults.setValue(newHeadColour,
                                   forKey: "com-bps-previewmarkdown-head-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            // Get any font changes
+            if let selectedMenuItem: NSMenuItem = self.codeFontPopup.selectedItem {
+                let selectedName: String = selectedMenuItem.representedObject as! String
+                if selectedName != self.codeFontName {
+                    self.codeFontName = selectedName
+                    defaults.setValue(selectedName, forKey: "com-bps-previewmarkdown-code-font-name")
+                }
+            }
+            
+            if let selectedMenuItem: NSMenuItem = self.bodyFontPopup.selectedItem {
+                let selectedName: String = selectedMenuItem.representedObject as! String
+                if selectedName != self.bodyFontName {
+                    self.bodyFontName = selectedName
+                    defaults.setValue(selectedName, forKey: "com-bps-previewmarkdown-body-font-name")
+                }
             }
                         
             // Sync any changes
@@ -569,11 +681,13 @@ final class AppDelegate: NSObject,
 
 
     // MARK: - Misc Functions
-
+    
+    /**
+     Configure the app's preferences with default values.
+     
+     FROM 1.2.0
+     */
     private func registerPreferences() {
-
-        // FROM 1.2.0
-        // Called by the app at launch to register its initial defaults
 
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             // Check if each preference value exists -- set if it doesn't
@@ -593,7 +707,7 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-thumb-font-size")
             }
             
-            // REMOVED IN 1.4.0
+            /* REMOVED IN 1.4.0
             // Colour of links in the preview, stored as in integer array index, not currently used
             // Reason: see Common.swift
             let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-index")
@@ -609,27 +723,6 @@ final class AppDelegate: NSObject,
             if codeColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
                                   forKey: "com-bps-previewmarkdown-code-colour-index")
-            }
-            
-            // FROM 1.4.0
-            let linkColourDefautlt2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-hex")
-            if linkColourDefautlt2 == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-link-colour-hex")
-            }
-            
-            // FROM 1.4.0
-            let codeColourDefautlt2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-hex")
-            if codeColourDefautlt2 == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
-            }
-            
-            // FROM 1.4.0
-            let headColourDefautlt: Any? = defaults.object(forKey: "com-bps-previewmarkdown-head-colour-hex")
-            if headColourDefautlt == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
             }
             
             // REMOVED IN 1.4.0
@@ -649,21 +742,7 @@ final class AppDelegate: NSObject,
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_INDEX,
                                   forKey: "com-bps-previewmarkdown-code-font-index")
             }
-
-            // FROM 1.4.0
-            let bodyFontDefault2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-name")
-            if bodyFontDefault2 == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
-                                  forKey: "com-bps-previewmarkdown-body-font-name")
-            }
-
-            // FROM 1.4.0
-            let codeFontDefault2: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-name")
-            if codeFontDefault2 == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
-                                  forKey: "com-bps-previewmarkdown-code-font-name")
-            }
-
+            */
             
             // Use light background even in dark mode, stored as a bool
             // Default: false
@@ -699,6 +778,46 @@ final class AppDelegate: NSObject,
             let showFrontMatterDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-front-matter")
             if showFrontMatterDefault == nil {
                 defaults.setValue(true, forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            }
+            
+            // FROM 1.4.0
+            // Colour of links in the preview, stored as hex string
+            let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-hex")
+            if linkColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-link-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            // Colour of code blocks in the preview, stored as hex string
+            let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-hex")
+            if codeColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            // Colour of headings in the preview, stored as hex string
+            let headColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-head-colour-hex")
+            if headColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
+                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
+            }
+            
+            // FROM 1.4.0
+            // Font for body test in the preview, stored as a PostScript name
+            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-name")
+            if bodyFontDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
+                                  forKey: "com-bps-previewmarkdown-body-font-name")
+            }
+
+            // FROM 1.4.0
+            // Font for code blocks in the preview, stored as a PostScript name
+            let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-name")
+            if codeFontDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
+                                  forKey: "com-bps-previewmarkdown-code-font-name")
             }
 
             // Sync any additions
