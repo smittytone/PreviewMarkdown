@@ -12,6 +12,7 @@
 import Foundation
 import Cocoa
 import WebKit
+import UniformTypeIdentifiers
 
 
 extension AppDelegate {
@@ -154,8 +155,49 @@ extension AppDelegate {
         let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
         return "\(app)/\(version)-\(build) (Mac macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
     }
+    
+    
+    /**
+     Read back the host system's registered UTI for the specified file.
+     
+     This is not PII. It used solely for debugging purposes
+     
+     - Parameters:
+        - filename: The file we'll use to get the UTI
+     
+     - Returns: The file's UTI
+     */
+    internal func getLocalFileUTI(_ filename: String) -> String {
+        
+        var localUTI: String = "NONE"
+        let samplePath = Bundle.main.resourcePath! + "/" + filename
+        
+        if FileManager.default.fileExists(atPath: samplePath) {
+            // Create a URL reference to the sample file
+            let sampleURL = URL.init(fileURLWithPath: samplePath)
+            
+            do {
+                // Read back the UTI from the URL
+                // Use Big Sur's UTType API
+                if #available(macOS 11, *) {
+                    if let uti: UTType = try sampleURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+                        localUTI = uti.identifier
+                    }
+                } else {
+                    // NOTE '.typeIdentifier' yields an optional
+                    if let uti: String = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+                        localUTI = uti
+                    }
+                }
+            } catch {
+                // NOP
+            }
+        }
+        
+        return localUTI
+    }
 
-
+    
     // MARK: - URLSession Delegate Functions
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {

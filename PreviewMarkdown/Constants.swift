@@ -66,10 +66,11 @@ struct BUFFOON_CONSTANTS {
     static let TAG_TEXT_MIN_SIZE            = 118
     
     // FROM 1.4.0
-    static let LINK_COLOUR_HEX                = "0096FFFF"
-    static let HEAD_COLOUR_HEX                = "941751FF"
-    static let CODE_COLOUR_HEX                = "00FF00FF"
-    static let BODY_FONT_NAME                 = "System"
-    static let CODE_FONT_NAME                 = "Courier"
+    static let LINK_COLOUR_HEX              = "0096FFFF"
+    static let HEAD_COLOUR_HEX              = "941751FF"
+    static let CODE_COLOUR_HEX              = "00FF00FF"
+    static let BODY_FONT_NAME               = "System"
+    static let CODE_FONT_NAME               = "Courier"
     
+    static let SAMPLE_UTI_FILE              = "sample.md"
 }
