@@ -62,7 +62,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Set the thumbnail frame
         // NOTE This is always square, with height matched to width, so adjust
         //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
-        let doShowTag: Bool = self.doShowTag
+        let showTag: Bool = self.doShowTag
         let targetWidth: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height
         let targetHeight: CGFloat = request.maximumSize.height
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
@@ -106,19 +106,21 @@ class ThumbnailProvider: QLThumbnailProvider {
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAttString)
                         markdownTextField.frame = markdownFrame
 
+                        // Generate the bitmap from the rendered markdown text view
+                        guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else { return false }
+
+                        // Draw into the bitmap first the markdown view...
+                        markdownTextField.cacheDisplay(in: markdownFrame, to: imageRep)
+
                         // FROM 1.2.0
                         // Also generate text for the bottom-of-thumbnail file type tag,
                         // if the user has this set as a preference
-                        // FROM 1.3.1 -- implement tag as NSTextField label
-                        var tagTextField: NSTextField? = nil
-                        var tagFrame: CGRect? = nil
-
-                        if doShowTag {
+                        if showTag {
                             // Define the frame of the tag area
-                            tagFrame = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
-                                                    y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
-                                                    width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
-                                                    height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
+                            let tagFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
+                                                               y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
+                                                               width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
+                                                               height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
                             
                             // Build the tag
                             let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
@@ -132,24 +134,13 @@ class ThumbnailProvider: QLThumbnailProvider {
                                 .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
                             ]
 
-                            let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
-                            
                             // FROM 1.3.1
                             // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                             // and extend the size of its frame
-                            tagTextField = NSTextField.init(labelWithAttributedString: tag)
-                            tagTextField!.frame = tagFrame!
-                        }
-
-                        // Generate the bitmap from the rendered markdown text view
-                        guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else { return false }
-
-                        // Draw into the bitmap first the markdown view...
-                        markdownTextField.cacheDisplay(in: markdownFrame, to: imageRep)
-
-                        // ...then the tag view
-                        if tagFrame != nil && tagTextField != nil {
-                            tagTextField!.cacheDisplay(in: tagFrame!, to: imageRep)
+                            let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
+                            let tagTextField: NSTextField = NSTextField.init(labelWithAttributedString: tag)
+                            tagTextField.frame = tagFrame
+                            tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
                         }
 
                         // This is the drawing block. It returns true (thumbnail drawn into current context)
