@@ -29,6 +29,8 @@
                 <outlet property="creditMenuYamlSwift" destination="O46-Mu-Ivb" id="BfK-3U-KNX"/>
                 <outlet property="doShowTagCheckbox" destination="Czd-zZ-ZiW" id="BnB-2W-7zY"/>
                 <outlet property="feedbackText" destination="TYV-nH-BBy" id="Yaf-kB-Der"/>
+                <outlet property="fontLoadIndicator" destination="fRb-es-HMH" id="cDj-uI-0mR"/>
+                <outlet property="fontLoadWindow" destination="SH9-uh-nFC" id="s5i-zv-Y0Y"/>
                 <outlet property="fontSizeLabel" destination="G17-HD-NQR" id="MvV-uv-FDW"/>
                 <outlet property="fontSizeSlider" destination="DUw-vA-tdu" id="RFx-cD-7e8"/>
                 <outlet property="headColourWell" destination="mti-80-gGh" id="Sp8-7T-gT6"/>
@@ -791,6 +793,35 @@ DQ
                 </constraints>
             </view>
             <point key="canvasLocation" x="481" y="591"/>
+        </window>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="SH9-uh-nFC">
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="131" y="157" width="480" height="82"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <value key="minSize" type="size" width="480" height="82"/>
+            <value key="maxSize" type="size" width="480" height="82"/>
+            <value key="minFullScreenContentSize" type="size" width="480" height="82"/>
+            <value key="maxFullScreenContentSize" type="size" width="480" height="82"/>
+            <view key="contentView" id="qN3-vF-yXW">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="82"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Stg-h7-32z">
+                        <rect key="frame" x="18" y="46" width="444" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Loading font information..." id="Wkn-6k-9fi">
+                            <font key="font" usesAppearanceFont="YES"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <progressIndicator fixedFrame="YES" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="fRb-es-HMH">
+                        <rect key="frame" x="20" y="19" width="440" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </progressIndicator>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="191" y="-2"/>
         </window>
     </objects>
     <resources>

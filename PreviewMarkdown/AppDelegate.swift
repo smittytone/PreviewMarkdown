@@ -10,7 +10,6 @@
 import Cocoa
 import CoreServices
 import WebKit
-import UniformTypeIdentifiers
 
 
 @NSApplicationMain
@@ -58,17 +57,21 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
     //@IBOutlet weak var codeColourPopup: NSPopUpButton!
+    // FROM 1.3.0
+    @IBOutlet weak var showFrontMatterCheckbox: NSButton!
     // FROM 1.4.0
     @IBOutlet weak var codeColourWell: NSColorWell!
     @IBOutlet weak var headColourWell: NSColorWell!
     
-    // FROM 1.3.0
-    @IBOutlet weak var showFrontMatterCheckbox: NSButton!
-
     // FROM 1.2.0
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
+    
+    // FROM 1.4.0
+    @IBOutlet weak var fontLoadWindow: NSWindow!
+    @IBOutlet weak var fontLoadIndicator: NSProgressIndicator!
+    
 
     // MARK:- Private Properies
     // FROM 1.1.1
@@ -109,7 +112,7 @@ final class AppDelegate: NSObject,
         
         // FROM 1.2.0
         // Get the local UTI for markdown files
-        self.localMarkdownUTI = getLocalMarkdownUTI()
+        self.localMarkdownUTI = getLocalFileUTI(getLocalFileUTI(BUFFOON_CONSTANTS.SAMPLE_UTI_FILE))
 
         // FROM 1.0.3
         // Add the version number to the panel
@@ -132,9 +135,6 @@ final class AppDelegate: NSObject,
         // Show 'What's New' if we need to
         // (and set up the WKWebBiew: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
-        self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
-        self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
-        self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
         doShowWhatsNew(self)
     }
 
@@ -365,79 +365,80 @@ final class AppDelegate: NSObject,
         self.headColourWell.color = NSColor.hexToColour(self.headColourHex)
         
         // FROM 1.4.0
+        // Extend font selection to all available fonts
+        let b = NSDate.timeIntervalSinceReferenceDate
         let fm: NSFontManager = NSFontManager.shared
         self.codeFontPopup.removeAllItems()
         self.bodyFontPopup.removeAllItems()
+        var selectedFont: NSMenuItem? = nil
+        
+        let bodyFonts: [String] = fm.availableFonts
+        var codeFonts: [String] = []
+        if let fonts: [String] = fm.availableFontNames(with: .fixedPitchFontMask) {
+            codeFonts = fonts
+        }
         
         // Set the code font list of monospace fonts
-        if let fonts: [String] = fm.availableFontNames(with: .fixedPitchFontMask) {
-            for font in fonts {
-                if font.hasPrefix(".") || font == "AppleColorEmoji" || font.hasPrefix("AppleBraille") {
-                    continue
-                }
+        for font in codeFonts {
+            if font.hasPrefix(".") || font == "AppleColorEmoji" || font.hasPrefix("AppleBraille") {
+                continue
+            }
+            
+            // Set the font's display name...
+            var fontDisplayName: String? = nil
+            if let namedFont: NSFont = NSFont.init(name: font, size: self.previewFontSize) {
+                fontDisplayName = namedFont.displayName
+            } else {
+                fontDisplayName = font.replacingOccurrences(of: "-", with: " ")
+            }
+            
+            // ...and add it to the popup
+            self.codeFontPopup.addItem(withTitle: fontDisplayName!)
+            
+            // Retain the font's PostScript name for use later
+            if let addedMenuItem: NSMenuItem = self.codeFontPopup.item(at: self.codeFontPopup.itemArray.count - 1) {
+                addedMenuItem.representedObject = font
                 
-                let fd: NSFontDescriptor = NSFontDescriptor.init(name: font, size: 10.0)
-                if fd.symbolicTraits.contains(.italic) || fd.symbolicTraits.contains(.bold) {
-                    continue
-                }
-                
-                // Set the font's display name...
-                var fontDisplayName: String? = nil
-                if let namedFont: NSFont = NSFont.init(name: font, size: self.previewFontSize) {
-                    fontDisplayName = namedFont.displayName
-                } else {
-                    fontDisplayName = font.replacingOccurrences(of: "-", with: " ")
-                }
-                
-                // ...and add it to the popup
-                self.codeFontPopup.addItem(withTitle: fontDisplayName!)
-                
-                // Retain the font's PostScript name for use later
-                if let addedMenuItem: NSMenuItem = self.codeFontPopup.item(at: self.codeFontPopup.itemArray.count - 1) {
-                    addedMenuItem.representedObject = font
-                    
-                    if font == self.codeFontName {
-                        self.codeFontPopup.select(addedMenuItem)
-                    }
+                if font == self.codeFontName {
+                    selectedFont = addedMenuItem
                 }
             }
-        } else {
-            // Just in case the user has no monospace fonts
-            self.codeFontPopup.addItem(withTitle: "System")
-            self.codeFontPopup.selectItem(at: 0)
+        }
+        
+        if selectedFont != nil {
+            self.codeFontPopup.select(selectedFont!)
         }
         
         // Set the code font list of regular (and light/medium) fonts
-        let a = NSDate.timeIntervalSinceReferenceDate
-        let fonts: [String] = fm.availableFonts
-        let b = NSDate.timeIntervalSinceReferenceDate
-        print((b - a) * 1000)
-        for font in fonts {
+        for font in bodyFonts {
             // Reject fonts by name -- where are these?!?
             if font.hasPrefix(".") {
                 continue
             }
             
             // Reject fonts by type
+            // Apparently these look-ups are expensive
             let fd: NSFontDescriptor = NSFontDescriptor.init(name: font, size: 10.0)
             if fd.symbolicTraits.contains(.italic) ||
                 fd.symbolicTraits.contains(.bold) ||
                 fd.symbolicTraits.contains(.monoSpace) ||
-                fd.symbolicTraits.contains(.classSymbolic) ||
-                fd.symbolicTraits.contains(.vertical) ||
-                fd.symbolicTraits.contains(.classScripts) {
+                fd.symbolicTraits.contains(.classSymbolic) //||
+                //fd.symbolicTraits.contains(.vertical) ||
+                //fd.symbolicTraits.contains(.classScripts)
+                {
                 continue
             }
             
             // Set the font's display name...
-            var fontDisplayName: String? = font
+            var fontDisplayName: String? = nil //font.replacingOccurrences(of: "-", with: " ")
+            
             if let namedFont: NSFont = NSFont.init(descriptor: fd, size: 10.0) {
                 fontDisplayName = namedFont.displayName
             } else {
                 fontDisplayName = font.replacingOccurrences(of: "-", with: " ")
             }
             
-            // Just in case...
+            // ...make sure it still doesn't start with a period...
             if fontDisplayName!.hasPrefix(".") {
                 continue
             }
@@ -450,11 +451,16 @@ final class AppDelegate: NSObject,
                 addedMenuItem.representedObject = font
                 
                 if font == self.bodyFontName {
-                    self.bodyFontPopup.select(addedMenuItem)
+                    selectedFont = addedMenuItem
                 }
             }
         }
-        print((NSDate.timeIntervalSinceReferenceDate - b) * 1000)
+        
+        if selectedFont != nil {
+            self.bodyFontPopup.select(selectedFont!)
+        }
+        
+        print("\((NSDate.timeIntervalSinceReferenceDate - b) * 1000)ms")
         
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -642,6 +648,10 @@ final class AppDelegate: NSObject,
         // Configure and show the sheet: first, get the folder path
         if doShowSheet {
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
+            
+            self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
+            self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
+            self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
 
             // Just in case, make sure we can load the file
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
@@ -825,42 +835,6 @@ final class AppDelegate: NSObject,
         }
 
     }
-    
-    
-    private func getLocalMarkdownUTI() -> String {
-        
-        // FROM 1.2.0
-        // Read back the host system's registered UTI for markdown files.
-        // This is not PII. It used solely for debugging purposes
-        
-        var localMarkdownUTI: String = "NONE"
-        let samplePath = Bundle.main.resourcePath! + "/sample.md"
-        
-        if FileManager.default.fileExists(atPath: samplePath) {
-            // Create a URL reference to the sample file
-            let sampleURL = URL.init(fileURLWithPath: samplePath)
-            
-            do {
-                // Read back the UTI from the URL
-                // Use Big Sur's UTType API
-                if #available(macOS 11, *) {
-                    if let uti: UTType = try sampleURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
-                        localMarkdownUTI = uti.identifier
-                    }
-                } else {
-                    // NOTE '.typeIdentifier' yields an optional
-                    if let uti: String = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
-                        localMarkdownUTI = uti
-                    }
-                }
-            } catch {
-                // NOP
-            }
-        }
-        
-        return localMarkdownUTI
-    }
-
 
 }
 

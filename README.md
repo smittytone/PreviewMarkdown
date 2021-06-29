@@ -39,7 +39,10 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 ## Release Notes ##
 
 * 1.4.0 *Unreleased*
-    * Better scaling for retina displays.
+    * Allow any installed font to be selected.
+    * Allow the heading colour to be selected.
+    * Allow any colour to be chosen using macOS’ colour picker.
+    * Tighten the thumbnailer code.
 * 1.3.1 *18 June 2021*
     * Add links to other PreviewApps.
     * Support macOS 11 Big Sur’s UTType API.
