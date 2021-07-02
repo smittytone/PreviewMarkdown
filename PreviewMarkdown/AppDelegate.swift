@@ -69,9 +69,8 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var whatsNewWebView: WKWebView!
     
     // FROM 1.4.0
-    @IBOutlet weak var fontLoadWindow: NSWindow!
-    @IBOutlet weak var fontLoadIndicator: NSProgressIndicator!
-    
+    @IBOutlet weak var bodyStylePopup: NSPopUpButton!
+    @IBOutlet weak var codeStylePopup: NSPopUpButton!
 
     // MARK:- Private Properies
     // FROM 1.1.1
@@ -83,10 +82,10 @@ final class AppDelegate: NSObject,
     //private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
     //private var previewBodyFont: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     internal var whatsNewNav: WKNavigation? = nil
-    private var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
-    private var doShowLightBackground: Bool = false
-    private var doShowTag: Bool = false
-    private var localMarkdownUTI: String = "NONE"
+    private  var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+    private  var doShowLightBackground: Bool = false
+    private  var doShowTag: Bool = false
+    private  var localMarkdownUTI: String = "NONE"
     
     // FROM 1.3.0
     private var doShowFrontMatter: Bool = false
@@ -96,12 +95,12 @@ final class AppDelegate: NSObject,
     private var feedbackPath: String = MNU_SECRETS.ADDRESS.A
     
     // FROM 1.4.0
-    private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    private var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
-    private var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
-    private var bodyFonts: [String] = []
-    private var codeFonts: [String] = []
+    private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    private  var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    private  var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
+    internal var bodyFonts: [PMFont] = []
+    internal var codeFonts: [PMFont] = []
 
     
     // MARK:- Class Lifecycle Functions
@@ -111,7 +110,7 @@ final class AppDelegate: NSObject,
         // FROM 1.4.0
         let q: DispatchQueue = DispatchQueue.init(label: "com.bps.previewmarkdown.async-queue")
         q.async {
-            self.getFonts()
+            self.asyncGetFonts()
         }
 
         // FROM 1.2.0
@@ -376,10 +375,9 @@ final class AppDelegate: NSObject,
         // Extend font selection to all available fonts
         let b = NSDate.timeIntervalSinceReferenceDate
 
-        let fm: NSFontManager = NSFontManager.shared
         self.codeFontPopup.removeAllItems()
         self.bodyFontPopup.removeAllItems()
-        var selectedFont: NSMenuItem? = nil
+        //var selectedItem: NSMenuItem? = nil
 
         //var bodyFonts: [String] = []
 
@@ -505,45 +503,103 @@ final class AppDelegate: NSObject,
         print(" fm.availableMembers: \((NSDate.timeIntervalSinceReferenceDate - b) * 1000)ms")
          */
 
-        for i: Int in stride(from: 0, through: self.bodyFonts.count - 1, by: 2) {
-            self.bodyFontPopup.addItem(withTitle: self.bodyFonts[i + 1])
-
-            // Retain the font's PostScript name for use later
-            if let addedMenuItem: NSMenuItem = self.bodyFontPopup.lastItem {
-                addedMenuItem.representedObject = self.bodyFonts[i]
-
-                if self.bodyFonts[i] == self.bodyFontName {
-                    selectedFont = addedMenuItem
-                }
-            }
-        }
-        
-        if selectedFont != nil {
-            self.bodyFontPopup.select(selectedFont!)
+        for i: Int in 0..<self.bodyFonts.count {
+            let font: PMFont = self.bodyFonts[i]
+            self.bodyFontPopup.addItem(withTitle: font.displayName)
         }
 
-        for i: Int in stride(from: 0, through: self.codeFonts.count - 1, by: 2) {
-            self.codeFontPopup.addItem(withTitle: self.codeFonts[i + 1])
+        self.bodyStylePopup.isEnabled = false
+        selectFontByPostScriptName(self.bodyFontName, true)
 
-            // Retain the font's PostScript name for use later
-            if let addedMenuItem: NSMenuItem = self.codeFontPopup.lastItem {
-                addedMenuItem.representedObject = self.codeFonts[i]
 
-                if self.codeFonts[i] == self.codeFontName {
-                    selectedFont = addedMenuItem
-                }
-            }
+        for i: Int in 0..<self.codeFonts.count {
+            let font: PMFont = self.codeFonts[i]
+            self.codeFontPopup.addItem(withTitle: font.displayName)
         }
 
-        if selectedFont != nil {
-            self.codeFontPopup.select(selectedFont!)
-        }
+        self.codeStylePopup.isEnabled = false
+        selectFontByPostScriptName(self.codeFontName, false)
 
-        
         print("\((NSDate.timeIntervalSinceReferenceDate - b) * 1000)ms")
         
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
+    }
+
+
+    private func setStylePopup(_ isBody: Bool = true) {
+
+        let selectedFamily: String = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let targetPopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
+        targetPopup.removeAllItems()
+
+        for family: PMFont in familyList {
+            if selectedFamily == family.displayName {
+                if let styles: [PMFont] = family.styles {
+                    targetPopup.isEnabled = true
+                    for style: PMFont in styles {
+                        targetPopup.addItem(withTitle: style.styleName)
+                    }
+                }
+            }
+        }
+    }
+
+    
+    private func selectFontByPostScriptName(_ psname: String, _ isBody: Bool) {
+
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let targetPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
+
+        for family: PMFont in familyList {
+            if let styles: [PMFont] = family.styles {
+                for style: PMFont in styles {
+                    if style.postScriptName == psname {
+                        targetPopup.selectItem(withTitle: family.displayName)
+                        setStylePopup(isBody)
+                    }
+                }
+            }
+        }
+    }
+
+
+    private func getPostScriptName(_ isBody: Bool) -> String? {
+
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let fontPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
+        let stylePopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
+
+        if let selectedFont: String = fontPopup.titleOfSelectedItem {
+            let selectedStyle: Int = stylePopup.indexOfSelectedItem
+
+            for family: PMFont in familyList {
+                if family.displayName == selectedFont {
+                    if let styles: [PMFont] = family.styles {
+                        let font: PMFont = styles[selectedStyle]
+                        return font.postScriptName
+                    }
+                }
+            }
+        }
+
+        return nil
+    }
+
+
+    /**
+     Called when the user selects a font from either list.
+
+     FROM 1.4.0
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateFonts(sender: Any) {
+
+        let item: NSPopUpButton = sender as! NSPopUpButton
+        setStylePopup(item == self.bodyFontPopup)
     }
 
     
@@ -660,22 +716,20 @@ final class AppDelegate: NSObject,
             
             // FROM 1.4.0
             // Get any font changes
-            if let selectedMenuItem: NSMenuItem = self.codeFontPopup.selectedItem {
-                let selectedName: String = selectedMenuItem.representedObject as! String
-                if selectedName != self.codeFontName {
-                    self.codeFontName = selectedName
-                    defaults.setValue(selectedName, forKey: "com-bps-previewmarkdown-code-font-name")
+            if let psname: String = getPostScriptName(false) {
+                if psname != self.codeFontName {
+                    self.codeFontName = psname
+                    defaults.setValue(psname, forKey: "com-bps-previewmarkdown-code-font-name")
                 }
             }
-            
-            if let selectedMenuItem: NSMenuItem = self.bodyFontPopup.selectedItem {
-                let selectedName: String = selectedMenuItem.representedObject as! String
-                if selectedName != self.bodyFontName {
-                    self.bodyFontName = selectedName
-                    defaults.setValue(selectedName, forKey: "com-bps-previewmarkdown-body-font-name")
+
+            if let psname = getPostScriptName(true) {
+                if psname != self.bodyFontName {
+                    self.bodyFontName = psname
+                    defaults.setValue(psname, forKey: "com-bps-previewmarkdown-body-font-name")
                 }
             }
-                        
+
             // Sync any changes
             defaults.synchronize()
         }
@@ -914,53 +968,6 @@ final class AppDelegate: NSObject,
             defaults.synchronize()
         }
 
-    }
-
-    func getFonts() {
-
-        var bf: [String] = []
-        var cf: [String] = []
-
-        let mono: UInt = NSFontTraitMask.fixedPitchFontMask.rawValue
-        let bold: UInt = NSFontTraitMask.boldFontMask.rawValue
-        let ital: UInt = NSFontTraitMask.italicFontMask.rawValue
-        let symb: UInt = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
-
-        let fm: NSFontManager = NSFontManager.shared
-
-        let families: [String] = fm.availableFontFamilies
-        for family in families {
-            if !family.hasPrefix(".") {
-                if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
-                    for font in fonts {
-                        let pname: String = font[0] as! String
-                        let traits: UInt = font[3] as! UInt
-
-                        if mono & traits != 0 {
-                            if pname.hasPrefix("AppleBra") || pname == "AppleColorEmoji" {
-                                break
-                            }
-
-                            cf.append(pname)
-                            let aFont: NSFont? = NSFont.init(name: pname, size: 0)
-                            cf.append(aFont!.displayName ?? pname)
-                            continue
-                        }
-
-                        if traits & bold == 0 && traits & ital == 0 && traits & symb == 0 {
-                            bf.append(pname)
-                            let aFont: NSFont? = NSFont.init(name: pname, size: 0)
-                            bf.append(aFont!.displayName ?? pname)
-                        }
-                    }
-                }
-            }
-        }
-
-        DispatchQueue.main.async {
-            self.bodyFonts = bf
-            self.codeFonts = cf
-        }
     }
 
 }

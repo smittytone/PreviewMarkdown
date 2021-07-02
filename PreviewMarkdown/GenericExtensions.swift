@@ -246,4 +246,87 @@ extension AppDelegate {
         }
     }
 
+
+    // MARK: - Font Management
+
+    /**
+     Build a list of available fonts.
+
+     Should be called asynchronously. Two sets created: monospace fonts and regular fonts.
+     Requires 'bodyFonts' and 'codeFonts' to be set as instance properties.
+     Comment out either of these, as required.
+
+     The final font lists each comprise pairs of strings: the font's PostScript name
+     then its display name.
+     */
+    internal func asyncGetFonts() {
+
+        var cf: [PMFont] = []
+        var bf: [PMFont] = []
+
+        let mono: UInt = NSFontTraitMask.fixedPitchFontMask.rawValue
+        let bold: UInt = NSFontTraitMask.boldFontMask.rawValue
+        let ital: UInt = NSFontTraitMask.italicFontMask.rawValue
+        let symb: UInt = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
+
+        let fm: NSFontManager = NSFontManager.shared
+
+        let families: [String] = fm.availableFontFamilies
+        for family in families {
+            // Remove known unwanted fonts
+            if family.hasPrefix(".") || family.hasPrefix("Apple Braille") || family == "Apple Color Emoji" {
+                continue
+            }
+
+            var isCodeFont: Bool = true
+
+            // For each family, examine its fonts for suitable ones
+            if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
+                // This will hold a font family: individual fonts will be added to
+                // the 'styles' array
+                var familyRecord: PMFont = PMFont.init()
+                familyRecord.displayName = family
+
+                for font: [Any] in fonts {
+                    let psname: String = font[0] as! String
+                    let traits: UInt = font[3] as! UInt
+                    var doUseFont: Bool = false
+
+                    if mono & traits != 0 {
+                        doUseFont = true
+                    } else if traits & bold == 0 && traits & ital == 0 && traits & symb == 0 {
+                        isCodeFont = false
+                        doUseFont = true
+                    }
+
+                    if doUseFont {
+                        // The font is good to use, so add it to the list
+                        var fontRecord: PMFont = PMFont.init()
+                        fontRecord.postScriptName = psname
+                        fontRecord.styleName = font[1] as! String
+                        fontRecord.traits = traits
+
+                        if familyRecord.styles == nil {
+                            familyRecord.styles = []
+                        }
+
+                        familyRecord.styles!.append(fontRecord)
+                    }
+                }
+
+                if familyRecord.styles != nil && familyRecord.styles!.count > 0 {
+                    if isCodeFont {
+                        cf.append(familyRecord)
+                    } else {
+                        bf.append(familyRecord)
+                    }
+                }
+            }
+        }
+
+        DispatchQueue.main.async {
+            self.bodyFonts = bf
+            self.codeFonts = cf
+        }
+    }
 }

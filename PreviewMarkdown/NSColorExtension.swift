@@ -1,6 +1,6 @@
 /*
  *  NSColorExtension.swift
- *  PreviewYaml
+ *  PreviewMarkdown
  *
  *  Created by Tony Smith on 18/06/2021.
  *  Copyright © 2021 Tony Smith. All rights reserved.

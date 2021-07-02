@@ -20,6 +20,7 @@
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
 		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
+		3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
 		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
 		3B71BD45267F504E005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
 		3B71BD46267F550D005F7FFC /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
@@ -92,6 +93,7 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B5CAA03268F4B2300A2DED1 /* PMFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMFont.swift; sourceTree = "<group>"; };
 		3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExtensions.swift; sourceTree = "<group>"; };
 		3B71BD44267F504E005F7FFC /* NSColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorExtension.swift; sourceTree = "<group>"; };
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +203,7 @@
 				3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */,
 				3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */,
 				3B71BD44267F504E005F7FFC /* NSColorExtension.swift */,
+				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
 				3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
@@ -439,6 +442,7 @@
 			files = (
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
 				3B898D9A251DD2D700206BAE /* Secrets.swift in Sources */,
+				3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */,
 				3B71BD45267F504E005F7FFC /* NSColorExtension.swift in Sources */,
 				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
 				3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */,
