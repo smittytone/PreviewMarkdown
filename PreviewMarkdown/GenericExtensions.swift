@@ -329,4 +329,95 @@ extension AppDelegate {
             self.codeFonts = cf
         }
     }
+
+
+    /**
+     Build and enable the font style popup.
+
+     - Parameters:
+        - isBody:    Whether we're handling body text font styles (`true`) or code font styles (`false`). Default: `true`.
+        - styleName: The name of the selected style. Default: `nil`.
+     */
+    internal func setStylePopup(_ isBody: Bool = true, _ styleName: String? = nil) {
+
+        let selectedFamily: String = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let targetPopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
+        targetPopup.removeAllItems()
+
+        for family: PMFont in familyList {
+            if selectedFamily == family.displayName {
+                if let styles: [PMFont] = family.styles {
+                    targetPopup.isEnabled = true
+                    for style: PMFont in styles {
+                        targetPopup.addItem(withTitle: style.styleName)
+                    }
+
+                    if styleName != nil {
+                        targetPopup.selectItem(withTitle: styleName!)
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     Select the font popup using the stored PostScript name
+     of the user's chosen font.
+
+     - Parameters:
+        - postScriptName: The PostScript name of the font.
+        - isBody:         Whether we're handling body text font styles (`true`) or code font styles (`false`).
+     */
+    internal func selectFontByPostScriptName(_ postScriptName: String, _ isBody: Bool) {
+
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let targetPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
+
+        for family: PMFont in familyList {
+            if let styles: [PMFont] = family.styles {
+                for style: PMFont in styles {
+                    if style.postScriptName == postScriptName {
+                        targetPopup.selectItem(withTitle: family.displayName)
+                        setStylePopup(isBody, style.styleName)
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     Get the PostScript name from the selected family and style.
+
+     - Parameters:
+        - isBody: Whether we're handling body text font styles (`true`) or code font styles (`false`).
+
+     - Returns: The PostScript name as a string, or nil.
+     */
+    internal func getPostScriptName(_ isBody: Bool) -> String? {
+
+        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let fontPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
+        let stylePopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
+
+        if let selectedFont: String = fontPopup.titleOfSelectedItem {
+            let selectedStyle: Int = stylePopup.indexOfSelectedItem
+
+            for family: PMFont in familyList {
+                if family.displayName == selectedFont {
+                    if let styles: [PMFont] = family.styles {
+                        let font: PMFont = styles[selectedStyle]
+                        return font.postScriptName
+                    }
+                }
+            }
+        }
+
+        return nil
+    }
+
+
+
 }
