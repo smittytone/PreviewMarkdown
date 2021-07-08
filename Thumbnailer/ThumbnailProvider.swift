@@ -22,9 +22,6 @@ class ThumbnailProvider: QLThumbnailProvider {
 
     // MARK:- Private Properties
 
-    // FROM 1.3.1
-    private let appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    
     // FROM 1.4.0
     // Add possible errors returned by autorelease pool
     private enum ThumbnailerError: Error {
@@ -54,8 +51,8 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // Get the preference for showing a tag and do it once,
         // so it's only every read once
-        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+        if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
+            self.doShowTag = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
         }
     }
 
