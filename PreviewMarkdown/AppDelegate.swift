@@ -543,7 +543,7 @@ final class AppDelegate: NSObject,
             }
 
             // Sync any changes
-            defaults.synchronize()
+            // defaults.synchronize()
         }
 
         // FROM 1.4.0
@@ -631,7 +631,7 @@ final class AppDelegate: NSObject,
             defaults.setValue(true, forKey: key)
             #endif
 
-            defaults.synchronize()
+            //defaults.synchronize()
         }
     }
 
@@ -777,7 +777,7 @@ final class AppDelegate: NSObject,
             }
 
             // Sync any additions
-            defaults.synchronize()
+            //defaults.synchronize()
         }
 
     }

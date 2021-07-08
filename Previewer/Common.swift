@@ -560,7 +560,7 @@ func setBaseValues(_ isThumbnail: Bool) {
     
     // The suite name is the app group name, set in each extension's entitlements, and the host app's
     if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + ".suite.previewmarkdown") {
-        defaults.synchronize()
+        //defaults.synchronize()
         //codeColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
         //linkColourIndex = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
         //codeFontIndex = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")

@@ -61,7 +61,7 @@ class PreviewViewController: NSViewController,
                     var doShowLightBackground: Bool = false
 
                     if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-                        defaults.synchronize()
+                        //defaults.synchronize()
                         doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
                     }
                     
