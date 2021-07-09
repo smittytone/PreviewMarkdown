@@ -359,14 +359,14 @@ DQ
         <window title="Send Feedback" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qvu-BL-pGS">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="131" y="158" width="560" height="324"/>
+            <rect key="contentRect" x="131" y="158" width="560" height="356"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
-            <value key="minSize" type="size" width="560" height="324"/>
-            <value key="maxSize" type="size" width="560" height="324"/>
-            <value key="minFullScreenContentSize" type="size" width="560" height="324"/>
-            <value key="maxFullScreenContentSize" type="size" width="560" height="324"/>
+            <value key="minSize" type="size" width="560" height="356"/>
+            <value key="maxSize" type="size" width="560" height="356"/>
+            <value key="minFullScreenContentSize" type="size" width="560" height="356"/>
+            <value key="maxFullScreenContentSize" type="size" width="560" height="356"/>
             <view key="contentView" id="nOl-As-Y4j">
-                <rect key="frame" x="0.0" y="0.0" width="560" height="324"/>
+                <rect key="frame" x="0.0" y="0.0" width="560" height="356"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tkx-af-mn5">
@@ -384,7 +384,7 @@ DQ
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="EUZ-Pg-wW2">
-                        <rect key="frame" x="18" y="272" width="524" height="32"/>
+                        <rect key="frame" x="18" y="304" width="524" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="YMa-8u-AIC"/>
                         </constraints>
@@ -394,22 +394,10 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="w0K-Yc-i1c">
-                        <rect key="frame" x="18" y="59" width="524" height="28"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="28" id="VdR-KW-Mc5"/>
-                        </constraints>
-                        <textFieldCell key="cell" controlSize="small" id="rWk-kR-Tjj">
-                            <font key="font" metaFont="message" size="11"/>
-                            <string key="title">We respect your privacy and will not retain any supplied email addresses, use them for marketing purposes, or pass them to third-parties. However, we can’t contact you without an email address.</string>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYV-nH-BBy">
-                        <rect key="frame" x="20" y="95" width="520" height="169"/>
+                        <rect key="frame" x="20" y="97" width="520" height="199"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="169" id="W9C-j8-xTs"/>
+                            <constraint firstAttribute="height" constant="199" id="W9C-j8-xTs"/>
                         </constraints>
                         <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your comments here..." drawsBackground="YES" id="cBg-ZK-fAz">
                             <font key="font" metaFont="system"/>
@@ -444,18 +432,30 @@ Gw
                             <action selector="doCancelReportWindowWithSender:" target="Voe-Tx-rLC" id="XBN-NB-SEd"/>
                         </connections>
                     </button>
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="w0K-Yc-i1c">
+                        <rect key="frame" x="18" y="61" width="524" height="28"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="6E9-7B-zWg"/>
+                        </constraints>
+                        <textFieldCell key="cell" controlSize="small" id="rWk-kR-Tjj">
+                            <font key="font" metaFont="message" size="11"/>
+                            <string key="title">We respect your privacy and will not retain any supplied email addresses, use them for marketing purposes, or pass them to third-parties. However, we can’t contact you without an email address.</string>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="w0K-Yc-i1c" firstAttribute="leading" secondItem="nOl-As-Y4j" secondAttribute="leading" constant="20" symbolic="YES" id="20Z-Rq-3oL"/>
-                    <constraint firstItem="w0K-Yc-i1c" firstAttribute="top" secondItem="TYV-nH-BBy" secondAttribute="bottom" constant="8" symbolic="YES" id="4HO-sh-mCw"/>
                     <constraint firstAttribute="trailing" secondItem="tkx-af-mn5" secondAttribute="trailing" constant="20" symbolic="YES" id="CXh-X9-7jd"/>
                     <constraint firstItem="wmC-QI-6Qu" firstAttribute="leading" secondItem="nOl-As-Y4j" secondAttribute="leading" constant="20" symbolic="YES" id="D5p-3I-Oze"/>
                     <constraint firstAttribute="bottom" secondItem="wmC-QI-6Qu" secondAttribute="bottom" constant="23" id="HSQ-pl-Oeg"/>
                     <constraint firstItem="TYV-nH-BBy" firstAttribute="leading" secondItem="nOl-As-Y4j" secondAttribute="leading" constant="20" symbolic="YES" id="Hok-Zb-dpl"/>
                     <constraint firstItem="EUZ-Pg-wW2" firstAttribute="top" secondItem="nOl-As-Y4j" secondAttribute="top" constant="20" symbolic="YES" id="Hom-mh-Of2"/>
-                    <constraint firstAttribute="trailing" secondItem="w0K-Yc-i1c" secondAttribute="trailing" constant="20" symbolic="YES" id="QO7-WC-dxW"/>
+                    <constraint firstItem="tkx-af-mn5" firstAttribute="top" secondItem="w0K-Yc-i1c" secondAttribute="bottom" constant="20" symbolic="YES" id="PsE-UL-gWa"/>
+                    <constraint firstItem="w0K-Yc-i1c" firstAttribute="leading" secondItem="nOl-As-Y4j" secondAttribute="leading" constant="20" symbolic="YES" id="XKE-iF-kbr"/>
                     <constraint firstAttribute="trailing" secondItem="EUZ-Pg-wW2" secondAttribute="trailing" constant="20" symbolic="YES" id="XXd-ar-Xq3"/>
                     <constraint firstItem="tkx-af-mn5" firstAttribute="leading" secondItem="P6B-a3-sQA" secondAttribute="trailing" constant="12" symbolic="YES" id="YTb-36-dXp"/>
+                    <constraint firstAttribute="trailing" secondItem="w0K-Yc-i1c" secondAttribute="trailing" constant="20" symbolic="YES" id="arw-hM-ocr"/>
                     <constraint firstItem="EUZ-Pg-wW2" firstAttribute="leading" secondItem="nOl-As-Y4j" secondAttribute="leading" constant="20" symbolic="YES" id="cC7-gL-a2Q"/>
                     <constraint firstItem="TYV-nH-BBy" firstAttribute="top" secondItem="EUZ-Pg-wW2" secondAttribute="bottom" constant="8" symbolic="YES" id="hMh-UN-YWs"/>
                     <constraint firstAttribute="trailing" secondItem="TYV-nH-BBy" secondAttribute="trailing" constant="20" symbolic="YES" id="sY9-9J-uQl"/>
@@ -725,7 +725,7 @@ Gw
                             <constraint firstAttribute="height" constant="16" id="OCp-X8-eW2"/>
                         </constraints>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="A" id="8oo-Qe-Yks">
-                            <font key="font" metaFont="system" size="11"/>
+                            <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
