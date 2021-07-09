@@ -20,7 +20,7 @@ class Common: NSObject {
     // MARK:- Public Properties
     
     var doShowLightBackground: Bool = false
-    
+    var doShowTag: Bool             = true
     
     // MARK:- Private Properties
     
@@ -66,6 +66,7 @@ class Common: NSObject {
             self.linkColourHex = prefs.string(forKey: "com-bps-previewmarkdown-link-colour-hex") ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
             self.codeFontName  = prefs.string(forKey: "com-bps-previewmarkdown-code-font-name")  ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName  = prefs.string(forKey: "com-bps-previewmarkdown-body-font-name")  ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            self.doShowTag     = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
         }
         
         // Just in case the above block reads in zero values
