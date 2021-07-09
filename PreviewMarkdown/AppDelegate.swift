@@ -32,7 +32,7 @@ final class AppDelegate: NSObject,
     @IBOutlet var creditMenuYamlSwift: NSMenuItem!
     // FROM 1.3.1
     @IBOutlet var creditMenuOthersPreviewYaml: NSMenuItem!
-    // FROM 1.3.2
+    // FROM 1.4.0
     @IBOutlet var creditMenuOthersPreviewCode: NSMenuItem!
     
     // Panel Items
@@ -62,25 +62,20 @@ final class AppDelegate: NSObject,
     // FROM 1.4.0
     @IBOutlet weak var codeColourWell: NSColorWell!
     @IBOutlet weak var headColourWell: NSColorWell!
-    
+    @IBOutlet weak var bodyStylePopup: NSPopUpButton!
+    @IBOutlet weak var codeStylePopup: NSPopUpButton!
+
     // FROM 1.2.0
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
     
-    // FROM 1.4.0
-    @IBOutlet weak var bodyStylePopup: NSPopUpButton!
-    @IBOutlet weak var codeStylePopup: NSPopUpButton!
-
     // MARK:- Private Properies
+
     // FROM 1.1.1
     private var feedbackTask: URLSessionTask? = nil
 
     // FROM 1.2.0 -- stores for preferences
-    //private var previewCodeColour: Int = BUFFOON_CONSTANTS.CODE_COLOUR_INDEX
-    //private var previewLinkColour: Int = BUFFOON_CONSTANTS.LINK_COLOUR_INDEX
-    //private var previewCodeFont: Int = BUFFOON_CONSTANTS.CODE_FONT_INDEX
-    //private var previewBodyFont: Int = BUFFOON_CONSTANTS.BODY_FONT_INDEX
     internal var whatsNewNav: WKNavigation? = nil
     private  var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     private  var doShowLightBackground: Bool = false
@@ -108,6 +103,7 @@ final class AppDelegate: NSObject,
     func applicationDidFinishLaunching(_ notification: Notification) {
         
         // FROM 1.4.0
+        // Pre-load fonts
         let q: DispatchQueue = DispatchQueue.init(label: "com.bps.previewmarkdown.async-queue")
         q.async {
             self.asyncGetFonts()
@@ -333,11 +329,6 @@ final class AppDelegate: NSObject,
 
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            //self.previewCodeColour = defaults.integer(forKey: "com-bps-previewmarkdown-code-colour-index")
-            //self.previewLinkColour = defaults.integer(forKey: "com-bps-previewmarkdown-link-colour-index")
-            //self.previewCodeFont = defaults.integer(forKey: "com-bps-previewmarkdown-code-font-index")
-            //self.previewBodyFont = defaults.integer(forKey: "com-bps-previewmarkdown-body-font-index")
-            
             self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
             self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
             self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
@@ -354,9 +345,6 @@ final class AppDelegate: NSObject,
 
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
-        //self.codeColourPopup.selectItem(at: self.previewCodeColour)
-        //self.codeFontPopup.selectItem(at: self.previewCodeFont)
-        //self.bodyFontPopup.selectItem(at: self.previewBodyFont)
         let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: self.previewFontSize) ?? 3
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
@@ -467,23 +455,6 @@ final class AppDelegate: NSObject,
     @IBAction private func doSavePreferences(sender: Any) {
 
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            /* REMOVE IN 1.4.0
-            if self.codeColourPopup.indexOfSelectedItem != self.previewCodeColour {
-                defaults.setValue(self.codeColourPopup.indexOfSelectedItem,
-                                  forKey: "com-bps-previewmarkdown-code-colour-index")
-            }
-            
-            if self.codeFontPopup.indexOfSelectedItem != self.previewCodeFont {
-                defaults.setValue(self.codeFontPopup.indexOfSelectedItem,
-                                  forKey: "com-bps-previewmarkdown-code-font-index")
-            }
-
-            if self.bodyFontPopup.indexOfSelectedItem != self.previewBodyFont {
-                defaults.setValue(self.bodyFontPopup.indexOfSelectedItem,
-                                  forKey: "com-bps-previewmarkdown-body-font-index")
-            }
-             */
-            
             let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
@@ -591,7 +562,8 @@ final class AppDelegate: NSObject,
         // Configure and show the sheet: first, get the folder path
         if doShowSheet {
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
-            
+
+            // Set WebView properties: limit scrollers and elasticity
             self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
             self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
             self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
@@ -657,43 +629,6 @@ final class AppDelegate: NSObject,
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE),
                                   forKey: "com-bps-previewmarkdown-thumb-font-size")
             }
-            
-            /* REMOVED IN 1.4.0
-            // Colour of links in the preview, stored as in integer array index, not currently used
-            // Reason: see Common.swift
-            let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-index")
-            if linkColourDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_INDEX,
-                                  forKey: "com-bps-previewmarkdown-link-colour-index")
-            }
-            
-            // REMOVED IN 1.4.0
-            // Colour of code blocks in the preview, stored as in integer array index
-            // Default: 0 (purple)
-            let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-index")
-            if codeColourDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_INDEX,
-                                  forKey: "com-bps-previewmarkdown-code-colour-index")
-            }
-            
-            // REMOVED IN 1.4.0
-            // Font for body blocks in the preview, stored as in integer array index
-            // Default: 0 (System)
-            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-index")
-            if bodyFontDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_INDEX,
-                                  forKey: "com-bps-previewmarkdown-body-font-index")
-            }
-            
-            // REMOVED IN 1.4.0
-            // Font for code blocks in the preview, stored as in integer array index
-            // Default: 0 (Andale Mono)
-            let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-index")
-            if codeFontDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_INDEX,
-                                  forKey: "com-bps-previewmarkdown-code-font-index")
-            }
-            */
             
             // Use light background even in dark mode, stored as a bool
             // Default: false
@@ -771,7 +706,6 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
         }
-
     }
 
 }
