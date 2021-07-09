@@ -541,9 +541,6 @@ final class AppDelegate: NSObject,
                     defaults.setValue(psname, forKey: "com-bps-previewmarkdown-body-font-name")
                 }
             }
-
-            // Sync any changes
-            // defaults.synchronize()
         }
 
         // FROM 1.4.0
@@ -630,8 +627,6 @@ final class AppDelegate: NSObject,
             print("\(key) reset back to true")
             defaults.setValue(true, forKey: key)
             #endif
-
-            //defaults.synchronize()
         }
     }
 
@@ -775,9 +770,6 @@ final class AppDelegate: NSObject,
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
-
-            // Sync any additions
-            //defaults.synchronize()
         }
 
     }

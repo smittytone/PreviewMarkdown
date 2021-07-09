@@ -45,10 +45,6 @@ class ThumbnailProvider: QLThumbnailProvider {
         // what operations it performs
         super.init()
 
-        // Set the base values once per instantiation, not every
-        // time a string is rendered (which risks race condition)
-        setBaseValues(true)
-
         // Get the preference for showing a tag and do it once,
         // so it's only every read once
         if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
@@ -93,13 +89,16 @@ class ThumbnailProvider: QLThumbnailProvider {
                         guard let markdownString: String = String.init(data: data, encoding: .utf8) else {
                             return .failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
+                        
+                        // Instantiate the common code
+                        let common: Common = Common.init(true)
 
                         // Get the Attributed String
                         // TODO Can we save some time by reducing the length of the string before
                         //      processing? We don't need all of a long file for the thumbnail, eg.
                         //      3000 chars or 50 lines?
                         // let mds = String(markdownString.prefix(3000))
-                        let markdownAttString: NSAttributedString = getAttributedString(markdownString, true)
+                        let markdownAttString: NSAttributedString = common.getAttributedString(markdownString, true)
 
                         // Set the primary NSTextView drawing frame and a base font size
                         let markdownFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
