@@ -46,9 +46,11 @@ class ThumbnailProvider: QLThumbnailProvider {
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
         handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
+            
             // FROM 1.3.0
             // Place the key code within an autorelease pool to trap possible memory issues
-            let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
+            // let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
+                
                 // Load the source file using a co-ordinator as we don't know what thread this function
                 // will be executed in when it's called by macOS' QuickLook code
                 if FileManager.default.isReadableFile(atPath: request.fileURL.path) {
@@ -58,7 +60,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // as we're not going to read it again any time soon
                         let data: Data = try Data.init(contentsOf: request.fileURL, options: [.uncached])
                         guard let markdownString: String = String.init(data: data, encoding: .utf8) else {
-                            return .failure(ThumbnailerError.badFileLoad(request.fileURL.path))
+                            return false //.failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
                         
                         // Instantiate the common code
@@ -68,7 +70,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // TODO Can we save some time by reducing the length of the string before
                         //      processing? We don't need all of a long file for the thumbnail, eg.
                         //      3000 chars or 50 lines?
-                        // let mds = String(markdownString.prefix(3000))
                         let markdownAttString: NSAttributedString = common.getAttributedString(markdownString, true)
 
                         // Set the primary NSTextView drawing frame and a base font size
@@ -81,14 +82,16 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAttString)
+                        markdownTextField.wantsLayer = false
                         markdownTextField.frame = markdownFrame
-
+                        markdownTextField.needsDisplay = true
+                        
                         // Generate the bitmap from the rendered markdown text view
                         guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
-                            return .failure(ThumbnailerError.badGfxBitmap)
+                            return false //.failure(ThumbnailerError.badGfxBitmap)
                         }
-
-                        // Draw into the bitmap first the markdown view...
+                        
+                        // Draw the view into the bitmap
                         markdownTextField.cacheDisplay(in: markdownFrame, to: imageRep)
 
                         // FROM 1.2.0
@@ -115,27 +118,46 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                             // FROM 1.3.1
                             // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
-                            // and extend the size of its frame
+                            // and extend tbhe size of its frame
                             let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
                             let tagTextField: NSTextField = NSTextField.init(labelWithAttributedString: tag)
+                            tagTextField.wantsLayer = false
                             tagTextField.frame = tagFrame
+                            tagTextField.needsDisplay = true
+                            
+                            // Draw the view into the bitmap
                             tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
                         }
 
                         // Draw the bitmap into the current context
-                        let drawResult = imageRep.draw(in: thumbnailFrame)
+                        let currentContext: CGContext? = NSGraphicsContext.current?.cgContext
+                        currentContext!.saveGState()
+                        
+                        // Draw the BitmapImageRep into the current contex
+                        let drawResult: Bool = imageRep.draw(in: thumbnailFrame)
+                        currentContext!.restoreGState()
+                        
+                        // Required to prevent 'thread ended before CA actions committed' errors in log
+                        CATransaction.commit()
+                        
+                        /*
                         if drawResult {
                             return .success(true)
                         } else {
                             return .failure(ThumbnailerError.badGfxDraw)
                         }
+                        */
+                        
+                        return drawResult
                     } catch {
                         // NOP: fall through to error
                     }
                 }
 
                 // We didn't draw anything because of 'can't find file' error
-                return .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
+                return false // .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
+            
+            /*
             }
 
             // Pass the outcome up from out of the autorelease
@@ -154,8 +176,9 @@ class ThumbnailProvider: QLThumbnailProvider {
                             NSLog("Could not render thumbnail")
                     }
             }
-
+            
             return false
+             */
         }, nil)
     }
 
