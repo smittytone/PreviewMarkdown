@@ -67,16 +67,17 @@ class PreviewViewController: NSViewController,
                         renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(common.getAttributedString(markdownString, false))
                         renderTextStorage.endEditing()
-                    } else {
-                        handler(setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING))
-                    }
-                    
-                    // Add the subview to the instance's own view and draw
-                    self.view.display()
+                        
+                        // Add the subview to the instance's own view and draw
+                        self.view.display()
 
-                    // Call the QLPreviewingController indicating no error (nil)
-                    handler(nil)
-                    return
+                        // Call the QLPreviewingController indicating no error (nil)
+                        handler(nil)
+                        return
+                    }
+                        
+                    // We couldn't access the preview NSTextView's NSTextStorage
+                    reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING)
                 } else {
                     // We couldn't get the Markdown string so set an appropriate error to report back
                     reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING)
@@ -122,6 +123,7 @@ class PreviewViewController: NSViewController,
         NSLog("BUFFOON \(errString)")
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
+        self.renderTextView.isHidden = true
         self.view.display()
     }
     
@@ -155,8 +157,7 @@ class PreviewViewController: NSViewController,
             errDesc = "UNKNOWN ERROR"
         }
         
-        let bundleID = Bundle.main.object(forInfoDictionaryKey: "CFBundleID") as! String
-        return NSError(domain: bundleID,
+        return NSError(domain: "com.bps.PreviewMarkdown.Previewer",
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
     }
