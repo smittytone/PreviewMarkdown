@@ -43,7 +43,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
     * Allow the heading colour to be selected.
     * Allow any colour to be chosen using macOS’ colour picker.
     * Tighten the thumbnailer code.
-    * Fixed a bug in the previewer error reporting code.
+    * Fixed a rare bug in the previewer error reporting code.
 * 1.3.1 *18 June 2021*
     * Add links to other PreviewApps.
     * Support macOS 11 Big Sur’s UTType API.
