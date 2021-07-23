@@ -45,7 +45,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
-        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { () -> Bool in
+        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
             
             // FROM 1.3.0
             // Place the key code within an autorelease pool to trap possible memory issues
@@ -63,7 +63,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                             return false //.failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
                         
-                        // Instantiate the common code
+                        // Instantiate the common code for a thumbnail ('true')
                         let common: Common = Common.init(true)
 
                         // Get the Attributed String
@@ -82,9 +82,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAttString)
-                        markdownTextField.wantsLayer = false
                         markdownTextField.frame = markdownFrame
-                        markdownTextField.needsDisplay = true
                         
                         // Generate the bitmap from the rendered markdown text view
                         guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
@@ -121,21 +119,27 @@ class ThumbnailProvider: QLThumbnailProvider {
                             // and extend tbhe size of its frame
                             let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
                             let tagTextField: NSTextField = NSTextField.init(labelWithAttributedString: tag)
-                            tagTextField.wantsLayer = false
                             tagTextField.frame = tagFrame
-                            tagTextField.needsDisplay = true
                             
                             // Draw the view into the bitmap
                             tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
                         }
 
-                        // Draw the bitmap into the current context
-                        let currentContext: CGContext? = NSGraphicsContext.current?.cgContext
-                        currentContext!.saveGState()
+                        // Alternative drawing code to make use of a supplied context
+                        // NOTE 'context' passed in by the caller, ie. macOS QL server
+                        var drawResult: Bool = false
+                        if let image: CGImage = imageRep.cgImage {
+                            context.draw(image, in: thumbnailFrame)
+                            drawResult = true
+                        }
+
+                        // Needed? Probably not: we don't make any state changes
+                        //NSGraphicsContext.saveGraphicsState()
                         
                         // Draw the BitmapImageRep into the current contex
-                        let drawResult: Bool = imageRep.draw(in: thumbnailFrame)
-                        currentContext!.restoreGState()
+                        //let drawResult: Bool = imageRep.draw(in: thumbnailFrame)
+
+                        //NSGraphicsContext.restoreGraphicsState()
                         
                         // Required to prevent 'thread ended before CA actions committed' errors in log
                         CATransaction.commit()
