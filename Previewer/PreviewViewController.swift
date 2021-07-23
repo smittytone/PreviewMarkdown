@@ -33,8 +33,10 @@ class PreviewViewController: NSViewController,
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
 
         // Hide the error message field
+        self.errorReportField.stringValue = ""
         self.errorReportField.isHidden = true
-
+        self.renderTextScrollView.isHidden = false
+        
         // FROM 1.1.0
         // Get an error message ready for use
         var reportError: NSError? = nil
@@ -123,7 +125,7 @@ class PreviewViewController: NSViewController,
         NSLog("BUFFOON \(errString)")
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
-        self.renderTextView.isHidden = true
+        self.renderTextScrollView.isHidden = true
         self.view.display()
     }
     
