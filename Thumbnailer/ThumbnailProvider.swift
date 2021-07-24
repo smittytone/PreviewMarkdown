@@ -36,13 +36,11 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Set the thumbnail frame
         // NOTE This is always square, with height matched to width, so adjust
         //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
-        let targetWidth: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height
-        let targetHeight: CGFloat = request.maximumSize.height
         let iconScale: CGFloat = request.scale
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                 0.0,
-                                                targetWidth,
-                                                targetHeight)
+                                                request.maximumSize.height,
+                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height)
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
@@ -139,14 +137,9 @@ class ThumbnailProvider: QLThumbnailProvider {
                             drawResult = true
                         }
 
-                        // Needed? Probably not: we don't make any state changes
-                        //NSGraphicsContext.saveGraphicsState()
-                        
                         // Draw the BitmapImageRep into the current contex
                         //let drawResult: Bool = imageRep.draw(in: thumbnailFrame)
 
-                        //NSGraphicsContext.restoreGraphicsState()
-                        
                         // Required to prevent 'thread ended before CA actions committed' errors in log
                         CATransaction.commit()
                         
