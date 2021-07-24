@@ -94,7 +94,7 @@ class PreviewViewController: NSViewController,
         }
 
         // Display the error locally in the window
-        showError(reportError!.userInfo[NSLocalizedDescriptionKey] as! String)
+        showError(reportError!)
 
         // Call the QLPreviewingController indicating an error (!nil)
         handler(nil)
@@ -118,15 +118,16 @@ class PreviewViewController: NSViewController,
      Place an error message in its various outlets.
      
      - parameters:
-        - errString: The error message.
+        - error: The error as an NSError.
      */
-    func showError(_ errString: String) {
-
-        NSLog("BUFFOON \(errString)")
+    func showError(_ error: NSError) {
+        
+        let errString: String = error.userInfo[NSLocalizedDescriptionKey] as! String
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
         self.renderTextScrollView.isHidden = true
         self.view.display()
+        NSLog("BUFFOON \(errString)")
     }
     
     
