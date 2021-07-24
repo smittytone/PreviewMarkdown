@@ -39,8 +39,8 @@ class ThumbnailProvider: QLThumbnailProvider {
         let iconScale: CGFloat = request.scale
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                 0.0,
-                                                request.maximumSize.height,
-                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height)
+                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
+                                                request.maximumSize.height)
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
