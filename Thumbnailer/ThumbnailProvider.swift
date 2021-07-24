@@ -38,6 +38,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         //      to a 3:4 aspect ratio to maintain the macOS standard doc icon width
         let targetWidth: CGFloat = CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height
         let targetHeight: CGFloat = request.maximumSize.height
+        let iconScale: CGFloat = request.scale
         let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                 0.0,
                                                 targetWidth,
@@ -125,11 +126,16 @@ class ThumbnailProvider: QLThumbnailProvider {
                             tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
                         }
 
-                        // Alternative drawing code to make use of a supplied context
+                        // Alternative drawing code to make use of a supplied context,
+                        // scaling as required (retina vs non-retina screen)
                         // NOTE 'context' passed in by the caller, ie. macOS QL server
                         var drawResult: Bool = false
+                        let scaleFrame: CGRect = NSMakeRect(0.0,
+                                                            0.0,
+                                                            thumbnailFrame.width * iconScale,
+                                                            thumbnailFrame.height * iconScale)
                         if let image: CGImage = imageRep.cgImage {
-                            context.draw(image, in: thumbnailFrame)
+                            context.draw(image, in: scaleFrame, byTiling: false)
                             drawResult = true
                         }
 
