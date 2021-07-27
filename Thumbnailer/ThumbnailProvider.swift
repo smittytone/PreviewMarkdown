@@ -69,46 +69,47 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // TODO Can we save some time by reducing the length of the string before
                         //      processing? We don't need all of a long file for the thumbnail, eg.
                         //      3000 chars or 50 lines?
-                        let markdownAttString: NSAttributedString = common.getAttributedString(markdownString, true)
+                        let markdownAtts: NSAttributedString = common.getAttributedString(markdownString, true)
 
                         // Set the primary NSTextView drawing frame and a base font size
-                        let markdownFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
-                                                                y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
-                                                                width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
-                                                                height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT)
+                        let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
+                                                               CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
+                                                               CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH),
+                                                               CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT))
 
                         // FROM 1.3.1
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
-                        let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAttString)
+                        let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAtts)
                         markdownTextField.frame = markdownFrame
                         
                         // Generate the bitmap from the rendered markdown text view
-                        guard let imageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
+                        guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
                             return false //.failure(ThumbnailerError.badGfxBitmap)
                         }
                         
                         // Draw the view into the bitmap
-                        markdownTextField.cacheDisplay(in: markdownFrame, to: imageRep)
+                        markdownTextField.cacheDisplay(in: markdownFrame, to: bodyImageRep)
 
                         // FROM 1.2.0
                         // Also generate text for the bottom-of-thumbnail file type tag,
                         // if the user has this set as a preference
+                        var tagImageRep: NSBitmapImageRep? = nil
                         if common.doShowTag {
                             // Define the frame of the tag area
-                            let tagFrame: CGRect = CGRect.init(x: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X,
-                                                               y: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y,
-                                                               width: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH,
-                                                               height: BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT)
+                            let tagFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
+                                                              CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
+                                                              CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH),
+                                                              CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.TAG_HEIGHT))
                             
                             // Build the tag
                             let style: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
                             style.alignment = .center
-
+                            
                             // Build the string attributes
                             // FROM 1.3.0 -- do this as a literal
                             let tagAtts: [NSAttributedString.Key: Any] = [
-                                .paragraphStyle: style as NSParagraphStyle,
+                                .paragraphStyle: style,
                                 .font: NSFont.systemFont(ofSize: CGFloat(BUFFOON_CONSTANTS.TAG_TEXT_SIZE)),
                                 .foregroundColor: (NSColor.init(red: 0.58, green: 0.09, blue: 0.32, alpha: 1.0))
                             ]
@@ -121,24 +122,33 @@ class ThumbnailProvider: QLThumbnailProvider {
                             tagTextField.frame = tagFrame
                             
                             // Draw the view into the bitmap
-                            tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
+                            if let imageRep: NSBitmapImageRep = tagTextField.bitmapImageRepForCachingDisplay(in: tagFrame) {
+                                tagTextField.cacheDisplay(in: tagFrame, to: imageRep)
+                                tagImageRep = imageRep
+                            }
                         }
 
                         // Alternative drawing code to make use of a supplied context,
                         // scaling as required (retina vs non-retina screen)
                         // NOTE 'context' passed in by the caller, ie. macOS QL server
                         var drawResult: Bool = false
-                        let scaleFrame: CGRect = NSMakeRect(0.0,
+                        var scaleFrame: CGRect = NSMakeRect(0.0,
                                                             0.0,
                                                             thumbnailFrame.width * iconScale,
                                                             thumbnailFrame.height * iconScale)
-                        if let image: CGImage = imageRep.cgImage {
+                        if let image: CGImage = bodyImageRep.cgImage {
                             context.draw(image, in: scaleFrame, byTiling: false)
                             drawResult = true
                         }
-
-                        // Draw the BitmapImageRep into the current contex
-                        //let drawResult: Bool = imageRep.draw(in: thumbnailFrame)
+                        
+                        // Add the tag
+                        scaleFrame = NSMakeRect(0.0,
+                                                0.0,
+                                                thumbnailFrame.width * iconScale,
+                                                thumbnailFrame.height * iconScale * 0.2)
+                        if let image: CGImage = tagImageRep?.cgImage {
+                            context.draw(image, in: scaleFrame, byTiling: false)
+                        }
 
                         // Required to prevent 'thread ended before CA actions committed' errors in log
                         CATransaction.commit()

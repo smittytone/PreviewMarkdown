@@ -39,7 +39,7 @@ struct BUFFOON_CONSTANTS {
         static let WIDTH                    = 768
         static let HEIGHT                   = 1024
         static let ASPECT                   = 0.75
-        static let TAG_HEIGHT               = 200
+        static let TAG_HEIGHT               = 204.8
         static let FONT_SIZE                = 130.0
     }
 
