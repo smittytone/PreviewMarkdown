@@ -38,7 +38,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
-* 1.4.0 *Unreleased*
+* 1.4.0 *28 July 2021*
     * Allow any installed font to be selected.
     * Allow the heading colour to be selected.
     * Allow any colour to be chosen using macOS’ colour picker.
