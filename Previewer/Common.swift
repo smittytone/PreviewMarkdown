@@ -116,9 +116,11 @@ class Common: NSObject {
      
      - returns: The rendered markdown as an NSAttributedString.
      */
-    func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
+    func getAttributedString(_ markdownString: String, _ isThumbnail: Bool, _ basePath: String = "") -> NSAttributedString {
 
         let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+        swiftyMarkdown.applyAttachments = !isThumbnail
+        swiftyMarkdown.basePath = basePath
         setSwiftStyles(swiftyMarkdown, isThumbnail)
         var processed: String = processCodeTags(markdownString)
         processed = convertSpaces(processed)

@@ -5,8 +5,8 @@
         "package": "SwiftyMarkdown",
         "repositoryURL": "https://github.com/smittytone/SwiftyMarkdown.git",
         "state": {
-          "branch": "master",
-          "revision": "2bbf1213a6f32b9860f6c034a0e99c1e86d18aed",
+          "branch": "code-blocks",
+          "revision": "17ecfc288f5bb4baed76e26320dfc96478ffb871",
           "version": null
         }
       },
