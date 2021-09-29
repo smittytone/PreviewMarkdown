@@ -45,7 +45,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // FROM 1.4.1
         // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
         let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        let isMontereyPlus: Bool = sysVer.majorVersion >= 12
+        let isMontereyPlus: Bool = (sysVer.majorVersion >= 12)
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'

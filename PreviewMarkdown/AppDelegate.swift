@@ -731,13 +731,7 @@ final class AppDelegate: NSObject,
         
         // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
         let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-
-        // FROM 1.3.1
-        // Support macOS 11.0.0 version numbering by forcing check to 10.13.x
-        if sysVer.majorVersion == 12 {
-            // Wrong version, so present a warning message
-            self.isMontereyPlus = true
-        }
+        self.isMontereyPlus = (sysVer.majorVersion >= 12)
     }
 
 }
