@@ -64,6 +64,8 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var headColourWell: NSColorWell!
     @IBOutlet weak var bodyStylePopup: NSPopUpButton!
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
+    // FROM 1.4.1
+    @IBOutlet weak var tagInfoTextField: NSTextField!
 
     // FROM 1.2.0
     // What's New Sheet
@@ -96,6 +98,9 @@ final class AppDelegate: NSObject,
     private  var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
+    
+    // FROM 1.4.1
+    private var isMontereyPlus: Bool = false
 
     
     // MARK:- Class Lifecycle Functions
@@ -112,6 +117,9 @@ final class AppDelegate: NSObject,
         // FROM 1.2.0
         // Set application group-level defaults
         registerPreferences()
+        
+        // FROM 1.4.1
+        recordSystemState()
         
         // FROM 1.2.0
         // Get the local UTI for markdown files
@@ -382,6 +390,12 @@ final class AppDelegate: NSObject,
         }
 
         selectFontByPostScriptName(self.codeFontName, false)
+        
+        // FROM 1.4.1
+        // Hide tag selection on Monterey
+        self.doShowTagCheckbox.isEnabled = !self.isMontereyPlus
+        self.tagInfoTextField.isEnabled = !self.isMontereyPlus
+        self.tagInfoTextField.toolTip = "Not available in macOS 12.0 and up"
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -705,6 +719,24 @@ final class AppDelegate: NSObject,
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
+        }
+    }
+    
+    /**
+     Get system and state information and record it for use during run.
+     
+     FROM 1.4.1
+     */
+    private func recordSystemState() {
+        
+        // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+
+        // FROM 1.3.1
+        // Support macOS 11.0.0 version numbering by forcing check to 10.13.x
+        if sysVer.majorVersion == 12 {
+            // Wrong version, so present a warning message
+            self.isMontereyPlus = true
         }
     }
 

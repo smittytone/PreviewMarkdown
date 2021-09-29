@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19162" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19162"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="19162"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,6 +37,7 @@
                 <outlet property="preferencesWindow" destination="sjc-xZ-D3x" id="ulJ-fW-pzl"/>
                 <outlet property="reportWindow" destination="Qvu-BL-pGS" id="iaa-7G-SRe"/>
                 <outlet property="showFrontMatterCheckbox" destination="L3v-ZW-rI5" id="UpH-DB-GrM"/>
+                <outlet property="tagInfoTextField" destination="vXh-Dj-3xv" id="nU4-KO-ZYE"/>
                 <outlet property="useLightCheckbox" destination="Mls-DP-Cdx" id="HfF-ed-Tbs"/>
                 <outlet property="versionLabel" destination="RuP-3k-wPO" id="2c9-E8-cV8"/>
                 <outlet property="whatsNewWebView" destination="edS-kL-I2r" id="f6t-H5-tEf"/>
