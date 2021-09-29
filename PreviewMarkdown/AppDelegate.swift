@@ -394,8 +394,8 @@ final class AppDelegate: NSObject,
         // FROM 1.4.1
         // Hide tag selection on Monterey
         self.doShowTagCheckbox.isEnabled = !self.isMontereyPlus
-        self.tagInfoTextField.isEnabled = !self.isMontereyPlus
-        self.tagInfoTextField.toolTip = "Not available in macOS 12.0 and up"
+        self.doShowTagCheckbox.toolTip = "Not available in macOS 12.0 and up"
+        self.tagInfoTextField.stringValue = "macOS 12.0 Monterey adds its own thumbnail file extension tags, so this option is no longer available."
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
