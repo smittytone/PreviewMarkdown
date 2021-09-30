@@ -715,7 +715,7 @@ Gw
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Czd-zZ-ZiW">
                         <rect key="frame" x="95" y="113" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Show Markdown file-type tag on Finder thumbnails" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Z9h-TK-H7G">
+                        <buttonCell key="cell" type="check" title="Show Markdown file-type tag on Finder thumbnails" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Z9h-TK-H7G">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

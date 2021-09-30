@@ -653,10 +653,10 @@ final class AppDelegate: NSObject,
             }
 
             // Show the file identity ('tag') on Finder thumbnails
-            // Default: true
+            // Default: false (from 1.4.1)
             let showTagDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-tag")
             if showTagDefault == nil {
-                defaults.setValue(true,
+                defaults.setValue(false,
                                   forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
@@ -721,7 +721,8 @@ final class AppDelegate: NSObject,
             }
         }
     }
-    
+
+
     /**
      Get system and state information and record it for use during run.
      
