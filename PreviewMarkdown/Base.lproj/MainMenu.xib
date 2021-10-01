@@ -703,10 +703,10 @@ Gw
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
+                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
                         <rect key="frame" x="115" y="82" width="356" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
+                        <textFieldCell key="cell" controlSize="small" refusesFirstResponder="YES" allowsUndo="NO" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

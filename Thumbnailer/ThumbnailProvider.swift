@@ -86,6 +86,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAtts)
+                        markdownTextField.isEditable = false
+                        markdownTextField.isSelectable = false
                         markdownTextField.frame = markdownFrame
                         
                         // Generate the bitmap from the rendered markdown text view
@@ -124,6 +126,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                             // and extend tbhe size of its frame
                             let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
                             let tagTextField: NSTextField = NSTextField.init(labelWithAttributedString: tag)
+                            tagTextField.isEditable = false
+                            tagTextField.isSelectable = false
                             tagTextField.frame = tagFrame
                             
                             // Draw the view into the bitmap
