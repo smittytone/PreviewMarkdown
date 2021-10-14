@@ -53,7 +53,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             
             // FROM 1.3.0
             // Place the key code within an autorelease pool to trap possible memory issues
-            // let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
+            let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
                 
                 // Load the source file using a co-ordinator as we don't know what thread this function
                 // will be executed in when it's called by macOS' QuickLook code
@@ -64,7 +64,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // as we're not going to read it again any time soon
                         let data: Data = try Data.init(contentsOf: request.fileURL, options: [.uncached])
                         guard let markdownString: String = String.init(data: data, encoding: .utf8) else {
-                            return false //.failure(ThumbnailerError.badFileLoad(request.fileURL.path))
+                            return .failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
                         
                         // Instantiate the common code for a thumbnail ('true')
@@ -86,13 +86,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAtts)
-                        markdownTextField.isEditable = false
-                        markdownTextField.isSelectable = false
                         markdownTextField.frame = markdownFrame
                         
                         // Generate the bitmap from the rendered markdown text view
                         guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
-                            return false //.failure(ThumbnailerError.badGfxBitmap)
+                            return .failure(ThumbnailerError.badGfxBitmap)
                         }
                         
                         // Draw the view into the bitmap
@@ -126,8 +124,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                             // and extend tbhe size of its frame
                             let tag: NSAttributedString = NSAttributedString.init(string: "MD", attributes: tagAtts)
                             let tagTextField: NSTextField = NSTextField.init(labelWithAttributedString: tag)
-                            tagTextField.isEditable = false
-                            tagTextField.isSelectable = false
                             tagTextField.frame = tagFrame
                             
                             // Draw the view into the bitmap
@@ -162,24 +158,20 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Required to prevent 'thread ended before CA actions committed' errors in log
                         CATransaction.commit()
                         
-                        /*
                         if drawResult {
                             return .success(true)
                         } else {
                             return .failure(ThumbnailerError.badGfxDraw)
                         }
-                        */
                         
-                        return drawResult
+                        //return drawResult
                     } catch {
                         // NOP: fall through to error
                     }
                 }
 
                 // We didn't draw anything because of 'can't find file' error
-                return false // .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
-            
-            /*
+                return .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
             }
 
             // Pass the outcome up from out of the autorelease
@@ -200,7 +192,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             }
             
             return false
-             */
+            
         }, nil)
     }
 
