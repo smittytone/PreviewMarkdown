@@ -70,11 +70,21 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate the common code for a thumbnail ('true')
                         let common: Common = Common.init(true)
 
+                        // FROM 1.4.1
+                        // Only render the lines likely to appear in the thumbnail
+                        let lines: [String] = (markdownString as NSString).components(separatedBy: "\n")
+                        var shortString: String = ""
+                        for i in 0..<lines.count {
+                            // Break at line THUMBNAIL_LINE_COUNT
+                            if i >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT { break }
+                            shortString += (lines[i] + "\n")
+                        }
+
                         // Get the Attributed String
                         // TODO Can we save some time by reducing the length of the string before
                         //      processing? We don't need all of a long file for the thumbnail, eg.
                         //      3000 chars or 50 lines?
-                        let markdownAtts: NSAttributedString = common.getAttributedString(markdownString, true)
+                        let markdownAtts: NSAttributedString = common.getAttributedString(shortString, true)
 
                         // Set the primary NSTextView drawing frame and a base font size
                         let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),

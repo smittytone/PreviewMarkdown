@@ -73,4 +73,7 @@ struct BUFFOON_CONSTANTS {
     static let CODE_FONT_NAME               = "Courier"
     
     static let SAMPLE_UTI_FILE              = "sample.md"
+
+    // FROM 1.4.1
+    static let THUMBNAIL_LINE_COUNT         = 36
 }
