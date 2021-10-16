@@ -54,8 +54,8 @@ class Common: NSObject {
         // Load in the user's preferred values, or set defaults
         if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
             self.fontSize = CGFloat(isThumbnail
-                                ? prefs.float(forKey: "com-bps-previewmarkdown-thumb-font-size")
-                                : prefs.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+                                    ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
+                                    : prefs.float(forKey: "com-bps-previewmarkdown-base-font-size"))
 
             self.doShowLightBackground = prefs.bool(forKey: "com-bps-previewmarkdown-do-use-light")
             self.doShowYaml            = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter")
