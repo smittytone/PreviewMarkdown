@@ -74,12 +74,31 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Only render the lines *likely* to appear in the thumbnail
                         let lines: [String] = (markdownString as NSString).components(separatedBy: "\n")
                         var shortString: String = ""
+                        var gotFrontMatter: Bool = false
+                        var markdownStart: Int = 0
+                        
                         if lines.count < BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
                             shortString = markdownString
                         } else {
+                            // Check for static site YAML/TOML front matter
                             for i in 0..<lines.count {
+                                if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && !gotFrontMatter {
+                                    // Head YAML/TOML delimiter
+                                    gotFrontMatter = true
+                                    continue
+                                }
+                                
+                                if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && gotFrontMatter {
+                                    // Tail YAML/TOML delimiter: set the start of the Markdown
+                                    markdownStart = i + 1
+                                    break
+                                }
+                            }
+                            
+                            // Count Markdown lines from the start or after any front matter
+                            for i in markdownStart..<lines.count {
                                 // Break at line THUMBNAIL_LINE_COUNT
-                                if i >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT || shortString.count > 3400 { break }
+                                if (i - markdownStart) >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT || shortString.count > 3400 { break }
                                 shortString += (lines[i] + "\n")
                             }
                         }
