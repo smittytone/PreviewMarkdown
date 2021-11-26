@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.4.0 #
+# PreviewMarkdown 1.4.1 #
 
 A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -38,6 +38,8 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
+* 1.4.1 *Unreleased*
+    * Disable selection of thumbnail tags under macOS 12 Monterey to avoid clash with system-added tags.
 * 1.4.0 *28 July 2021*
     * Allow any installed font to be selected.
     * Allow the heading colour to be selected.

@@ -64,6 +64,8 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var headColourWell: NSColorWell!
     @IBOutlet weak var bodyStylePopup: NSPopUpButton!
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
+    // FROM 1.4.1
+    @IBOutlet weak var tagInfoTextField: NSTextField!
 
     // FROM 1.2.0
     // What's New Sheet
@@ -96,6 +98,9 @@ final class AppDelegate: NSObject,
     private  var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
+    
+    // FROM 1.4.1
+    private var isMontereyPlus: Bool = false
 
     
     // MARK:- Class Lifecycle Functions
@@ -112,6 +117,9 @@ final class AppDelegate: NSObject,
         // FROM 1.2.0
         // Set application group-level defaults
         registerPreferences()
+        
+        // FROM 1.4.1
+        recordSystemState()
         
         // FROM 1.2.0
         // Get the local UTI for markdown files
@@ -382,6 +390,14 @@ final class AppDelegate: NSObject,
         }
 
         selectFontByPostScriptName(self.codeFontName, false)
+        
+        // FROM 1.4.1
+        // Hide tag selection on Monterey
+        self.doShowTagCheckbox.isEnabled = !self.isMontereyPlus
+        if (isMontereyPlus) {
+            self.doShowTagCheckbox.toolTip = "Not available in macOS 12.0 and up"
+            self.tagInfoTextField.stringValue = "macOS 12.0 Monterey adds its own thumbnail file extension tags, so this option is no longer available."
+        }
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -639,10 +655,10 @@ final class AppDelegate: NSObject,
             }
 
             // Show the file identity ('tag') on Finder thumbnails
-            // Default: true
+            // Default: false (from 1.4.1)
             let showTagDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-tag")
             if showTagDefault == nil {
-                defaults.setValue(true,
+                defaults.setValue(false,
                                   forKey: "com-bps-previewmarkdown-do-show-tag")
             }
 
@@ -706,6 +722,19 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
         }
+    }
+
+
+    /**
+     Get system and state information and record it for use during run.
+     
+     FROM 1.4.1
+     */
+    private func recordSystemState() {
+        
+        // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        self.isMontereyPlus = (sysVer.majorVersion >= 12)
     }
 
 }

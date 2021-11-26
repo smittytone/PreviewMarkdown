@@ -41,6 +41,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                 0.0,
                                                 CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
                                                 request.maximumSize.height)
+        
+        // FROM 1.4.1
+        // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
+        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        let isMontereyPlus: Bool = (sysVer.majorVersion >= 12)
 
         // FROM 1.3.0
         // Place all the remaining code within the closure passed to 'handler()'
@@ -48,7 +53,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             
             // FROM 1.3.0
             // Place the key code within an autorelease pool to trap possible memory issues
-            // let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
+            let result: Result<Bool, ThumbnailerError> = autoreleasepool { () -> Result<Bool, ThumbnailerError> in
                 
                 // Load the source file using a co-ordinator as we don't know what thread this function
                 // will be executed in when it's called by macOS' QuickLook code
@@ -59,17 +64,50 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // as we're not going to read it again any time soon
                         let data: Data = try Data.init(contentsOf: request.fileURL, options: [.uncached])
                         guard let markdownString: String = String.init(data: data, encoding: .utf8) else {
-                            return false //.failure(ThumbnailerError.badFileLoad(request.fileURL.path))
+                            return .failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
                         
                         // Instantiate the common code for a thumbnail ('true')
                         let common: Common = Common.init(true)
 
+                        // FROM 1.4.1
+                        // Only render the lines *likely* to appear in the thumbnail
+                        let lines: [String] = (markdownString as NSString).components(separatedBy: "\n")
+                        var shortString: String = ""
+                        var gotFrontMatter: Bool = false
+                        var markdownStart: Int = 0
+                        
+                        if lines.count < BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
+                            shortString = markdownString
+                        } else {
+                            // Check for static site YAML/TOML front matter
+                            for i in 0..<lines.count {
+                                if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && !gotFrontMatter {
+                                    // Head YAML/TOML delimiter
+                                    gotFrontMatter = true
+                                    continue
+                                }
+                                
+                                if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && gotFrontMatter {
+                                    // Tail YAML/TOML delimiter: set the start of the Markdown
+                                    markdownStart = i + 1
+                                    break
+                                }
+                            }
+                            
+                            // Count Markdown lines from the start or after any front matter
+                            for i in markdownStart..<lines.count {
+                                // Break at line THUMBNAIL_LINE_COUNT
+                                if (i - markdownStart) >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT || shortString.count > 3400 { break }
+                                shortString += (lines[i] + "\n")
+                            }
+                        }
+                        
                         // Get the Attributed String
                         // TODO Can we save some time by reducing the length of the string before
                         //      processing? We don't need all of a long file for the thumbnail, eg.
                         //      3000 chars or 50 lines?
-                        let markdownAtts: NSAttributedString = common.getAttributedString(markdownString, true)
+                        let markdownAtts: NSAttributedString = common.getAttributedString(shortString, true)
 
                         // Set the primary NSTextView drawing frame and a base font size
                         let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
@@ -81,11 +119,12 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Instantiate an NSTextField to display the NSAttributedString render of the YAML,
                         // and extend the size of its frame
                         let markdownTextField: NSTextField = NSTextField.init(labelWithAttributedString: markdownAtts)
+                        markdownTextField.lineBreakMode = .byTruncatingTail
                         markdownTextField.frame = markdownFrame
                         
                         // Generate the bitmap from the rendered markdown text view
                         guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
-                            return false //.failure(ThumbnailerError.badGfxBitmap)
+                            return .failure(ThumbnailerError.badGfxBitmap)
                         }
                         
                         // Draw the view into the bitmap
@@ -95,7 +134,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         // Also generate text for the bottom-of-thumbnail file type tag,
                         // if the user has this set as a preference
                         var tagImageRep: NSBitmapImageRep? = nil
-                        if common.doShowTag {
+                        if common.doShowTag && !isMontereyPlus {
                             // Define the frame of the tag area
                             let tagFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
                                                               CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
@@ -142,35 +181,31 @@ class ThumbnailProvider: QLThumbnailProvider {
                         }
                         
                         // Add the tag
-                        scaleFrame = NSMakeRect(0.0,
-                                                0.0,
-                                                thumbnailFrame.width * iconScale,
-                                                thumbnailFrame.height * iconScale * 0.2)
                         if let image: CGImage = tagImageRep?.cgImage {
+                            scaleFrame = NSMakeRect(0.0,
+                                                    0.0,
+                                                    thumbnailFrame.width * iconScale,
+                                                    thumbnailFrame.height * iconScale * 0.2)
                             context.draw(image, in: scaleFrame, byTiling: false)
                         }
 
                         // Required to prevent 'thread ended before CA actions committed' errors in log
                         CATransaction.commit()
                         
-                        /*
                         if drawResult {
                             return .success(true)
                         } else {
                             return .failure(ThumbnailerError.badGfxDraw)
                         }
-                        */
                         
-                        return drawResult
+                        //return drawResult
                     } catch {
                         // NOP: fall through to error
                     }
                 }
 
                 // We didn't draw anything because of 'can't find file' error
-                return false // .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
-            
-            /*
+                return .failure(ThumbnailerError.badFileUnreadable(request.fileURL.path))
             }
 
             // Pass the outcome up from out of the autorelease
@@ -191,7 +226,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             }
             
             return false
-             */
+            
         }, nil)
     }
 

@@ -44,7 +44,7 @@ struct BUFFOON_CONSTANTS {
     }
 
     static let PREVIEW_FONT_SIZE            = 16.0
-    static let THUMBNAIL_FONT_SIZE          = 14.0
+    static let THUMBNAIL_FONT_SIZE: Float   = 18.0
     static let SPACES_FOR_A_TAB             = 4
 
     // FROM 1.2.0
@@ -73,4 +73,7 @@ struct BUFFOON_CONSTANTS {
     static let CODE_FONT_NAME               = "Courier"
     
     static let SAMPLE_UTI_FILE              = "sample.md"
+
+    // FROM 1.4.1
+    static let THUMBNAIL_LINE_COUNT         = 40
 }
