@@ -40,7 +40,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 * 1.4.2 *Unreleased*
     * Upgrade to SwiftyMarkdown 1.2.4.
-
+    * Support checkboxes (`[x]`, `[ ]`).
 * 1.4.1 *20 November 2021*
     * Disable selection of thumbnail tags under macOS 12 Monterey to avoid clash with system-added tags.
 * 1.4.0 *28 July 2021*
