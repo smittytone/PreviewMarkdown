@@ -1,6 +1,6 @@
-# PreviewMarkdown 1.4.1 #
+# PreviewMarkdown 1.4.2 #
 
-A simple app that provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
+This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
 ![PreviewMarkdown App Store QR code](qr-code.jpg)
 
@@ -37,6 +37,9 @@ This repository contains the primary source code for PreviewMarkdown. Certain gr
 PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
 
 ## Release Notes ##
+
+* 1.4.2 *Unreleased*
+    * Upgrade to SwiftyMarkdown 1.2.4.
 
 * 1.4.1 *20 November 2021*
     * Disable selection of thumbnail tags under macOS 12 Monterey to avoid clash with system-added tags.
@@ -90,6 +93,6 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2021, Tony Smith.
+Primary app code and UI design &copy; 2022, Tony Smith.
 
-Code portions &copy; 2021 Simon Fairbairn. Code portions &copy;2021 Behrang Noruzi Niya.
+Code portions &copy; 2022 Simon Fairbairn. Code portions &copy;2021 Behrang Noruzi Niya.
