@@ -1,25 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "SwiftyMarkdown",
-        "repositoryURL": "https://github.com/smittytone/SwiftyMarkdown.git",
-        "state": {
-          "branch": "master",
-          "revision": "2bbf1213a6f32b9860f6c034a0e99c1e86d18aed",
-          "version": null
-        }
-      },
-      {
-        "package": "Yaml",
-        "repositoryURL": "https://github.com/smittytone/YamlSwift.git",
-        "state": {
-          "branch": "master",
-          "revision": "43292bdcbf3058802954cdd2fcb231b64cf6d139",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "swiftymarkdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smittytone/SwiftyMarkdown.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "dde451ab4ed9b77b328e21baa471fdfa0cf61369"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "yamlswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smittytone/YamlSwift.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "43292bdcbf3058802954cdd2fcb231b64cf6d139"
+      }
+    }
+  ],
+  "version" : 2
 }
