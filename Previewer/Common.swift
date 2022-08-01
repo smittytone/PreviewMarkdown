@@ -123,6 +123,7 @@ class Common: NSObject {
         var processed: String = processCodeTags(markdownString)
         processed = convertSpaces(processed)
         processed = processSymbols(processed)
+        processed = processCheckboxes(processed)
         
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
@@ -207,8 +208,8 @@ class Common: NSObject {
         // Find and and replace any HTML symbol markup
         // Processed here because SwiftyMarkdown doesn't handle this markup
 
-        let codes = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
-        let symbols = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
+        let codes: [String] = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
+        let symbols: [String] = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
 
         // Look for HTML symbol code '&...;' substrings, eg. '&sup2;'
         let pattern = #"&[a-zA-Z]+[1-9]*;"#
@@ -231,6 +232,35 @@ class Common: NSObject {
             range = result.range(of: pattern, options: .regularExpression)
         }
 
+        return result
+    }
+    
+    
+    func processCheckboxes(_ base: String) -> String {
+        
+        // FROM 1.4.2
+        // Hack to present checkboxes a la GitHub
+        
+        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
+        let symbols: [String] = ["❎", "✅"]
+
+        // Look for HTML symbol code '&...;' substrings, eg. '&sup2;'
+        var i = 0
+        var result = base
+        for pattern in patterns {
+            var range = result.range(of: pattern, options: .regularExpression)
+    
+            while range != nil {
+                // Swap out the HTML symbol code for the actual symbol
+                result = result.replacingCharacters(in: range!, with: symbols[i])
+
+                // Get the next occurence of the pattern ready for the 'while...' check
+                range = result.range(of: pattern, options: .regularExpression)
+            }
+            
+            i += 1
+        }
+        
         return result
     }
 

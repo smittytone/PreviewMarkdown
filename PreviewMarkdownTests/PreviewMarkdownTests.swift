@@ -17,6 +17,7 @@ class PreviewMarkdownTests: XCTestCase {
 
     let appDelegate = NSApplication.shared.delegate as! AppDelegate
     let pvc: PreviewViewController = PreviewViewController()
+    let cmn: Common = Common(false)
 
 
     override func tearDownWithError() throws {
@@ -28,15 +29,15 @@ class PreviewMarkdownTests: XCTestCase {
 
         var markdownString = "**&trade; &plusmn; &nbsp;"
         var expectedString = "**™ ±  "
-        XCTAssert(processSymbols(markdownString) == expectedString)
+        XCTAssert(cmn.processSymbols(markdownString) == expectedString)
 
         markdownString = "&reg; &copy;"
         expectedString = "® ©"
-        XCTAssert(processSymbols(markdownString) == expectedString)
+        XCTAssert(cmn.processSymbols(markdownString) == expectedString)
 
         markdownString = "&sup2; &gt; &trad."
         expectedString = "² > &trad."
-        XCTAssert(processSymbols(markdownString) == expectedString)
+        XCTAssert(cmn.processSymbols(markdownString) == expectedString)
     }
 
 
@@ -59,7 +60,7 @@ class PreviewMarkdownTests: XCTestCase {
             """
 
         //print(processCodeTags(markdownString))
-        XCTAssert(processCodeTags(markdownString) == expectedString)
+        XCTAssert(cmn.processCodeTags(markdownString) == expectedString)
 
     }
 
@@ -85,12 +86,29 @@ class PreviewMarkdownTests: XCTestCase {
             """
 
         //print(convertSpaces(markdownString))
-        XCTAssert(convertSpaces(markdownString) == expectedString)
+        XCTAssert(cmn.convertSpaces(markdownString) == expectedString)
 
         markdownString = "    11. Something"
         expectedString = "\t11. Something"
-        XCTAssert(convertSpaces(markdownString) == expectedString)
+        XCTAssert(cmn.convertSpaces(markdownString) == expectedString)
     }
 
-
+    
+    func testProcessCheckboxes() throws {
+        
+        var markdownString = "[p]"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "[p]")
+        
+        markdownString = "[X]"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "✅")
+        
+        markdownString = "[x]"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "✅")
+        
+        markdownString = "[]"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "❎")
+        
+        markdownString = "[ ]"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "❎")
+    }
 }
