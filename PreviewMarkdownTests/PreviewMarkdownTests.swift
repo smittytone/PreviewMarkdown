@@ -115,4 +115,80 @@ class PreviewMarkdownTests: XCTestCase {
         markdownString = "[ ]"
         XCTAssert(cmn.processCheckboxes(markdownString) == "❎")
     }
+    
+    
+    func testGetFrontMatter() throws {
+        
+        var markdownString = """
+            ---
+            title: ASCII
+            description: A macOS tool to help you design glyphs for 8x8 LED matrix displays
+            slug: ascii
+            logo: true
+            preview: images/ascii/preview.png
+            ---
+            # Next
+            """
+
+        var expectedString = """
+            title: ASCII
+            description: A macOS tool to help you design glyphs for 8x8 LED matrix displays
+            slug: ascii
+            logo: true
+            preview: images/ascii/preview.png
+
+            """
+        XCTAssert(cmn.getFrontMatter(markdownString, #"^(-)+"#) == expectedString)
+        
+        markdownString = """
+            ------------
+            title: ASCII
+            description: A macOS tool to help you design glyphs for 8x8 LED matrix displays
+            slug: ascii
+            logo: true
+            preview: images/ascii/preview.png
+            ------------
+            # Next
+            """
+        
+        XCTAssert(cmn.getFrontMatter(markdownString, #"^(-)+"#) == expectedString)
+        
+        markdownString = """
+            +++
+            title: ASCII
+            description: A macOS tool to help you design glyphs for 8x8 LED matrix displays
+            slug: ascii
+            logo: true
+            preview: images/ascii/preview.png
+            +++
+            # Next
+            """
+        
+        XCTAssert(cmn.getFrontMatter(markdownString, #"^(\+)+"#) == expectedString)
+        
+        markdownString = """
+            
+            
+            
+            
+            ------------
+            title: ASCII
+            description: A macOS tool to help you design glyphs for 8x8 LED matrix displays
+            slug: ascii
+            logo: true
+            preview: images/ascii/preview.png
+            ------------
+            # Next
+            """
+        
+        XCTAssert(cmn.getFrontMatter(markdownString, #"^(-)+"#) == expectedString)
+        
+        markdownString = """
+            # Next
+            """
+        
+        expectedString = ""
+        
+        XCTAssert(cmn.getFrontMatter(markdownString, #"^(-)+"#) == expectedString)
+    }
 }
