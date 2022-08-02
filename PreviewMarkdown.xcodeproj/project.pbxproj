@@ -18,6 +18,9 @@
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
 		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
+		3B33BEEC2898FDA20038AE9D /* NSColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtension.swift */; };
+		3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEED2898FDF90038AE9D /* Yaml */; };
+		3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */; };
 		3B40FE962694400500A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE952694400500A0C09F /* SwiftyMarkdown */; };
 		3B40FE982694400B00A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE972694400B00A0C09F /* SwiftyMarkdown */; };
 		3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
@@ -126,6 +129,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */,
+				3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +269,8 @@
 			);
 			name = PreviewMarkdownTests;
 			packageProductDependencies = (
+				3B33BEED2898FDF90038AE9D /* Yaml */,
+				3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */,
 			);
 			productName = PreviewMarkdownTests;
 			productReference = 3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */;
@@ -426,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B33BEEC2898FDA20038AE9D /* NSColorExtension.swift in Sources */,
 				3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */,
 				3B71BD48267F9E0E005F7FFC /* Secrets.swift in Sources */,
 				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
@@ -913,6 +921,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B218E102637F5C30024446B /* XCRemoteSwiftPackageReference "YamlSwift" */;
 			productName = Yaml;
+		};
+		3B33BEED2898FDF90038AE9D /* Yaml */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B218E102637F5C30024446B /* XCRemoteSwiftPackageReference "YamlSwift" */;
+			productName = Yaml;
+		};
+		3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
 		};
 		3B40FE952694400500A0C09F /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;

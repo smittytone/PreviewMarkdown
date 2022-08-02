@@ -61,7 +61,6 @@ class PreviewMarkdownTests: XCTestCase {
 
         //print(processCodeTags(markdownString))
         XCTAssert(cmn.processCodeTags(markdownString) == expectedString)
-
     }
 
 
@@ -96,9 +95,14 @@ class PreviewMarkdownTests: XCTestCase {
     
     func testProcessCheckboxes() throws {
         
+        // Negative cases
         var markdownString = "[p]"
         XCTAssert(cmn.processCheckboxes(markdownString) == "[p]")
         
+        markdownString = "[x]()"
+        XCTAssert(cmn.processCheckboxes(markdownString) == "[x]()")
+        
+        // Positive cases
         markdownString = "[X]"
         XCTAssert(cmn.processCheckboxes(markdownString) == "✅")
         
