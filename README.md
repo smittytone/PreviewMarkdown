@@ -38,7 +38,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
-* 1.4.2 *Unreleased*
+* 1.4.2 *7 August 2022*
     * Upgrade to SwiftyMarkdown 1.2.4.
     * Support checkboxes (`[x]`, `[ ]`).
 * 1.4.1 *20 November 2021*
