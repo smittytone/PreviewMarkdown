@@ -76,4 +76,7 @@ struct BUFFOON_CONSTANTS {
 
     // FROM 1.4.1
     static let THUMBNAIL_LINE_COUNT         = 40
+    
+    // FROM 1.4.3
+    static let APP_CODE_PREVIEWER           = "com.bps.PreviewMarkdown.Previewer"
 }
