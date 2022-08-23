@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.4.2 #
+# PreviewMarkdown 1.4.3 #
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -38,6 +38,8 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
+* 1.4.3 *Unreleased*
+    * Initial support for non-utf8 source code file encodings.
 * 1.4.2 *7 August 2022*
     * Upgrade to SwiftyMarkdown 1.2.4.
     * Support checkboxes (`[x]`, `[ ]`).
