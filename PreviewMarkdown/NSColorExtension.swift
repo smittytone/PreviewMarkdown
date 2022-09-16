@@ -1,6 +1,6 @@
 /*
  *  NSColorExtension.swift
- *  PreviewMarkdown
+ *  PreviewApps
  *
  *  Created by Tony Smith on 18/06/2021.
  *  Copyright © 2022 Tony Smith. All rights reserved.
@@ -13,6 +13,9 @@ import Cocoa
 
 extension NSColor {
 
+    /**
+     Convert a colour's internal representation into an RGB+A hex string.
+     */
     var hexString: String {
         
         guard let rgbColour = usingColorSpace(.sRGB) else {
@@ -29,7 +32,15 @@ extension NSColor {
     }
     
     
-    class func hexToColour(_ hex: String) -> NSColor {
+    /**
+     Generate a new NSColor from an RGB+A hex string..
+
+     - Parameters:
+        - hex: The RGB+A hex string, eg.`AABBCCFF`.
+
+     - Returns: An NSColor instance.
+     */
+    static func hexToColour(_ hex: String) -> NSColor {
         
         if hex.count != 8 {
             return NSColor.red

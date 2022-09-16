@@ -17,7 +17,7 @@ import UniformTypeIdentifiers
 
 extension AppDelegate {
 
-    // MARK:- Process Handling Functions
+    // MARK: - Process Handling Functions
 
     /**
      Generic macOS process creation and run function.
@@ -26,10 +26,10 @@ extension AppDelegate {
      the sheet is not displayed next time the app is run (unless the version changes)
 
      - Parameters:
-        - app: The location of the app.
-        - with: Array of arguments to pass to the app
+        - app:  The location of the app.
+        - with: Array of arguments to pass to the app.
 
-     - Returns: `true` if the operation was successful, otherwise `false`
+     - Returns: `true` if the operation was successful, otherwise `false`.
      */
     internal func runProcess(app path: String, with args: [String]) -> Bool {
 
@@ -79,7 +79,7 @@ extension AppDelegate {
      Present an error message specific to sending feedback.
 
      This is called from multiple locations: if the initial request can't be created,
-     there was a send failure, or a server error
+     there was a send failure, or a server error.
      */
     internal func sendFeedbackError() {
 
@@ -98,7 +98,7 @@ extension AppDelegate {
         - head:    The alert's title.
         - message: The alert's message.
 
-     - Returns: The NSAlert
+     - Returns:     The NSAlert.
      */
     internal func showAlert(_ head: String, _ message: String) -> NSAlert {
 
@@ -113,7 +113,7 @@ extension AppDelegate {
     /**
      Build a basic 'major.manor' version string for prefs usage.
 
-     - Returns: The version string
+     - Returns: The version string.
      */
     internal func getVersion() -> String {
 
@@ -126,7 +126,7 @@ extension AppDelegate {
     /**
      Build a date string string for feedback usage.
 
-     - Returns: The date string
+     - Returns: The date string.
      */
     internal func getDateForFeedback() -> String {
 
@@ -142,7 +142,7 @@ extension AppDelegate {
     /**
      Build a user-agent string string for feedback usage.
 
-     - Returns: The user-agent string
+     - Returns: The user-agent string.
      */
     internal func getUserAgentForFeedback() -> String {
 
@@ -153,19 +153,19 @@ extension AppDelegate {
         let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
         let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
-        return "\(app)/\(version)-\(build) (Mac macOS \(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
+        return "\(app)/\(version)-\(build) (macOS/\(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
     }
-    
-    
+
+
     /**
      Read back the host system's registered UTI for the specified file.
      
      This is not PII. It used solely for debugging purposes
      
      - Parameters:
-        - filename: The file we'll use to get the UTI
+        - filename: The file we'll use to get the UTI.
      
-     - Returns: The file's UTI
+     - Returns: The file's UTI.
      */
     internal func getLocalFileUTI(_ filename: String) -> String {
         
@@ -196,7 +196,7 @@ extension AppDelegate {
         
         return localUTI
     }
-
+    
     
     // MARK: - URLSession Delegate Functions
 
@@ -229,14 +229,12 @@ extension AppDelegate {
     }
 
 
-    // MARK: - WKWebViewNavigation Delegate Functions
+    // MARK: - WKWebNavigation Delegate Functions
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
 
-        /*
-         * Asynchronously show the sheet once the HTML has loaded
-         * (triggered by delegate method)
-         */
+        // Asynchronously show the sheet once the HTML has loaded
+        // (triggered by delegate method)
 
         if let nav = self.whatsNewNav {
             if nav == navigation {
@@ -262,23 +260,14 @@ extension AppDelegate {
     internal func asyncGetFonts() {
 
         var cf: [PMFont] = []
-        var bf: [PMFont] = []
-
-        let mono: UInt = NSFontTraitMask.fixedPitchFontMask.rawValue
-        let bold: UInt = NSFontTraitMask.boldFontMask.rawValue
-        let ital: UInt = NSFontTraitMask.italicFontMask.rawValue
-        let symb: UInt = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
-
+        let monoTrait: UInt = NSFontTraitMask.fixedPitchFontMask.rawValue
         let fm: NSFontManager = NSFontManager.shared
-
         let families: [String] = fm.availableFontFamilies
         for family in families {
             // Remove known unwanted fonts
-            if family.hasPrefix(".") || family.hasPrefix("Apple Braille") || family == "Apple Color Emoji" {
+            if family.hasPrefix(".") || family == "Apple Braille" || family == "Apple Color Emoji" {
                 continue
             }
-
-            var isCodeFont: Bool = true
 
             // For each family, examine its fonts for suitable ones
             if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
@@ -288,23 +277,13 @@ extension AppDelegate {
                 familyRecord.displayName = family
 
                 for font: [Any] in fonts {
-                    let psname: String = font[0] as! String
-                    let traits: UInt = font[3] as! UInt
-                    var doUseFont: Bool = false
-
-                    if mono & traits != 0 {
-                        doUseFont = true
-                    } else if traits & bold == 0 && traits & ital == 0 && traits & symb == 0 {
-                        isCodeFont = false
-                        doUseFont = true
-                    }
-
-                    if doUseFont {
+                    let fontTraits: UInt = font[3] as! UInt
+                    if monoTrait & fontTraits != 0 {
                         // The font is good to use, so add it to the list
                         var fontRecord: PMFont = PMFont.init()
-                        fontRecord.postScriptName = psname
+                        fontRecord.postScriptName = font[0] as! String
                         fontRecord.styleName = font[1] as! String
-                        fontRecord.traits = traits
+                        fontRecord.traits = fontTraits
 
                         if familyRecord.styles == nil {
                             familyRecord.styles = []
@@ -315,97 +294,77 @@ extension AppDelegate {
                 }
 
                 if familyRecord.styles != nil && familyRecord.styles!.count > 0 {
-                    if isCodeFont {
-                        cf.append(familyRecord)
-                    } else {
-                        bf.append(familyRecord)
-                    }
+                    cf.append(familyRecord)
                 }
             }
         }
 
         DispatchQueue.main.async {
-            self.bodyFonts = bf
             self.codeFonts = cf
         }
     }
-
-
+    
+    
     /**
      Build and enable the font style popup.
 
      - Parameters:
-        - isBody:    Whether we're handling body text font styles (`true`) or code font styles (`false`). Default: `true`.
-        - styleName: The name of the selected style. Default: `nil`.
+        - styleName: The name of currently selected style, or nil to select the first one.
      */
-    internal func setStylePopup(_ isBody: Bool = true, _ styleName: String? = nil) {
+    internal func setStylePopup(_ styleName: String? = nil) {
+        
+        if let selectedFamily: String = self.codeFontPopup.titleOfSelectedItem {
+            self.codeStylePopup.removeAllItems()
+            for family: PMFont in self.codeFonts {
+                if selectedFamily == family.displayName {
+                    if let styles: [PMFont] = family.styles {
+                        self.codeStylePopup.isEnabled = true
+                        for style: PMFont in styles {
+                            self.codeStylePopup.addItem(withTitle: style.styleName)
+                        }
 
-        let selectedFamily: String = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
-        let targetPopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
-        targetPopup.removeAllItems()
-
-        for family: PMFont in familyList {
-            if selectedFamily == family.displayName {
-                if let styles: [PMFont] = family.styles {
-                    targetPopup.isEnabled = true
-                    for style: PMFont in styles {
-                        targetPopup.addItem(withTitle: style.styleName)
-                    }
-
-                    if styleName != nil {
-                        targetPopup.selectItem(withTitle: styleName!)
+                        if styleName != nil {
+                            self.codeStylePopup.selectItem(withTitle: styleName!)
+                        }
                     }
                 }
             }
         }
     }
 
-
+    
     /**
      Select the font popup using the stored PostScript name
      of the user's chosen font.
-
+     
      - Parameters:
         - postScriptName: The PostScript name of the font.
-        - isBody:         Whether we're handling body text font styles (`true`) or code font styles (`false`).
      */
-    internal func selectFontByPostScriptName(_ postScriptName: String, _ isBody: Bool) {
+    internal func selectFontByPostScriptName(_ postScriptName: String) {
 
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
-        let targetPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
-
-        for family: PMFont in familyList {
+        for family: PMFont in self.codeFonts {
             if let styles: [PMFont] = family.styles {
                 for style: PMFont in styles {
                     if style.postScriptName == postScriptName {
-                        targetPopup.selectItem(withTitle: family.displayName)
-                        setStylePopup(isBody, style.styleName)
+                        self.codeFontPopup.selectItem(withTitle: family.displayName)
+                        setStylePopup(style.styleName)
                     }
                 }
             }
         }
     }
 
-
+    
     /**
      Get the PostScript name from the selected family and style.
-
-     - Parameters:
-        - isBody: Whether we're handling body text font styles (`true`) or code font styles (`false`).
-
+     
      - Returns: The PostScript name as a string, or nil.
      */
-    internal func getPostScriptName(_ isBody: Bool) -> String? {
+    internal func getPostScriptName() -> String? {
 
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
-        let fontPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
-        let stylePopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
-
-        if let selectedFont: String = fontPopup.titleOfSelectedItem {
-            let selectedStyle: Int = stylePopup.indexOfSelectedItem
-
-            for family: PMFont in familyList {
+        if let selectedFont: String = self.codeFontPopup.titleOfSelectedItem {
+            let selectedStyle: Int = codeStylePopup.indexOfSelectedItem
+            for family: PMFont in self.codeFonts {
                 if family.displayName == selectedFont {
                     if let styles: [PMFont] = family.styles {
                         let font: PMFont = styles[selectedStyle]
@@ -417,7 +376,4 @@ extension AppDelegate {
 
         return nil
     }
-
-
-
 }
