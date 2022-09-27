@@ -89,7 +89,7 @@ final class AppDelegate: NSObject,
 
     // FROM 1.3.1
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    private var feedbackPath: String = MNU_SECRETS.ADDRESS.A
+    private var feedbackPath: String = MNU_SECRETS.ADDRESS.B
     
     // FROM 1.4.0
     private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
@@ -123,7 +123,7 @@ final class AppDelegate: NSObject,
         
         // FROM 1.2.0
         // Get the local UTI for markdown files
-        self.localMarkdownUTI = getLocalFileUTI(getLocalFileUTI(BUFFOON_CONSTANTS.SAMPLE_UTI_FILE))
+        self.localMarkdownUTI = getLocalFileUTI(BUFFOON_CONSTANTS.SAMPLE_UTI_FILE)
 
         // FROM 1.0.3
         // Add the version number to the panel
@@ -276,7 +276,7 @@ final class AppDelegate: NSObject,
         // Send the string etc.
         // First get the data we need to build the user agent string
         let userAgent: String = getUserAgentForFeedback()
-        let endPoint: String = MNU_SECRETS.ADDRESS.B
+        let endPoint: String = MNU_SECRETS.ADDRESS.A
         
         // Get the date as a string
         let dateString: String = getDateForFeedback()
