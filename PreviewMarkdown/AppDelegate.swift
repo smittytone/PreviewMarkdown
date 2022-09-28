@@ -203,7 +203,7 @@ final class AppDelegate: NSObject,
             path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
         } else if item == self.creditMenuOthersPreviewJson {
             // FROM 1.4.4
-            path = "https://apps.apple.com/us/app/previewjson/id6443584377"
+            path = "https://apps.apple.com/us/app/previewjson/id6443584377?ls=1"
         }
         
         // Open the selected website
