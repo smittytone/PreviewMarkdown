@@ -34,6 +34,8 @@ final class AppDelegate: NSObject,
     @IBOutlet var creditMenuOthersPreviewYaml: NSMenuItem!
     // FROM 1.4.0
     @IBOutlet var creditMenuOthersPreviewCode: NSMenuItem!
+    // FROM 1.4.4
+    @IBOutlet var creditMenuOthersPreviewJson: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -197,7 +199,11 @@ final class AppDelegate: NSObject,
             // FROM 1.3.1
             path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
         } else if item == self.creditMenuOthersPreviewCode {
+            // FROM 1.4.0
             path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
+        } else if item == self.creditMenuOthersPreviewJson {
+            // FROM 1.4.4
+            path = "https://apps.apple.com/us/app/previewjson/id6443584377"
         }
         
         // Open the selected website
