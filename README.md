@@ -38,9 +38,9 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes ##
 
-* 1.4.4 *Unreleased*
+* 1.4.4 *2 October 2022*
     * Fix UTI generation.
-    * Add link to PreviewJson.
+    * Add link to [PreviewJson](https://smittytone.net/previewjson/index.html).
 * 1.4.3 *26 August 2022*
     * Initial support for non-utf8 source code file encodings.
 * 1.4.2 *7 August 2022*
