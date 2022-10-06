@@ -46,6 +46,8 @@ struct BUFFOON_CONSTANTS {
     static let PREVIEW_FONT_SIZE            = 16.0
     static let THUMBNAIL_FONT_SIZE: Float   = 18.0
     static let SPACES_FOR_A_TAB             = 4
+    // FROM 1.5.0
+    static let BASE_LINE_SPACING            = 1.0
 
     // FROM 1.2.0
     static let CODE_COLOUR_INDEX            = 0
