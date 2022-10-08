@@ -30,22 +30,22 @@ class Common: NSObject {
 
     // FROM 1.3.0
     // Front Matter string attributes...
-    private var keyAtts: [NSAttributedString.Key:Any] = [:]
-    private var valAtts: [NSAttributedString.Key:Any] = [:]
+    private var yamlKeyAtts: [NSAttributedString.Key:Any] = [:]
+    private var yamlValueAtts: [NSAttributedString.Key:Any] = [:]
     
     // Front Matter rendering artefacts...
     private var hr: NSAttributedString      = NSAttributedString.init(string: "")
     private var newLine: NSAttributedString = NSAttributedString.init(string: "")
     
     // FROM 1.4.0
-    private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-    private var codeFontName: String  = BUFFOON_CONSTANTS.CODE_FONT_NAME
-    private var bodyFontName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    private var codeColourHex: String       = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    private var headColourHex: String       = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    private var linkColourHex: String       = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var codeFontName: String        = BUFFOON_CONSTANTS.CODE_FONT_NAME
+    private var bodyFontName: String        = BUFFOON_CONSTANTS.BODY_FONT_NAME
     
     // FROM 1.5.0
-    private var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
     // MARK:- Lifecycle Functions
     
@@ -91,12 +91,12 @@ class Common: NSObject {
             font = NSFont.systemFont(ofSize: self.fontSize)
         }
         
-        self.keyAtts = [
+        self.yamlKeyAtts = [
             .foregroundColor: NSColor.hexToColour(self.codeColourHex),
             .font: font
         ]
         
-        self.valAtts = [
+        self.yamlValueAtts = [
             .foregroundColor: (isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.labelColor),
             .font: font,
         ]
@@ -106,7 +106,7 @@ class Common: NSObject {
                                                   .strikethroughColor: (self.doShowLightBackground ? NSColor.black : NSColor.white)])
         
         self.newLine = NSAttributedString.init(string: "\n",
-                                               attributes: self.valAtts)
+                                               attributes: self.yamlValueAtts)
     }
     
     
@@ -155,7 +155,7 @@ class Common: NSObject {
                     
                     // Assemble the front matter string
                     let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                                   attributes: self.valAtts)
+                                                                                                   attributes: self.yamlValueAtts)
                     
                     // Initial line
                     renderedString.append(self.hr)
@@ -185,14 +185,14 @@ class Common: NSObject {
 
                     // Assemble the error string
                     let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString,
-                                                                                                attributes: self.keyAtts)
+                                                                                                attributes: self.yamlKeyAtts)
 
                     // Should we include the raw text?
                     // At least the user can see the data this way
                     #if DEBUG
                         errorString.append(self.hr)
                         errorString.append(NSMutableAttributedString.init(string: frontMatter,
-                                                                          attributes: self.valAtts))
+                                                                          attributes: self.yamlValueAtts))
                     #endif
                     
                     errorString.append(self.hr)
@@ -206,7 +206,7 @@ class Common: NSObject {
         // Guard against non-trapped errors
         if output.length == 0 {
             return NSAttributedString.init(string: "No valid Markdown to render.",
-                                           attributes: self.keyAtts)
+                                           attributes: self.yamlKeyAtts)
         }
         
         // Return the rendered NSAttributedString to Previewer or Thumbnailer
@@ -433,7 +433,7 @@ class Common: NSObject {
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
         
         let returnString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                     attributes: keyAtts)
+                                                                                     attributes: yamlKeyAtts)
         
         switch (part) {
         case .array:
@@ -537,14 +537,14 @@ class Common: NSObject {
                     returnString.append(getIndentedString(keyOrValue, indent))
                 }
 
-                returnString.setAttributes((isKey ? self.keyAtts : self.valAtts),
+                returnString.setAttributes((isKey ? self.yamlKeyAtts : self.yamlValueAtts),
                                            range: NSMakeRange(0, returnString.length))
-                returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: self.valAtts) : self.newLine)
+                returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: self.yamlValueAtts) : self.newLine)
                 return returnString
             }
         case .null:
             returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
-            returnString.setAttributes((isKey ? self.keyAtts : self.valAtts),
+            returnString.setAttributes((isKey ? self.yamlKeyAtts : self.yamlValueAtts),
                                        range: NSMakeRange(0, returnString.length))
             returnString.append(isKey ? NSAttributedString.init(string: " ") : self.newLine)
             return returnString
@@ -561,7 +561,7 @@ class Common: NSObject {
                 returnString.append(getIndentedString("UNKNOWN-TYPE\n", indent))
             }
             
-            returnString.setAttributes(self.valAtts,
+            returnString.setAttributes(self.yamlValueAtts,
                                        range: NSMakeRange(0, returnString.length))
             return returnString
         }

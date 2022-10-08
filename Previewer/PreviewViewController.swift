@@ -24,6 +24,7 @@ class PreviewViewController: NSViewController,
     // MARK:- Private Properties
     
     override var nibName: NSNib.Name? {
+        
         return NSNib.Name("PreviewViewController")
     }
 
@@ -35,7 +36,7 @@ class PreviewViewController: NSViewController,
         // Hide the error message field
         self.errorReportField.stringValue = ""
         self.errorReportField.isHidden = true
-        self.renderTextScrollView.isHidden = false
+        //self.renderTextScrollView.isHidden = false
         
         // FROM 1.1.0
         // Get an error message ready for use
