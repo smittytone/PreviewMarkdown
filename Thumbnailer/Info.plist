@@ -38,6 +38,7 @@
 				<string>com.foldingtext.FoldingText.document</string>
 				<string>pro.writer.markdown</string>
 				<string>net.ia.markdown</string>
+				<string>com.nutstore.down</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>32</integer>
