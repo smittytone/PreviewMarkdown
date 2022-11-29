@@ -144,6 +144,13 @@ final class AppDelegate: NSObject,
         let theApp = NSApplication.shared
         theApp.helpMenu = dummyHelpMenu
         
+        // FROM 1.5.0
+        // Watch for macOS UI mode changes
+        DistributedNotificationCenter.default.addObserver(self,
+                                                          selector: #selector(interfaceModeChanged),
+                                                          name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
+                                                          object: nil)
+        
         // FROM 1.0.2
         // Centre window and display
         self.window.center()
@@ -364,7 +371,14 @@ final class AppDelegate: NSObject,
             // FROM 1.5.0
             self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-line-spacing"))
         }
-
+        
+        // FROM 1.5.0
+        // Check for the OS mode
+        let appearance: NSAppearance = NSApp.effectiveAppearance
+        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
+            self.useLightCheckbox.isHidden = (appearName == .aqua)
+        }
+        
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
         let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: self.previewFontSize) ?? 3
@@ -407,8 +421,7 @@ final class AppDelegate: NSObject,
         
         // FROM 1.4.1
         // Hide tag selection on Monterey
-        self.doShowTagCheckbox.isEnabled = !self.isMontereyPlus
-        if (isMontereyPlus) {
+        if (self.isMontereyPlus) {
             // FROM 1.4.2
             // Hide the unneeded options
             self.tagInfoTextField.isHidden = true
@@ -796,6 +809,26 @@ final class AppDelegate: NSObject,
         // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
         let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
         self.isMontereyPlus = (sysVer.majorVersion >= 12)
+    }
+    
+    
+    /**
+     Handler for macOS UI mode change notifications
+     */
+    @objc private func interfaceModeChanged() {
+        
+        if self.preferencesWindow.isVisible {
+            // Prefs window is up, so switch the use light background checkbox
+            // on or off according to whether the current mode is light
+            // NOTE For light mode, this checkbox is irrelevant, so the
+            //      checkbox should be disabled
+            let appearance: NSAppearance = NSApp.effectiveAppearance
+            if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
+                // NOTE Appearance it this point seems to reflect the mode
+                //      we're coming FROM, not what it has changed to
+                self.useLightCheckbox.isHidden = (appearName != .aqua)
+            }
+        }
     }
 
 }
