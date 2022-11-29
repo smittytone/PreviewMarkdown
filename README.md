@@ -1,16 +1,16 @@
-# PreviewMarkdown 1.4.4 #
+# PreviewMarkdown 1.4.5
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
 ![PreviewMarkdown App Store QR code](qr-code.jpg)
 
-## Installation and Usage ##
+## Installation and Usage
 
 Just run the host app once to register the extensions &mdash; you can quit the app as soon as it has launched. We recommend logging out of your Mac and back in again at this point. Now you can preview markdown documents using QuickLook (select an icon and hit Space), and Finder’s preview pane and **Info** panels.
 
 You can disable and re-enable the Previewer and Thumbnailer extensions at any time in **System Preferences > Extensions > Quick Look**.
 
-### Adjusting the Preview ###
+### Adjusting the Preview
 
 You can alter some of the key elements of the preview by using the **Preferences** panel:
 
@@ -24,20 +24,22 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
 
-### YAML Front Matter ###
+### YAML Front Matter
 
 Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
 
-## Source Code ##
+## Source Code
 
 This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
 
-## Acknowledgements ##
+## Acknowledgements
 
 PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
 
-## Release Notes ##
+## Release Notes
 
+* 1.4.5 *Unreleased*
+    * Add UTI `com.nutstore.down`.
 * 1.4.4 *2 October 2022*
     * Fix UTI generation.
     * Add link to [PreviewJson](https://smittytone.net/previewjson/index.html).
