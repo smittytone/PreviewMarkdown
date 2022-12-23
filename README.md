@@ -38,7 +38,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-* 1.4.5 *Unreleased*
+* 1.4.5 *23 December 2022*
     * Add UTI `com.nutstore.down`.
 * 1.4.4 *2 October 2022*
     * Fix UTI generation.
