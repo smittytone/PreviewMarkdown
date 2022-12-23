@@ -85,9 +85,10 @@ extension AppDelegate {
 
         let alert: NSAlert = showAlert("Feedback Could Not Be Sent",
                                        "Unfortunately, your comments could not be send at this time. Please try again later.")
-        alert.beginSheetModal(for: self.reportWindow,
-                              completionHandler: nil)
-
+        alert.beginSheetModal(for: self.reportWindow) { (resp) in
+            // Restore menus
+            self.showPanelGenerators()
+        }
     }
 
 
@@ -95,17 +96,18 @@ extension AppDelegate {
      Generic alert generator.
 
      - Parameters:
-        - head:    The alert's title.
-        - message: The alert's message.
+        - head:        The alert's title.
+        - message:     The alert's message.
+        - addOkButton: Should we add an OK button?
 
      - Returns:     The NSAlert.
      */
-    internal func showAlert(_ head: String, _ message: String) -> NSAlert {
+    internal func showAlert(_ head: String, _ message: String, _ addOkButton: Bool = true) -> NSAlert {
 
         let alert: NSAlert = NSAlert()
         alert.messageText = head
         alert.informativeText = message
-        alert.addButton(withTitle: "OK")
+        if addOkButton { alert.addButton(withTitle: "OK") }
         return alert
     }
 
@@ -196,6 +198,28 @@ extension AppDelegate {
         
         return localUTI
     }
+    
+    
+    /**
+     Disable all panel-opening menu items.
+     */
+    func hidePanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = false
+        self.helpMenuWhatsNew.isEnabled = false
+        self.mainMenuSettings.isEnabled = false
+    }
+    
+    
+    /**
+     Enable all panel-opening menu items.
+     */
+    func showPanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = true
+        self.helpMenuWhatsNew.isEnabled = true
+        self.mainMenuSettings.isEnabled = true
+    }
 
     
     // MARK: - URLSession Delegate Functions
@@ -223,6 +247,7 @@ extension AppDelegate {
                 // Close the feedback window when the modal alert returns
                 let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
                     self.window.endSheet(self.reportWindow)
+                    self.showPanelGenerators()
                 }
             }
         }

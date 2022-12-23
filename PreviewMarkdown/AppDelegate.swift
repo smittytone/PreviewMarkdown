@@ -84,21 +84,17 @@ final class AppDelegate: NSObject,
 
     // FROM 1.1.1
     private var feedbackTask: URLSessionTask? = nil
-
     // FROM 1.2.0 -- stores for preferences
     internal var whatsNewNav: WKNavigation? = nil
     private  var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     private  var doShowLightBackground: Bool = false
     private  var doShowTag: Bool = false
     private  var localMarkdownUTI: String = "NONE"
-    
     // FROM 1.3.0
     private var doShowFrontMatter: Bool = false
-
     // FROM 1.3.1
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
     private var feedbackPath: String = MNU_SECRETS.ADDRESS.B
-    
     // FROM 1.4.0
     private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
     private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
@@ -106,9 +102,10 @@ final class AppDelegate: NSObject,
     private  var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
-    
     // FROM 1.4.1
     private var isMontereyPlus: Bool = false
+    // FROM 1.4.6
+    private var havePrefsChanged: Bool = false
 
     
     // MARK:- Class Lifecycle Functions
@@ -228,6 +225,10 @@ final class AppDelegate: NSObject,
 
         // FROM 1.1.1
         // Display a window in which the user can submit feedback
+        
+        // FROM 1.4.6
+        // Disable menus we don't want used when the panel is open
+        hidePanelGenerators()
 
         // Reset the UI
         self.connectionProgress.stopAnimation(self)
@@ -245,6 +246,10 @@ final class AppDelegate: NSObject,
 
         self.connectionProgress.stopAnimation(self)
         self.window.endSheet(self.reportWindow)
+        
+        // FROM 1.4.6
+        // Restore menus
+        showPanelGenerators()
     }
 
 
@@ -264,14 +269,19 @@ final class AppDelegate: NSObject,
             if self.feedbackTask != nil {
                 // We have a valid URL Session Task, so start it to send
                 self.feedbackTask!.resume()
+                return
             } else {
                 // Report the error
                 sendFeedbackError()
             }
-        } else {
-            // No feedback, so close the sheet
-            self.window.endSheet(self.reportWindow)
         }
+        
+        // No feedback, so close the sheet
+        self.window.endSheet(self.reportWindow)
+        
+        // FROM 1.4.6
+        // Restore menus
+        showPanelGenerators()
         
         // NOTE sheet closes asynchronously unless there was no feedback to send
     }
@@ -343,7 +353,15 @@ final class AppDelegate: NSObject,
         - sender: The source of the action.
      */
     @IBAction private func doShowPreferences(sender: Any) {
-
+        
+        // FROM 1.4.6
+        // Reset changed prefs flag
+        self.havePrefsChanged = false
+        
+        // FROM 1.4.6
+        // Disable menus we don't want used when the panel is open
+        hidePanelGenerators()
+        
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
@@ -430,6 +448,7 @@ final class AppDelegate: NSObject,
 
         let item: NSPopUpButton = sender as! NSPopUpButton
         setStylePopup(item == self.bodyFontPopup)
+        self.havePrefsChanged = true
     }
 
     
@@ -445,6 +464,7 @@ final class AppDelegate: NSObject,
 
         let index: Int = Int(self.fontSizeSlider.floatValue)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        self.havePrefsChanged = true
     }
 
 
@@ -471,6 +491,10 @@ final class AppDelegate: NSObject,
         }
 
         self.window.endSheet(self.preferencesWindow)
+        
+        // FROM 1.4.6
+        // Restore menus
+        showPanelGenerators()
     }
 
 
@@ -558,6 +582,22 @@ final class AppDelegate: NSObject,
 
         // Remove the sheet now we have the data
         self.window.endSheet(self.preferencesWindow)
+        
+        // FROM 1.4.6
+        // Restore menus
+        showPanelGenerators()
+    }
+    
+    
+    /**
+        Generic IBAction for any Prefs control to register it has been used.
+     
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @IBAction private func controlClicked(sender: Any) {
+        
+        self.havePrefsChanged = true
     }
 
     
@@ -589,8 +629,13 @@ final class AppDelegate: NSObject,
             }
         }
       
-        // Configure and show the sheet: first, get the folder path
+        // Configure and show the sheet
         if doShowSheet {
+            // FROM 1.4.6
+            // Disable menus we don't want used when the panel is open
+            hidePanelGenerators()
+            
+            // First, get the folder path
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
 
             // Set WebView properties: limit scrollers and elasticity
@@ -630,6 +675,10 @@ final class AppDelegate: NSObject,
             defaults.setValue(true, forKey: key)
             #endif
         }
+        
+        // FROM 1.4.6
+        // Restore menus
+        showPanelGenerators()
     }
 
 
