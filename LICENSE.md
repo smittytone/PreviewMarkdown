@@ -1,6 +1,6 @@
 # MIT LICENCE
 
-### PreviewMarkdown Copyright &copy; 2022 Tony Smith (@smittytone)
+### PreviewMarkdown Copyright &copy; 2023 Tony Smith (@smittytone)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

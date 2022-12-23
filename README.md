@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.4.5
+# PreviewMarkdown 1.4.6
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -26,7 +26,7 @@ For more information on the background to this app, please see this [blog post](
 
 ### YAML Front Matter
 
-Version 1.3.0 adds optional support for rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
+*PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
 
 ## Source Code
 
@@ -38,6 +38,10 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
+* 1.4.6 *Unreleased*
+    * Add link to [PreviewText](https://smittytone.net/previewtext/index.html).
+    * Better menu handling when panels are visible.
+    * Better app exit management.
 * 1.4.5 *23 December 2022*
     * Add UTI `com.nutstore.down`.
 * 1.4.4 *2 October 2022*
@@ -100,6 +104,6 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2022, Tony Smith.
+Primary app code and UI design &copy; 2023, Tony Smith.
 
 Code portions &copy; 2022 Simon Fairbairn. Code portions &copy;2021 Behrang Noruzi Niya.
