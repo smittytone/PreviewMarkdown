@@ -3,7 +3,7 @@
  *  Code common to Previewer and Thumbnailer
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2022 Tony Smith. All rights reserved.
+ *  Copyright © 2023 Tony Smith. All rights reserved.
  */
 
 

@@ -53,6 +53,6 @@
 		<string>$(PRODUCT_MODULE_NAME).PreviewViewController</string>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2022 Tony Smith. All rights reserved.</string>
+	<string>Copyright © 2023 Tony Smith. All rights reserved.</string>
 </dict>
 </plist>
