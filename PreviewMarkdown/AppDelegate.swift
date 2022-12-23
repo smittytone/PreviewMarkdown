@@ -22,20 +22,26 @@ final class AppDelegate: NSObject,
 
     // MARK:- Class UI Properies
     // Menu Items Tab
-    @IBOutlet var creditMenuPM: NSMenuItem!
-    @IBOutlet var creditMenuDiscount: NSMenuItem!
-    @IBOutlet var creditMenuQLMarkdown: NSMenuItem!
-    @IBOutlet var creditMenuSwiftyMarkdown: NSMenuItem!
-    @IBOutlet var creditMenuAcknowlegdments: NSMenuItem!
-    @IBOutlet var creditAppStoreRating: NSMenuItem!
+    @IBOutlet var helpMenu: NSMenuItem!
+    //@IBOutlet var creditMenuDiscount: NSMenuItem!
+    //@IBOutlet var creditMenuQLMarkdown: NSMenuItem!
+    @IBOutlet var helpMenuSwiftyMarkdown: NSMenuItem!
+    //@IBOutlet var helpMenuAcknowlegdments: NSMenuItem!
+    @IBOutlet var helpMenuAppStoreRating: NSMenuItem!
     // FROM 1.3.0
-    @IBOutlet var creditMenuYamlSwift: NSMenuItem!
+    @IBOutlet var helpMenuYamlSwift: NSMenuItem!
     // FROM 1.3.1
-    @IBOutlet var creditMenuOthersPreviewYaml: NSMenuItem!
+    @IBOutlet var helpMenuOthersPreviewYaml: NSMenuItem!
     // FROM 1.4.0
-    @IBOutlet var creditMenuOthersPreviewCode: NSMenuItem!
+    @IBOutlet var helpMenuOthersPreviewCode: NSMenuItem!
     // FROM 1.4.4
-    @IBOutlet var creditMenuOthersPreviewJson: NSMenuItem!
+    @IBOutlet var helpMenuOthersPreviewJson: NSMenuItem!
+    // FROM 1.4.5
+    @IBOutlet var helpMenuOthersPreviewText: NSMenuItem!
+    @IBOutlet var helpMenuOnlineHelp: NSMenuItem!
+    @IBOutlet var helpMenuReportBug: NSMenuItem!
+    @IBOutlet var helpMenuWhatsNew: NSMenuItem!
+    @IBOutlet var mainMenuSettings: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -179,31 +185,28 @@ final class AppDelegate: NSObject,
         var path: String = BUFFOON_CONSTANTS.URL_MAIN
 
         // FROM 1.1.0 -- bypass unused items
-        if item == self.creditMenuDiscount {
-            path += "#acknowledgements"
-        } else if item == self.creditMenuQLMarkdown {
-            path += "#acknowledgements"
-        } else if item == self.creditMenuSwiftyMarkdown {
+        if item == self.helpMenuSwiftyMarkdown {
             path = "https://github.com/SimonFairbairn/SwiftyMarkdown"
-        } else if item == self.creditMenuAcknowlegdments {
-            path += "#acknowledgements"
-        } else if item == self.creditAppStoreRating {
+        } else if item == self.helpMenuAppStoreRating {
             path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
-        } else if item == self.creditMenuYamlSwift {
+        } else if item == self.helpMenuYamlSwift {
             // FROM 1.3.0
             path = "https://github.com/behrang/YamlSwift"
-        } else if item == self.creditMenuPM {
+        } else if item == self.helpMenuOnlineHelp {
             // FROM 1.3.0
             path += "#how-to-use-previewmarkdown"
-        } else if item == self.creditMenuOthersPreviewYaml {
+        } else if item == self.helpMenuOthersPreviewYaml {
             // FROM 1.3.1
-            path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
-        } else if item == self.creditMenuOthersPreviewCode {
+            path = BUFFOON_CONSTANTS.APP_URLS.PY
+        } else if item == self.helpMenuOthersPreviewCode {
             // FROM 1.4.0
-            path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
-        } else if item == self.creditMenuOthersPreviewJson {
+            path = BUFFOON_CONSTANTS.APP_URLS.PC
+        } else if item == self.helpMenuOthersPreviewJson {
             // FROM 1.4.4
-            path = "https://apps.apple.com/us/app/previewjson/id6443584377?ls=1"
+            path = BUFFOON_CONSTANTS.APP_URLS.PJ
+        } else if item == self.helpMenuOthersPreviewText {
+            // FROM 1.4.6
+            path = BUFFOON_CONSTANTS.APP_URLS.PT
         }
         
         // Open the selected website
