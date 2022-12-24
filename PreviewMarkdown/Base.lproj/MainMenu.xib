@@ -87,7 +87,7 @@
                             <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
                             <menuItem title="Quit PreviewMarkdown" keyEquivalent="q" id="4sb-4s-VLi">
                                 <connections>
-                                    <action selector="terminate:" target="-1" id="Te7-pn-YzF"/>
+                                    <action selector="doClose:" target="Voe-Tx-rLC" id="r4e-pI-oPR"/>
                                 </connections>
                             </menuItem>
                         </items>

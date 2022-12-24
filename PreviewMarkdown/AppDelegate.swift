@@ -170,6 +170,54 @@ final class AppDelegate: NSObject,
         // Reset the QL thumbnail cache... just in case
         _ = runProcess(app: "/usr/bin/qlmanage", with: ["-r", "cache"])
         
+        // FROM 1.4.6
+        // Check for open panels
+        if self.preferencesWindow.isVisible {
+            if self.havePrefsChanged {
+                let alert: NSAlert = showAlert("You have unsaved settings",
+                                               "Do you wish to cancel and save them, or quit the app anyway?",
+                                               false)
+                alert.addButton(withTitle: "Quit")
+                alert.addButton(withTitle: "Cancel")
+                alert.beginSheetModal(for: self.preferencesWindow) { (response: NSApplication.ModalResponse) in
+                    if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                        // The user clicked 'Quit'
+                        self.preferencesWindow.close()
+                        self.window.close()
+                    }
+                }
+                
+                return
+            }
+            
+            self.preferencesWindow.close()
+        }
+        
+        if self.whatsNewWindow.isVisible {
+            self.whatsNewWindow.close()
+        }
+        
+        if self.reportWindow.isVisible {
+            if self.feedbackText.stringValue.count > 0 {
+                let alert: NSAlert = showAlert("You have unsent feedback",
+                                               "Do you wish to cancel and send it, or quit the app anyway?",
+                                               false)
+                alert.addButton(withTitle: "Quit")
+                alert.addButton(withTitle: "Cancel")
+                alert.beginSheetModal(for: self.reportWindow) { (response: NSApplication.ModalResponse) in
+                    if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+                        // The user clicked 'Quit'
+                        self.reportWindow.close()
+                        self.window.close()
+                    }
+                }
+                
+                return
+            }
+            
+            self.reportWindow.close()
+        }
+
         // Close the window... which will trigger an app closure
         self.window.close()
     }
