@@ -330,7 +330,7 @@ DQ
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="openSysPrefsWithSender:" target="Voe-Tx-rLC" id="7QC-ZS-7VH"/>
+                            <action selector="doOpenSysPrefsWithSender:" target="Voe-Tx-rLC" id="vPO-AY-5t7"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3wi-zv-iYg">

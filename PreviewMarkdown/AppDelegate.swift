@@ -259,7 +259,7 @@ final class AppDelegate: NSObject,
     }
 
 
-    @IBAction private func openSysPrefs(sender: Any) {
+    @IBAction private func doOpenSysPrefs(sender: Any) {
 
         // FROM 1.1.0
         // Open the System Preferences app at the Extensions pane
@@ -334,61 +334,6 @@ final class AppDelegate: NSObject,
         // NOTE sheet closes asynchronously unless there was no feedback to send
     }
     
-    
-    private func sendFeedback(_ feedback: String) -> URLSessionTask? {
-        
-        // FROM 1.2.0
-        // Break out into separate function
-        
-        // Send the string etc.
-        // First get the data we need to build the user agent string
-        let userAgent: String = getUserAgentForFeedback()
-        let endPoint: String = MNU_SECRETS.ADDRESS.A
-        
-        // Get the date as a string
-        let dateString: String = getDateForFeedback()
-
-        // Assemble the message string
-        let dataString: String = """
-         *FEEDBACK REPORT*
-         *Date:* \(dateString)
-         *User Agent:* \(userAgent)
-         *UTI:* \(self.localMarkdownUTI)
-         *FEEDBACK:*
-         \(feedback)
-         """
-
-        // Build the data we will POST:
-        let dict: NSMutableDictionary = NSMutableDictionary()
-        dict.setObject(dataString,
-                        forKey: NSString.init(string: "text"))
-        dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
-        
-        // Make and return the HTTPS request for sending
-        if let url: URL = URL.init(string: self.feedbackPath + endPoint) {
-            var request: URLRequest = URLRequest.init(url: url)
-            request.httpMethod = "POST"
-
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: dict,
-                                                              options:JSONSerialization.WritingOptions.init(rawValue: 0))
-
-                request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
-                request.addValue("application/json", forHTTPHeaderField: "Content-type")
-
-                let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-                let session: URLSession = URLSession.init(configuration: config,
-                                                          delegate: self,
-                                                          delegateQueue: OperationQueue.main)
-                return session.dataTask(with: request)
-            } catch {
-                // Fall through to error condition
-            }
-        }
-        
-        return nil
-    }
-
     
     // MARK: - Preferences Functions
     
@@ -833,6 +778,61 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
         }
+    }
+    
+    
+    private func sendFeedback(_ feedback: String) -> URLSessionTask? {
+        
+        // FROM 1.2.0
+        // Break out into separate function
+        
+        // Send the string etc.
+        // First get the data we need to build the user agent string
+        let userAgent: String = getUserAgentForFeedback()
+        let endPoint: String = MNU_SECRETS.ADDRESS.A
+        
+        // Get the date as a string
+        let dateString: String = getDateForFeedback()
+
+        // Assemble the message string
+        let dataString: String = """
+         *FEEDBACK REPORT*
+         *Date:* \(dateString)
+         *User Agent:* \(userAgent)
+         *UTI:* \(self.localMarkdownUTI)
+         *FEEDBACK:*
+         \(feedback)
+         """
+
+        // Build the data we will POST:
+        let dict: NSMutableDictionary = NSMutableDictionary()
+        dict.setObject(dataString,
+                        forKey: NSString.init(string: "text"))
+        dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
+        
+        // Make and return the HTTPS request for sending
+        if let url: URL = URL.init(string: self.feedbackPath + endPoint) {
+            var request: URLRequest = URLRequest.init(url: url)
+            request.httpMethod = "POST"
+
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: dict,
+                                                              options:JSONSerialization.WritingOptions.init(rawValue: 0))
+
+                request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
+                request.addValue("application/json", forHTTPHeaderField: "Content-type")
+
+                let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+                let session: URLSession = URLSession.init(configuration: config,
+                                                          delegate: self,
+                                                          delegateQueue: OperationQueue.main)
+                return session.dataTask(with: request)
+            } catch {
+                // Fall through to error condition
+            }
+        }
+        
+        return nil
     }
 
 }
