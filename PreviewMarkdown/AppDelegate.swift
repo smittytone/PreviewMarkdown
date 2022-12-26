@@ -91,10 +91,10 @@ final class AppDelegate: NSObject,
     private  var doShowTag: Bool = false
     private  var localMarkdownUTI: String = "NONE"
     // FROM 1.3.0
-    private var doShowFrontMatter: Bool = false
+    private  var doShowFrontMatter: Bool = false
     // FROM 1.3.1
-    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    private var feedbackPath: String = MNU_SECRETS.ADDRESS.B
+    private  var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+    private  var feedbackPath: String = MNU_SECRETS.ADDRESS.B
     // FROM 1.4.0
     private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
     private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
@@ -103,12 +103,12 @@ final class AppDelegate: NSObject,
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
     // FROM 1.4.1
-    private var isMontereyPlus: Bool = false
+    internal var isMontereyPlus: Bool = false
     // FROM 1.4.6
-    private var havePrefsChanged: Bool = false
+    private  var havePrefsChanged: Bool = false
 
     
-    // MARK:- Class Lifecycle Functions
+    // MARK: - Class Lifecycle Functions
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         
@@ -267,7 +267,7 @@ final class AppDelegate: NSObject,
     }
 
     
-    // MARK: Reporting Functions
+    // MARK: - Report Functions
     
     @IBAction @objc private func showFeedbackWindow(sender: Any?) {
 
@@ -390,7 +390,7 @@ final class AppDelegate: NSObject,
     }
 
     
-    // MARK: Preferences Functions
+    // MARK: - Preferences Functions
     
     /**
      Initialise and display the **Preferences** sheet.
@@ -649,7 +649,7 @@ final class AppDelegate: NSObject,
     }
 
     
-    // MARK: What's New Functions
+    // MARK: - What's New Functions
     /**
      Show the **What's New** sheet.
 
@@ -833,19 +833,6 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
         }
-    }
-
-
-    /**
-     Get system and state information and record it for use during run.
-     
-     FROM 1.4.1
-     */
-    private func recordSystemState() {
-        
-        // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        self.isMontereyPlus = (sysVer.majorVersion >= 12)
     }
 
 }
