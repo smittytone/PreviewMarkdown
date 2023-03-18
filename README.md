@@ -28,6 +28,10 @@ For more information on the background to this app, please see this [blog post](
 
 *PreviewMarkdown- supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...*- and check the **Show YAML front matter*- checkbox. YAML will appear in QuickLook previews only.
 
+## Known Issues
+
+Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewMarkdown-produced previews. This is because those apps claim ownership of key Markdown file UTIs which may cause Finder to pre-empt PreviewMarkdown. There is no workaround at this time.
+
 ## Source Code
 
 This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
@@ -39,6 +43,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 ## Release Notes
 
 - 1.4.7 *Unreleased*
+    - Add Finder database reset option.
     - Remove dynamic UTIs.
 - 1.4.6 *21 January 2023*
     - Add link to [PreviewText](https://smittytone.net/previewtext/index.html).
