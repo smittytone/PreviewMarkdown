@@ -37,6 +37,7 @@
                 <outlet property="helpMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="mt5-jJ-1HD"/>
                 <outlet property="helpMenuWhatsNew" destination="RVo-0J-2sd" id="Qhh-FZ-Qrh"/>
                 <outlet property="helpMenuYamlSwift" destination="O46-Mu-Ivb" id="9dw-JC-5IZ"/>
+                <outlet property="mainMenuResetFinder" destination="NPo-rK-nMC" id="4Yq-hm-yuo"/>
                 <outlet property="mainMenuSettings" destination="t9y-p4-apt" id="4l2-LK-S1w"/>
                 <outlet property="preferencesWindow" destination="sjc-xZ-D3x" id="ulJ-fW-pzl"/>
                 <outlet property="reportWindow" destination="Qvu-BL-pGS" id="iaa-7G-SRe"/>
@@ -59,6 +60,13 @@
                             <menuItem title="Preferences..." keyEquivalent="," id="t9y-p4-apt">
                                 <connections>
                                     <action selector="doShowPreferencesWithSender:" target="Voe-Tx-rLC" id="Hl1-h6-60N"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="3Ix-dh-o1G"/>
+                            <menuItem title="Reset Finder Database..." id="NPo-rK-nMC">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="doInitiateFinderResetWithSender:" target="Voe-Tx-rLC" id="fRB-f5-XlP"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="8TO-1f-5js"/>

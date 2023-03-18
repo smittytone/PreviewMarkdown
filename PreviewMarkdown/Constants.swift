@@ -91,4 +91,7 @@ struct BUFFOON_CONSTANTS {
     }
     
     static let WHATS_NEW_PREF                   = "com-bps-previewmarkdown-do-show-whats-new-"
+    
+    // FROM 1.4.7
+    static let SYS_LAUNCH_SERVICES              = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 }

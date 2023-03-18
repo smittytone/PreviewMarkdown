@@ -71,8 +71,58 @@ extension AppDelegate {
 
         return true
     }
+    
+    
+    // MARK: - Finder Database Reset Functions
+    
+    internal func warnUserAboutReset() {
+        
+        // Hide panel-opening menus
+        self.hidePanelGenerators()
+        
+        // Warn the user about the risks (minor)
+        let alert: NSAlert = showAlert("Are you sure you wish to reset Finder’s database?",
+                                       "Resetting Finder’s database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac. Logging out of your Mac fixes most issues where previews are not being correctly shown and should be tried first.",
+                                        false)
+        alert.addButton(withTitle: "Go Back")
+        alert.addButton(withTitle: "Continue")
+        
+        // Show the alert
+        alert.beginSheetModal(for: self.window) { (resp) in
+            
+            // Close alert and restore menus
+            alert.window.close()
+            self.showPanelGenerators()
+            
+            // If the user wants to continue, perform the reset
+            if resp == .alertSecondButtonReturn {
+                // Perform the reset
+                self.doResetFinderDatabase()
+            }
+        }
+    }
+    
+    
+    /**
+     Reset Finder's launch services database using a sub-process.
+     */
+    internal func doResetFinderDatabase() {
+        
+        // Perform the Finder reset
+        // NOTE Cannot access the system domain from within the Sandbox
+        let success: Bool = runProcess(app: BUFFOON_CONSTANTS.SYS_LAUNCH_SERVICES,
+                                       with: ["-kill", "-f", "-r", "-domain", "user", "-domain", "local"])
+        if !success {
+            let alert: NSAlert = showAlert("Sorry, the operation failed", "The Finder database could not be reset at this time")
+            alert.alertStyle = .critical
+            alert.beginSheetModal(for: self.window)
+        } else {
+            let alert: NSAlert = showAlert("Finder’s database was reset", "")
+            alert.beginSheetModal(for: self.window)
+        }
+    }
 
-
+    
     // MARK: - Misc Functions
 
     /**
@@ -208,6 +258,7 @@ extension AppDelegate {
         self.helpMenuReportBug.isEnabled = false
         self.helpMenuWhatsNew.isEnabled = false
         self.mainMenuSettings.isEnabled = false
+        self.mainMenuResetFinder.isEnabled = false
     }
     
     
@@ -219,6 +270,7 @@ extension AppDelegate {
         self.helpMenuReportBug.isEnabled = true
         self.helpMenuWhatsNew.isEnabled = true
         self.mainMenuSettings.isEnabled = true
+        self.mainMenuResetFinder.isEnabled = true
     }
     
     

@@ -42,6 +42,8 @@ final class AppDelegate: NSObject,
     @IBOutlet var helpMenuReportBug: NSMenuItem!
     @IBOutlet var helpMenuWhatsNew: NSMenuItem!
     @IBOutlet var mainMenuSettings: NSMenuItem!
+    // FROM 1.4.7
+    @IBOutlet var mainMenuResetFinder: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -264,6 +266,13 @@ final class AppDelegate: NSObject,
         // FROM 1.1.0
         // Open the System Preferences app at the Extensions pane
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
+    }
+    
+    
+    @IBAction private func doInitiateFinderReset(sender: Any) {
+        
+        // FROM 1.4.7
+        warnUserAboutReset()
     }
 
     
