@@ -37,6 +37,7 @@
                 <outlet property="helpMenuSwiftyMarkdown" destination="3OS-WA-nsV" id="mt5-jJ-1HD"/>
                 <outlet property="helpMenuWhatsNew" destination="RVo-0J-2sd" id="Qhh-FZ-Qrh"/>
                 <outlet property="helpMenuYamlSwift" destination="O46-Mu-Ivb" id="9dw-JC-5IZ"/>
+                <outlet property="lineSpacingPopup" destination="vPS-Pf-g0t" id="yz7-8a-984"/>
                 <outlet property="mainMenuResetFinder" destination="NPo-rK-nMC" id="4Yq-hm-yuo"/>
                 <outlet property="mainMenuSettings" destination="t9y-p4-apt" id="4l2-LK-S1w"/>
                 <outlet property="preferencesWindow" destination="sjc-xZ-D3x" id="ulJ-fW-pzl"/>
@@ -662,7 +663,7 @@ Gw
                         </connections>
                     </colorWell>
                     <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mti-80-gGh">
-                        <rect key="frame" x="280" y="217" width="44" height="23"/>
+                        <rect key="frame" x="280" y="216" width="44" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
@@ -724,7 +725,7 @@ Gw
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mls-DP-Cdx">
-                        <rect key="frame" x="95" y="157" width="374" height="18"/>
+                        <rect key="frame" x="95" y="125" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="0LL-U3-HEf">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -735,7 +736,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L3v-ZW-rI5">
-                        <rect key="frame" x="95" y="135" width="374" height="18"/>
+                        <rect key="frame" x="95" y="103" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show YAML front matter" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LeZ-5E-qmT">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -746,16 +747,16 @@ Gw
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
-                        <rect key="frame" x="115" y="82" width="356" height="28"/>
+                        <rect key="frame" x="115" y="50" width="427" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" refusesFirstResponder="YES" allowsUndo="NO" alignment="left" title="This setting may not have an effect until you log out of your  Mac or restart your Mac." id="p9z-yO-6VS">
+                        <textFieldCell key="cell" controlSize="small" refusesFirstResponder="YES" allowsUndo="NO" alignment="left" title="This setting may not have an effect until you log out of or restart your Mac." id="p9z-yO-6VS">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Czd-zZ-ZiW">
-                        <rect key="frame" x="95" y="113" width="374" height="18"/>
+                        <rect key="frame" x="95" y="81" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show Markdown file-type tag on Finder thumbnails" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Z9h-TK-H7G">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -772,6 +773,33 @@ Gw
                         </constraints>
                         <textFieldCell key="cell" lineBreakMode="clipping" title="A" id="8oo-Qe-Yks">
                             <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPS-Pf-g0t">
+                        <rect key="frame" x="280" y="153" width="129" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Single" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="b9u-lW-pwB" id="riC-6U-9B2">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="qhX-jo-VQT">
+                                <items>
+                                    <menuItem title="Single" state="on" id="b9u-lW-pwB"/>
+                                    <menuItem title="1.15" id="skv-U5-ZM6">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="1.5" id="scI-I5-9u1"/>
+                                    <menuItem title="Double" id="0i6-jw-QKB"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EgD-Bv-Zwj">
+                        <rect key="frame" x="18" y="160" width="256" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview line spacing:" id="63h-GV-L9W">
+                            <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

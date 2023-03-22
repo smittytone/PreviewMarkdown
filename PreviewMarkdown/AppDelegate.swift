@@ -76,6 +76,8 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
     // FROM 1.4.1
     @IBOutlet weak var tagInfoTextField: NSTextField!
+    // FROM 1.4.7
+    @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
 
     // FROM 1.2.0
     // What's New Sheet
@@ -108,6 +110,8 @@ final class AppDelegate: NSObject,
     internal var isMontereyPlus: Bool = false
     // FROM 1.4.6
     private  var havePrefsChanged: Bool = false
+    // FROM 1.4.7
+    private var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
     
     // MARK: - Class Lifecycle Functions
@@ -378,6 +382,9 @@ final class AppDelegate: NSObject,
             self.headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
             self.codeFontName = defaults.string(forKey: "com-bps-previewmarkdown-code-font-name") ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName = defaults.string(forKey: "com-bps-previewmarkdown-body-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            
+            // FROM 1.4.7
+            self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-line-spacing"))
         }
 
         // Get the menu item index from the stored value
@@ -432,6 +439,20 @@ final class AppDelegate: NSObject,
             //self.doShowTagCheckbox.toolTip = "Not available in macOS 12 and up"
             //self.tagInfoTextField.stringValue = "macOS 12 adds its own thumbnail file extension tags, so this option is no longer available."
         }
+        
+        // FROM 1.4.7
+        // Set the line spacing selector
+        switch(round(self.lineSpacing * 100) / 100.0) {
+            case 1.15:
+                self.lineSpacingPopup.selectItem(at: 1)
+            case 1.5:
+                self.lineSpacingPopup.selectItem(at: 2)
+            case 2.0:
+                self.lineSpacingPopup.selectItem(at: 3)
+            default:
+                self.lineSpacingPopup.selectItem(at: 0)
+        }
+
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -567,6 +588,26 @@ final class AppDelegate: NSObject,
                     self.bodyFontName = psname
                     defaults.setValue(psname, forKey: "com-bps-previewmarkdown-body-font-name")
                 }
+            }
+            
+            // FROM 1.4.7
+            // Save the selected line spacing
+            let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
+            var lineSpacing: CGFloat = 1.0
+            switch(lineIndex) {
+                case 1:
+                    lineSpacing = 1.15
+                case 2:
+                    lineSpacing = 1.5
+                case 3:
+                    lineSpacing = 2.0
+                default:
+                    lineSpacing = 1.0
+            }
+            
+            if (self.lineSpacing != lineSpacing) {
+                self.lineSpacing = lineSpacing
+                defaults.setValue(lineSpacing, forKey: "com-bps-previewmarkdown-line-spacing")
             }
         }
 
@@ -785,6 +826,14 @@ final class AppDelegate: NSObject,
             if codeFontDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
+            }
+            
+            // FROM 1.4.7
+            // Store the preview line spacing value
+            let lineSpacingDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-line-spacing")
+            if lineSpacingDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
+                                  forKey: "com-bps-previewmarkdown-line-spacing")
             }
         }
     }

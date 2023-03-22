@@ -94,4 +94,5 @@ struct BUFFOON_CONSTANTS {
     
     // FROM 1.4.7
     static let SYS_LAUNCH_SERVICES              = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+    static let BASE_LINE_SPACING                = 1.0
 }

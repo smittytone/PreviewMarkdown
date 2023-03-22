@@ -43,6 +43,9 @@ class Common: NSObject {
     private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
     private var codeFontName: String  = BUFFOON_CONSTANTS.CODE_FONT_NAME
     private var bodyFontName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    
+    // FROM 1.4.7
+    private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
 
     // MARK:- Lifecycle Functions
@@ -67,6 +70,9 @@ class Common: NSObject {
             self.codeFontName  = prefs.string(forKey: "com-bps-previewmarkdown-code-font-name")  ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName  = prefs.string(forKey: "com-bps-previewmarkdown-body-font-name")  ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             self.doShowTag     = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+            
+            // FROM 1.4.7
+            self.lineSpacing   = CGFloat(prefs.float(forKey: "com-bps-previewmarkdown-line-spacing"))
         }
         
         // Just in case the above block reads in zero values
@@ -127,6 +133,15 @@ class Common: NSObject {
         
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
+        
+        // FROM 1.4.7
+        // Adjust the line spacing of previews
+        if !isThumbnail {
+            let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
+            // NOTE Default line spacing value, ie. for single line spacing, is zero
+            spacedParaStyle.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
+            output.addParaStyle(with: spacedParaStyle)
+        }
         
         // FROM 1.3.0
         // Render YAML front matter if requested by the user, and we're not
@@ -634,5 +649,26 @@ extension Data {
                                                           convertedString: &nss,
                                                           usedLossyConversion: nil), rawValue != 0 else { return nil }
         return .init(rawValue: rawValue)
+    }
+}
+
+
+/**
+Swap the paragraph style in all of the attributes of
+ an NSMutableAttributedString.
+
+- Parameters:
+ - paraStyle: The injected NSParagraphStyle.
+*/
+extension NSMutableAttributedString {
+    
+    func addParaStyle(with paraStyle: NSParagraphStyle) {
+        beginEditing()
+        self.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: self.length)) { (value, range, stop) in
+            if let _ = value as? NSParagraphStyle {
+                addAttribute(.paragraphStyle, value: paraStyle, range: range)
+            }
+        }
+        endEditing()
     }
 }
