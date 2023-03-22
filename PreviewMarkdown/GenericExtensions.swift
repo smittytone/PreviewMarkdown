@@ -81,8 +81,8 @@ extension AppDelegate {
         self.hidePanelGenerators()
         
         // Warn the user about the risks (minor)
-        let alert: NSAlert = showAlert("Are you sure you wish to reset Finder’s database?",
-                                       "Resetting Finder’s database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac. Logging out of your Mac fixes most issues where previews are not being correctly shown and should be tried first.",
+        let alert: NSAlert = showAlert("Are you sure you wish to reset Finder’s UTI database?",
+                                       "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac. Logging out of your Mac fixes most issues where previews are not being correctly shown and should be tried first.",
                                         false)
         alert.addButton(withTitle: "Go Back")
         alert.addButton(withTitle: "Continue")
