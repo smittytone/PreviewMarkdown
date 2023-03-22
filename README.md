@@ -1,4 +1,4 @@
-# PreviewMarkdown 1.4.7
+# PreviewMarkdown 1.5.0
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
 
@@ -42,8 +42,10 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-- 1.4.7 *Unreleased*
-    - Add Finder database reset option.
+- 1.5.0 *Unreleased*
+    - Add line-spacing setting for previews.
+    - Add link to help on **Preferences** panel.
+    - Add experimental Finder UTI database reset option.
     - Remove dynamic UTIs.
 - 1.4.6 *21 January 2023*
     - Add link to [PreviewText](https://smittytone.net/previewtext/index.html).

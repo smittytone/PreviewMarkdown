@@ -42,7 +42,7 @@ final class AppDelegate: NSObject,
     @IBOutlet var helpMenuReportBug: NSMenuItem!
     @IBOutlet var helpMenuWhatsNew: NSMenuItem!
     @IBOutlet var mainMenuSettings: NSMenuItem!
-    // FROM 1.4.7
+    // FROM 1.5.0
     @IBOutlet var mainMenuResetFinder: NSMenuItem!
     
     // Panel Items
@@ -76,7 +76,7 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
     // FROM 1.4.1
     @IBOutlet weak var tagInfoTextField: NSTextField!
-    // FROM 1.4.7
+    // FROM 1.5.0
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
 
     // FROM 1.2.0
@@ -110,7 +110,7 @@ final class AppDelegate: NSObject,
     internal var isMontereyPlus: Bool = false
     // FROM 1.4.6
     private  var havePrefsChanged: Bool = false
-    // FROM 1.4.7
+    // FROM 1.5.0
     private var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
     
@@ -267,7 +267,7 @@ final class AppDelegate: NSObject,
     
     @IBAction private func doShowPrefsHelp(sender: Any) {
         
-        // FROM 1.4.7
+        // FROM 1.5.0
         // Alternative route to help
         let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
         NSWorkspace.shared.open(URL.init(string:path)!)
@@ -285,7 +285,7 @@ final class AppDelegate: NSObject,
     
     @IBAction private func doInitiateFinderReset(sender: Any) {
         
-        // FROM 1.4.7
+        // FROM 1.5.0
         warnUserAboutReset()
     }
 
@@ -393,7 +393,7 @@ final class AppDelegate: NSObject,
             self.codeFontName = defaults.string(forKey: "com-bps-previewmarkdown-code-font-name") ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName = defaults.string(forKey: "com-bps-previewmarkdown-body-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             
-            // FROM 1.4.7
+            // FROM 1.5.0
             self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-line-spacing"))
         }
 
@@ -450,7 +450,7 @@ final class AppDelegate: NSObject,
             //self.tagInfoTextField.stringValue = "macOS 12 adds its own thumbnail file extension tags, so this option is no longer available."
         }
         
-        // FROM 1.4.7
+        // FROM 1.5.0
         // Set the line spacing selector
         switch(round(self.lineSpacing * 100) / 100.0) {
             case 1.15:
@@ -600,7 +600,7 @@ final class AppDelegate: NSObject,
                 }
             }
             
-            // FROM 1.4.7
+            // FROM 1.5.0
             // Save the selected line spacing
             let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
             var lineSpacing: CGFloat = 1.0
@@ -838,7 +838,7 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewmarkdown-code-font-name")
             }
             
-            // FROM 1.4.7
+            // FROM 1.5.0
             // Store the preview line spacing value
             let lineSpacingDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-line-spacing")
             if lineSpacingDefault == nil {

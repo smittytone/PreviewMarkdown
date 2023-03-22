@@ -44,7 +44,7 @@ class Common: NSObject {
     private var codeFontName: String  = BUFFOON_CONSTANTS.CODE_FONT_NAME
     private var bodyFontName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
     
-    // FROM 1.4.7
+    // FROM 1.5.0
     private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
 
@@ -71,7 +71,7 @@ class Common: NSObject {
             self.bodyFontName  = prefs.string(forKey: "com-bps-previewmarkdown-body-font-name")  ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             self.doShowTag     = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
             
-            // FROM 1.4.7
+            // FROM 1.5.0
             self.lineSpacing   = CGFloat(prefs.float(forKey: "com-bps-previewmarkdown-line-spacing"))
         }
         
@@ -134,7 +134,7 @@ class Common: NSObject {
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
         
-        // FROM 1.4.7
+        // FROM 1.5.0
         // Adjust the line spacing of previews
         if !isThumbnail {
             let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
