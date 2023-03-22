@@ -263,6 +263,16 @@ final class AppDelegate: NSObject,
         // Open the selected website
         NSWorkspace.shared.open(URL.init(string:path)!)
     }
+    
+    
+    @IBAction private func doShowPrefsHelp(sender: Any) {
+        
+        // FROM 1.4.7
+        // Alternative route to help
+        let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
+        NSWorkspace.shared.open(URL.init(string:path)!)
+
+    }
 
 
     @IBAction private func doOpenSysPrefs(sender: Any) {
