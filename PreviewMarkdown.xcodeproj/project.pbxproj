@@ -44,11 +44,11 @@
 		3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */; };
-		3BBAEA38236ADECB009BAA05 /* Markdown Previewer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BBAEA38236ADECB009BAA05 /* Previewer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA42236ADF11009BAA05 /* QuickLookThumbnailing.framework */; };
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
-		3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3BD959F125B6DA3000FE6260 /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BD959F025B6DA3000FE6260 /* new */; };
 /* End PBXBuildFile section */
 
@@ -83,8 +83,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */,
-				3BBAEA38236ADECB009BAA05 /* Markdown Previewer.appex in Embed Foundation Extensions */,
+				3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */,
+				3BBAEA38236ADECB009BAA05 /* Previewer.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -112,13 +112,13 @@
 		3BBAEA1D236ADEB3009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3BBAEA1F236ADEB3009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PreviewMarkdown.entitlements; sourceTree = "<group>"; };
-		3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Markdown Previewer.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BBAEA2A236ADECB009BAA05 /* Previewer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Previewer.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA2C236ADECB009BAA05 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		3BBAEA32236ADECB009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
 		3BBAEA34236ADECB009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Previewer.entitlements; sourceTree = "<group>"; };
-		3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Markdown Thumbnailer.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Thumbnailer.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA42236ADF11009BAA05 /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
 		3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 			isa = PBXGroup;
 			children = (
 				3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */,
-				3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */,
-				3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */,
+				3BBAEA2A236ADECB009BAA05 /* Previewer.appex */,
+				3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */,
 				3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */,
 			);
 			name = Products;
@@ -311,9 +311,9 @@
 			productReference = 3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3BBAEA29236ADECB009BAA05 /* Markdown Previewer */ = {
+		3BBAEA29236ADECB009BAA05 /* Previewer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Previewer" */;
+			buildConfigurationList = 3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Previewer" */;
 			buildPhases = (
 				3BBAEA26236ADECB009BAA05 /* Sources */,
 				3BBAEA27236ADECB009BAA05 /* Frameworks */,
@@ -323,18 +323,18 @@
 			);
 			dependencies = (
 			);
-			name = "Markdown Previewer";
+			name = Previewer;
 			packageProductDependencies = (
 				3B218E112637F5C30024446B /* Yaml */,
 				3B40FE972694400B00A0C09F /* SwiftyMarkdown */,
 			);
 			productName = Previewer;
-			productReference = 3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */;
+			productReference = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */ = {
+		3BBAEA40236ADF11009BAA05 /* Thumbnailer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Thumbnailer" */;
+			buildConfigurationList = 3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Thumbnailer" */;
 			buildPhases = (
 				3BBAEA3D236ADF11009BAA05 /* Sources */,
 				3BBAEA3E236ADF11009BAA05 /* Frameworks */,
@@ -344,13 +344,13 @@
 			);
 			dependencies = (
 			);
-			name = "Markdown Thumbnailer";
+			name = Thumbnailer;
 			packageProductDependencies = (
 				3B218E332637FA3B0024446B /* Yaml */,
 				3B40FE952694400500A0C09F /* SwiftyMarkdown */,
 			);
 			productName = Thumbnailer;
-			productReference = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */;
+			productReference = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -396,8 +396,8 @@
 			projectRoot = "";
 			targets = (
 				3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */,
-				3BBAEA29236ADECB009BAA05 /* Markdown Previewer */,
-				3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */,
+				3BBAEA29236ADECB009BAA05 /* Previewer */,
+				3BBAEA40236ADF11009BAA05 /* Thumbnailer */,
 				3B7D3085251504A900A37F96 /* PreviewMarkdownTests */,
 			);
 		};
@@ -504,12 +504,12 @@
 		};
 		3BBAEA37236ADECB009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3BBAEA29236ADECB009BAA05 /* Markdown Previewer */;
+			target = 3BBAEA29236ADECB009BAA05 /* Previewer */;
 			targetProxy = 3BBAEA36236ADECB009BAA05 /* PBXContainerItemProxy */;
 		};
 		3BBAEA4B236ADF11009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */;
+			target = 3BBAEA40236ADF11009BAA05 /* Thumbnailer */;
 			targetProxy = 3BBAEA4A236ADF11009BAA05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -896,7 +896,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Previewer" */ = {
+		3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Previewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3BBAEA3A236ADECB009BAA05 /* Debug */,
@@ -905,7 +905,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Thumbnailer" */ = {
+		3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Thumbnailer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3BBAEA4E236ADF11009BAA05 /* Debug */,
