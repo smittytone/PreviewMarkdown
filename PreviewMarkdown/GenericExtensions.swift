@@ -163,7 +163,7 @@ extension AppDelegate {
 
 
     /**
-     Build a basic 'major.manor' version string for prefs usage.
+     Build a basic 'major-manor' version string for prefs usage.
 
      - Returns: The version string.
      */

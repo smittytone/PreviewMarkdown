@@ -119,7 +119,7 @@ final class AppDelegate: NSObject,
     func applicationDidFinishLaunching(_ notification: Notification) {
         
         // FROM 1.4.0
-        // Pre-load fonts
+        // Pre-load fonts in a separate thread
         let q: DispatchQueue = DispatchQueue.init(label: "com.bps.previewmarkdown.async-queue")
         q.async {
             self.asyncGetFonts()

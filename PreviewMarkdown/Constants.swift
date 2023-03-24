@@ -70,7 +70,8 @@ struct BUFFOON_CONSTANTS {
     static let HEAD_COLOUR_HEX              = "941751FF"
     static let CODE_COLOUR_HEX              = "00FF00FF"
     static let BODY_FONT_NAME               = "System"
-    static let CODE_FONT_NAME               = "Courier"
+    // FROM 1.5.0 -- Change default font: Courier not included with macOS now
+    static let CODE_FONT_NAME               = "AndaleMono"
     
     static let SAMPLE_UTI_FILE              = "sample.md"
 

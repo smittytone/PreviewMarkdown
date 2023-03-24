@@ -126,8 +126,16 @@ extension AppDelegate {
                     if styleName != nil {
                         targetPopup.selectItem(withTitle: styleName!)
                     }
+                    
+                    break
                 }
             }
+        }
+        
+        // FROM 1.5.0
+        // Select a style if none selected
+        if targetPopup.selectedItem == nil {
+            targetPopup.selectItem(at: 0);
         }
     }
 
@@ -151,9 +159,16 @@ extension AppDelegate {
                     if style.postScriptName == postScriptName {
                         targetPopup.selectItem(withTitle: family.displayName)
                         setStylePopup(isBody, style.styleName)
+                        break
                     }
                 }
             }
+        }
+        
+        // FROM 1.5.0
+        // Select a font if none selected
+        if targetPopup.selectedItem == nil {
+            targetPopup.selectItem(at: 0);
         }
     }
 
