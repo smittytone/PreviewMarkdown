@@ -46,6 +46,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
     - Add line-spacing setting for previews.
     - Add link to help on **Preferences** panel.
     - Add experimental Finder UTI database reset option.
+    - Rename extensions `Markdown Previewer` and `Markdown Thumbnailer`.
     - Improve font edge-case handling.
     - Remove dynamic UTIs.
 - 1.4.6 *21 January 2023*

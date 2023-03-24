@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3BBAEA29236ADECB009BAA05"
-               BuildableName = "Previewer.appex"
-               BlueprintName = "Previewer"
+               BuildableName = "Markdown Previewer.appex"
+               BlueprintName = "Markdown Previewer"
                ReferencedContainer = "container:PreviewMarkdown.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
