@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3BBAEA40236ADF11009BAA05"
-               BuildableName = "Markdown Thumbnailer.appex"
-               BlueprintName = "Markdown Thumbnailer"
+               BuildableName = "Thumbnailer.appex"
+               BlueprintName = "Thumbnailer"
                ReferencedContainer = "container:PreviewMarkdown.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -74,8 +74,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3BBAEA40236ADF11009BAA05"
-            BuildableName = "Markdown Thumbnailer.appex"
-            BlueprintName = "Markdown Thumbnailer"
+            BuildableName = "Thumbnailer.appex"
+            BlueprintName = "Thumbnailer"
             ReferencedContainer = "container:PreviewMarkdown.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
