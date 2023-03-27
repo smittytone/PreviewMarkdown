@@ -72,7 +72,7 @@ class Common: NSObject {
             self.doShowTag     = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             
             // FROM 1.5.0
-            self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG))
+            self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
         }
         
         // Just in case the above block reads in zero values

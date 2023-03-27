@@ -101,7 +101,7 @@ struct BUFFOON_CONSTANTS {
         
         static let PREVIEW_BODY_FONT_SIZE       = "com-bps-previewmarkdown-base-font-size"
         static let PREVIEW_BODY_FONT_NAME       = "com-bps-previewmarkdown-body-font-name"
-        static let PREVIEW_CODE_FONT_NAME       = "com-bps-previewcode-theme-name"
+        static let PREVIEW_CODE_FONT_NAME       = "com-bps-previewmarkdown-code-font-name"
         static let PREVIEW_USE_LIGHT            = "com-bps-previewmarkdown-do-use-light"
         static let PREVIEW_SHOW_YAML            = "com-bps-previewmarkdown-do-show-front-matter"
         static let PREVIEW_LINK_COLOUR          = "com-bps-previewmarkdown-link-colour-hex"
