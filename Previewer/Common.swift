@@ -55,24 +55,24 @@ class Common: NSObject {
         super.init()
         
         // Load in the user's preferred values, or set defaults
-        if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
+        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
             self.fontSize = CGFloat(isThumbnail
                                     ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
-                                    : prefs.float(forKey: "com-bps-previewmarkdown-base-font-size"))
+                                    : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
 
-            self.doShowLightBackground = prefs.bool(forKey: "com-bps-previewmarkdown-do-use-light")
-            self.doShowYaml            = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            self.doShowYaml            = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             
             // FROM 1.4.0
-            self.codeColourHex = prefs.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.headColourHex = prefs.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.linkColourHex = prefs.string(forKey: "com-bps-previewmarkdown-link-colour-hex") ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            self.codeFontName  = prefs.string(forKey: "com-bps-previewmarkdown-code-font-name")  ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            self.bodyFontName  = prefs.string(forKey: "com-bps-previewmarkdown-body-font-name")  ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.doShowTag     = prefs.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+            self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.linkColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            self.codeFontName  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            self.bodyFontName  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            self.doShowTag     = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             
             // FROM 1.5.0
-            self.lineSpacing   = CGFloat(prefs.float(forKey: "com-bps-previewmarkdown-line-spacing"))
+            self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG))
         }
         
         // Just in case the above block reads in zero values

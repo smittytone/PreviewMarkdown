@@ -91,9 +91,27 @@ struct BUFFOON_CONSTANTS {
         static let PT                           = "https://apps.apple.com/us/app/previewtext/id1660037028?ls=1"
     }
     
-    static let WHATS_NEW_PREF                   = "com-bps-previewmarkdown-do-show-whats-new-"
-    
     // FROM 1.5.0
     static let SYS_LAUNCH_SERVICES              = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
     static let BASE_LINE_SPACING                = 1.0
+    
+    struct PREFS_IDS {
+        
+        static let MAIN_WHATS_NEW               = "com-bps-previewmarkdown-do-show-whats-new-"
+        
+        static let PREVIEW_BODY_FONT_SIZE       = "com-bps-previewmarkdown-base-font-size"
+        static let PREVIEW_BODY_FONT_NAME       = "com-bps-previewmarkdown-body-font-name"
+        static let PREVIEW_CODE_FONT_NAME       = "com-bps-previewcode-theme-name"
+        static let PREVIEW_USE_LIGHT            = "com-bps-previewmarkdown-do-use-light"
+        static let PREVIEW_SHOW_YAML            = "com-bps-previewmarkdown-do-show-front-matter"
+        static let PREVIEW_LINK_COLOUR          = "com-bps-previewmarkdown-link-colour-hex"
+        static let PREVIEW_CODE_COLOUR          = "com-bps-previewmarkdown-code-colour-hex"
+        static let PREVIEW_HEAD_COLOUR          = "com-bps-previewmarkdown-head-colour-hex"
+        static let PREVIEW_LINE_SPACE           = "com-bps-previewmarkdown-line-spacing"
+        
+        static let THUMB_FONT_SIZE              = "com-bps-previewmarkdown-thumb-font-size"
+        static let THUMB_SHOW_TAG               = "com-bps-previewmarkdown-do-show-tag"
+        
+    }
+
 }

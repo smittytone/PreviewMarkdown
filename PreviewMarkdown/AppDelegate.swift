@@ -380,21 +380,21 @@ final class AppDelegate: NSObject,
         
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            self.previewFontSize = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-base-font-size"))
-            self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewmarkdown-do-use-light")
-            self.doShowTag = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-tag")
+            self.previewFontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
+            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            self.doShowTag = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             
             // FROM 1.3.0
-            self.doShowFrontMatter = defaults.bool(forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             
             // FROM 1.4.0
-            self.codeColourHex = defaults.string(forKey: "com-bps-previewmarkdown-code-colour-hex") ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.headColourHex = defaults.string(forKey: "com-bps-previewmarkdown-head-colour-hex") ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.codeFontName = defaults.string(forKey: "com-bps-previewmarkdown-code-font-name") ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            self.bodyFontName = defaults.string(forKey: "com-bps-previewmarkdown-body-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             
             // FROM 1.5.0
-            self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewmarkdown-line-spacing"))
+            self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
         }
 
         // Get the menu item index from the stored value
@@ -545,19 +545,19 @@ final class AppDelegate: NSObject,
             let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.previewFontSize {
                 defaults.setValue(newValue,
-                                  forKey: "com-bps-previewmarkdown-base-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             }
             
             var state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
-                                  forKey: "com-bps-previewmarkdown-do-use-light")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
 
             state = self.doShowTagCheckbox.state == .on
             if self.doShowTag != state {
                 defaults.setValue(state,
-                                  forKey: "com-bps-previewmarkdown-do-show-tag")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             }
 
             // FROM 1.3.0
@@ -565,7 +565,7 @@ final class AppDelegate: NSObject,
             state = self.showFrontMatterCheckbox.state == .on
             if self.doShowFrontMatter != state {
                 defaults.setValue(state,
-                                  forKey: "com-bps-previewmarkdown-do-show-front-matter")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             }
             
             // FROM 1.4.0
@@ -574,14 +574,14 @@ final class AppDelegate: NSObject,
             if newCodeColour != self.codeColourHex {
                 self.codeColourHex = newCodeColour
                 defaults.setValue(newCodeColour,
-                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             }
             
             let newHeadColour: String = self.headColourWell.color.hexString
             if newHeadColour != self.headColourHex {
                 self.headColourHex = newHeadColour
                 defaults.setValue(newHeadColour,
-                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             }
             
             // FROM 1.4.0
@@ -589,14 +589,14 @@ final class AppDelegate: NSObject,
             if let psname: String = getPostScriptName(false) {
                 if psname != self.codeFontName {
                     self.codeFontName = psname
-                    defaults.setValue(psname, forKey: "com-bps-previewmarkdown-code-font-name")
+                    defaults.setValue(psname, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
                 }
             }
 
             if let psname = getPostScriptName(true) {
                 if psname != self.bodyFontName {
                     self.bodyFontName = psname
-                    defaults.setValue(psname, forKey: "com-bps-previewmarkdown-body-font-name")
+                    defaults.setValue(psname, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
                 }
             }
             
@@ -617,7 +617,7 @@ final class AppDelegate: NSObject,
             
             if (self.lineSpacing != lineSpacing) {
                 self.lineSpacing = lineSpacing
-                defaults.setValue(lineSpacing, forKey: "com-bps-previewmarkdown-line-spacing")
+                defaults.setValue(lineSpacing, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
         }
 
@@ -677,7 +677,7 @@ final class AppDelegate: NSObject,
             // if we need to show the sheet by the checking the prefs
             if let defaults = UserDefaults(suiteName: self.appSuiteName) {
                 // Get the version-specific preference key
-                let key: String = BUFFOON_CONSTANTS.WHATS_NEW_PREF + getVersion()
+                let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
                 doShowSheet = defaults.bool(forKey: key)
             }
         }
@@ -720,7 +720,7 @@ final class AppDelegate: NSObject,
 
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             defaults.setValue(false, forKey: key)
 
             #if DEBUG
@@ -748,34 +748,34 @@ final class AppDelegate: NSObject,
             // Check if each preference value exists -- set if it doesn't
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
-            let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-base-font-size")
+            let bodyFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             if bodyFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE),
-                                  forKey: "com-bps-previewmarkdown-base-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             }
 
             // Thumbnail view base font size, stored as a CGFloat, not currently used
             // Default: 14.0
-            let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-thumb-font-size")
+            let thumbFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             if thumbFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE),
-                                  forKey: "com-bps-previewmarkdown-thumb-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             }
             
             // Use light background even in dark mode, stored as a bool
             // Default: false
-            let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-use-light")
+            let useLightDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             if useLightDefault == nil {
                 defaults.setValue(false,
-                                  forKey: "com-bps-previewmarkdown-do-use-light")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
 
             // Show the file identity ('tag') on Finder thumbnails
             // Default: false (from 1.4.1)
-            let showTagDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-tag")
+            let showTagDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             if showTagDefault == nil {
                 defaults.setValue(false,
-                                  forKey: "com-bps-previewmarkdown-do-show-tag")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             }
 
             // Show the What's New sheet
@@ -784,7 +784,7 @@ final class AppDelegate: NSObject,
             // this will persist, but with each new major and/or minor version, we make a
             // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
             // should be shown this run
-            let key: String = "com-bps-previewmarkdown-do-show-whats-new-" + getVersion()
+            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             let showNewDefault: Any? = defaults.object(forKey: key)
             if showNewDefault == nil {
                 defaults.setValue(true, forKey: key)
@@ -793,57 +793,57 @@ final class AppDelegate: NSObject,
             // FROM 1.3.0
             // Show any YAML front matter, if present
             // Default: true
-            let showFrontMatterDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-do-show-front-matter")
+            let showFrontMatterDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             if showFrontMatterDefault == nil {
-                defaults.setValue(true, forKey: "com-bps-previewmarkdown-do-show-front-matter")
+                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             }
             
             // FROM 1.4.0
             // Colour of links in the preview, stored as hex string
-            let linkColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-link-colour-hex")
+            let linkColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
             if linkColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-link-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of code blocks in the preview, stored as hex string
-            let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-colour-hex")
+            let codeColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             if codeColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-code-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of headings in the preview, stored as hex string
-            let headColourDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-head-colour-hex")
+            let headColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             if headColourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
-                                  forKey: "com-bps-previewmarkdown-head-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             }
             
             // FROM 1.4.0
             // Font for body test in the preview, stored as a PostScript name
-            let bodyFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-body-font-name")
+            let bodyFontDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
             if bodyFontDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
-                                  forKey: "com-bps-previewmarkdown-body-font-name")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
             }
 
             // FROM 1.4.0
             // Font for code blocks in the preview, stored as a PostScript name
-            let codeFontDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-code-font-name")
+            let codeFontDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
             if codeFontDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
-                                  forKey: "com-bps-previewmarkdown-code-font-name")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
             }
             
             // FROM 1.5.0
             // Store the preview line spacing value
-            let lineSpacingDefault: Any? = defaults.object(forKey: "com-bps-previewmarkdown-line-spacing")
+            let lineSpacingDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             if lineSpacingDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
-                                  forKey: "com-bps-previewmarkdown-line-spacing")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
         }
     }
