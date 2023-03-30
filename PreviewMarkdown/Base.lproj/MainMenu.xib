@@ -804,9 +804,12 @@ Gw
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q0r-Nm-T23">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q0r-Nm-T23">
                         <rect key="frame" x="17" y="16" width="25" height="25"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="EoR-28-aI1"/>
+                            <constraint firstAttribute="height" constant="20" id="k0b-Lr-hoY"/>
+                        </constraints>
                         <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WmW-TL-8B5">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -818,11 +821,13 @@ Gw
                 </subviews>
                 <constraints>
                     <constraint firstItem="Kxb-3y-zsN" firstAttribute="leading" secondItem="FEy-oZ-Q0b" secondAttribute="trailing" constant="12" symbolic="YES" id="3KD-rV-5yI"/>
+                    <constraint firstItem="Q0r-Nm-T23" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="5yx-bs-dZd"/>
                     <constraint firstAttribute="trailing" secondItem="AWW-Kb-vnd" secondAttribute="trailing" constant="20" symbolic="YES" id="Ef1-tV-Ybi"/>
                     <constraint firstItem="DUw-vA-tdu" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" id="KcM-xa-x5d"/>
                     <constraint firstItem="AWW-Kb-vnd" firstAttribute="leading" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="MEp-T9-Rht"/>
                     <constraint firstItem="FEy-oZ-Q0b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DTJ-no-zbr" secondAttribute="leading" constant="20" symbolic="YES" id="MOn-Ni-Rox"/>
                     <constraint firstAttribute="trailing" secondItem="QOR-Nq-yfj" secondAttribute="trailing" constant="13" id="Ruz-Gh-TOg"/>
+                    <constraint firstAttribute="bottom" secondItem="Q0r-Nm-T23" secondAttribute="bottom" constant="20" symbolic="YES" id="SbV-5S-9Nh"/>
                     <constraint firstAttribute="trailing" secondItem="G17-HD-NQR" secondAttribute="trailing" constant="20" symbolic="YES" id="Tha-kB-7ca"/>
                     <constraint firstItem="AWW-Kb-vnd" firstAttribute="top" secondItem="DTJ-no-zbr" secondAttribute="top" constant="20" symbolic="YES" id="Wd9-6T-nOc"/>
                     <constraint firstAttribute="trailing" secondItem="Kxb-3y-zsN" secondAttribute="trailing" constant="20" symbolic="YES" id="YwS-Xk-yMK"/>

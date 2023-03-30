@@ -23,10 +23,7 @@ final class AppDelegate: NSObject,
     // MARK:- Class UI Properies
     // Menu Items Tab
     @IBOutlet var helpMenu: NSMenuItem!
-    //@IBOutlet var creditMenuDiscount: NSMenuItem!
-    //@IBOutlet var creditMenuQLMarkdown: NSMenuItem!
     @IBOutlet var helpMenuSwiftyMarkdown: NSMenuItem!
-    //@IBOutlet var helpMenuAcknowlegdments: NSMenuItem!
     @IBOutlet var helpMenuAppStoreRating: NSMenuItem!
     // FROM 1.3.0
     @IBOutlet var helpMenuYamlSwift: NSMenuItem!
@@ -66,7 +63,6 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var doShowTagCheckbox: NSButton!
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
-    //@IBOutlet weak var codeColourPopup: NSPopUpButton!
     // FROM 1.3.0
     @IBOutlet weak var showFrontMatterCheckbox: NSButton!
     // FROM 1.4.0
@@ -462,7 +458,6 @@ final class AppDelegate: NSObject,
             default:
                 self.lineSpacingPopup.selectItem(at: 0)
         }
-
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
