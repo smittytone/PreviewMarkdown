@@ -37,7 +37,7 @@ class Common: NSObject {
     private var hr: NSAttributedString      = NSAttributedString.init(string: "")
     private var newLine: NSAttributedString = NSAttributedString.init(string: "")
     
-    // FROM 1.4.0
+    // FROM 1.4.0 
     private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
     private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
     private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
@@ -46,6 +46,8 @@ class Common: NSObject {
     
     // FROM 1.5.0
     private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private let useMDJS: Bool         = true
+    private var mdjs: Markdowner?     = nil
 
 
     // MARK:- Lifecycle Functions
@@ -123,16 +125,43 @@ class Common: NSObject {
      - returns: The rendered markdown as an NSAttributedString.
      */
     func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
-
-        let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-        setSwiftStyles(swiftyMarkdown, isThumbnail)
-        var processed: String = processCodeTags(markdownString)
-        processed = convertSpaces(processed)
-        processed = processSymbols(processed)
-        processed = processCheckboxes(processed)
         
         // Process the markdown string
-        var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
+        var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
+        
+        if !isThumbnail && useMDJS {
+            // Only use MakdownIt if enabled, and we're not rendering a thumbnail
+            if self.mdjs == nil {
+                if let mdjs: Markdowner = Markdowner.init() {
+                    self.mdjs = mdjs
+                    mdjs.styleString = setMarkdownStyles(isThumbnail: isThumbnail)
+                } else {
+                    // Missing JS code file or other init error
+                    output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
+                                                            attributes: self.valAtts)
+                }
+            }
+            
+            if output.length == 0 {
+                if let attStr: NSAttributedString = self.mdjs!.render(markdownString) {
+                    output = NSMutableAttributedString.init(attributedString: attStr)
+                } else {
+                    output = NSMutableAttributedString.init(string: "Could not render markdown string",
+                                                            attributes: self.valAtts)
+                }
+            }
+        } else {
+            // Use SwiftyMarkdown
+            let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
+            setSwiftStyles(swiftyMarkdown, isThumbnail)
+            var processed: String = processCodeTags(markdownString)
+            processed = convertSpaces(processed)
+            processed = processSymbols(processed)
+            processed = processCheckboxes(processed)
+            
+            // Process the markdown string
+            output = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
+        }
         
         // FROM 1.5.0
         // Adjust the line spacing of previews
@@ -631,6 +660,54 @@ class Common: NSObject {
         sm.link.underlineColor = sm.link.color
     }
     
+    
+    func setMarkdownStyles(isThumbnail: Bool = false) -> String {
+        
+        // Handle system font names, which don't play well in HTML
+        var font: NSFont
+        if let otherFont = NSFont.init(name: self.bodyFontName, size: self.fontSize) {
+            font = otherFont
+        } else {
+            // This should not be hit, but just in case...
+            font = NSFont.systemFont(ofSize: self.fontSize)
+        }
+        
+        let baseFontName: String = font.fontName
+        
+        var returnStyleString: String = ""
+        // Body
+        let bodyColourHex = (isMacInLightMode() ? "000000" : "ffffff")
+        returnStyleString += "body {color:#\(bodyColourHex)} "
+        // Headings
+        returnStyleString += "h1 {font-family:\(baseFontName);font-size:\(self.fontSize * 2.0);color:#\(self.headColourHex);margin-top:1em} "
+        returnStyleString += "h2 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.6);color:#\(self.headColourHex);margin-top:1em} "
+        returnStyleString += "h3 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.4);color:#\(self.headColourHex);margin-top:1em} "
+        returnStyleString += "h4 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.2);color:#\(self.headColourHex);margin-top:1em} "
+        returnStyleString += "h5 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.1);color:#\(self.headColourHex);margin-top:1em} "
+        returnStyleString += "h6 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.05);margin-top:0.8rem} "
+        // Para
+        returnStyleString += "p {font-family:\(baseFontName);font-size:\(self.fontSize)};color:#\(bodyColourHex)} "
+        // Code
+        returnStyleString += "code {font-family:\(self.codeFontName);font-size:\(self.fontSize);color:#\(self.codeColourHex)} "
+        // Links
+        returnStyleString += "a {color:#\(self.linkColourHex)} "
+        // Lists
+        returnStyleString += "ul {color:#\(bodyColourHex);margin-left:1.25em;padding-left:1.25em;} "
+        returnStyleString += "ol {color:#\(bodyColourHex)} "
+        returnStyleString += "li {font-family:\(baseFontName);font-size:\(self.fontSize)};color:#\(bodyColourHex);} "
+        return returnStyleString
+    }
+    
+    /**
+     Determine whether the host Mac is in light mode.
+     
+     - Returns: `true` if the Mac is in light mode, otherwise `false`.
+     */
+    internal func isMacInLightMode() -> Bool {
+        
+        let appearNameString: NSAppearance.Name = NSApp.effectiveAppearance.name
+        return (appearNameString == .aqua)
+    }
 }
 
 
