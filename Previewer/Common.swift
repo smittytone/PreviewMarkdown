@@ -132,9 +132,17 @@ class Common: NSObject {
         if !isThumbnail && useMDJS {
             // Only use MakdownIt if enabled, and we're not rendering a thumbnail
             if self.mdjs == nil {
-                if let mdjs: Markdowner = Markdowner.init() {
+                var bodyFont: NSFont
+                if let otherFont: NSFont = NSFont.init(name: self.bodyFontName, size: self.fontSize) {
+                    bodyFont = otherFont
+                } else {
+                    // This should not be hit, but just in case...
+                    bodyFont = NSFont.systemFont(ofSize: self.fontSize)
+                }
+                
+                if let mdjs: Markdowner = Markdowner.init(bodyFont, setMarkdownStyles(isThumbnail: isThumbnail)) {
                     self.mdjs = mdjs
-                    mdjs.styleString = setMarkdownStyles(isThumbnail: isThumbnail)
+                    // mdjs.styleString = setMarkdownStyles(isThumbnail: isThumbnail)
                 } else {
                     // Missing JS code file or other init error
                     output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
@@ -697,6 +705,7 @@ class Common: NSObject {
         returnStyleString += "li {font-family:\(baseFontName);font-size:\(self.fontSize)};color:#\(bodyColourHex);} "
         return returnStyleString
     }
+    
     
     /**
      Determine whether the host Mac is in light mode.
