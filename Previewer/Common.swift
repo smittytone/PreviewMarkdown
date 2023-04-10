@@ -140,7 +140,15 @@ class Common: NSObject {
                     bodyFont = NSFont.systemFont(ofSize: self.fontSize)
                 }
                 
-                if let mdjs: Markdowner = Markdowner.init(bodyFont, setMarkdownStyles(isThumbnail: isThumbnail)) {
+                var codeFont: NSFont
+                if let otherFont: NSFont = NSFont.init(name: self.codeFontName, size: self.fontSize) {
+                    codeFont = otherFont
+                } else {
+                    // This should not be hit, but just in case...
+                    codeFont = NSFont.systemFont(ofSize: self.fontSize)
+                }
+                
+                if let mdjs: Markdowner = Markdowner.init(bodyFont, codeFont, setMarkdownStyles(isThumbnail: isThumbnail)) {
                     self.mdjs = mdjs
                     // mdjs.styleString = setMarkdownStyles(isThumbnail: isThumbnail)
                 } else {
@@ -151,7 +159,7 @@ class Common: NSObject {
             }
             
             if output.length == 0 {
-                if let attStr: NSAttributedString = self.mdjs!.render(markdownString) {
+                if let attStr: NSAttributedString = self.mdjs!.render(markdownString, doAltRender: true) {
                     output = NSMutableAttributedString.init(attributedString: attStr)
                 } else {
                     output = NSMutableAttributedString.init(string: "Could not render markdown string",
@@ -669,41 +677,58 @@ class Common: NSObject {
     }
     
     
-    func setMarkdownStyles(isThumbnail: Bool = false) -> String {
+    func setMarkdownStyles(isThumbnail: Bool = false) -> ThemeStringDict {
         
-        // Handle system font names, which don't play well in HTML
-        var font: NSFont
-        if let otherFont = NSFont.init(name: self.bodyFontName, size: self.fontSize) {
-            font = otherFont
-        } else {
-            // This should not be hit, but just in case...
-            font = NSFont.systemFont(ofSize: self.fontSize)
-        }
+        let baseFontName: String = self.bodyFontName
+        let baseColourHex = (isMacInLightMode() ? "000000" : "ffffff")
         
-        let baseFontName: String = font.fontName
+        var styleDict: ThemeStringDict!
+        styleDict = ["base": ["name": "\(baseFontName)",
+                              "size": self.fontSize,
+                              "color": "#\(baseColourHex)"]]
+    
+        styleDict["h1"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 2.0,
+                           "color": "#\(self.headColourHex)"]
+        styleDict["h2"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 1.6,
+                           "color": "#\(self.headColourHex)"]
+        styleDict["h3"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 1.4,
+                           "color": "#\(self.headColourHex)"]
+        styleDict["h4"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 1.2,
+                           "color": "#\(self.headColourHex)"]
+        styleDict["h5"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 1.1,
+                           "color": "#\(self.headColourHex)"]
+        styleDict["h6"] = ["name": "\(baseFontName)",
+                           "size": self.fontSize * 1.05,
+                           "color": "#\(self.headColourHex)"]
         
-        var returnStyleString: String = ""
-        // Body
-        let bodyColourHex = (isMacInLightMode() ? "000000" : "ffffff")
-        returnStyleString += "body {color:#\(bodyColourHex)} "
-        // Headings
-        returnStyleString += "h1 {font-family:\(baseFontName);font-size:\(self.fontSize * 2.0);color:#\(self.headColourHex);margin-top:1em} "
-        returnStyleString += "h2 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.6);color:#\(self.headColourHex);margin-top:1em} "
-        returnStyleString += "h3 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.4);color:#\(self.headColourHex);margin-top:1em} "
-        returnStyleString += "h4 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.2);color:#\(self.headColourHex);margin-top:1em} "
-        returnStyleString += "h5 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.1);color:#\(self.headColourHex);margin-top:1em} "
-        returnStyleString += "h6 {font-family:\(baseFontName);font-size:\(self.fontSize * 1.05);margin-top:0.8rem} "
-        // Para
-        returnStyleString += "p {font-family:\(baseFontName);font-size:\(self.fontSize)};color:#\(bodyColourHex)} "
-        // Code
-        returnStyleString += "code {font-family:\(self.codeFontName);font-size:\(self.fontSize);color:#\(self.codeColourHex)} "
-        // Links
-        returnStyleString += "a {color:#\(self.linkColourHex)} "
-        // Lists
-        returnStyleString += "ul {color:#\(bodyColourHex);margin-left:1.25em;padding-left:1.25em;} "
-        returnStyleString += "ol {color:#\(bodyColourHex)} "
-        returnStyleString += "li {font-family:\(baseFontName);font-size:\(self.fontSize)};color:#\(bodyColourHex);} "
-        return returnStyleString
+        styleDict["p"] = styleDict["base"]
+        
+        styleDict["a"] = ["name": "\(baseFontName)",
+                          "size": self.fontSize,
+                          "color": "#\(self.linkColourHex)"]
+        
+        styleDict["strong"] = ["name": "\(baseFontName)",
+                               "size": self.fontSize,
+                               "color": "#\(baseColourHex)",
+                               "style": "strong"]
+        styleDict["em"]     = ["name": "\(baseFontName)",
+                               "size": self.fontSize,
+                               "color": "#\(baseColourHex)",
+                               "style": "em"]
+        
+        styleDict["li"] = styleDict["base"]
+        
+        styleDict["code"] = ["name": "\(self.codeFontName)",
+                             "size": self.fontSize,
+                             "color": "#\(self.codeColourHex)"]
+        
+        
+        return styleDict
     }
     
     

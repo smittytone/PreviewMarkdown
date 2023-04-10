@@ -12,8 +12,17 @@ import JavaScriptCore
 import AppKit
 
 
-private typealias ThemeAttrDict       = [String: [AnyHashable: AnyObject]]
-private typealias ThemeStringDict = [String: [String: String]]
+typealias ThemeAttrDict   = [String: [NSAttributedString.Key: AnyObject]]
+public typealias ThemeStringDict = [String: [String: Any]]
+
+
+class StylingInformation {
+    
+    var currentIndent: Int = 0
+    var currentListType: Int = 0
+    var currentListCountIndex: Int = 0
+    var currentListCounts: [Int] = []
+}
 
 
 public class Markdowner {
@@ -28,6 +37,8 @@ public class Markdowner {
     var boldFont: NSFont!
     var italicFont: NSFont!
     var codeFont: NSFont!
+    var headFont: NSFont!
+    var insetFont: NSFont!
     
     // MARK: - Private Properties
     
@@ -35,13 +46,15 @@ public class Markdowner {
     private let bundle: Bundle
     
     private let htmlStart: String = "<"
-    private let spanStart: String = "span class=\""
-    private let spanStartClose: String = "\">"
-    private let spanEnd: String = "/span>"
+    private let htmlEnd: String = ">"
+    private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li"]
+    private let bullets: [String] = ["•", "°", "∆", "†"]
+    
     private let htmlEscape: NSRegularExpression = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
     
-    private var themeAttrDict : ThemeAttrDict!
-    private var strippedTheme : ThemeStringDict!
+    private var themeAttrDict: ThemeAttrDict!
+    private var strippedTheme: ThemeStringDict!
+    
     
     
     // MARK: - Constructor
@@ -51,7 +64,7 @@ public class Markdowner {
      
      - returns: `nil` on failure to load or evaluate `markdownit.min.js`.
     */
-    public init?(_ mainFont: NSFont, _ codeFont: NSFont, _ styleString: String) {
+    public init?(_ mainFont: NSFont, _ codeFont: NSFont, _ styles: ThemeStringDict) {
         
         // Get the file's bundle based on how it's
         // being included in the host app
@@ -78,7 +91,7 @@ public class Markdowner {
         setFonts(mainFont, codeFont)
         
         // Generate and store the theme variants
-        self.strippedTheme = stripTheme("default")
+        self.strippedTheme = styles
         self.themeAttrDict = strippedThemeToTheme(self.strippedTheme)
     }
     
@@ -111,6 +124,7 @@ public class Markdowner {
         
         if doAltRender {
             // Use fast rendering -- not yet implemented
+            //return NSAttributedString.init(string: renderedHTMLString)
             return processHTMLString(renderedHTMLString)
         } else {
             // Add the HTML styling
@@ -147,97 +161,145 @@ public class Markdowner {
     */
     private func processHTMLString(_ htmlString: String) -> NSAttributedString? {
 
+        let si: StylingInformation = StylingInformation()
+        var doAddBullet: Bool = false
+        
         let scanner: Scanner = Scanner(string: htmlString)
         scanner.charactersToBeSkipped = nil
         
         var scannedString: NSString? = nil
-        let resultString: NSMutableAttributedString = NSMutableAttributedString(string: "")
-        var propertiesStack: [String] = ["body"]
+        let resultString: NSMutableAttributedString = NSMutableAttributedString(string: "",
+                                                                                attributes: self.themeAttrDict["base"])
+        var propertiesStack: [String] = ["base"]
 
         while !scanner.isAtEnd {
             var ended: Bool = false
             
-            if let preString: String = scanner.scanUpToString(self.htmlStart) {
-                scannedString = preString as NSString
+            if let contentString: String = scanner.scanUpToString(self.htmlStart) {
+                scannedString = contentString as NSString
                 ended = scanner.isAtEnd
             }
             
-            /*
-            if scanner.scanUpTo(self.htmlStart,
-                                into: &scannedString) {
-                ended = scanner.isAtEnd
-            }
-             */
-            
+            // We have content to style, so do so
             if scannedString != nil && scannedString!.length > 0 {
-                let attrScannedString: NSAttributedString = applyStyleToString(scannedString! as String,
-                                                                               styleList: propertiesStack)
+                
+                if doAddBullet {
+                    doAddBullet = false
+                    
+                    var spacer: String = String.init(repeating: " ", count: si.currentIndent * 4)
+                    if si.currentListType == 1 {
+                        spacer += self.bullets[si.currentIndent - 1] + " "
+                    } else if si.currentListType == 2 {
+                        spacer += "\(si.currentListCounts[si.currentListCountIndex]). "
+                    }
+                    
+                    let style = self.themeAttrDict["base"]!
+                    let insetString = NSAttributedString.init(string: spacer, attributes: [.font: self.insetFont!,
+                                                                                           .foregroundColor: style[.foregroundColor]!])
+                    resultString.append(insetString)
+                }
+                
+                let attrScannedString: NSAttributedString = applyStyleToString((scannedString! as String),
+                                                                               propertiesStack,
+                                                                               si)
                 resultString.append(attrScannedString)
-
+                
                 if ended {
                     continue
                 }
             }
-
-            //scanner.scanLocation += 1
+            
+            // Step over the `<`
             scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-
+            
+            // Get the first character of the tag
             let string: NSString = scanner.string as NSString
             let idx: Int = scanner.currentIndex.utf16Offset(in: htmlString)
             let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
             
-            if let tagString: String = scanner.scanUpToString(">") {
-                ended = scanner.isAtEnd
-                switch tagString {
-                    case "h1":
-                        propertiesStack = ["h1"]
-                    case "h2":
-                        propertiesStack = ["h2"]
-                    case "h3":
-                        propertiesStack = ["h3"]
-                    case "h4":
-                        propertiesStack = ["h4"]
-                    case "h5":
-                        propertiesStack = ["h5"]
-                    case "h6":
-                        propertiesStack = ["h6"]
-                    case "p":
-                        propertiesStack = ["p"]
-                    default:
-                        propertiesStack = ["body"]
-                }
-            }
-            
-            
-            
-            if nextChar == "s" {
-                if let _: String = scanner.scanUpToString(self.spanStart) {
-                    if let spanString: String = scanner.scanUpToString(self.spanStartClose) {
-                        scannedString = spanString as NSString
-                    }
-                }
-                
-                /*
-                scanner.scanLocation += (self.spanStart as NSString).length // 12 chars
-                scanner.scanUpTo(self.spanStartClose, into:&scannedString)
-                scanner.scanLocation += (self.spanStartClose as NSString).length // 2 chars
-                 */
-                
-                propertiesStack.append(scannedString! as String)
-            } else if nextChar == "/" {
-                if let _: String = scanner.scanUpToString(self.spanEnd) {
-                    propertiesStack.removeLast()
-                }
-                
-                //scanner.scanLocation += (self.spanEnd as NSString).length
-                //propertiesStack.removeLast()
-            } else {
-                let attrScannedString: NSAttributedString = applyStyleToString("<", styleList: propertiesStack)
-                resultString.append(attrScannedString)
+            if nextChar == "/" {
+                // Found a close tag, so remove last attribute
+                // Step over the `/`
                 scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-                //scanner.scanLocation += 1
+                
+                // Get the remainder of the tag up to `>`
+                if let closeTag: String = scanner.scanUpToString(self.htmlEnd) {
+                    // Closing a list? Then reduce the current indent
+                    if closeTag == "ul" || closeTag == "ol"{
+                        si.currentIndent -= 1
+                        si.currentListCountIndex -= 1
+                        
+                        if si.currentIndent <= 0 {
+                            si.currentIndent = 0
+                            si.currentListType = 0
+                        }
+                    }
+                    
+                    // Step over the final `>`
+                    scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                    
+                    // Remove the last style, as set by the opening tag
+                    if propertiesStack.count > 1 {
+                        propertiesStack.removeLast()
+                    }
+                    
+                    // Write out the close tag for now
+                    // Write out the tag for now
+                    /*
+                    let attrScannedString: NSAttributedString = applyStyleToString("[/\(closeTag)]",
+                                                                                       ["base"],
+                                                                                       StylingInformation())
+                    resultString.append(attrScannedString)
+                    */
+                }
+            } else {
+                // We're opening a new tag, so get it up to the `>`
+                if let tagString: String = scanner.scanUpToString(self.htmlEnd) {
+                    var useTag: String = tagString
+                    
+                    // Opening a list? Then increment the current indent
+                    if tagString == "ul" {
+                        si.currentIndent += 1
+                        si.currentListType = 1
+                    }
+                    
+                    if tagString == "ol" {
+                        si.currentIndent += 1
+                        si.currentListType = 2
+                        si.currentListCountIndex += 1
+                        si.currentListCounts.append(1)
+                    }
+                    
+                    if tagString == "li" && si.currentListType == 2 {
+                        si.currentListCounts[si.currentListCountIndex] += 1
+                    }
+                    
+                    if tagString == "li" {
+                        useTag = "p"
+                        doAddBullet = true
+                    }
+                    
+                    if self.tags.contains(tagString) {
+                        // The tag is one we look for
+                        // Add the tag to the list of properties
+                        propertiesStack.append(useTag)
+                        
+                        // Write out the tag for now
+                        /*
+                        let attrScannedString: NSAttributedString = applyStyleToString("[\(tagString)]",
+                                                                                       ["base"],
+                                                                                       StylingInformation())
+                        resultString.append(attrScannedString)
+                         */
+                    }
+                    
+                    // Step over the final `>`
+                    scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                    
+                    
+                }
             }
-
+            
             scannedString = nil
         }
 
@@ -268,37 +330,40 @@ public class Markdowner {
     
      - Returns: The styled text as an NSAttributedString.
    */
-   internal func applyStyleToString(_ string: String, styleList: [String]) -> NSAttributedString {
+    internal func applyStyleToString(_ string: String, _ styleList: [String], _ details: StylingInformation) -> NSAttributedString {
        
-       let returnString: NSAttributedString
+        var returnString: NSMutableAttributedString? = nil
        
-       let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-       spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-       spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
+        let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
+        spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
+        spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
        
-       if styleList.count > 0 {
-           // Build the attributes from the style list, including the font
-           var attrs = [NSAttributedString.Key: Any]()
-           attrs[.font] = self.plainFont
-           attrs[.paragraphStyle] = spacedParaStyle
+        if styleList.count > 0 {
+            // Build the attributes from the style list, including the font
+            var attrs = [NSAttributedString.Key: Any]()
+            var useStyle = ""
            
-           for style in styleList {
-               if let themeStyle = self.themeAttrDict[style] as? [NSAttributedString.Key: Any] {
-                   for (attrName, attrValue) in themeStyle {
-                       attrs.updateValue(attrValue, forKey: attrName)
-                   }
-               }
-           }
+            //attrs[.font] = self.plainFont
+            attrs[.paragraphStyle] = spacedParaStyle
+            
+            for style in styleList {
+                if let tagStyle = self.themeAttrDict[style] {
+                    for (attrName, attrValue) in tagStyle {
+                        attrs.updateValue(attrValue, forKey: attrName)
+                    }
+                }
+            }
+            
+            returnString = NSMutableAttributedString(string: string,
+                                                     attributes: attrs)
+        } else {
+            // No specified attributes? Just set the font
+            returnString = NSMutableAttributedString(string: string,
+                                                     attributes:[.font: self.plainFont as Any,
+                                                                 .paragraphStyle: spacedParaStyle])
+        }
 
-           returnString = NSAttributedString(string: string, attributes:attrs)
-       } else {
-           // No specified attributes? Just set the font
-           returnString = NSAttributedString(string: string,
-                                             attributes:[.font: self.plainFont as Any,
-                                                         .paragraphStyle: spacedParaStyle])
-       }
-
-       return returnString
+        return returnString! as NSAttributedString
     }
     
     
@@ -330,10 +395,8 @@ public class Markdowner {
         }
         
         self.codeFont = aCodeFont
-
-        if (self.themeAttrDict != nil) {
-            self.themeAttrDict = strippedThemeToTheme(self.strippedTheme)
-        }
+        self.headFont = NSFont.init(name: mainfont.familyName!, size: mainfont.pointSize * 2.0)
+        self.insetFont = NSFont.monospacedSystemFont(ofSize: mainfont.pointSize, weight: .regular)
     }
     
     
@@ -347,27 +410,42 @@ public class Markdowner {
     */
     private func strippedThemeToTheme(_ themeStringDict: ThemeStringDict) -> ThemeAttrDict {
 
-        var returnTheme = ThemeAttrDict()
-        for (className, props) in themeStringDict {
-            var keyProps = [NSAttributedString.Key: AnyObject]()
-            for (key, prop) in props {
+        var returnTheme: ThemeAttrDict = ThemeAttrDict()
+         
+        for (styleName, properties) in themeStringDict {
+            
+            // Cumulative values
+            var fontSize: CGFloat = 14.0
+            var fontName: String = ""
+            var fontStyle: String = ""
+            var doRenderFont: Bool = false
+            
+            var keyProperties: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key: AnyObject]()
+            
+            for (key, property) in properties {
                 switch key {
+                    case "name":
+                        fontName = property as! String
+                        doRenderFont = true
+                    case "size":
+                        fontSize = property as! CGFloat
+                        doRenderFont = true
+                    case "style":
+                        doRenderFont = true
+                        fontStyle = property as! String
                     case "color":
-                        keyProps[attributeForCSSKey(key)] = colourFromHexString(prop)
-                    case "font-style":
-                        keyProps[attributeForCSSKey(key)] = fontForCSSStyle(prop)
-                    case "font-weight":
-                        keyProps[attributeForCSSKey(key)] = fontForCSSStyle(prop)
-                    case "background-color":
-                        keyProps[attributeForCSSKey(key)] = colourFromHexString(prop)
+                        keyProperties[.foregroundColor] = colourFromHexString(property as! String)
                     default:
                         break
                 }
             }
+            
+            if doRenderFont {
+                keyProperties[.font] = fontForCSSStyle(fontName, fontStyle, fontSize)
+            }
 
-            if keyProps.count > 0 {
-                let key: String = className.replacingOccurrences(of: ".", with: "")
-                returnTheme[key] = keyProps
+            if keyProperties.count > 0 {
+                returnTheme[styleName] = keyProperties
             }
         }
 
@@ -383,16 +461,30 @@ public class Markdowner {
      
      - Returns: An NSFont.
     */
-    internal func fontForCSSStyle(_ fontStyle: String) -> NSFont {
+    internal func fontForCSSStyle(_ fontName: String, _ fontStyle: String, _ size: CGFloat) -> NSFont {
         
+        var descriptor: NSFontDescriptor = NSFontDescriptor.init(fontAttributes: [.name: fontName,
+                                                                                  .size: size])
         switch fontStyle {
-            case "bold", "bolder", "600", "700", "800", "900":
-                return self.boldFont
-            case "italic", "oblique":
-                return self.italicFont
+            case "strong":
+                descriptor = descriptor.withFace("Bold")
+            case "em":
+                descriptor = descriptor.withFace("Italic")
+            case "plain":
+                descriptor = descriptor.withFace("Regular")
             default:
-                return self.plainFont
+                break
         }
+        
+        var useFont: NSFont!
+        if let aFont: NSFont = NSFont.init(descriptor: descriptor, size: size) {
+            useFont = aFont
+        } else {
+            useFont = NSFont.systemFont(ofSize: size,
+                                        weight: fontStyle == "strong" ? .bold : .regular)
+        }
+        
+        return useFont
     }
 
     
@@ -409,10 +501,6 @@ public class Markdowner {
         switch key {
         case "color":
             return .foregroundColor
-        case "font-weight":
-            return .font
-        case "font-style":
-            return .font
         case "background-color":
             return .backgroundColor
         default:
@@ -524,6 +612,9 @@ public class Markdowner {
         /* DEFAULT THEME
          
          .hljs{display:block;overflow-x:auto;padding:.5em;background:#f0f0f0}.hljs,.hljs-subst{color:#444}.hljs-comment{color:#888}.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta-keyword,.hljs-name,.hljs-selector-tag{font-weight:700}.hljs-deletion,.hljs-number,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}.hljs-section,.hljs-title{color:#800;font-weight:700}.hljs-link,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#bc6060}.hljs-literal{color:#78a960}.hljs-addition,.hljs-built_in,.hljs-bullet,.hljs-code{color:#397300}.hljs-meta{color:#1f7199}.hljs-meta-string{color:#4d99bf}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
+        
+         
+        h1 {font-family:\(baseFontName);font-size:\(self.fontSize * 2.0);color:#\(self.headColourHex);margin-top:1em} "
          
          */
         
