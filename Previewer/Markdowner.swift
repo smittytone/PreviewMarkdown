@@ -33,7 +33,13 @@ public class Markdowner {
     var lineSpacing: CGFloat = 0.0
     var paraSpacing: CGFloat = 0.0
     var fontSize: CGFloat = 14.0
-    
+    var fontFamily: PMFont!
+    var bodyFontName: String = ""
+    var codeFontName: String = ""
+    var styles: ThemeStringDict!
+    private var attributes: ThemeAttrDict!
+    private var underlineItalics: Bool = false
+    private var backgroundBold: Bool = false
     
     // MARK: - Private Properties
     
@@ -45,8 +51,6 @@ public class Markdowner {
     private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li"]
     private let bullets: [String] = ["•", "›", "»", "†"]
     private let htmlEscape: NSRegularExpression = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
-    
-    private var themeAttrDict: ThemeAttrDict!
     
     private var spacedParaStyle: NSMutableParagraphStyle!
     private var insetFont: NSFont!
@@ -60,7 +64,7 @@ public class Markdowner {
      
      - returns: `nil` on failure to load or evaluate `markdownit.min.js`.
     */
-    public init?(_ mainFontName: String, _ codeFontName: String, _ styles: ThemeStringDict) {
+    public init?() {
         
         // Get the file's bundle based on how it's
         // being included in the host app
@@ -82,13 +86,6 @@ public class Markdowner {
         // Store the results for later
         self.mdjs = mdjs.construct(withArguments: ["default"])
         self.bundle = bundle
-        
-        // Generate and store the theme variants
-        self.themeAttrDict = strippedThemeToTheme(styles)
-        
-        // Apply the font choice
-        setFonts(mainFontName, codeFontName)
-
     }
     
     
@@ -105,6 +102,12 @@ public class Markdowner {
     */
     open func render(_ markdownString: String, doAltRender: Bool = false) -> NSAttributedString? {
 
+        // Generate and store the theme variants
+        self.attributes = processStyles(self.styles)
+        
+        // Apply the font choice
+        setFonts()
+        
         // NOTE Will return 'undefined' (trapped below) if it's a unknown language
         let returnValue: JSValue = mdjs.invokeMethod("render", withArguments: [markdownString])
         var renderedHTMLString: String = returnValue.toString()
@@ -165,7 +168,7 @@ public class Markdowner {
         
         var scannedString: NSString? = nil
         let resultString: NSMutableAttributedString = NSMutableAttributedString(string: "",
-                                                                                attributes: self.themeAttrDict["base"])
+                                                                                attributes: self.attributes["base"])
         var propertiesStack: [String] = ["base"]
 
         while !scanner.isAtEnd {
@@ -189,7 +192,7 @@ public class Markdowner {
                         spacer += "\(si.currentListCounts[si.currentListCountIndex]). "
                     }
                     
-                    let style = self.themeAttrDict["base"]!
+                    let style = self.attributes["base"]!
                     let insetString = NSAttributedString.init(string: spacer, attributes: [.font: self.insetFont!,
                                                                                            .foregroundColor: style[.foregroundColor]!,
                                                                                            .paragraphStyle: self.spacedParaStyle!])
@@ -349,7 +352,7 @@ public class Markdowner {
             // Build the attributes from the style list, including the font
             var attrs = [NSAttributedString.Key: Any]()
             for style in styleList {
-                if let tagStyle = self.themeAttrDict[style] {
+                if let tagStyle = self.attributes[style] {
                     for (attrName, attrValue) in tagStyle {
                         attrs.updateValue(attrValue, forKey: attrName)
                     }
@@ -369,14 +372,14 @@ public class Markdowner {
     }
     
     
-    func setFonts(_ baseFontName: String, _ codeFontName: String) {
+    func setFonts() {
 
         // Set up the standard para spacing
         self.spacedParaStyle = NSMutableParagraphStyle()
         self.spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
         self.spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
          
-        self.plainFont = NSFont(name: baseFontName, size: self.fontSize)
+        self.plainFont = NSFont(name: self.bodyFontName, size: self.fontSize)
         if self.plainFont == nil {
             self.plainFont = NSFont.systemFont(ofSize: self.fontSize)
         }
@@ -387,14 +390,14 @@ public class Markdowner {
     
     
     /**
-     Convert am instance's string dictionary to a base dictionary.
+     Convert an instance's string dictionary to a base dictionary.
         
      - Parameters:
         - themeStringDict: The dictionary of styles and values.
      
      - Returns: The base dictionary.
     */
-    private func strippedThemeToTheme(_ themeStringDict: ThemeStringDict) -> ThemeAttrDict {
+    private func processStyles(_ themeStringDict: ThemeStringDict) -> ThemeAttrDict {
 
         var returnTheme: ThemeAttrDict = ThemeAttrDict()
         
@@ -432,7 +435,17 @@ public class Markdowner {
             }
             
             if doRenderFont {
-                keyProperties[.font] = fontForCSSStyle(fontName, fontStyle, fontSize)
+                keyProperties[.font] = fontForStyle(fontName, fontStyle, fontSize)
+                
+                // Handle styles not supported by font variants
+                if (fontStyle == "italic" && self.underlineItalics) {
+                    keyProperties[.underlineColor] = NSColor.red
+                    //keyProperties[.underlineStyle] = NSUnderlineStyle.patternDot as AnyObject
+                }
+                
+                if (fontStyle == "bold" && self.backgroundBold) {
+                    keyProperties[.backgroundColor] = NSColor.darkGray
+                }
             }
 
             if keyProperties.count > 0 {
@@ -452,65 +465,54 @@ public class Markdowner {
      
      - Returns: An NSFont.
     */
-    internal func fontForCSSStyle(_ fontName: String, _ fontStyle: String, _ size: CGFloat) -> NSFont {
+    internal func fontForStyle(_ fontName: String, _ fontStyle: String, _ size: CGFloat) -> NSFont {
         
-        var descriptor: NSFontDescriptor = NSFontDescriptor.init(fontAttributes: [.name: fontName,
-                                                                                  .size: size])
         switch fontStyle {
             case "bold":
-                descriptor = descriptor.addingAttributes([.face: "Bold"])
-                var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                var descriptor: NSFontDescriptor = NSFontDescriptor.init(fontAttributes: [.family: self.fontFamily.displayName,
+                                                                                          .size: size])
                 
-                if aFont == nil {
-                    descriptor = descriptor.addingAttributes([.face: "Medium"])
-                    aFont = NSFont.init(descriptor: descriptor, size: size)
+                for faceName: String in ["Bold", "Black", "Heavy", "Medium"] {
+                    descriptor = descriptor.addingAttributes([.face: faceName])
+                    var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                    if aFont != nil {
+                        return aFont!
+                    }
                 }
                 
-                if aFont == nil {
-                    descriptor = descriptor.addingAttributes([.face: "Heavy"])
-                    aFont = NSFont.init(descriptor: descriptor, size: size)
-                }
+                self.backgroundBold = true
+                return NSFont.init(name: fontName, size: size)!
                 
-                if aFont == nil {
-                    aFont = NSFont.systemFont(ofSize: size, weight: .regular)
-                }
-                
-                return aFont!
-            
-
             case "italic":
-                descriptor = NSFontDescriptor.init(fontAttributes: [.name: fontName,
-                                                                    .size: size,
-                                                                    .face: "Italic"])
+                var descriptor: NSFontDescriptor = NSFontDescriptor.init(fontAttributes: [.family: self.fontFamily.displayName,
+                                                                                          .size: size])
+                for faceName: String in ["Italic", "Oblique"] {
+                    descriptor = descriptor.addingAttributes([.face: faceName])
+                    var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                    if aFont != nil {
+                        return aFont!
+                    }
+                }
+                
+                self.underlineItalics = true
+                return NSFont.init(name: fontName, size: size)!
+                
             default:
                 break
         }
         
         var useFont: NSFont? = nil
-        if let aFont: NSFont = NSFont.init(descriptor: descriptor, size: size) {
+        if let aFont: NSFont = NSFont.init(name: fontName, size: size) {
             useFont = aFont
-        } else if fontStyle == "bold" {
-            if let aFont: NSFont = NSFont.init(name: fontName, size: size) {
-                useFont = aFont
-            }
         }
         
         if useFont == nil {
-            switch fontStyle {
-                case "bold":
-                    useFont = NSFont.systemFont(ofSize: size, weight: .bold)
-                case "italic":
-                    useFont = NSFont.systemFont(ofSize: size, weight: .light)
-                default:
-                    useFont = NSFont.systemFont(ofSize: size, weight: .regular)
-            }
+            useFont = NSFont.systemFont(ofSize: size, weight: .regular)
         }
         
         return useFont!
     }
 
-    
-    
 
     /**
      Emit a colour object to match a hex string or CSS colour identifiier.

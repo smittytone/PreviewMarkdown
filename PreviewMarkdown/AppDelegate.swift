@@ -585,6 +585,10 @@ final class AppDelegate: NSObject,
                 if psname != self.codeFontName {
                     self.codeFontName = psname
                     defaults.setValue(psname, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
+                    
+                    if let family: PMFont = getFontByPostScriptName(psname) {
+                        defaults.setValue(family, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT)
+                    }
                 }
             }
 
@@ -839,6 +843,13 @@ final class AppDelegate: NSObject,
             if lineSpacingDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
+            }
+            
+            // Record the current font family and available styles
+            let fontFamilyDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT)
+            if fontFamilyDefault == nil {
+                defaults.setValue(PMFont(),
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT)
             }
         }
     }

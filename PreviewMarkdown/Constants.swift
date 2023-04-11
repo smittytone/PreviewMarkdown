@@ -108,6 +108,7 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_CODE_COLOUR          = "com-bps-previewmarkdown-code-colour-hex"
         static let PREVIEW_HEAD_COLOUR          = "com-bps-previewmarkdown-head-colour-hex"
         static let PREVIEW_LINE_SPACE           = "com-bps-previewmarkdown-line-spacing"
+        static let PREVIEW_BODY_FONT            = "com-bps-previewmarkdown-base-font"
         
         static let THUMB_FONT_SIZE              = "com-bps-previewmarkdown-thumb-font-size"
         static let THUMB_SHOW_TAG               = "com-bps-previewmarkdown-do-show-tag"

@@ -46,6 +46,7 @@ class Common: NSObject {
     
     // FROM 1.5.0
     private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var fontFamily: PMFont = PMFont()
     private let useMDJS: Bool         = true
     private var mdjs: Markdowner?     = nil
 
@@ -75,6 +76,7 @@ class Common: NSObject {
             
             // FROM 1.5.0
             self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+            self.fontFamily    = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT) as! PMFont
         }
         
         // Just in case the above block reads in zero values
@@ -132,12 +134,14 @@ class Common: NSObject {
         if !isThumbnail && useMDJS {
             // Only use MakdownIt if enabled, and we're not rendering a thumbnail
             if self.mdjs == nil {
-                if let mdjs: Markdowner = Markdowner.init(self.bodyFontName,
-                                                          self.codeFontName,
-                                                          setMarkdownStyles(isThumbnail: isThumbnail)) {
+                if let mdjs: Markdowner = Markdowner.init() {
                     self.mdjs = mdjs
                     mdjs.fontSize = self.fontSize
                     mdjs.lineSpacing = self.lineSpacing
+                    mdjs.fontFamily = self.fontFamily
+                    mdjs.bodyFontName = self.bodyFontName
+                    mdjs.codeFontName = self.codeFontName
+                    mdjs.styles = setMarkdownStyles(isThumbnail: isThumbnail)
                 } else {
                     // Missing JS code file or other init error
                     output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",

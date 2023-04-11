@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3B04F70725B6FC170024F39C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
+		3B0C333929E60802007FD738 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3B0C333A29E60803007FD738 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
 		3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
 		3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
 		3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
@@ -497,6 +499,7 @@
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
 				3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */,
 				3BD85BC929DDF85D00F66539 /* HTMLUtils.swift in Sources */,
+				3B0C333A29E60803007FD738 /* PMFont.swift in Sources */,
 				3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B3EE36B29DD688D00C8662C /* Markdowner.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
@@ -511,6 +514,7 @@
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
 				3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */,
 				3BD85BCA29DDF85D00F66539 /* HTMLUtils.swift in Sources */,
+				3B0C333929E60802007FD738 /* PMFont.swift in Sources */,
 				3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B3EE36D29DD6D6A00C8662C /* Markdowner.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,

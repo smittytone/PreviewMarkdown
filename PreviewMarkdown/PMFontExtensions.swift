@@ -171,7 +171,30 @@ extension AppDelegate {
             targetPopup.selectItem(at: 0);
         }
     }
+    
+    
+    /**
+     Get the currently selected font/style's family backing.
+     FROM 1.5.0
 
+     - Parameters:
+        - postScriptName: The PostScript name of the font.
+     */
+    internal func getFontByPostScriptName(_ postScriptName: String) -> PMFont? {
+
+        for family: PMFont in self.bodyFonts {
+            if let styles: [PMFont] = family.styles {
+                for style: PMFont in styles {
+                    if style.postScriptName == postScriptName {
+                        return family
+                    }
+                }
+            }
+        }
+        
+        return nil
+    }
+    
 
     /**
      Get the PostScript name from the selected family and style.
