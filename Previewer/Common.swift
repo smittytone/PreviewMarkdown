@@ -132,25 +132,12 @@ class Common: NSObject {
         if !isThumbnail && useMDJS {
             // Only use MakdownIt if enabled, and we're not rendering a thumbnail
             if self.mdjs == nil {
-                var bodyFont: NSFont
-                if let otherFont: NSFont = NSFont.init(name: self.bodyFontName, size: self.fontSize) {
-                    bodyFont = otherFont
-                } else {
-                    // This should not be hit, but just in case...
-                    bodyFont = NSFont.systemFont(ofSize: self.fontSize)
-                }
-                
-                var codeFont: NSFont
-                if let otherFont: NSFont = NSFont.init(name: self.codeFontName, size: self.fontSize) {
-                    codeFont = otherFont
-                } else {
-                    // This should not be hit, but just in case...
-                    codeFont = NSFont.systemFont(ofSize: self.fontSize)
-                }
-                
-                if let mdjs: Markdowner = Markdowner.init(bodyFont, codeFont, setMarkdownStyles(isThumbnail: isThumbnail)) {
+                if let mdjs: Markdowner = Markdowner.init(self.bodyFontName,
+                                                          self.codeFontName,
+                                                          setMarkdownStyles(isThumbnail: isThumbnail)) {
                     self.mdjs = mdjs
-                    // mdjs.styleString = setMarkdownStyles(isThumbnail: isThumbnail)
+                    mdjs.fontSize = self.fontSize
+                    mdjs.lineSpacing = self.lineSpacing
                 } else {
                     // Missing JS code file or other init error
                     output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
@@ -715,11 +702,11 @@ class Common: NSObject {
         styleDict["strong"] = ["name": "\(baseFontName)",
                                "size": self.fontSize,
                                "color": "#\(baseColourHex)",
-                               "style": "strong"]
+                               "style": "bold"]
         styleDict["em"]     = ["name": "\(baseFontName)",
                                "size": self.fontSize,
                                "color": "#\(baseColourHex)",
-                               "style": "em"]
+                               "style": "italic"]
         
         styleDict["li"] = styleDict["base"]
         

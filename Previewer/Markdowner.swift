@@ -32,13 +32,8 @@ public class Markdowner {
     var styleString: String = "body {font-family:sans-serif;cursor:default;}"
     var lineSpacing: CGFloat = 0.0
     var paraSpacing: CGFloat = 0.0
+    var fontSize: CGFloat = 14.0
     
-    var plainFont: NSFont!
-    var boldFont: NSFont!
-    var italicFont: NSFont!
-    var codeFont: NSFont!
-    var headFont: NSFont!
-    var insetFont: NSFont!
     
     // MARK: - Private Properties
     
@@ -48,13 +43,14 @@ public class Markdowner {
     private let htmlStart: String = "<"
     private let htmlEnd: String = ">"
     private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li"]
-    private let bullets: [String] = ["•", "°", "∆", "†"]
-    
+    private let bullets: [String] = ["•", "›", "»", "†"]
     private let htmlEscape: NSRegularExpression = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
     
     private var themeAttrDict: ThemeAttrDict!
-    private var strippedTheme: ThemeStringDict!
     
+    private var spacedParaStyle: NSMutableParagraphStyle!
+    private var insetFont: NSFont!
+    private var plainFont: NSFont!
     
     
     // MARK: - Constructor
@@ -64,7 +60,7 @@ public class Markdowner {
      
      - returns: `nil` on failure to load or evaluate `markdownit.min.js`.
     */
-    public init?(_ mainFont: NSFont, _ codeFont: NSFont, _ styles: ThemeStringDict) {
+    public init?(_ mainFontName: String, _ codeFontName: String, _ styles: ThemeStringDict) {
         
         // Get the file's bundle based on how it's
         // being included in the host app
@@ -87,12 +83,12 @@ public class Markdowner {
         self.mdjs = mdjs.construct(withArguments: ["default"])
         self.bundle = bundle
         
-        // Apply the font choice
-        setFonts(mainFont, codeFont)
-        
         // Generate and store the theme variants
-        self.strippedTheme = styles
-        self.themeAttrDict = strippedThemeToTheme(self.strippedTheme)
+        self.themeAttrDict = strippedThemeToTheme(styles)
+        
+        // Apply the font choice
+        setFonts(mainFontName, codeFontName)
+
     }
     
     
@@ -195,7 +191,8 @@ public class Markdowner {
                     
                     let style = self.themeAttrDict["base"]!
                     let insetString = NSAttributedString.init(string: spacer, attributes: [.font: self.insetFont!,
-                                                                                           .foregroundColor: style[.foregroundColor]!])
+                                                                                           .foregroundColor: style[.foregroundColor]!,
+                                                                                           .paragraphStyle: self.spacedParaStyle!])
                     resultString.append(insetString)
                 }
                 
@@ -233,6 +230,15 @@ public class Markdowner {
                             si.currentIndent = 0
                             si.currentListType = 0
                         }
+                        
+                        // Remove the following CR
+                        let _: String? = scanner.scanUpToString("\n")
+                        
+                        // Remove the next tag's CR
+                        if (si.currentIndent != 0) {
+                            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                            let _: String? = scanner.scanUpToString("\n")
+                        }
                     }
                     
                     // Step over the final `>`
@@ -256,11 +262,13 @@ public class Markdowner {
                 // We're opening a new tag, so get it up to the `>`
                 if let tagString: String = scanner.scanUpToString(self.htmlEnd) {
                     var useTag: String = tagString
+                    var doSkipCR: Bool = false
                     
                     // Opening a list? Then increment the current indent
                     if tagString == "ul" {
                         si.currentIndent += 1
                         si.currentListType = 1
+                        doSkipCR = true
                     }
                     
                     if tagString == "ol" {
@@ -268,6 +276,7 @@ public class Markdowner {
                         si.currentListType = 2
                         si.currentListCountIndex += 1
                         si.currentListCounts.append(1)
+                        doSkipCR = true
                     }
                     
                     if tagString == "li" && si.currentListType == 2 {
@@ -293,10 +302,12 @@ public class Markdowner {
                          */
                     }
                     
+                    if doSkipCR {
+                        let _: String? = scanner.scanUpToString("\n")
+                    }
+                    
                     // Step over the final `>`
                     scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-                    
-                    
                 }
             }
             
@@ -334,18 +345,9 @@ public class Markdowner {
        
         var returnString: NSMutableAttributedString? = nil
        
-        let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-        spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
-       
         if styleList.count > 0 {
             // Build the attributes from the style list, including the font
             var attrs = [NSAttributedString.Key: Any]()
-            var useStyle = ""
-           
-            //attrs[.font] = self.plainFont
-            attrs[.paragraphStyle] = spacedParaStyle
-            
             for style in styleList {
                 if let tagStyle = self.themeAttrDict[style] {
                     for (attrName, attrValue) in tagStyle {
@@ -360,43 +362,27 @@ public class Markdowner {
             // No specified attributes? Just set the font
             returnString = NSMutableAttributedString(string: string,
                                                      attributes:[.font: self.plainFont as Any,
-                                                                 .paragraphStyle: spacedParaStyle])
+                                                                 .paragraphStyle: self.spacedParaStyle!])
         }
 
         return returnString! as NSAttributedString
     }
     
     
-    func setFonts(_ mainfont: NSFont, _ aCodeFont: NSFont) {
+    func setFonts(_ baseFontName: String, _ codeFontName: String) {
 
-        self.plainFont = mainfont
-        
-        // Generate the bold and italic variants
-        let boldDescriptor    = NSFontDescriptor(fontAttributes: [.family: mainfont.familyName!,
-                                                                  .face: "Bold"])
-        let italicDescriptor  = NSFontDescriptor(fontAttributes: [.family: mainfont.familyName!,
-                                                                  .face: "Italic"])
-        let obliqueDescriptor = NSFontDescriptor(fontAttributes: [.family: mainfont.familyName!,
-                                                                  .face: "Oblique"])
-
-        self.boldFont   = NSFont(descriptor: boldDescriptor,   size: mainfont.pointSize)
-        self.italicFont = NSFont(descriptor: italicDescriptor, size: mainfont.pointSize)
-
-        if (self.italicFont == nil || self.italicFont.familyName != mainfont.familyName) {
-            self.italicFont = NSFont(descriptor: obliqueDescriptor, size: mainfont.pointSize)
-        }
-
-        if (self.italicFont == nil) {
-            self.italicFont = mainfont
-        }
-
-        if (self.boldFont == nil) {
-            self.boldFont = mainfont
+        // Set up the standard para spacing
+        self.spacedParaStyle = NSMutableParagraphStyle()
+        self.spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
+        self.spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
+         
+        self.plainFont = NSFont(name: baseFontName, size: self.fontSize)
+        if self.plainFont == nil {
+            self.plainFont = NSFont.systemFont(ofSize: self.fontSize)
         }
         
-        self.codeFont = aCodeFont
-        self.headFont = NSFont.init(name: mainfont.familyName!, size: mainfont.pointSize * 2.0)
-        self.insetFont = NSFont.monospacedSystemFont(ofSize: mainfont.pointSize, weight: .regular)
+        self.insetFont = NSFont.monospacedSystemFont(ofSize: self.fontSize,
+                                                     weight: .regular)
     }
     
     
@@ -411,16 +397,21 @@ public class Markdowner {
     private func strippedThemeToTheme(_ themeStringDict: ThemeStringDict) -> ThemeAttrDict {
 
         var returnTheme: ThemeAttrDict = ThemeAttrDict()
-         
+        
         for (styleName, properties) in themeStringDict {
+            
+            if styleName == "base" {
+                self.fontSize = properties["size"] as! CGFloat
+            }
             
             // Cumulative values
             var fontSize: CGFloat = 14.0
             var fontName: String = ""
-            var fontStyle: String = ""
+            var fontStyle: String = "plain"
             var doRenderFont: Bool = false
             
             var keyProperties: [NSAttributedString.Key: AnyObject] = [NSAttributedString.Key: AnyObject]()
+            keyProperties[.paragraphStyle] = self.spacedParaStyle
             
             for (key, property) in properties {
                 switch key {
@@ -466,60 +457,63 @@ public class Markdowner {
         var descriptor: NSFontDescriptor = NSFontDescriptor.init(fontAttributes: [.name: fontName,
                                                                                   .size: size])
         switch fontStyle {
-            case "strong":
-                descriptor = descriptor.withFace("Bold")
-            case "em":
-                descriptor = descriptor.withFace("Italic")
-            case "plain":
-                descriptor = descriptor.withFace("Regular")
+            case "bold":
+                descriptor = descriptor.addingAttributes([.face: "Bold"])
+                var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                
+                if aFont == nil {
+                    descriptor = descriptor.addingAttributes([.face: "Medium"])
+                    aFont = NSFont.init(descriptor: descriptor, size: size)
+                }
+                
+                if aFont == nil {
+                    descriptor = descriptor.addingAttributes([.face: "Heavy"])
+                    aFont = NSFont.init(descriptor: descriptor, size: size)
+                }
+                
+                if aFont == nil {
+                    aFont = NSFont.systemFont(ofSize: size, weight: .regular)
+                }
+                
+                return aFont!
+            
+
+            case "italic":
+                descriptor = NSFontDescriptor.init(fontAttributes: [.name: fontName,
+                                                                    .size: size,
+                                                                    .face: "Italic"])
             default:
                 break
         }
         
-        var useFont: NSFont!
+        var useFont: NSFont? = nil
         if let aFont: NSFont = NSFont.init(descriptor: descriptor, size: size) {
             useFont = aFont
-        } else {
-            useFont = NSFont.systemFont(ofSize: size,
-                                        weight: fontStyle == "strong" ? .bold : .regular)
+        } else if fontStyle == "bold" {
+            if let aFont: NSFont = NSFont.init(name: fontName, size: size) {
+                useFont = aFont
+            }
         }
         
-        return useFont
+        if useFont == nil {
+            switch fontStyle {
+                case "bold":
+                    useFont = NSFont.systemFont(ofSize: size, weight: .bold)
+                case "italic":
+                    useFont = NSFont.systemFont(ofSize: size, weight: .light)
+                default:
+                    useFont = NSFont.systemFont(ofSize: size, weight: .regular)
+            }
+        }
+        
+        return useFont!
     }
 
     
-    /**
-     Emit an AttributedString key based on the a style key from a CSS file.
-        
-     - Parameters:
-        - key: The CSS attribute key.
-     
-     - Returns: The NSAttributedString key.
-    */
-    internal func attributeForCSSKey(_ key: String) -> NSAttributedString.Key {
-
-        switch key {
-        case "color":
-            return .foregroundColor
-        case "background-color":
-            return .backgroundColor
-        default:
-            return .font
-        }
-    }
+    
 
     /**
      Emit a colour object to match a hex string or CSS colour identifiier.
-     
-     Identifiers supported:
-     
-     * `white`
-     * `black`
-     * `red`
-     * `green`
-     * `blue`
-     * `navy`
-     * `silver`
      
      Unknown colour identifiers default to grey.
         
@@ -535,25 +529,6 @@ public class Markdowner {
         if (colourString.hasPrefix("#")) {
             // The colour is defined by a hex value
             colourString = (colourString as NSString).substring(from: 1)
-        } else {
-            switch colourString {
-            case "white":
-                return NSColor.init(white: 1.0, alpha: 1.0)
-            case "black":
-                return NSColor.init(white: 0.0, alpha: 1.0)
-            case "red":
-                return NSColor.init(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-            case "green":
-                return NSColor.init(red: 0.0, green: 0.5, blue: 0.0, alpha: 1.0)
-            case "blue":
-                return NSColor.init(red: 0.0, green: 0.0, blue: 1.0, alpha: 1.0)
-            case "navy":
-                return NSColor.init(red: 0.0, green: 0.0, blue: 0.5, alpha: 1.0)
-            case "silver":
-                return NSColor.init(red: 0.75, green: 0.75, blue: 0.75, alpha: 1.0)
-            default:
-                return NSColor.gray
-            }
         }
         
         // Colours in hex strings have 3, 6 or 8 (6 + alpha) values
@@ -596,80 +571,6 @@ public class Markdowner {
         }
 
         return NSColor(red: CGFloat(r) / divisor, green: CGFloat(g) / divisor, blue: CGFloat(b) / divisor, alpha: alpha)
-    }
-    
-    
-    /**
-     Convert a CSS to a string dictionary.
-        
-     - Parameters:
-        - themeString: The theme's CSS string.
-     
-     - Returns: A dictionary of styles and values.
-    */
-    private func stripTheme(_ themeString : String) -> ThemeStringDict {
-        
-        /* DEFAULT THEME
-         
-         .hljs{display:block;overflow-x:auto;padding:.5em;background:#f0f0f0}.hljs,.hljs-subst{color:#444}.hljs-comment{color:#888}.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta-keyword,.hljs-name,.hljs-selector-tag{font-weight:700}.hljs-deletion,.hljs-number,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}.hljs-section,.hljs-title{color:#800;font-weight:700}.hljs-link,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#bc6060}.hljs-literal{color:#78a960}.hljs-addition,.hljs-built_in,.hljs-bullet,.hljs-code{color:#397300}.hljs-meta{color:#1f7199}.hljs-meta-string{color:#4d99bf}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
-        
-         
-        h1 {font-family:\(baseFontName);font-size:\(self.fontSize * 2.0);color:#\(self.headColourHex);margin-top:1em} "
-         
-         */
-        
-        let objcString: NSString = (themeString as NSString)
-        let cssRegex = try! NSRegularExpression(pattern: "(?:(\\.[a-zA-Z0-9\\-_]*(?:[, ]\\.[a-zA-Z0-9\\-_]*)*)\\{([^\\}]*?)\\})",
-                                                options:[.caseInsensitive])
-        let results = cssRegex.matches(in: themeString,
-                                       options: [.reportCompletion],
-                                       range: NSMakeRange(0, objcString.length))
-        var resultDict = [String: [String: String]]()
-
-        for result in results {
-            if result.numberOfRanges == 3 {
-                var attributes = [String: String]()
-                let cssPairs = objcString.substring(with: result.range(at: 2)).components(separatedBy: ";")
-                for pair in cssPairs {
-                    let cssPropComp = pair.components(separatedBy: ":")
-                    if (cssPropComp.count == 2) {
-                        attributes[cssPropComp[0]] = cssPropComp[1]
-                    }
-                }
-
-                if attributes.count > 0 {
-                    // Check if we're adding attributes to an existing hljs key
-                    if resultDict[objcString.substring(with: result.range(at: 1))] != nil {
-                        // We have the key already so merge in the latest attribute dictionary
-                        let existingAttributes: [String: String] = resultDict[objcString.substring(with: result.range(at: 1))]!
-                        resultDict[objcString.substring(with: result.range(at: 1))] = existingAttributes.merging(attributes, uniquingKeysWith: { (first, _) in first })
-                    } else {
-                        // Set the attributes to a new key
-                        resultDict[objcString.substring(with: result.range(at: 1))] = attributes
-                    }
-                }
-            }
-        }
-
-        var returnDict = [String: [String: String]]()
-        for (keys, result) in resultDict {
-            let keyArray = keys.replacingOccurrences(of: " ", with: ",").components(separatedBy: ",")
-            for key in keyArray {
-                var props : [String: String]?
-                props = returnDict[key]
-                if props == nil {
-                    props = [String:String]()
-                }
-
-                for (pName, pValue) in result {
-                    props!.updateValue(pValue, forKey: pName)
-                }
-
-                returnDict[key] = props!
-            }
-        }
-
-        return returnDict
     }
     
     
