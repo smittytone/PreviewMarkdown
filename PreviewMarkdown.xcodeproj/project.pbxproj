@@ -57,6 +57,7 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BBB479629E68E9100416C1C /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB479529E68E9100416C1C /* Styler.swift */; };
 		3BD85BC829DDF85D00F66539 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */; };
 		3BD85BC929DDF85D00F66539 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */; };
 		3BD85BCA29DDF85D00F66539 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */; };
@@ -137,6 +138,7 @@
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3BBB479529E68E9100416C1C /* Styler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styler.swift; sourceTree = "<group>"; };
 		3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLUtils.swift; sourceTree = "<group>"; };
 		3BD959F025B6DA3000FE6260 /* new */ = {isa = PBXFileReference; lastKnownFileType = folder; name = new; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/new"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -260,6 +262,7 @@
 				3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */,
 				3B0E8DCE251B8775001AC5BC /* Common.swift */,
 				3B3EE36A29DD688D00C8662C /* Markdowner.swift */,
+				3BBB479529E68E9100416C1C /* Styler.swift */,
 				3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */,
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
 				3BBAEA34236ADECB009BAA05 /* Info.plist */,
@@ -496,6 +499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BBB479629E68E9100416C1C /* Styler.swift in Sources */,
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
 				3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */,
 				3BD85BC929DDF85D00F66539 /* HTMLUtils.swift in Sources */,
