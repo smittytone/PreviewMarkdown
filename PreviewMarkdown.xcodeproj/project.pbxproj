@@ -45,6 +45,7 @@
 		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B898D9A251DD2D700206BAE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
+		3BAE163A29E6F62500FCB838 /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB479529E68E9100416C1C /* Styler.swift */; };
 		3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE671628D4D09B001532BD /* PMFontExtensions.swift */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
 		3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */; };
@@ -515,6 +516,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAE163A29E6F62500FCB838 /* Styler.swift in Sources */,
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
 				3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */,
 				3BD85BCA29DDF85D00F66539 /* HTMLUtils.swift in Sources */,

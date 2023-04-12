@@ -14,7 +14,7 @@ import Foundation
  Internal font record structure.
  */
 
-struct PMFont {
+struct PMFont: Codable {
 
     var postScriptName: String = ""
     var displayName: String = ""

@@ -76,7 +76,16 @@ class Common: NSObject {
             
             // FROM 1.5.0
             self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
-            self.fontFamily    = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT) as! PMFont
+            
+            let decoder: PropertyListDecoder = PropertyListDecoder()
+            let data = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT) as! Data
+            
+            do {
+                self.fontFamily = try decoder.decode(PMFont.self, from: data)
+            } catch {
+                // NOP
+            }
+
         }
         
         // Just in case the above block reads in zero values
@@ -150,12 +159,28 @@ class Common: NSObject {
             }
             
             if output.length == 0 {
+                let styler: Styler = Styler.init(self.mdjs!.tokenise(markdownString))
+                styler.bodyFontName = self.bodyFontName
+                styler.codeFontName = self.codeFontName
+                styler.codeColour = self.codeColourHex
+                styler.headColour = self.headColourHex
+                styler.bodyFontFamily = self.fontFamily
+                styler.fontSize = self.fontSize
+                
+                if let attStr: NSAttributedString = styler.render(isThumbnail) {
+                    output = NSMutableAttributedString.init(attributedString: attStr)
+                } else {
+                    output = NSMutableAttributedString.init(string: "Could not render markdown string",
+                                                            attributes: self.valAtts)
+                }
+                /*
                 if let attStr: NSAttributedString = self.mdjs!.render(markdownString, doAltRender: true) {
                     output = NSMutableAttributedString.init(attributedString: attStr)
                 } else {
                     output = NSMutableAttributedString.init(string: "Could not render markdown string",
                                                             attributes: self.valAtts)
                 }
+                 */
             }
         } else {
             // Use SwiftyMarkdown

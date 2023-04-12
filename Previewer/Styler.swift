@@ -199,7 +199,7 @@ class Styler {
                         doAddBullet = true
                     }
                     
-                    if self.tags.contains(tagString) {
+                    if self.tags.contains(useTag) {
                         // The tag is one we look for
                         // Add the tag to the list of properties
                         let tagStyle: Style = Style()
@@ -223,11 +223,13 @@ class Styler {
                         
                         // Write out the tag for now
                         /*
-                        let attrScannedString: NSAttributedString = applyStyleToString("[\(tagString)]",
-                                                                                       ["base"],
-                                                                                       StylingInformation())
+                        let aStyle: Style = Style()
+                        aStyle.name = "p"
+                        let attrScannedString: NSAttributedString = styleString("[\(tagStyle.name)]",
+                                                                                [aStyle])
                         resultString.append(attrScannedString)
                          */
+                         
                     }
                     
                     if doSkipCR {
@@ -262,6 +264,7 @@ class Styler {
     internal func styleString(_ string: String, _ styleList: [Style]) -> NSAttributedString {
        
         var returnString: NSMutableAttributedString? = nil
+        var isItalic: Bool = false
        
         if styleList.count > 0 {
             // Build the attributes from the style list, including the font
@@ -285,7 +288,7 @@ class Styler {
                                                       forKey: .font)
                                 } else {
                                     // Otherwise use the parent font and just back-tint it
-                                    attrs.updateValue(NSColor.darkGray,
+                                    attrs.updateValue(NSColor.red,
                                                       forKey: .backgroundColor)
                                 }
                             case "italic":
@@ -297,8 +300,7 @@ class Styler {
                                                       forKey: .font)
                                 } else {
                                     // Otherwise use the parent font and just underline it
-                                    attrs.updateValue(NSColor.labelColor,
-                                                      forKey: .underlineColor)
+                                    isItalic = true
                                 }
                             case "strike":
                                 attrs.updateValue(NSColor.labelColor,
@@ -309,7 +311,7 @@ class Styler {
                         
                     }
                 } else if style.type == .indent {
-                
+                    // NOP
                 } else {
                     if let tagStyle = self.styles[style.name] {
                         for (attrName, attrValue) in tagStyle {
@@ -324,6 +326,15 @@ class Styler {
             
             returnString = NSMutableAttributedString(string: string,
                                                      attributes: attrs)
+            
+            if isItalic {
+                let underlineRange = NSMakeRange(0, returnString!.length)
+                returnString!.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue,
+                                             .underlineColor: NSColor.red],
+                                             range: underlineRange)
+                
+                //returnString!.append(NSAttributedString.init(string: "[I]", attributes: attrs))
+            }
         } else {
             // No specified attributes? Just set the font
             returnString = NSMutableAttributedString(string: string,
@@ -340,6 +351,10 @@ class Styler {
         self.spacedParaStyle = NSMutableParagraphStyle()
         self.spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
         self.spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
+        self.spacedParaStyle.alignment = .left
+        self.spacedParaStyle.tabStops = [NSTextTab(textAlignment: .left, location: 30.0, options: [:]), NSTextTab(textAlignment: .left, location: 30.0, options: [:])]
+        paragraphStyle.defaultTabInterval = 30.0
+        paragraphStyle.headIndent = addition
         
         // H1
         self.styles = ["h1": [.foregroundColor: colourFromHexString(self.headColour),
@@ -380,68 +395,83 @@ class Styler {
         self.styles["code"] = [.foregroundColor: colourFromHexString(self.codeColour),
                                .font: makeFont("code", "plain", self.fontSize)!,
                                .paragraphStyle: self.spacedParaStyle]
+        
+        self.styles["li"] = [.foregroundColor: colourFromHexString(self.bodyColour),
+                             .font: makeFont("code", "plain", self.fontSize)!,
+                             .paragraphStyle: self.spacedParaStyle]
     }
     
     
     internal func makeFont(_ tagName: String, _ fontStyle: String, _ size: CGFloat) -> NSFont? {
         
         // Got the font already? Return a reference
-        if let tagFonts: [String: NSFont] = self.fonts[tagName] {
-            if let tagFont: NSFont = tagFonts[fontStyle] {
+        /*
+        if let tagFonts = self.fonts[tagName] {
+            if let tagFont = tagFonts[fontStyle] {
                 return tagFont
             }
         }
-        
+        */
         switch fontStyle {
             case "bold":
+                /*
                 if let styles: [PMFont] = self.bodyFontFamily.styles {
                     for style: PMFont in styles {
                         for styleName: String in ["Bold", "Black", "Heavy", "Medium"] {
                             if styleName == style.styleName {
                                 if let font: NSFont = NSFont.init(name: style.postScriptName, size: size) {
-                                    
-                                    // Store font if we need it again
-                                    if var tagFonts: [String: AnyObject] = self.fonts[tagName] {
-                                        if tagFonts[fontStyle] == nil {
-                                            tagFonts[fontStyle] = font
-                                        }
-                                    } else {
-                                        self.fonts[tagName] = [fontStyle: font]
-                                    }
-                                    
                                     return font
                                 }
                             }
                         }
                     }
+                }
+                */
+                let fm: NSFontManager = NSFontManager.shared
+                var font: NSFont? = fm.font(withFamily: self.bodyFontFamily.displayName,
+                                            traits: .unboldFontMask,
+                                            weight: 10,
+                                            size: size)
+                
+                if font == nil {
+                    let names: [String] = self.bodyFontName.components(separatedBy: "-")
+                    if names.count > 1 {
+                        font = NSFont.init(name: names[0] + "-Bold", size: size)
+                    }
                     
-                    return nil
                 }
                 
+                return font
+                
             case "italic":
+                /*
                 if let styles: [PMFont] = self.bodyFontFamily.styles {
                     for style: PMFont in styles {
                         for styleName: String in ["Italic", "Oblique"] {
                             if styleName == style.styleName {
                                 if let font: NSFont = NSFont.init(name: style.postScriptName, size: size) {
-                                    
-                                    // Store font if we need it again
-                                    if var tagFonts: [String: AnyObject] = self.fonts[tagName] {
-                                        if tagFonts[fontStyle] == nil {
-                                            tagFonts[fontStyle] = font
-                                        }
-                                    } else {
-                                        self.fonts[tagName] = [fontStyle: font]
-                                    }
-                                    
                                     return font
                                 }
                             }
                         }
                     }
-                    
-                    return nil
                 }
+                */
+                let fm: NSFontManager = NSFontManager.shared
+                var font: NSFont? = fm.font(withFamily: self.bodyFontFamily.displayName,
+                                            traits: .italicFontMask,
+                                            weight: 5,
+                                            size: size)
+                
+                if font == nil {
+                    let names: [String] = self.bodyFontName.components(separatedBy: "-")
+                    if names.count > 1 {
+                        font = NSFont.init(name: names[0] + "-Italc", size: size)
+                    }
+                    
+                }
+                
+                return font
             default:
                 break
         }

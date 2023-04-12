@@ -146,6 +146,18 @@ public class Markdowner {
         return returnAttrString
     }
     
+    func tokenise(_ markdownString: String) -> String {
+        
+        // NOTE Will return 'undefined' (trapped below) if it's a unknown language
+        let returnValue: JSValue = mdjs.invokeMethod("render", withArguments: [markdownString])
+        var renderedHTMLString: String = returnValue.toString()
+        
+        // Trap 'undefined' output as this is effectively an error condition
+        // and should not be returned as a valid result -- it's actually a fail
+        return renderedHTMLString
+    }
+    
+    
     // MARK: - Fast HTML Rendering Function
 
     /**
@@ -472,7 +484,7 @@ public class Markdowner {
                 
                 for faceName: String in ["Bold", "Black", "Heavy", "Medium"] {
                     descriptor = descriptor.addingAttributes([.face: faceName])
-                    var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                    let aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
                     if aFont != nil {
                         return aFont!
                     }
@@ -486,7 +498,7 @@ public class Markdowner {
                                                                                           .size: size])
                 for faceName: String in ["Italic", "Oblique"] {
                     descriptor = descriptor.addingAttributes([.face: faceName])
-                    var aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
+                    let aFont: NSFont? = NSFont.init(descriptor: descriptor, size: size)
                     if aFont != nil {
                         return aFont!
                     }

@@ -74,6 +74,7 @@ extension AppDelegate {
                         var fontRecord: PMFont = PMFont.init()
                         fontRecord.postScriptName = psname
                         fontRecord.styleName = font[1] as! String
+                        fontRecord.displayName = family
                         fontRecord.traits = traits
 
                         if familyRecord.styles == nil {
