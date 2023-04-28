@@ -150,7 +150,7 @@ public class Markdowner {
         
         // NOTE Will return 'undefined' (trapped below) if it's a unknown language
         let returnValue: JSValue = mdjs.invokeMethod("render", withArguments: [markdownString])
-        var renderedHTMLString: String = returnValue.toString()
+        let renderedHTMLString: String = returnValue.toString()
         
         // Trap 'undefined' output as this is effectively an error condition
         // and should not be returned as a valid result -- it's actually a fail

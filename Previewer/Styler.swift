@@ -46,25 +46,27 @@ class Styler {
     
     
     private var tokenString: String = ""
-    private var styles: [String: [NSAttributedString.Key: AnyObject]]!
     private var fonts: FontStore!
-    private var spacedParaStyle: NSMutableParagraphStyle!
-    
     private let htmlStart: String = "<"
     private let htmlEnd: String = ">"
-    private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li"]
-    private let bullets: [String] = ["•", "›", "»", "†"]
+    private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li", "blockquote"]
+    private let bullets: [String] = ["\u{25CF}", "\u{25CB}", "\u{25CF}", "\u{25CB}", "\u{25CF}", "\u{25CB}"]
     private let htmlEscape: NSRegularExpression = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
     
-   
+    private var styles: [String: [NSAttributedString.Key: AnyObject]]!
     
+    // Style definition objects, globalised for re-use across styles
+    private var headColourValue: NSColor!
+    private var codeColourValue: NSColor!
+    private var bodyColourValue: NSColor!
+    private var tabbedParaStyle: NSMutableParagraphStyle!
+    private var insetParaStyle: NSMutableParagraphStyle!
     
+
     // MARK: - Constructor
     
     /**
      The default initialiser.
-     
-     - returns: `nil` on failure to load or evaluate `markdownit.min.js`.
     */
     init(_ htmlString: String) {
         
@@ -75,6 +77,7 @@ class Styler {
     func render(_ isThumbnail: Bool = false) -> NSAttributedString? {
         
         generateStyles()
+        //return NSMutableAttributedString.init(string: self.tokenString)
         return processHTMLString()
     }
     
@@ -82,6 +85,7 @@ class Styler {
     private func processHTMLString() -> NSAttributedString? {
 
         var doAddBullet: Bool = false
+        var isBlock: Bool = false
         var insetLevel: Int = 0
         var insetCounts: [Int] = [1, 1, 1, 1, 1, 1]
         var insetTypes: [Int]  = [0, 0, 0, 0, 0, 0]
@@ -106,13 +110,19 @@ class Styler {
             
             // We have content to style, so do so
             if scannedString != nil && scannedString!.length > 0 {
+                var indent: String = String(repeating: "\t", count: isBlock ? 1 : insetLevel)
                 
                 if doAddBullet {
                     doAddBullet = false
-                    let style = self.styles["p"]
+                    
+                    if insetTypes[insetLevel] == 1 {
+                        indent += "\(bullets[insetLevel - 1]) "
+                    } else {
+                        indent += "\(insetCounts[insetLevel]). "
+                    }
                 }
                 
-                let attrScannedString: NSAttributedString = styleString((scannedString! as String),
+                let attrScannedString: NSAttributedString = styleString(indent + (scannedString! as String),
                                                                         propertiesStack)
                 resultString.append(attrScannedString)
                 
@@ -137,7 +147,7 @@ class Styler {
                 // Get the remainder of the tag up to `>`
                 if let closeTag: String = scanner.scanUpToString(self.htmlEnd) {
                     // Closing a list? Then reduce the current indent
-                    if closeTag == "ul" || closeTag == "ol"{
+                    if closeTag == "ul" || closeTag == "ol" {
                         insetLevel -= 1
                         if insetLevel < 1 {
                             insetLevel = 0
@@ -151,6 +161,10 @@ class Styler {
                             scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
                             let _: String? = scanner.scanUpToString("\n")
                         }
+                    }
+                    
+                    if closeTag == "blockquote" || closeTag == "pre" {
+                        isBlock = false;
                     }
                     
                     // Step over the final `>`
@@ -186,7 +200,7 @@ class Styler {
                     if tagString == "ol" {
                         insetLevel += 1
                         insetTypes[insetLevel] = 2
-                        insetCounts[insetLevel] = 1
+                        insetCounts[insetLevel] = 0
                         doSkipCR = true
                     }
                     
@@ -197,6 +211,15 @@ class Styler {
                         
                         useTag = "p"
                         doAddBullet = true
+                    }
+                    
+                    if tagString == "blockquote" {
+                        doSkipCR = true
+                        isBlock = true
+                    }
+                    
+                    if tagString == "p" && isBlock {
+                        useTag = "blockquote"
                     }
                     
                     if self.tags.contains(useTag) {
@@ -348,57 +371,80 @@ class Styler {
     internal func generateStyles() {
         
         // Base paragraph style
-        self.spacedParaStyle = NSMutableParagraphStyle()
-        self.spacedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        self.spacedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
-        self.spacedParaStyle.alignment = .left
-        self.spacedParaStyle.tabStops = [NSTextTab(textAlignment: .left, location: 30.0, options: [:]), NSTextTab(textAlignment: .left, location: 30.0, options: [:])]
-        paragraphStyle.defaultTabInterval = 30.0
-        paragraphStyle.headIndent = addition
+        self.tabbedParaStyle = NSMutableParagraphStyle()
+        self.tabbedParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
+        self.tabbedParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
+        self.tabbedParaStyle.alignment = .left
+        self.tabbedParaStyle.tabStops = [NSTextTab(textAlignment: .left, location: 30.0, options: [:]),
+                                         NSTextTab(textAlignment: .left, location: 30.0, options: [:])]
+        self.tabbedParaStyle.defaultTabInterval = 30.0
+        
+        // Inset paragraph style for
+        self.insetParaStyle = NSMutableParagraphStyle()
+        self.insetParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
+        self.insetParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : self.lineSpacing)
+        self.insetParaStyle.alignment = .left
+        self.insetParaStyle.firstLineHeadIndent = 60.0
+        self.insetParaStyle.headIndent = 20.0
+        
+        self.headColourValue = colourFromHexString(self.headColour)
+        self.bodyColourValue = colourFromHexString(self.bodyColour)
+        self.codeColourValue = colourFromHexString(self.codeColour)
         
         // H1
-        self.styles = ["h1": [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles = ["h1": [.foregroundColor: self.headColourValue,
                              .font: makeFont("h1", "plain", self.fontSize * 2.0)!,
-                             .paragraphStyle: self.spacedParaStyle]]
+                             .paragraphStyle: self.tabbedParaStyle]]
         
         // H2
-        self.styles["h2"] = [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles["h2"] = [.foregroundColor: self.headColourValue,
                              .font: makeFont("h2", "plain", self.fontSize * 1.6)!,
-                             .paragraphStyle: self.spacedParaStyle]
+                             .paragraphStyle: self.tabbedParaStyle]
         
         // H3
-        self.styles["h3"] = [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles["h3"] = [.foregroundColor: self.headColourValue,
                              .font: makeFont("h3", "plain", self.fontSize * 1.4)!,
-                             .paragraphStyle: self.spacedParaStyle]
+                             .paragraphStyle: self.tabbedParaStyle]
         
         // H4
-        self.styles["h4"] = [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles["h4"] = [.foregroundColor: self.headColourValue,
                              .font: makeFont("h4", "plain", self.fontSize * 1.2)!,
-                             .paragraphStyle: self.spacedParaStyle]
+                             .paragraphStyle: self.tabbedParaStyle]
         
         // H5
-        self.styles["h5"] = [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles["h5"] = [.foregroundColor: self.headColourValue,
                              .font: makeFont("h5", "plain", self.fontSize * 1.1)!,
-                             .paragraphStyle: self.spacedParaStyle]
+                             .paragraphStyle: self.tabbedParaStyle]
         
         // H6
-        self.styles["h6"] = [.foregroundColor: colourFromHexString(self.headColour),
+        self.styles["h6"] = [.foregroundColor: self.headColourValue,
                              .font: makeFont("h6", "plain", self.fontSize)!,
-                             .paragraphStyle: self.spacedParaStyle]
+                             .paragraphStyle: self.tabbedParaStyle]
         
         // P
-        self.styles["p"] = [.foregroundColor: colourFromHexString(self.bodyColour),
+        self.styles["p"] = [.foregroundColor: self.bodyColourValue,
                             .font: makeFont("p", "plain", self.fontSize)!,
-                            .paragraphStyle: self.spacedParaStyle]
+                            .paragraphStyle: self.tabbedParaStyle]
         
         // CODE
-        self.styles["code"] = [.foregroundColor: colourFromHexString(self.codeColour),
-                               .font: makeFont("code", "plain", self.fontSize)!,
-                               .paragraphStyle: self.spacedParaStyle]
+        self.styles["code"] = [.foregroundColor: self.codeColourValue,
+                               .font: makeFont("code", "code", self.fontSize)!,
+                               .paragraphStyle: self.tabbedParaStyle]
         
-        self.styles["li"] = [.foregroundColor: colourFromHexString(self.bodyColour),
-                             .font: makeFont("code", "plain", self.fontSize)!,
-                             .paragraphStyle: self.spacedParaStyle]
+        // PRE
+        self.styles["pre"] = [.foregroundColor: self.codeColourValue,
+                              .font: makeFont("code", "code", self.fontSize)!,
+                              .paragraphStyle: self.insetParaStyle]
+        
+        // LI
+        self.styles["li"] = [.foregroundColor: self.bodyColourValue,
+                             .font: makeFont("li", "plain", self.fontSize)!,
+                             .paragraphStyle: self.tabbedParaStyle]
+        
+        // BLOCKQUOTE
+        self.styles["blockquote"] = [.foregroundColor: self.bodyColourValue,
+                                     .font: makeFont("blockquote", "italic", self.fontSize * 1.2)!,
+                                     .paragraphStyle: self.insetParaStyle]
     }
     
     
@@ -468,10 +514,17 @@ class Styler {
                     if names.count > 1 {
                         font = NSFont.init(name: names[0] + "-Italc", size: size)
                     }
-                    
                 }
                 
                 return font
+            
+            case "code":
+                if let font: NSFont = NSFont(name: self.codeFontName, size: size) {
+                    return font
+                }
+                
+                return NSFont.systemFont(ofSize: size, weight: .regular)
+                
             default:
                 break
         }
@@ -551,12 +604,13 @@ class Styler {
             case "h3":
                 return self.fontSize * 1.4
             case "h4":
+                fallthrough
+            case "blockquote":
                 return self.fontSize * 1.2
             case "h5":
                 return self.fontSize * 1.1
             default:
                 return self.fontSize
-            
         }
     }
     
