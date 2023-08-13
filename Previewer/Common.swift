@@ -77,13 +77,15 @@ class Common: NSObject {
             // FROM 1.5.0
             self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
             
-            let decoder: PropertyListDecoder = PropertyListDecoder()
-            let data = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT) as! Data
-            
-            do {
-                self.fontFamily = try decoder.decode(PMFont.self, from: data)
-            } catch {
-                // NOP
+
+            if let data = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT) {
+                let theData = data as! Data
+                let decoder: PropertyListDecoder = PropertyListDecoder()
+                do {
+                    self.fontFamily = try decoder.decode(PMFont.self, from: theData)
+                } catch {
+                    // NOP
+                }
             }
 
         }
@@ -123,7 +125,22 @@ class Common: NSObject {
                                                attributes: self.valAtts)
     }
     
-    
+
+    /**
+     Update certain style variables on a UI mode switch.
+     FROM 1.1.0
+
+     This is used by render demo app.
+     */
+    func resetStylesOnModeChange() {
+
+        // Set up the attributed string components we may use during rendering
+        self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
+                                     attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
+                                                  .strikethroughColor: self.doShowLightBackground ? NSColor.black : NSColor.white])
+    }
+
+
     // MARK:- The Primary Function
 
     /**

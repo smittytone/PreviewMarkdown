@@ -22,6 +22,7 @@ enum StyleType {
     case indent
 }
 
+
 class Style {
     
     var name: String = ""
@@ -38,6 +39,7 @@ class Styler {
     var headColour: String = "#FFFFFF"
     var codeColour: String = "#00FF00"
     var bodyColour: String = "#FFFFFF"
+    var linkColour: String = "#64ACDD"
     
     var bodyFontName: String = ""
     var codeFontName: String = ""
@@ -49,7 +51,7 @@ class Styler {
     private var fonts: FontStore!
     private let htmlStart: String = "<"
     private let htmlEnd: String = ">"
-    private let tags: [String] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li", "blockquote"]
+    private let tags: [String] = ["p", "a", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "em", "strong", "li", "blockquote"]
     private let bullets: [String] = ["\u{25CF}", "\u{25CB}", "\u{25CF}", "\u{25CB}", "\u{25CF}", "\u{25CB}"]
     private let htmlEscape: NSRegularExpression = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
     
@@ -59,8 +61,9 @@ class Styler {
     private var headColourValue: NSColor!
     private var codeColourValue: NSColor!
     private var bodyColourValue: NSColor!
+    private var linkColourValue: NSColor!
     private var tabbedParaStyle: NSMutableParagraphStyle!
-    private var insetParaStyle: NSMutableParagraphStyle!
+    private var insetParaStyle:  NSMutableParagraphStyle!
     
 
     // MARK: - Constructor
@@ -77,7 +80,6 @@ class Styler {
     func render(_ isThumbnail: Bool = false) -> NSAttributedString? {
         
         generateStyles()
-        //return NSMutableAttributedString.init(string: self.tokenString)
         return processHTMLString()
     }
     
@@ -89,7 +91,11 @@ class Styler {
         var insetLevel: Int = 0
         var insetCounts: [Int] = [1, 1, 1, 1, 1, 1]
         var insetTypes: [Int]  = [0, 0, 0, 0, 0, 0]
-        
+
+        // Do pre-processing
+        self.tokenString = processCheckboxes(self.tokenString)
+
+        // Render the HTML
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
         
@@ -101,8 +107,10 @@ class Styler {
         var propertiesStack: [Style] = [baseStyle]
         
         while !scanner.isAtEnd {
+            // Flag to mark end of string reached
             var ended: Bool = false
-            
+
+            // Scan up to the next HTML tag and get the substring
             if let contentString: String = scanner.scanUpToString(self.htmlStart) {
                 scannedString = contentString as NSString
                 ended = scanner.isAtEnd
@@ -110,20 +118,33 @@ class Styler {
             
             // We have content to style, so do so
             if scannedString != nil && scannedString!.length > 0 {
-                var indent: String = String(repeating: "\t", count: isBlock ? 1 : insetLevel)
-                
+                // Paragraph indent, eg. for bullet point
+                var indent: String = ""
+
                 if doAddBullet {
-                    doAddBullet = false
-                    
+                    // Create the indent string
+                    indent = String(repeating: "\t", count: isBlock ? 1 : insetLevel)
+
+                    // Style the bullet by type and indent level
                     if insetTypes[insetLevel] == 1 {
                         indent += "\(bullets[insetLevel - 1]) "
                     } else {
                         indent += "\(insetCounts[insetLevel]). "
                     }
+
+                    doAddBullet = false
                 }
-                
-                let attrScannedString: NSAttributedString = styleString(indent + (scannedString! as String),
-                                                                        propertiesStack)
+
+                // Assemble the styled string...
+                var attrScannedString: NSMutableAttributedString
+                if (indent.count > 0) {
+                    attrScannedString = NSMutableAttributedString.init(attributedString: styleString(indent, propertiesStack))
+                    attrScannedString.append(styleString((scannedString! as String), propertiesStack))
+                } else {
+                    attrScannedString = NSMutableAttributedString.init(attributedString: styleString((scannedString! as String), propertiesStack))
+                }
+
+                // ...and add it to the store
                 resultString.append(attrScannedString)
                 
                 if ended {
@@ -131,14 +152,14 @@ class Styler {
                 }
             }
             
-            // Step over the `<`
+            // Reach an HTML entry tag: step over it
             scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
             
             // Get the first character of the tag
             let string: NSString = scanner.string as NSString
             let idx: Int = scanner.currentIndex.utf16Offset(in: self.tokenString)
             let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
-            
+
             if nextChar == "/" {
                 // Found a close tag, so remove last attribute
                 // Step over the `/`
@@ -146,6 +167,7 @@ class Styler {
                 
                 // Get the remainder of the tag up to `>`
                 if let closeTag: String = scanner.scanUpToString(self.htmlEnd) {
+                    // NOTE Probably need to watch for spaces in tags?
                     // Closing a list? Then reduce the current indent
                     if closeTag == "ul" || closeTag == "ol" {
                         insetLevel -= 1
@@ -219,6 +241,7 @@ class Styler {
                     }
                     
                     if tagString == "p" && isBlock {
+                        // This will re-style <pre> blocks
                         useTag = "blockquote"
                     }
                     
@@ -252,7 +275,7 @@ class Styler {
                                                                                 [aStyle])
                         resultString.append(attrScannedString)
                          */
-                         
+
                     }
                     
                     if doSkipCR {
@@ -267,6 +290,7 @@ class Styler {
             scannedString = nil
         }
 
+        // Composed the string; now replace HTML escapes
         let results: [NSTextCheckingResult] = self.htmlEscape.matches(in: resultString.string,
                                                                       options: [.reportCompletion],
                                                                       range: NSMakeRange(0, resultString.length))
@@ -356,7 +380,7 @@ class Styler {
                                              .underlineColor: NSColor.red],
                                              range: underlineRange)
                 
-                //returnString!.append(NSAttributedString.init(string: "[I]", attributes: attrs))
+            //returnString!.append(NSAttributedString.init(string: "[I]", attributes: attrs))
             }
         } else {
             // No specified attributes? Just set the font
@@ -390,6 +414,7 @@ class Styler {
         self.headColourValue = colourFromHexString(self.headColour)
         self.bodyColourValue = colourFromHexString(self.bodyColour)
         self.codeColourValue = colourFromHexString(self.codeColour)
+        self.linkColourValue = colourFromHexString(self.linkColour)
         
         // H1
         self.styles = ["h1": [.foregroundColor: self.headColourValue,
@@ -425,7 +450,12 @@ class Styler {
         self.styles["p"] = [.foregroundColor: self.bodyColourValue,
                             .font: makeFont("p", "plain", self.fontSize)!,
                             .paragraphStyle: self.tabbedParaStyle]
-        
+
+        // A
+        self.styles["a"] = [.foregroundColor: self.linkColourValue,
+                            .font: makeFont("p", "plain", self.fontSize)!,
+                            .paragraphStyle: self.tabbedParaStyle]
+
         // CODE
         self.styles["code"] = [.foregroundColor: self.codeColourValue,
                                .font: makeFont("code", "code", self.fontSize)!,
@@ -511,8 +541,10 @@ class Styler {
                 
                 if font == nil {
                     let names: [String] = self.bodyFontName.components(separatedBy: "-")
-                    if names.count > 1 {
+                    if names.count > 1 && names[0] != "System" {
                         font = NSFont.init(name: names[0] + "-Italc", size: size)
+                    } else {
+                        font = NSFont.systemFont(ofSize: size)
                     }
                 }
                 
@@ -613,8 +645,34 @@ class Styler {
                 return self.fontSize
         }
     }
-    
-    
+
+
+    private func processCheckboxes(_ base: String) -> String {
+
+        // Hack to present checkboxes a la GitHub
+        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
+        let symbols: [String] = ["❎", "✅"]
+
+        var i = 0
+        var result = base
+        for pattern in patterns {
+            var range = result.range(of: pattern, options: .regularExpression)
+
+            while range != nil {
+                // Swap out the HTML symbol code for the actual symbol
+                result = result.replacingCharacters(in: range!, with: symbols[i])
+
+                // Get the next occurence of the pattern ready for the 'while...' check
+                range = result.range(of: pattern, options: .regularExpression)
+            }
+
+            i += 1
+        }
+
+        return result
+    }
+
+
     // MARK: - Utility Functions
 
     /**
