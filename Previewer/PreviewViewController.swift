@@ -14,21 +14,21 @@ import Quartz
 class PreviewViewController: NSViewController,
                              QLPreviewingController {
 
-    // MARK:- Class UI Properties
+    // MARK: - Class UI Properties
 
     @IBOutlet var errorReportField: NSTextField!
     @IBOutlet var renderTextView: NSTextView!
     @IBOutlet var renderTextScrollView: NSScrollView!
 
 
-    // MARK:- Private Properties
+    // MARK: - Private Properties
     
     override var nibName: NSNib.Name? {
         return NSNib.Name("PreviewViewController")
     }
 
 
-    // MARK:- QLPreviewingController Required Functions
+    // MARK: - QLPreviewingController Required Functions
 
     func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
 
@@ -121,7 +121,7 @@ class PreviewViewController: NSViewController,
     }
 
 
-    // MARK:- Utility Functions
+    // MARK: - Utility Functions
     
     /**
      Place an error message in its various outlets.
