@@ -16,8 +16,6 @@
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
 		3B218E122637F5C30024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E112637F5C30024446B /* Yaml */; };
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
-		3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
-		3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B33BEEC2898FDA20038AE9D /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEED2898FDF90038AE9D /* Yaml */; };
 		3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */; };
@@ -28,7 +26,6 @@
 		3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
-		3B71BD48267F9E0E005F7FFC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */; };
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
@@ -36,7 +33,6 @@
 		3B8865D724E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
-		3B898D9A251DD2D700206BAE /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B898D99251DD2D700206BAE /* Secrets.swift */; };
 		3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE671628D4D09B001532BD /* PMFontExtensions.swift */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
 		3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */; };
@@ -49,6 +45,10 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BC6EE852A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */; };
+		3BC6EE892A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BC6EE8A2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BC6EE8B2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
 		3BD959F125B6DA3000FE6260 /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BD959F025B6DA3000FE6260 /* new */; };
 /* End PBXBuildFile section */
 
@@ -104,7 +104,6 @@
 		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
 		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		3B898D99251DD2D700206BAE /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = "../../../Library/CloudStorage/OneDrive-Personal/Programming/mnu/Secrets.swift"; sourceTree = "<group>"; };
 		3BAE671628D4D09B001532BD /* PMFontExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMFontExtensions.swift; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +123,8 @@
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_FUNCTIONS.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_FUNCTIONS.swift"; sourceTree = "<absolute>"; };
+		3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_CODES.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_CODES.swift"; sourceTree = "<absolute>"; };
 		3BD959F025B6DA3000FE6260 /* new */ = {isa = PBXFileReference; lastKnownFileType = folder; name = new; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/new"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -213,13 +214,14 @@
 		3BBAEA17236ADEB0009BAA05 /* PreviewMarkdown */ = {
 			isa = PBXGroup;
 			children = (
-				3B898D99251DD2D700206BAE /* Secrets.swift */,
 				3B8865D624E3E99700435B1C /* Constants.swift */,
 				3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */,
 				3BAE671628D4D09B001532BD /* PMFontExtensions.swift */,
 				3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */,
 				3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */,
 				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
+				3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */,
+				3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */,
 				3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
@@ -448,7 +450,6 @@
 			files = (
 				3B33BEEC2898FDA20038AE9D /* GenericColorExtensions.swift in Sources */,
 				3B0E8DD9251B8C0A001AC5BC /* Common.swift in Sources */,
-				3B71BD48267F9E0E005F7FFC /* Secrets.swift in Sources */,
 				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
 				3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */,
 				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,
@@ -460,9 +461,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BC6EE852A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */,
+				3BC6EE892A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
 				3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */,
-				3B898D9A251DD2D700206BAE /* Secrets.swift in Sources */,
 				3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */,
 				3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
@@ -475,7 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
-				3B21CEFC2664E4E00084B998 /* Secrets.swift in Sources */,
+				3BC6EE8A2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
@@ -487,7 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
-				3B21CEFD2664E4E00084B998 /* Secrets.swift in Sources */,
+				3BC6EE8B2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
@@ -929,7 +931,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/smittytone/SwiftyMarkdown.git";
 			requirement = {
-				branch = master;
+				branch = "no-link-atts";
 				kind = branch;
 			};
 		};

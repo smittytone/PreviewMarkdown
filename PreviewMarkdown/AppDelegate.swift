@@ -19,8 +19,8 @@ final class AppDelegate: NSObject,
                          URLSessionDataDelegate,
                          WKNavigationDelegate {
 
+    // MARK: - Class UI Properies
 
-    // MARK:- Class UI Properies
     // Menu Items Tab
     @IBOutlet var helpMenu: NSMenuItem!
     @IBOutlet var helpMenuSwiftyMarkdown: NSMenuItem!
@@ -66,7 +66,7 @@ final class AppDelegate: NSObject,
     // FROM 1.3.0
     @IBOutlet weak var showFrontMatterCheckbox: NSButton!
     // FROM 1.4.0
-    @IBOutlet weak var codeColourWell: NSColorWell!
+    //@IBOutlet weak var codeColourWell: NSColorWell!
     @IBOutlet weak var headColourWell: NSColorWell!
     @IBOutlet weak var bodyStylePopup: NSPopUpButton!
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
@@ -74,13 +74,15 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var tagInfoTextField: NSTextField!
     // FROM 1.5.0
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
+    @IBOutlet weak var colourSelectionPopup: NSPopUpButton!
 
     // FROM 1.2.0
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
-    
-    // MARK:- Private Properies
+
+
+    // MARK: - Private Properies
 
     // FROM 1.1.1
     private var feedbackTask: URLSessionTask? = nil
@@ -89,12 +91,9 @@ final class AppDelegate: NSObject,
     private  var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     private  var doShowLightBackground: Bool = false
     private  var doShowTag: Bool = false
-    private  var localMarkdownUTI: String = "NONE"
+             var localMarkdownUTI: String = "NONE"
     // FROM 1.3.0
     private  var doShowFrontMatter: Bool = false
-    // FROM 1.3.1
-    private  var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    private  var feedbackPath: String = MNU_SECRETS.ADDRESS.B
     // FROM 1.4.0
     private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
     private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
@@ -108,6 +107,15 @@ final class AppDelegate: NSObject,
     private  var havePrefsChanged: Bool = false
     // FROM 1.5.0
     private var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var displayColours: [String:String] = [:]
+
+    /*
+     Replace the following string with your own team ID. This is used to
+     identify the app suite and so share preferences set by the main app with
+     the previewer and thumbnailer extensions.
+     */
+    private  var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
 
     
     // MARK: - Class Lifecycle Functions
@@ -164,7 +172,7 @@ final class AppDelegate: NSObject,
     }
 
 
-    // MARK:- Action Functions
+    // MARK: - Action Functions
 
     @IBAction private func doClose(_ sender: Any) {
         
@@ -330,7 +338,10 @@ final class AppDelegate: NSObject,
         if feedback.count > 0 {
             // Start the connection indicator if it's not already visible
             self.connectionProgress.startAnimation(self)
-            
+
+            /*
+             Add your own `func sendFeedback(_ feedback: String) -> URLSessionTask?` function
+             */
             self.feedbackTask = sendFeedback(feedback)
             
             if self.feedbackTask != nil {
@@ -384,13 +395,16 @@ final class AppDelegate: NSObject,
             self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             
             // FROM 1.4.0
-            self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            //self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            //self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
             self.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             
             // FROM 1.5.0
             self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+            self.displayColours["heads"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.displayColours["code"]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.displayColours["links"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
         }
 
         // Get the menu item index from the stored value
@@ -406,8 +420,8 @@ final class AppDelegate: NSObject,
         
         // FROM 1.4.0
         // Set the two colour wells
-        self.codeColourWell.color = NSColor.hexToColour(self.codeColourHex)
-        self.headColourWell.color = NSColor.hexToColour(self.headColourHex)
+        //self.codeColourWell.color = NSColor.hexToColour(self.codeColourHex)
+        self.headColourWell.color = NSColor.hexToColour(self.displayColours["heads"] ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX)
         
         // FROM 1.4.0
         // Extend font selection to all available fonts
@@ -435,7 +449,8 @@ final class AppDelegate: NSObject,
         
         // FROM 1.4.1
         // Hide tag selection on Monterey
-        self.doShowTagCheckbox.isEnabled = !self.isMontereyPlus
+        self.doShowTagCheckbox.isEnabled = false
+        /*
         if (isMontereyPlus) {
             // FROM 1.4.2
             // Hide the unneeded options
@@ -445,7 +460,8 @@ final class AppDelegate: NSObject,
             //self.doShowTagCheckbox.toolTip = "Not available in macOS 12 and up"
             //self.tagInfoTextField.stringValue = "macOS 12 adds its own thumbnail file extension tags, so this option is no longer available."
         }
-        
+        */
+
         // FROM 1.5.0
         // Set the line spacing selector
         switch(round(self.lineSpacing * 100) / 100.0) {
@@ -458,6 +474,9 @@ final class AppDelegate: NSObject,
             default:
                 self.lineSpacingPopup.selectItem(at: 0)
         }
+
+        self.colourSelectionPopup.selectItem(at: 0)
+        self.clearNewColours()
 
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -507,16 +526,21 @@ final class AppDelegate: NSObject,
     @IBAction private func doClosePreferences(sender: Any) {
 
         // FROM 1.4.0
+        /* REMOVED 1.5.0
         // Close the colour selection panel if it's open
         if self.codeColourWell.isActive {
             NSColorPanel.shared.close()
             self.codeColourWell.deactivate()
         }
-                
+         */
+
         if self.headColourWell.isActive {
             NSColorPanel.shared.close()
             self.headColourWell.deactivate()
         }
+
+        // FROM 1.5.0
+        self.clearNewColours()
 
         self.window.endSheet(self.preferencesWindow)
         
@@ -565,20 +589,22 @@ final class AppDelegate: NSObject,
             
             // FROM 1.4.0
             // Get any colour changes
+            /*
             let newCodeColour: String = self.codeColourWell.color.hexString
             if newCodeColour != self.codeColourHex {
                 self.codeColourHex = newCodeColour
                 defaults.setValue(newCodeColour,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             }
-            
+
             let newHeadColour: String = self.headColourWell.color.hexString
             if newHeadColour != self.headColourHex {
                 self.headColourHex = newHeadColour
                 defaults.setValue(newHeadColour,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             }
-            
+             */
+
             // FROM 1.4.0
             // Get any font changes
             if let psname: String = getPostScriptName(false) {
@@ -614,15 +640,29 @@ final class AppDelegate: NSObject,
                 self.lineSpacing = lineSpacing
                 defaults.setValue(lineSpacing, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
+
+            if let newColour: String = self.displayColours["new_heads"] {
+                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
+            }
+
+            if let newColour: String = self.displayColours["new_code"] {
+                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
+            }
+
+            if let newColour: String = self.displayColours["new_links"] {
+                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
+            }
         }
 
         // FROM 1.4.0
         // Close the colour selection panel if it's open
+        /*
         if self.codeColourWell.isActive {
             NSColorPanel.shared.close()
             self.codeColourWell.deactivate()
         }
-                
+        */
+
         if self.headColourWell.isActive {
             NSColorPanel.shared.close()
             self.headColourWell.deactivate()
@@ -647,6 +687,70 @@ final class AppDelegate: NSObject,
         
         self.havePrefsChanged = true
     }
+
+
+    /**
+        Update the colour preferences dictionary with a value from the
+        colour well when a colour is chosen.
+        FROM 1.5.0
+
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @objc @IBAction private func colourSelected(sender: Any) {
+
+        let keys: [String] = ["heads", "code", "links"]
+        let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
+        self.displayColours[key] = self.headColourWell.color.hexString
+        self.havePrefsChanged = true
+    }
+
+
+    /**
+        Update the colour well with the stored colour: either a new one, previously
+        chosen, or the loaded preference.
+        FROM 1.5.0
+
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @IBAction private func doChooseColourType(sender: Any) {
+
+        let keys: [String] = ["heads", "code", "links"]
+        let key: String = keys[self.colourSelectionPopup.indexOfSelectedItem]
+
+        // If there's no `new_xxx` key, the next line will evaluate to false
+        if let colour: String = self.displayColours["new_" + key] {
+            if colour.count != 0 {
+                // Set the colourwell with the updated colour and exit
+                self.headColourWell.color = NSColor.hexToColour(colour)
+                return
+            }
+        }
+
+        // Set the colourwell with the stored colour
+        if let colour: String = self.displayColours[key] {
+            self.headColourWell.color = NSColor.hexToColour(colour)
+        }
+    }
+
+
+    /**
+        Zap any temporary colour values.
+        FROM 1.5.0
+
+     */
+    private func clearNewColours() {
+
+        let keys: [String] = ["heads", "code", "links"]
+        for key in keys {
+            if let _: String = self.displayColours["new_" + key] {
+                self.displayColours["new_" + key] = nil
+            }
+        }
+    }
+
+
 
     
     // MARK: - What's New Functions
@@ -841,61 +945,6 @@ final class AppDelegate: NSObject,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
         }
-    }
-    
-    
-    private func sendFeedback(_ feedback: String) -> URLSessionTask? {
-        
-        // FROM 1.2.0
-        // Break out into separate function
-        
-        // Send the string etc.
-        // First get the data we need to build the user agent string
-        let userAgent: String = getUserAgentForFeedback()
-        let endPoint: String = MNU_SECRETS.ADDRESS.A
-        
-        // Get the date as a string
-        let dateString: String = getDateForFeedback()
-
-        // Assemble the message string
-        let dataString: String = """
-         *FEEDBACK REPORT*
-         *Date:* \(dateString)
-         *User Agent:* \(userAgent)
-         *UTI:* \(self.localMarkdownUTI)
-         *FEEDBACK:*
-         \(feedback)
-         """
-
-        // Build the data we will POST:
-        let dict: NSMutableDictionary = NSMutableDictionary()
-        dict.setObject(dataString,
-                        forKey: NSString.init(string: "text"))
-        dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
-        
-        // Make and return the HTTPS request for sending
-        if let url: URL = URL.init(string: self.feedbackPath + endPoint) {
-            var request: URLRequest = URLRequest.init(url: url)
-            request.httpMethod = "POST"
-
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: dict,
-                                                              options:JSONSerialization.WritingOptions.init(rawValue: 0))
-
-                request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
-                request.addValue("application/json", forHTTPHeaderField: "Content-type")
-
-                let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-                let session: URLSession = URLSession.init(configuration: config,
-                                                          delegate: self,
-                                                          delegateQueue: OperationQueue.main)
-                return session.dataTask(with: request)
-            } catch {
-                // Fall through to error condition
-            }
-        }
-        
-        return nil
     }
 
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="21701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,9 +18,9 @@
             <connections>
                 <outlet property="bodyFontPopup" destination="tRc-8d-s8h" id="vo6-Wv-oHP"/>
                 <outlet property="bodyStylePopup" destination="X9H-yN-PVl" id="Kmr-oJ-T8a"/>
-                <outlet property="codeColourWell" destination="CQy-ub-gmK" id="Zak-oW-VSA"/>
                 <outlet property="codeFontPopup" destination="zA0-sU-GAt" id="UQ0-av-cF9"/>
                 <outlet property="codeStylePopup" destination="PF4-29-Wd1" id="4il-jE-L75"/>
+                <outlet property="colourSelectionPopup" destination="u8G-Tn-fjW" id="u0X-D7-iOf"/>
                 <outlet property="connectionProgress" destination="wmC-QI-6Qu" id="g61-ar-tEi"/>
                 <outlet property="doShowTagCheckbox" destination="Czd-zZ-ZiW" id="BnB-2W-7zY"/>
                 <outlet property="feedbackText" destination="TYV-nH-BBy" id="Yaf-kB-Der"/>
@@ -64,7 +64,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="3Ix-dh-o1G"/>
-                            <menuItem title="Reset Finder UTI Database..." id="NPo-rK-nMC">
+                            <menuItem title="Reset Finder UTI Database..." enabled="NO" id="NPo-rK-nMC">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doInitiateFinderResetWithSender:" target="Voe-Tx-rLC" id="fRB-f5-XlP"/>
@@ -232,7 +232,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="610" height="432"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <value key="minSize" type="size" width="610" height="432"/>
             <value key="maxSize" type="size" width="610" height="432"/>
             <value key="minFullScreenContentSize" type="size" width="610" height="432"/>
@@ -386,7 +386,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <value key="minSize" type="size" width="560" height="356"/>
             <value key="maxSize" type="size" width="560" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="356"/>
@@ -496,7 +496,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <value key="minSize" type="size" width="560" height="400"/>
             <value key="maxSize" type="size" width="560" height="400"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="400"/>
@@ -654,35 +654,10 @@ Gw
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CQy-ub-gmK">
-                        <rect key="frame" x="280" y="186" width="44" height="23"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <connections>
-                            <action selector="controlClickedWithSender:" target="Voe-Tx-rLC" id="tKT-Ky-iJR"/>
-                        </connections>
-                    </colorWell>
-                    <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mti-80-gGh">
-                        <rect key="frame" x="280" y="216" width="44" height="23"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <connections>
-                            <action selector="controlClickedWithSender:" target="Voe-Tx-rLC" id="LR2-Ie-JQF"/>
-                        </connections>
-                    </colorWell>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F86-jX-KUw">
-                        <rect key="frame" x="18" y="220" width="256" height="16"/>
+                        <rect key="frame" x="18" y="215" width="164" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview heading colour:" id="sdJ-mW-lMJ">
-                            <font key="font" usesAppearanceFont="YES"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VOV-CD-l3R">
-                        <rect key="frame" x="18" y="190" width="256" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview code colour:" id="CEP-1L-RCZ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Colours:" id="sdJ-mW-lMJ">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -725,7 +700,7 @@ Gw
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mls-DP-Cdx">
-                        <rect key="frame" x="95" y="125" width="374" height="18"/>
+                        <rect key="frame" x="95" y="135" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="0LL-U3-HEf">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -736,7 +711,7 @@ Gw
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L3v-ZW-rI5">
-                        <rect key="frame" x="95" y="103" width="374" height="18"/>
+                        <rect key="frame" x="95" y="113" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show YAML front matter" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LeZ-5E-qmT">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -747,7 +722,7 @@ Gw
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXh-Dj-3xv">
-                        <rect key="frame" x="115" y="50" width="427" height="28"/>
+                        <rect key="frame" x="115" y="60" width="427" height="28"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" controlSize="small" refusesFirstResponder="YES" allowsUndo="NO" alignment="left" title="This setting may not have an effect until you log out of or restart your Mac." id="p9z-yO-6VS">
                             <font key="font" metaFont="smallSystem"/>
@@ -756,7 +731,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Czd-zZ-ZiW">
-                        <rect key="frame" x="95" y="81" width="374" height="18"/>
+                        <rect key="frame" x="95" y="91" width="374" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Show Markdown file-type tag on Finder thumbnails" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Z9h-TK-H7G">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -778,7 +753,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vPS-Pf-g0t">
-                        <rect key="frame" x="280" y="153" width="129" height="25"/>
+                        <rect key="frame" x="280" y="168" width="129" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <popUpButtonCell key="cell" type="push" title="Single" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="b9u-lW-pwB" id="riC-6U-9B2">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -796,7 +771,7 @@ Gw
                         </popUpButtonCell>
                     </popUpButton>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EgD-Bv-Zwj">
-                        <rect key="frame" x="18" y="160" width="256" height="16"/>
+                        <rect key="frame" x="18" y="175" width="256" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview line spacing:" id="63h-GV-L9W">
                             <font key="font" usesAppearanceFont="YES"/>
@@ -818,6 +793,32 @@ Gw
                             <action selector="doShowPrefsHelpWithSender:" target="Voe-Tx-rLC" id="l7m-JI-B0N"/>
                         </connections>
                     </button>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8G-Tn-fjW">
+                        <rect key="frame" x="185" y="208" width="121" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Heads" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3Ru-jE-YcW" id="ll8-do-bgf">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="I0i-45-Yyy">
+                                <items>
+                                    <menuItem title="Heads" state="on" id="3Ru-jE-YcW"/>
+                                    <menuItem title="Code" id="gBO-3F-hbA"/>
+                                    <menuItem title="Links" id="uSI-DI-h2T"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <action selector="doChooseColourTypeWithSender:" target="Voe-Tx-rLC" id="TG0-CX-QSe"/>
+                        </connections>
+                    </popUpButton>
+                    <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mti-80-gGh">
+                        <rect key="frame" x="307" y="211" width="44" height="23"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <action selector="colourSelectedWithSender:" target="Voe-Tx-rLC" id="In9-5i-zac"/>
+                        </connections>
+                    </colorWell>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Kxb-3y-zsN" firstAttribute="leading" secondItem="FEy-oZ-Q0b" secondAttribute="trailing" constant="12" symbolic="YES" id="3KD-rV-5yI"/>
@@ -850,7 +851,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="410"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1025"/>
             <value key="minSize" type="size" width="560" height="410"/>
             <value key="maxSize" type="size" width="560" height="410"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="410"/>

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/smittytone/SwiftyMarkdown.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "dde451ab4ed9b77b328e21baa471fdfa0cf61369"
+        "branch" : "no-link-atts",
+        "revision" : "0058a231d94cbe985c48a635e61224f9299178c4"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/smittytone/YamlSwift.git",
       "state" : {
         "branch" : "master",
-        "revision" : "43292bdcbf3058802954cdd2fcb231b64cf6d139"
+        "revision" : "8b822b09fd9ebd5950216659ce35e930d0b8dad8"
       }
     }
   ],
