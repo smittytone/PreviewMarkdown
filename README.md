@@ -14,10 +14,12 @@ You can disable and re-enable the Previewer and Thumbnailer extensions at any ti
 
 You can alter some of the key elements of the preview by using the **Preferences** panel:
 
-- The colour of code blocks.
-- Code blocks’ monospaced font.
-- The base body text size.
-- The body text font.
+- The base body font and text size.
+- The code font.
+- The monspaced font and colour of code.
+- The colour of headlines.
+- The colour of link text.
+- Whether YAML front matter should be displayed too.
 - Whether preview should be display white-on-black even in Dark Mode.
 
 Changing these settings will affect previews immediately, but may not affect thumbnail until you open a folder that has not been previously opened in the current login session.
@@ -36,6 +38,10 @@ Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewM
 
 This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
 
+This includes minor changes made to the SwiftyMarkdown source — specifically to unset NSAttributedString’s `.link` attribute for links in order to prevent NSAttributedString applying its own link text formatting.
+
+The files `REPLACE_WITH_YOUR_FUNCTIONS` and `REPLACE_WITH_YOUR_CODES` must be replaced with your own files. The former will contain your `sendFeedback(_ feedback: String) -> URLSessionTask?` function. The latter your Developer Team ID, used as the App Suite identifier prefix.
+
 ## Acknowledgements
 
 PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
@@ -48,6 +54,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
     - Add experimental Finder UTI database reset option.
     - Rename extensions `Markdown Previewer` and `Markdown Thumbnailer`.
     - Improve font edge-case handling.
+    - Fix link text formatting.
     - Remove dynamic UTIs.
 - 1.4.6 *21 January 2023*
     - Add link to [PreviewText](https://smittytone.net/previewtext/index.html).
