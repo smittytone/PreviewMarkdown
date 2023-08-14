@@ -17,12 +17,12 @@ import AppKit
 // Implement as a class
 class Common: NSObject {
     
-    // MARK:- Public Properties
+    // MARK: - Public Properties
     
     var doShowLightBackground: Bool = false
     var doShowTag: Bool             = true
     
-    // MARK:- Private Properties
+    // MARK: - Private Properties
     
     private var doIndentScalars: Bool       = true
     private var doShowYaml: Bool            = false
@@ -47,15 +47,21 @@ class Common: NSObject {
     // FROM 1.5.0
     private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
 
+    /*
+     Replace the following string with your own team ID. This is used to
+     identify the app suite and so share preferences set by the main app with
+     the previewer and thumbnailer extensions.
+     */
+    private var appSuiteName: String = MNU_SECRETS.PID
 
-    // MARK:- Lifecycle Functions
+    // MARK: - Lifecycle Functions
     
     init(_ isThumbnail: Bool) {
     
         super.init()
         
         // Load in the user's preferred values, or set defaults
-        if let defaults = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName + BUFFOON_CONSTANTS.SUITE_NAME) {
             self.fontSize = CGFloat(isThumbnail
                                     ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
                                     : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
@@ -111,7 +117,7 @@ class Common: NSObject {
     }
     
     
-    // MARK:- The Primary Function
+    // MARK: - The Primary Function
 
     /**
      Use SwiftyMarkdown to render the input markdown.
@@ -215,7 +221,7 @@ class Common: NSObject {
     }
 
 
-    // MARK:- SwiftyMarkdown Rendering Support Functions
+    // MARK: - SwiftyMarkdown Rendering Support Functions
 
     func processSymbols(_ base: String) -> String {
 
@@ -362,7 +368,7 @@ class Common: NSObject {
     }
 
 
-    // MARK:- Front Matter Functions
+    // MARK: - Front Matter Functions
 
     /**
      Extract and return initial front matter.
@@ -595,7 +601,7 @@ class Common: NSObject {
     }
 
 
-    // MARK:- Formatting Functions
+    // MARK: - Formatting Functions
 
     /**
      Set common style values for the markdown render.
@@ -627,8 +633,11 @@ class Common: NSObject {
 
         // NOTE The following do not set link colour - this is
         //      a bug or issue with SwiftyMarkdown 1.2.3
+        // NOTE RESOLVED: Customise SWiftyMarkdown not to use the .link attribute as this
+        //      causes NSAttributedString to apply its own colour
         sm.link.color = NSColor.hexToColour(self.linkColourHex) // getColour(linkColourIndex)
-        sm.link.underlineColor = sm.link.color
+        sm.link.underlineColor = NSColor.hexToColour(self.linkColourHex)
+        sm.underlineLinks = true
     }
     
 }
