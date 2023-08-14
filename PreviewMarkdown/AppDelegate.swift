@@ -347,11 +347,12 @@ final class AppDelegate: NSObject,
             if self.feedbackTask != nil {
                 // We have a valid URL Session Task, so start it to send
                 self.feedbackTask!.resume()
-                return
             } else {
                 // Report the error
                 sendFeedbackError()
             }
+
+            return
         }
         
         // No feedback, so close the sheet

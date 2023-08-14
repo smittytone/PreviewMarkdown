@@ -42,6 +42,10 @@ This includes minor changes made to the SwiftyMarkdown source — specifically t
 
 The files `REPLACE_WITH_YOUR_FUNCTIONS` and `REPLACE_WITH_YOUR_CODES` must be replaced with your own files. The former will contain your `sendFeedback(_ feedback: String) -> URLSessionTask?` function. The latter your Developer Team ID, used as the App Suite identifier prefix.
 
+You will need to generate your own `Assets.xcassets` file containing the app icon.
+
+You will need to create your own `new` directory containing your own `new.html` file.
+
 ## Acknowledgements
 
 PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
