@@ -36,7 +36,7 @@ Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewM
 
 ## Source Code
 
-This repository contains the primary source code for PreviewMarkdown. Certain graphical assets, code components and data files are not included. To build PreviewMarkdown from scratch, you will need to add these files yourself or remove them from your fork.
+This repository contains the primary source code for *PreviewMarkdown*. Certain graphical assets, code components and data files are not included. To build *PreviewMarkdown* from scratch, you will need to add these files yourself or remove them from your fork.
 
 This includes minor changes made to the SwiftyMarkdown source — specifically to unset NSAttributedString’s `.link` attribute for links in order to prevent NSAttributedString applying its own link text formatting.
 

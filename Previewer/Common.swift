@@ -52,7 +52,7 @@ class Common: NSObject {
      identify the app suite and so share preferences set by the main app with
      the previewer and thumbnailer extensions.
      */
-    private var appSuiteName: String = MNU_SECRETS.PID
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
 
     // MARK: - Lifecycle Functions
     
@@ -61,7 +61,7 @@ class Common: NSObject {
         super.init()
         
         // Load in the user's preferred values, or set defaults
-        if let defaults = UserDefaults(suiteName: self.appSuiteName + BUFFOON_CONSTANTS.SUITE_NAME) {
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             self.fontSize = CGFloat(isThumbnail
                                     ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
                                     : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
