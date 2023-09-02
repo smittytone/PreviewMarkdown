@@ -64,7 +64,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="3Ix-dh-o1G"/>
-                            <menuItem title="Reset Finder UTI Database..." enabled="NO" id="NPo-rK-nMC">
+                            <menuItem title="Reset Finder UTI Database..." hidden="YES" enabled="NO" id="NPo-rK-nMC">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doInitiateFinderResetWithSender:" target="Voe-Tx-rLC" id="fRB-f5-XlP"/>
@@ -796,14 +796,17 @@ Gw
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8G-Tn-fjW">
                         <rect key="frame" x="185" y="208" width="121" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="Heads" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3Ru-jE-YcW" id="ll8-do-bgf">
+                        <popUpButtonCell key="cell" type="push" title="Headings" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="3Ru-jE-YcW" id="ll8-do-bgf">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="I0i-45-Yyy">
                                 <items>
-                                    <menuItem title="Heads" state="on" id="3Ru-jE-YcW"/>
+                                    <menuItem title="Headings" state="on" id="3Ru-jE-YcW"/>
                                     <menuItem title="Code" id="gBO-3F-hbA"/>
                                     <menuItem title="Links" id="uSI-DI-h2T"/>
+                                    <menuItem title="Blockquotes" id="YC6-hz-YOj">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
                                 </items>
                             </menu>
                         </popUpButtonCell>

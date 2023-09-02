@@ -46,6 +46,7 @@ class Common: NSObject {
     
     // FROM 1.5.0
     private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var quoteColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -79,6 +80,7 @@ class Common: NSObject {
             
             // FROM 1.5.0
             self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+            self.quoteColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
         }
         
         // Just in case the above block reads in zero values
@@ -638,6 +640,11 @@ class Common: NSObject {
         sm.link.color = NSColor.hexToColour(self.linkColourHex) // getColour(linkColourIndex)
         sm.link.underlineColor = NSColor.hexToColour(self.linkColourHex)
         sm.underlineLinks = true
+
+        // FROM 1.5.0
+        sm.blockquotes.color = NSColor.hexToColour(self.quoteColourHex)
+        sm.blockquotes.fontSize = self.fontSize * 1.4
+        sm.blockquotes.fontStyle = .boldItalic
     }
     
 }

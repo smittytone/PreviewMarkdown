@@ -66,12 +66,13 @@ struct BUFFOON_CONSTANTS {
     static let TAG_TEXT_MIN_SIZE            = 118
     
     // FROM 1.4.0
-    static let LINK_COLOUR_HEX              = "0096FFFF"
     static let HEAD_COLOUR_HEX              = "941751FF"
     static let CODE_COLOUR_HEX              = "00FF00FF"
     static let BODY_FONT_NAME               = "System"
     // FROM 1.5.0 -- Change default font: Courier not included with macOS now
     static let CODE_FONT_NAME               = "AndaleMono"
+    static let LINK_COLOUR_HEX              = "0096FFFF"
+    static let QUOTE_COLOUR_HEX             = "22528EFF"
     
     static let SAMPLE_UTI_FILE              = "sample.md"
 
@@ -107,6 +108,7 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_LINK_COLOUR          = "com-bps-previewmarkdown-link-colour-hex"
         static let PREVIEW_CODE_COLOUR          = "com-bps-previewmarkdown-code-colour-hex"
         static let PREVIEW_HEAD_COLOUR          = "com-bps-previewmarkdown-head-colour-hex"
+        static let PREVIEW_QUOTE_COLOUR         = "com-bps-previewmarkdown-quote-colour-hex"
         static let PREVIEW_LINE_SPACE           = "com-bps-previewmarkdown-line-spacing"
         
         static let THUMB_FONT_SIZE              = "com-bps-previewmarkdown-thumb-font-size"

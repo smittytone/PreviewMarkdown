@@ -406,6 +406,8 @@ final class AppDelegate: NSObject,
             self.displayColours["heads"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
             self.displayColours["code"]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
             self.displayColours["links"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            self.displayColours["quote"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ??
+                BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
         }
 
         // Get the menu item index from the stored value
@@ -451,7 +453,6 @@ final class AppDelegate: NSObject,
         // FROM 1.4.1
         // Hide tag selection on Monterey
         self.doShowTagCheckbox.isEnabled = false
-        /*
         if (isMontereyPlus) {
             // FROM 1.4.2
             // Hide the unneeded options
@@ -461,7 +462,6 @@ final class AppDelegate: NSObject,
             //self.doShowTagCheckbox.toolTip = "Not available in macOS 12 and up"
             //self.tagInfoTextField.stringValue = "macOS 12 adds its own thumbnail file extension tags, so this option is no longer available."
         }
-        */
 
         // FROM 1.5.0
         // Set the line spacing selector
@@ -653,6 +653,10 @@ final class AppDelegate: NSObject,
             if let newColour: String = self.displayColours["new_links"] {
                 defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
             }
+
+            if let newColour: String = self.displayColours["new_quote"] {
+                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
+            }
         }
 
         // FROM 1.4.0
@@ -700,7 +704,7 @@ final class AppDelegate: NSObject,
      */
     @objc @IBAction private func colourSelected(sender: Any) {
 
-        let keys: [String] = ["heads", "code", "links"]
+        let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
         self.displayColours[key] = self.headColourWell.color.hexString
         self.havePrefsChanged = true
@@ -717,7 +721,7 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doChooseColourType(sender: Any) {
 
-        let keys: [String] = ["heads", "code", "links"]
+        let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = keys[self.colourSelectionPopup.indexOfSelectedItem]
 
         // If there's no `new_xxx` key, the next line will evaluate to false
@@ -743,7 +747,7 @@ final class AppDelegate: NSObject,
      */
     private func clearNewColours() {
 
-        let keys: [String] = ["heads", "code", "links"]
+        let keys: [String] = ["heads", "code", "links", "quote"]
         for key in keys {
             if let _: String = self.displayColours["new_" + key] {
                 self.displayColours["new_" + key] = nil
@@ -944,6 +948,13 @@ final class AppDelegate: NSObject,
             if lineSpacingDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
+            }
+
+            // The blockquote colour, stored as hex string
+            let quoteColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
+            if quoteColourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
         }
     }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,21 +35,21 @@
 		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE671628D4D09B001532BD /* PMFontExtensions.swift */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
-		3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */; };
 		3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */; };
 		3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */; };
-		3BBAEA38236ADECB009BAA05 /* Previewer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BBAEA38236ADECB009BAA05 /* Markdown Previewer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA42236ADF11009BAA05 /* QuickLookThumbnailing.framework */; };
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
-		3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		3BC6EE852A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */; };
-		3BC6EE892A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
-		3BC6EE8A2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
-		3BC6EE8B2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */; };
-		3BD959F125B6DA3000FE6260 /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BD959F025B6DA3000FE6260 /* new */; };
+		3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */; };
+		3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BEAC5B32AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BEAC5B72AA39ED700958FFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B62AA39ED700958FFC /* Assets.xcassets */; };
+		3BEAC5B92AA39EF200958FFC /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B82AA39EF200958FFC /* new */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,8 +83,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				3BBAEA4C236ADF11009BAA05 /* Thumbnailer.appex in Embed Foundation Extensions */,
-				3BBAEA38236ADECB009BAA05 /* Previewer.appex in Embed Foundation Extensions */,
+				3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */,
+				3BBAEA38236ADECB009BAA05 /* Markdown Previewer.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,25 +107,25 @@
 		3BAE671628D4D09B001532BD /* PMFontExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMFontExtensions.swift; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Assets.xcassets"; sourceTree = "<group>"; };
 		3BBAEA1D236ADEB3009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3BBAEA1F236ADEB3009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PreviewMarkdown.entitlements; sourceTree = "<group>"; };
-		3BBAEA2A236ADECB009BAA05 /* Previewer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Previewer.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Markdown Previewer.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA2C236ADECB009BAA05 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		3BBAEA32236ADECB009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/PreviewViewController.xib; sourceTree = "<group>"; };
 		3BBAEA34236ADECB009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Previewer.entitlements; sourceTree = "<group>"; };
-		3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Thumbnailer.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Markdown Thumbnailer.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA42236ADF11009BAA05 /* QuickLookThumbnailing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLookThumbnailing.framework; path = System/Library/Frameworks/QuickLookThumbnailing.framework; sourceTree = SDKROOT; };
 		3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_FUNCTIONS.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_FUNCTIONS.swift"; sourceTree = "<absolute>"; };
-		3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_CODES.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_CODES.swift"; sourceTree = "<absolute>"; };
-		3BD959F025B6DA3000FE6260 /* new */ = {isa = PBXFileReference; lastKnownFileType = folder; name = new; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/new"; sourceTree = "<absolute>"; };
+		3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_CODES.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_CODES.swift"; sourceTree = "<absolute>"; };
+		3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_FUNCTIONS.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_FUNCTIONS.swift"; sourceTree = "<absolute>"; };
+		3BEAC5B62AA39ED700958FFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Assets.xcassets"; sourceTree = "<absolute>"; };
+		3BEAC5B82AA39EF200958FFC /* new */ = {isa = PBXFileReference; lastKnownFileType = folder; name = new; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/new"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,8 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				3BBAEA17236ADEB0009BAA05 /* PreviewMarkdown */,
-				3BBAEA2E236ADECB009BAA05 /* Previewer */,
-				3BBAEA45236ADF11009BAA05 /* Thumbnailer */,
+				3BBAEA2E236ADECB009BAA05 /* Markdown Previewer */,
+				3BBAEA45236ADF11009BAA05 /* Markdown Thumbnailer */,
 				3B7D3087251504A900A37F96 /* PreviewMarkdownTests */,
 				3BBAEA2B236ADECB009BAA05 /* Frameworks */,
 				3B6F568529360C0400FE5189 /* Misc */,
@@ -204,8 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */,
-				3BBAEA2A236ADECB009BAA05 /* Previewer.appex */,
-				3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */,
+				3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */,
+				3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */,
 				3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */,
 			);
 			name = Products;
@@ -220,14 +220,11 @@
 				3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */,
 				3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */,
 				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
-				3BC6EE842A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift */,
-				3BC6EE882A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift */,
-				3BBAEA1A236ADEB3009BAA05 /* Assets.xcassets */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
 				3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */,
 				3B170B8525B2E62600F14FDD /* sample.md */,
-				3BD959F025B6DA3000FE6260 /* new */,
+				3BEAC5AE2AA39E4C00958FFC /* YOU MUST SUPPLY */,
 			);
 			path = PreviewMarkdown;
 			sourceTree = "<group>";
@@ -242,7 +239,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		3BBAEA2E236ADECB009BAA05 /* Previewer */ = {
+		3BBAEA2E236ADECB009BAA05 /* Markdown Previewer */ = {
 			isa = PBXGroup;
 			children = (
 				3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */,
@@ -252,10 +249,10 @@
 				3B1C9EB0237454F600331D75 /* licences.txt */,
 				3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */,
 			);
-			path = Previewer;
+			path = "Markdown Previewer";
 			sourceTree = "<group>";
 		};
-		3BBAEA45236ADF11009BAA05 /* Thumbnailer */ = {
+		3BBAEA45236ADF11009BAA05 /* Markdown Thumbnailer */ = {
 			isa = PBXGroup;
 			children = (
 				3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */,
@@ -263,7 +260,18 @@
 				3B1C9EB22374565800331D75 /* licences.txt */,
 				3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */,
 			);
-			path = Thumbnailer;
+			path = "Markdown Thumbnailer";
+			sourceTree = "<group>";
+		};
+		3BEAC5AE2AA39E4C00958FFC /* YOU MUST SUPPLY */ = {
+			isa = PBXGroup;
+			children = (
+				3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */,
+				3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */,
+				3BEAC5B62AA39ED700958FFC /* Assets.xcassets */,
+				3BEAC5B82AA39EF200958FFC /* new */,
+			);
+			name = "YOU MUST SUPPLY";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,9 +321,9 @@
 			productReference = 3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3BBAEA29236ADECB009BAA05 /* Previewer */ = {
+		3BBAEA29236ADECB009BAA05 /* Markdown Previewer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Previewer" */;
+			buildConfigurationList = 3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Previewer" */;
 			buildPhases = (
 				3BBAEA26236ADECB009BAA05 /* Sources */,
 				3BBAEA27236ADECB009BAA05 /* Frameworks */,
@@ -325,18 +333,18 @@
 			);
 			dependencies = (
 			);
-			name = Previewer;
+			name = "Markdown Previewer";
 			packageProductDependencies = (
 				3B218E112637F5C30024446B /* Yaml */,
 				3B40FE972694400B00A0C09F /* SwiftyMarkdown */,
 			);
 			productName = Previewer;
-			productReference = 3BBAEA2A236ADECB009BAA05 /* Previewer.appex */;
+			productReference = 3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		3BBAEA40236ADF11009BAA05 /* Thumbnailer */ = {
+		3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Thumbnailer" */;
+			buildConfigurationList = 3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Thumbnailer" */;
 			buildPhases = (
 				3BBAEA3D236ADF11009BAA05 /* Sources */,
 				3BBAEA3E236ADF11009BAA05 /* Frameworks */,
@@ -346,13 +354,13 @@
 			);
 			dependencies = (
 			);
-			name = Thumbnailer;
+			name = "Markdown Thumbnailer";
 			packageProductDependencies = (
 				3B218E332637FA3B0024446B /* Yaml */,
 				3B40FE952694400500A0C09F /* SwiftyMarkdown */,
 			);
 			productName = Thumbnailer;
-			productReference = 3BBAEA41236ADF11009BAA05 /* Thumbnailer.appex */;
+			productReference = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -361,8 +369,9 @@
 		3BBAEA0D236ADEB0009BAA05 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Tony Smith";
 				TargetAttributes = {
 					3B7D3085251504A900A37F96 = {
@@ -398,8 +407,8 @@
 			projectRoot = "";
 			targets = (
 				3BBAEA14236ADEB0009BAA05 /* PreviewMarkdown */,
-				3BBAEA29236ADECB009BAA05 /* Previewer */,
-				3BBAEA40236ADF11009BAA05 /* Thumbnailer */,
+				3BBAEA29236ADECB009BAA05 /* Markdown Previewer */,
+				3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */,
 				3B7D3085251504A900A37F96 /* PreviewMarkdownTests */,
 			);
 		};
@@ -417,10 +426,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BBAEA1B236ADEB3009BAA05 /* Assets.xcassets in Resources */,
-				3BD959F125B6DA3000FE6260 /* new in Resources */,
+				3BEAC5B92AA39EF200958FFC /* new in Resources */,
 				3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */,
 				3B170B8625B2E62600F14FDD /* sample.md in Resources */,
+				3BEAC5B72AA39ED700958FFC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,11 +470,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BC6EE852A8A038A0043CFAE /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */,
-				3BC6EE892A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
 				3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */,
+				3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */,
+				3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */,
 				3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
 				3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */,
@@ -477,7 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
-				3BC6EE8A2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3BEAC5B32AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
@@ -489,7 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
-				3BC6EE8B2A8A04EE0043CFAE /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
@@ -506,12 +515,12 @@
 		};
 		3BBAEA37236ADECB009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3BBAEA29236ADECB009BAA05 /* Previewer */;
+			target = 3BBAEA29236ADECB009BAA05 /* Markdown Previewer */;
 			targetProxy = 3BBAEA36236ADECB009BAA05 /* PBXContainerItemProxy */;
 		};
 		3BBAEA4B236ADF11009BAA05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3BBAEA40236ADF11009BAA05 /* Thumbnailer */;
+			target = 3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */;
 			targetProxy = 3BBAEA4A236ADF11009BAA05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -705,9 +714,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -717,6 +727,7 @@
 					"TARGET_IS_PM=1",
 				);
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -739,14 +750,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "TARGET_IS_PM=1";
 				INFOPLIST_FILE = PreviewMarkdown/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -766,14 +779,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
-				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Markdown Previewer/Previewer.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Previewer/Info.plist;
+				INFOPLIST_FILE = "Markdown Previewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -795,14 +809,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
-				CODE_SIGN_ENTITLEMENTS = Previewer/Previewer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Markdown Previewer/Previewer.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Previewer/Info.plist;
+				INFOPLIST_FILE = "Markdown Previewer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -823,14 +838,15 @@
 		3BBAEA4E236ADF11009BAA05 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Markdown Thumbnailer/Thumbnailer.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Thumbnailer/Info.plist;
+				INFOPLIST_FILE = "Markdown Thumbnailer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -851,14 +867,15 @@
 		3BBAEA4F236ADF11009BAA05 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Thumbnailer/Thumbnailer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Markdown Thumbnailer/Thumbnailer.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 131;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Thumbnailer/Info.plist;
+				INFOPLIST_FILE = "Markdown Thumbnailer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -906,7 +923,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Previewer" */ = {
+		3BBAEA39236ADECB009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Previewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3BBAEA3A236ADECB009BAA05 /* Debug */,
@@ -915,7 +932,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Thumbnailer" */ = {
+		3BBAEA4D236ADF11009BAA05 /* Build configuration list for PBXNativeTarget "Markdown Thumbnailer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3BBAEA4E236ADF11009BAA05 /* Debug */,

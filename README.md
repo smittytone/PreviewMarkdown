@@ -15,14 +15,12 @@ You can disable and re-enable the Previewer and Thumbnailer extensions at any ti
 You can alter some of the key elements of the preview by using the **Preferences** panel:
 
 - The base body font and text size.
-- The code font.
-- The monspaced font and colour of code.
-- The colour of headlines.
-- The colour of link text.
+- The monspaced code font.
+- The colour of headlines, code, blockquotes and link text.
 - Whether YAML front matter should be displayed too.
 - Whether preview should be display white-on-black even in Dark Mode.
 
-Changing these settings will affect previews immediately, but may not affect thumbnail until you open a folder that has not been previously opened in the current login session.
+Changing these settings will affect previews immediately, but may not affect thumbnails until you open a folder that has not been previously opened in the current login session.
 
 For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
 
@@ -53,6 +51,9 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 ## Release Notes
 
 - 1.5.0 *Unreleased*
+    - Use *PreviewApps*’ new preview element colour selection UI.
+    - Allow link colours to be changed.
+    - Allow blockquote colours to be changed.
     - Add line-spacing setting for previews.
     - Add link to help on **Preferences** panel.
     - Add experimental Finder UTI database reset option.

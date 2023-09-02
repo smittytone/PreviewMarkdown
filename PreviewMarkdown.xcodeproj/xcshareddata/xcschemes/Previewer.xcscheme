@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1410"
+   LastUpgradeVersion = "1430"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3BBAEA29236ADECB009BAA05"
-               BuildableName = "Previewer.appex"
-               BlueprintName = "Previewer"
+               BuildableName = "Markdown Previewer.appex"
+               BlueprintName = "Markdown Previewer"
                ReferencedContainer = "container:PreviewMarkdown.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
