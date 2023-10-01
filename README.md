@@ -50,7 +50,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-- 1.5.0 *Unreleased*
+- 1.5.0 *1 October 2023*
     - Use *PreviewApps*’ new preview element colour selection UI.
     - Allow link colours to be changed.
     - Allow blockquote colours to be changed.
