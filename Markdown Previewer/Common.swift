@@ -156,7 +156,7 @@ class Common: NSObject {
         // rendering a thumbnail image (this is for previews only)
         if !isThumbnail && self.doShowYaml {
             // Extract the front matter
-            let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#)
+            let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#, #"^(\.)+"#)
             if frontMatter.count > 0 {
                 // Only attempt to render the front matter if there is any
                 do {
@@ -210,7 +210,7 @@ class Common: NSObject {
                 }
             }
         }
-        
+
         // FROM 1.3.0
         // Guard against non-trapped errors
         if output.length == 0 {
@@ -375,24 +375,27 @@ class Common: NSObject {
     /**
      Extract and return initial front matter.
 
-     FROM 1.3.0
+     FROM 1.3.0, updated 1.5.1
 
      - Parameters:
-        - markdown:      The markdown file content.
-        - markerPattern: A string literal specifying the front matter boundary marker Reg Ex, eg. #"^(-)+"# for ---.
+        - markdown:     The markdown file content.
+        - startPattern: A string literal specifying the front matter start marker Reg Ex, eg. #"^(-)+"# for ---.
+        - endPattern:   A string literal specifying the front matter endß marker Reg Ex, eg. #"^(\.)+"# for ...
 
      - Returns: The parsed string, or an empty string (`""`) on error.
      */
-    func getFrontMatter(_ markdown: String, _ markerPattern: String) -> String {
-        
+    func getFrontMatter(_ markdown: String, _ startPattern: String, _ endPattern: String) -> String {
+
         let lines = markdown.components(separatedBy: CharacterSet.newlines)
         var fm: [String] = []
         var doAdd: Bool = false
         
         for line in lines {
             // Look for the pattern on the current line
-            let dashRange: NSRange = (line as NSString).range(of: markerPattern, options: .regularExpression)
-            
+            let dashRange: NSRange = (line as NSString).range(of: startPattern, options: .regularExpression)
+            // FROM 1.5.1
+            let dotRange: NSRange = (line as NSString).range(of: endPattern, options: .regularExpression)
+
             if !doAdd && line.count > 0 {
                 if dashRange.location == 0 {
                     // Front matter start
@@ -405,7 +408,9 @@ class Common: NSObject {
                 }
             }
             
-            if doAdd && dashRange.location == 0 {
+            let dashesFound: Bool = (dashRange.location != NSNotFound)
+            let dotsFound: Bool = (dotRange.location != NSNotFound)
+            if doAdd && (dashesFound || dotsFound) {
                 // End of front matter
                 var rs: String = ""
                 for item in fm {

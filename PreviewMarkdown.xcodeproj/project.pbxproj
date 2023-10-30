@@ -44,6 +44,15 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */; };
+		3BD56C312AF02E0600772A82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BD56C302AF02E0600772A82 /* Assets.xcassets */; };
+		3BD56C392AF02E7C00772A82 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0E8DCE251B8775001AC5BC /* Common.swift */; };
+		3BD56C3A2AF02EC700772A82 /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3BD56C3C2AF02EDE00772A82 /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
+		3BD56C3E2AF02FBD00772A82 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */; };
+		3BD56C402AF02FC200772A82 /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3BD56C3F2AF02FC200772A82 /* Yaml */; };
+		3BD56C412AF030F800772A82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD56C332AF02E0600772A82 /* MainMenu.xib */; };
 		3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */; };
 		3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
 		3BEAC5B32AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
@@ -122,6 +131,11 @@
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3BD56C2C2AF02E0500772A82 /* RenderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RenderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3BD56C302AF02E0600772A82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3BD56C332AF02E0600772A82 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		3BD56C352AF02E0600772A82 /* RenderDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RenderDemo.entitlements; sourceTree = "<group>"; };
 		3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_CODES.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_CODES.swift"; sourceTree = "<absolute>"; };
 		3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_FUNCTIONS.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_FUNCTIONS.swift"; sourceTree = "<absolute>"; };
 		3BEAC5B62AA39ED700958FFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Assets.xcassets"; sourceTree = "<absolute>"; };
@@ -167,6 +181,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3BD56C292AF02E0500772A82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BD56C3E2AF02FBD00772A82 /* SwiftyMarkdown in Frameworks */,
+				3BD56C402AF02FC200772A82 /* Yaml in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -194,6 +217,7 @@
 				3BBAEA2E236ADECB009BAA05 /* Markdown Previewer */,
 				3BBAEA45236ADF11009BAA05 /* Markdown Thumbnailer */,
 				3B7D3087251504A900A37F96 /* PreviewMarkdownTests */,
+				3BD56C2D2AF02E0500772A82 /* RenderDemo */,
 				3BBAEA2B236ADECB009BAA05 /* Frameworks */,
 				3B6F568529360C0400FE5189 /* Misc */,
 				3BBAEA16236ADEB0009BAA05 /* Products */,
@@ -207,6 +231,7 @@
 				3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */,
 				3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */,
 				3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */,
+				3BD56C2C2AF02E0500772A82 /* RenderDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,6 +286,17 @@
 				3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */,
 			);
 			path = "Markdown Thumbnailer";
+			sourceTree = "<group>";
+		};
+		3BD56C2D2AF02E0500772A82 /* RenderDemo */ = {
+			isa = PBXGroup;
+			children = (
+				3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */,
+				3BD56C302AF02E0600772A82 /* Assets.xcassets */,
+				3BD56C332AF02E0600772A82 /* MainMenu.xib */,
+				3BD56C352AF02E0600772A82 /* RenderDemo.entitlements */,
+			);
+			path = RenderDemo;
 			sourceTree = "<group>";
 		};
 		3BEAC5AE2AA39E4C00958FFC /* YOU MUST SUPPLY */ = {
@@ -363,6 +399,27 @@
 			productReference = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3BD56C2B2AF02E0500772A82 /* RenderDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BD56C382AF02E0600772A82 /* Build configuration list for PBXNativeTarget "RenderDemo" */;
+			buildPhases = (
+				3BD56C282AF02E0500772A82 /* Sources */,
+				3BD56C292AF02E0500772A82 /* Frameworks */,
+				3BD56C2A2AF02E0500772A82 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RenderDemo;
+			packageProductDependencies = (
+				3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */,
+				3BD56C3F2AF02FC200772A82 /* Yaml */,
+			);
+			productName = RenderDemo;
+			productReference = 3BD56C2C2AF02E0500772A82 /* RenderDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -370,7 +427,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1200;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Tony Smith";
 				TargetAttributes = {
@@ -386,6 +443,9 @@
 					};
 					3BBAEA40236ADF11009BAA05 = {
 						CreatedOnToolsVersion = 11.1;
+					};
+					3BD56C2B2AF02E0500772A82 = {
+						CreatedOnToolsVersion = 15.0.1;
 					};
 				};
 			};
@@ -410,6 +470,7 @@
 				3BBAEA29236ADECB009BAA05 /* Markdown Previewer */,
 				3BBAEA40236ADF11009BAA05 /* Markdown Thumbnailer */,
 				3B7D3085251504A900A37F96 /* PreviewMarkdownTests */,
+				3BD56C2B2AF02E0500772A82 /* RenderDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -447,6 +508,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B1C9EB32374565800331D75 /* licences.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BD56C2A2AF02E0500772A82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BD56C312AF02E0600772A82 /* Assets.xcassets in Resources */,
+				3BD56C412AF030F800772A82 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +572,18 @@
 				3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3BD56C282AF02E0500772A82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BD56C392AF02E7C00772A82 /* Common.swift in Sources */,
+				3BD56C3C2AF02EDE00772A82 /* GenericColorExtensions.swift in Sources */,
+				3BD56C3A2AF02EC700772A82 /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */,
+				3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,7 +799,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -753,7 +835,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -783,7 +865,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -813,7 +895,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -842,7 +924,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -871,7 +953,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 137;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -889,6 +971,73 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3BD56C362AF02E0600772A82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = RenderDemo/RenderDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Tony Smith. All rights reserved.";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.RenderDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3BD56C372AF02E0600772A82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = RenderDemo/RenderDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = Y5J3K52DNA;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Tony Smith. All rights reserved.";
+				INFOPLIST_KEY_NSMainNibFile = MainMenu;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.RenderDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -937,6 +1086,15 @@
 			buildConfigurations = (
 				3BBAEA4E236ADF11009BAA05 /* Debug */,
 				3BBAEA4F236ADF11009BAA05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BD56C382AF02E0600772A82 /* Build configuration list for PBXNativeTarget "RenderDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3BD56C362AF02E0600772A82 /* Debug */,
+				3BD56C372AF02E0600772A82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -992,6 +1150,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
 			productName = SwiftyMarkdown;
+		};
+		3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
+		3BD56C3F2AF02FC200772A82 /* Yaml */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3B218E102637F5C30024446B /* XCRemoteSwiftPackageReference "YamlSwift" */;
+			productName = Yaml;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

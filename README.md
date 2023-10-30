@@ -26,7 +26,9 @@ For more information on the background to this app, please see this [blog post](
 
 ### YAML Front Matter
 
-*PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only.
+*PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only, not thumbnails.
+
+From version 1.5.1, YAML front matter can be delimted with both `---` and `---`, and `---` and `...` start and end markers.
 
 ## Known Issues
 
@@ -52,6 +54,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 - 1.5.1 *Unreleased*
     - Support the emerging `public.markdown` UTI.
+    - Support YAML front matter that uses the `...` end marker (Thanks, anonymous).
 - 1.5.0 *1 October 2023*
     - Use *PreviewApps*’ new preview element colour selection UI.
     - Allow link colours to be changed.
@@ -131,4 +134,4 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 Primary app code and UI design &copy; 2023, Tony Smith.
 
-Code portions &copy; 2022 Simon Fairbairn. Code portions &copy;2021 Behrang Noruzi Niya.
+Code portions &copy; 2022 Simon Fairbairn. Code portions &copy; 2021 Behrang Noruzi Niya.
