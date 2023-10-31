@@ -23,6 +23,12 @@ enum StyleType {
 }
 
 
+enum IndentType {
+    case bullet
+    case number
+}
+
+
 class Style {
     
     var name: String = ""
@@ -89,8 +95,8 @@ class Styler {
         var doAddBullet: Bool = false
         var isBlock: Bool = false
         var insetLevel: Int = 0
-        var insetCounts: [Int] = [1, 1, 1, 1, 1, 1]
-        var insetTypes: [Int]  = [0, 0, 0, 0, 0, 0]
+        var insetCounts: [Int] = [1, 1, 1, 1, 1, 1, 1, 1]
+        var insetTypes: [IndentType]  = [.bullet, .bullet, .bullet, .bullet, .bullet, .bullet, .bullet, .bullet]
 
         // Do pre-processing
         self.tokenString = processCheckboxes(self.tokenString)
@@ -107,7 +113,7 @@ class Styler {
         var propertiesStack: [Style] = [baseStyle]
         
         while !scanner.isAtEnd {
-            // Flag to mark end of string reached
+            // Flag to mark the end of string being reached
             var ended: Bool = false
 
             // Scan up to the next HTML tag and get the substring
@@ -118,7 +124,7 @@ class Styler {
             
             // We have content to style, so do so
             if scannedString != nil && scannedString!.length > 0 {
-                // Paragraph indent, eg. for bullet point
+                // Set a paragraph indent, eg. for bullet point
                 var indent: String = ""
 
                 if doAddBullet {
@@ -126,7 +132,7 @@ class Styler {
                     indent = String(repeating: "\t", count: isBlock ? 1 : insetLevel)
 
                     // Style the bullet by type and indent level
-                    if insetTypes[insetLevel] == 1 {
+                    if insetTypes[insetLevel] == .bullet {
                         indent += "\(bullets[insetLevel - 1]) "
                     } else {
                         indent += "\(insetCounts[insetLevel]). "
@@ -138,9 +144,11 @@ class Styler {
                 // Assemble the styled string...
                 var attrScannedString: NSMutableAttributedString
                 if (indent.count > 0) {
+                    // Style and apply the indent, then style and apply the content
                     attrScannedString = NSMutableAttributedString.init(attributedString: styleString(indent, propertiesStack))
                     attrScannedString.append(styleString((scannedString! as String), propertiesStack))
                 } else {
+                    // Style and apply the content
                     attrScannedString = NSMutableAttributedString.init(attributedString: styleString((scannedString! as String), propertiesStack))
                 }
 
@@ -152,7 +160,7 @@ class Styler {
                 }
             }
             
-            // Reach an HTML entry tag: step over it
+            // Reached an HTML entry tag: step over it
             scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
             
             // Get the first character of the tag
@@ -215,19 +223,19 @@ class Styler {
                     // Opening a list? Then increment the current indent
                     if tagString == "ul" {
                         insetLevel += 1
-                        insetTypes[insetLevel] = 1
+                        insetTypes[insetLevel] = .bullet
                         doSkipCR = true
                     }
                     
                     if tagString == "ol" {
                         insetLevel += 1
-                        insetTypes[insetLevel] = 2
+                        insetTypes[insetLevel] = .number
                         insetCounts[insetLevel] = 0
                         doSkipCR = true
                     }
                     
                     if tagString == "li" {
-                        if insetTypes[insetLevel] == 2 {
+                        if insetTypes[insetLevel] == .number {
                             insetCounts[insetLevel] += 1
                         }
                         
@@ -275,7 +283,6 @@ class Styler {
                                                                                 [aStyle])
                         resultString.append(attrScannedString)
                          */
-
                     }
                     
                     if doSkipCR {
@@ -357,9 +364,7 @@ class Styler {
                         }
                         
                     }
-                } else if style.type == .indent {
-                    // NOP
-                } else {
+                } else if style.type != .indent {
                     if let tagStyle = self.styles[style.name] {
                         for (attrName, attrValue) in tagStyle {
                             attrs.updateValue(attrValue,
@@ -481,13 +486,7 @@ class Styler {
     internal func makeFont(_ tagName: String, _ fontStyle: String, _ size: CGFloat) -> NSFont? {
         
         // Got the font already? Return a reference
-        /*
-        if let tagFonts = self.fonts[tagName] {
-            if let tagFont = tagFonts[fontStyle] {
-                return tagFont
-            }
-        }
-        */
+
         switch fontStyle {
             case "bold":
                 /*
@@ -505,7 +504,7 @@ class Styler {
                 */
                 let fm: NSFontManager = NSFontManager.shared
                 var font: NSFont? = fm.font(withFamily: self.bodyFontFamily.displayName,
-                                            traits: .unboldFontMask,
+                                            traits: .boldFontMask,
                                             weight: 10,
                                             size: size)
                 
@@ -538,7 +537,8 @@ class Styler {
                                             traits: .italicFontMask,
                                             weight: 5,
                                             size: size)
-                
+
+                /*
                 if font == nil {
                     let names: [String] = self.bodyFontName.components(separatedBy: "-")
                     if names.count > 1 && names[0] != "System" {
@@ -549,6 +549,7 @@ class Styler {
                 }
                 
                 return font
+                */
             
             case "code":
                 if let font: NSFont = NSFont(name: self.codeFontName, size: size) {
@@ -570,7 +571,7 @@ class Styler {
             useFont = NSFont.systemFont(ofSize: size, weight: .regular)
         }
         
-        return useFont!
+        return useFont
     }
     
     
@@ -630,16 +631,18 @@ class Styler {
         
         switch tagName {
             case "h1":
-                return self.fontSize * 2.0
+                return self.fontSize * 2.2
             case "h2":
-                return self.fontSize * 1.6
+                return self.fontSize * 1.8
             case "h3":
-                return self.fontSize * 1.4
+                return self.fontSize * 1.6
             case "h4":
                 fallthrough
             case "blockquote":
-                return self.fontSize * 1.2
+                return self.fontSize * 1.4
             case "h5":
+                return self.fontSize * 1.2
+            case "h6":
                 return self.fontSize * 1.1
             default:
                 return self.fontSize
