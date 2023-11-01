@@ -339,7 +339,10 @@ extension AppDelegate {
         if let nav = self.whatsNewNav {
             if nav == navigation {
                 // Display the sheet
-                self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
+                    timer.invalidate()
+                    self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                }
             }
         }
     }
