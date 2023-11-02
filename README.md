@@ -52,7 +52,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-- 1.5.1 *Unreleased*
+- 1.5.1 *2 November 2023*
     - Support the emerging `public.markdown` UTI.
     - Support YAML front matter that uses the `...` end marker (Thanks, anonymous).
     - Better **What’s New** dialog presentation in dark mode.
