@@ -133,6 +133,6 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2023, Tony Smith.
+Primary app code and UI design &copy; 2024, Tony Smith.
 
 Code portions &copy; 2022 Simon Fairbairn. Code portions &copy; 2021 Behrang Noruzi Niya.

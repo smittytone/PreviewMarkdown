@@ -3,7 +3,7 @@
  *  Previewer
  *
  *  Created by Tony Smith on 31/10/2019.
- *  Copyright © 2023 Tony Smith. All rights reserved.
+ *  Copyright © 2024 Tony Smith. All rights reserved.
  */
 
 

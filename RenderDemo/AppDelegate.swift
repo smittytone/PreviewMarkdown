@@ -3,6 +3,7 @@
 //  RenderDemo
 //
 //  Created by Tony Smith on 10/07/2023.
+//  Copyright © 2024 Tony Smith. All rights reserved.
 //
 
 import Cocoa
