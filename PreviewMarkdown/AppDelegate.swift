@@ -60,7 +60,6 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var fontSizeSlider: NSSlider!
     @IBOutlet weak var fontSizeLabel: NSTextField!
     @IBOutlet weak var useLightCheckbox: NSButton!
-    @IBOutlet weak var doShowTagCheckbox: NSButton!
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
     // FROM 1.3.0
@@ -70,8 +69,6 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var headColourWell: NSColorWell!
     @IBOutlet weak var bodyStylePopup: NSPopUpButton!
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
-    // FROM 1.4.1
-    @IBOutlet weak var tagInfoTextField: NSTextField!
     // FROM 1.5.0
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var colourSelectionPopup: NSPopUpButton!
@@ -101,8 +98,6 @@ final class AppDelegate: NSObject,
     private  var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
-    // FROM 1.4.1
-    internal var isMontereyPlus: Bool = false
     // FROM 1.4.6
     private  var havePrefsChanged: Bool = false
     // FROM 1.5.0
@@ -132,9 +127,6 @@ final class AppDelegate: NSObject,
         // FROM 1.2.0
         // Set application group-level defaults
         registerPreferences()
-        
-        // FROM 1.4.1
-        recordSystemState()
         
         // FROM 1.2.0
         // Get the local UTI for markdown files
@@ -390,14 +382,11 @@ final class AppDelegate: NSObject,
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             self.previewFontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
             self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            self.doShowTag = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             
             // FROM 1.3.0
             self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             
             // FROM 1.4.0
-            //self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            //self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
             self.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             
@@ -416,7 +405,6 @@ final class AppDelegate: NSObject,
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
-        self.doShowTagCheckbox.state = self.doShowTag ? .on : .off
         
         // FROM 1.3.0
         self.showFrontMatterCheckbox.state = self.doShowFrontMatter ? .on : .off
@@ -449,19 +437,6 @@ final class AppDelegate: NSObject,
         }
 
         selectFontByPostScriptName(self.codeFontName, false)
-        
-        // FROM 1.4.1
-        // Hide tag selection on Monterey
-        self.doShowTagCheckbox.isEnabled = false
-        if (isMontereyPlus) {
-            // FROM 1.4.2
-            // Hide the unneeded options
-            self.tagInfoTextField.isHidden = true
-            self.doShowTagCheckbox.isHidden = true
-            
-            //self.doShowTagCheckbox.toolTip = "Not available in macOS 12 and up"
-            //self.tagInfoTextField.stringValue = "macOS 12 adds its own thumbnail file extension tags, so this option is no longer available."
-        }
 
         // FROM 1.5.0
         // Set the line spacing selector
@@ -574,12 +549,6 @@ final class AppDelegate: NSObject,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
 
-            state = self.doShowTagCheckbox.state == .on
-            if self.doShowTag != state {
-                defaults.setValue(state,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
-            }
-
             // FROM 1.3.0
             // Get the YAML checkbox value and update
             state = self.showFrontMatterCheckbox.state == .on
@@ -587,24 +556,6 @@ final class AppDelegate: NSObject,
                 defaults.setValue(state,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             }
-            
-            // FROM 1.4.0
-            // Get any colour changes
-            /*
-            let newCodeColour: String = self.codeColourWell.color.hexString
-            if newCodeColour != self.codeColourHex {
-                self.codeColourHex = newCodeColour
-                defaults.setValue(newCodeColour,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
-            }
-
-            let newHeadColour: String = self.headColourWell.color.hexString
-            if newHeadColour != self.headColourHex {
-                self.headColourHex = newHeadColour
-                defaults.setValue(newHeadColour,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
-            }
-             */
 
             // FROM 1.4.0
             // Get any font changes
@@ -658,15 +609,6 @@ final class AppDelegate: NSObject,
                 defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
         }
-
-        // FROM 1.4.0
-        // Close the colour selection panel if it's open
-        /*
-        if self.codeColourWell.isActive {
-            NSColorPanel.shared.close()
-            self.codeColourWell.deactivate()
-        }
-        */
 
         if self.headColourWell.isActive {
             NSColorPanel.shared.close()
@@ -873,14 +815,6 @@ final class AppDelegate: NSObject,
             if useLightDefault == nil {
                 defaults.setValue(false,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            }
-
-            // Show the file identity ('tag') on Finder thumbnails
-            // Default: false (from 1.4.1)
-            let showTagDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
-            if showTagDefault == nil {
-                defaults.setValue(false,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
             }
 
             // Show the What's New sheet
