@@ -135,12 +135,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                             thumbnailFrame.height * request.scale)
 
                         // Pass a QLThumbnailReply and no error to the supplied handler
-                        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size, drawing: { context in
+                        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
                             // `scaleFrame` and `cgImage` are immutable
                             context.draw(cgImage, in: scaleFrame, byTiling: false)
                             return true
-                        }), nil)
-
+                        }, nil)
                         return
                     }
                 }
