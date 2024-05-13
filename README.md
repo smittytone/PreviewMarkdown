@@ -15,7 +15,7 @@ You can disable and re-enable the Previewer and Thumbnailer extensions at any ti
 You can alter some of the key elements of the preview by using the **Preferences** panel:
 
 - The base body font and text size.
-- The monspaced code font.
+- The monospaced code font.
 - The colour of headlines, code, blockquotes and link text.
 - Whether YAML front matter should be displayed too.
 - Whether preview should be display white-on-black even in Dark Mode.
@@ -28,7 +28,7 @@ For more information on the background to this app, please see this [blog post](
 
 *PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only, not thumbnails.
 
-From version 1.5.1, YAML front matter can be delimted with both `---` and `---`, and `---` and `...` start and end markers.
+From version 1.5.1, YAML front matter can be delimited with both `---` and `---`, and `---` and `...` start and end markers.
 
 ## Known Issues
 
@@ -52,7 +52,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-- 1.5.2 *Unreleased*
+- 1.5.2 *13 May 2024*
     - Revise thumbnailer to improve memory utilization and efficiency.
 - 1.5.1 *2 November 2023*
     - Support the emerging `public.markdown` UTI.
