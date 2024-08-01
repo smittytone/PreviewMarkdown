@@ -57,7 +57,7 @@ class PreviewViewController: NSViewController,
                 if let markdownString: String = String.init(data: data, encoding: encoding) {
                     // Instantiate the common code
                     let common: Common = Common.init(false)
-                    
+
                     // Update the NSTextView
                     
                     // FROM 1.3.0
@@ -69,6 +69,7 @@ class PreviewViewController: NSViewController,
                     // NOTE Changing the scrollview scroller knob style has no effect
                     self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
                     self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                    self.renderTextView.displaysLinkToolTips = true
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         renderTextStorage.beginEditing()
@@ -76,7 +77,7 @@ class PreviewViewController: NSViewController,
                         renderTextStorage.endEditing()
                         
                         // Add the subview to the instance's own view and draw
-                        self.view.display()
+                        //self.view.display()
 
                         // Call the QLPreviewingController indicating no error (nil)
                         handler(nil)

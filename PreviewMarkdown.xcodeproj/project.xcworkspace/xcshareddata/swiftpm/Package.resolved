@@ -1,4 +1,5 @@
 {
+  "originHash" : "d4b7333fd95b37ec75f42587185e8b651c0b8b95c242c8dd73bf7946bec5da49",
   "pins" : [
     {
       "identity" : "swiftymarkdown",
@@ -6,7 +7,7 @@
       "location" : "https://github.com/smittytone/SwiftyMarkdown.git",
       "state" : {
         "branch" : "master",
-        "revision" : "dde451ab4ed9b77b328e21baa471fdfa0cf61369"
+        "revision" : "98ef22ff831aabfee0f6d6645b696a5db0d9f44a"
       }
     },
     {
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

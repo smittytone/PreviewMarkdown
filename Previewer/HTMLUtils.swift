@@ -328,4 +328,3 @@ private let characterEntities: [String: Character] = [
     "&diams;"    : "\u{2666}"
 ]
 
-

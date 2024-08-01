@@ -21,7 +21,7 @@ class Common: NSObject {
     
     var doShowLightBackground: Bool = false
     var doShowTag: Bool             = true
-    
+
     // MARK:- Private Properties
     
     private var doIndentScalars: Bool       = true
