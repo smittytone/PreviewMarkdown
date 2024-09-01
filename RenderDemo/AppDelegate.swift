@@ -134,6 +134,7 @@ class AppDelegate:  NSObject,
                         renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(markdownAttString)
                         renderTextStorage.endEditing()
+                        self.previewTextView.needsDisplay = true
                         return nil
                     }
 

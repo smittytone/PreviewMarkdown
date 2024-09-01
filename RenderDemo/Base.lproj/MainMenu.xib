@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -75,7 +76,7 @@
                         <items>
                             <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
-                                    <action selector="doLoadYamlFile:" target="Voe-Tx-rLC" id="Bt2-4Z-2Vr"/>
+                                    <action selector="doLoadFile:" target="Voe-Tx-rLC" id="APL-Oo-7Pr"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open Recent" id="tXI-mr-wws">
@@ -162,7 +163,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="660" height="478"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
             <value key="minSize" type="size" width="660" height="478"/>
             <value key="minFullScreenContentSize" type="size" width="660" height="478"/>
             <view key="contentView" id="EiT-Mj-1SZ">
@@ -175,7 +176,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="660" height="400"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView wantsLayer="YES" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="NAJ-g1-D1W">
+                                <textView wantsLayer="YES" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" allowsDocumentBackgroundColorChange="YES" allowsNonContiguousLayout="YES" linkDetection="YES" textCompletion="NO" layoutManager="textKit1" id="NAJ-g1-D1W">
                                     <rect key="frame" x="0.0" y="0.0" width="660" height="400"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -196,41 +197,41 @@
                     </scrollView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PY0-yp-q30">
                         <rect key="frame" x="18" y="19" width="516" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="0yt-6L-z4q"/>
-                        </constraints>
                         <buttonCell key="cell" type="check" title="Expose indentation" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="Kua-pY-mCh">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="0yt-6L-z4q"/>
+                        </constraints>
                         <connections>
                             <action selector="doSetIndentCharacter:" target="Voe-Tx-rLC" id="7AW-EK-kM8"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUv-yG-ROn">
                         <rect key="frame" x="18" y="41" width="516" height="18"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="2kT-Dq-oG1"/>
-                            <constraint firstAttribute="width" constant="514" id="E8q-QZ-8mr"/>
-                        </constraints>
                         <buttonCell key="cell" type="check" title="Dark Mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0P9-pv-cCh">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="2kT-Dq-oG1"/>
+                            <constraint firstAttribute="width" constant="514" id="E8q-QZ-8mr"/>
+                        </constraints>
                         <connections>
                             <action selector="doSwitchMode:" target="Voe-Tx-rLC" id="uCD-0Y-TM4"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f2a-59-pv7">
                         <rect key="frame" x="535" y="13" width="112" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="2hx-Lc-ReQ"/>
-                            <constraint firstAttribute="width" constant="98" id="IZ1-Yx-gOS"/>
-                        </constraints>
                         <buttonCell key="cell" type="push" title="Load..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="629-9R-UdX">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="2hx-Lc-ReQ"/>
+                            <constraint firstAttribute="width" constant="98" id="IZ1-Yx-gOS"/>
+                        </constraints>
                         <connections>
                             <action selector="doLoadFile:" target="Voe-Tx-rLC" id="cl2-82-I8J"/>
                         </connections>

@@ -157,7 +157,7 @@ class Common: NSObject {
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
         
-        if !isThumbnail && useMDJS {
+        if !isThumbnail && self.useMDJS {
             // Only use MakdownIt if enabled, and we're not rendering a thumbnail
             if self.mdjs == nil {
                 if let mdjs: Markdowner = Markdowner.init() {
@@ -183,6 +183,7 @@ class Common: NSObject {
                 styler.headColour = self.headColourHex
                 styler.bodyFontFamily = self.fontFamily
                 styler.fontSize = self.fontSize
+                styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
                 
                 if let attStr: NSAttributedString = styler.render(isThumbnail) {
                     output = NSMutableAttributedString.init(attributedString: attStr)
@@ -190,14 +191,6 @@ class Common: NSObject {
                     output = NSMutableAttributedString.init(string: "Could not render markdown string",
                                                             attributes: self.valAtts)
                 }
-                /*
-                if let attStr: NSAttributedString = self.mdjs!.render(markdownString, doAltRender: true) {
-                    output = NSMutableAttributedString.init(attributedString: attStr)
-                } else {
-                    output = NSMutableAttributedString.init(string: "Could not render markdown string",
-                                                            attributes: self.valAtts)
-                }
-                 */
             }
         } else {
             // Use SwiftyMarkdown
@@ -210,15 +203,6 @@ class Common: NSObject {
             
             // Process the markdown string
             output = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
-        }
-        
-        // FROM 1.5.0
-        // Adjust the line spacing of previews
-        if !isThumbnail {
-            let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-            // NOTE Default line spacing value, ie. for single line spacing, is zero
-            spacedParaStyle.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
-            output.addParaStyle(with: spacedParaStyle)
         }
         
         // FROM 1.3.0
