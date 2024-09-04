@@ -99,7 +99,7 @@ final class AppDelegate: NSObject,
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
     // FROM 1.4.6
-    private  var havePrefsChanged: Bool = false
+    //private  var havePrefsChanged: Bool = false
     // FROM 1.5.0
     private var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
@@ -175,7 +175,7 @@ final class AppDelegate: NSObject,
         // FROM 1.4.6
         // Check for open panels
         if self.preferencesWindow.isVisible {
-            if self.havePrefsChanged {
+            if checkPrefs() {
                 let alert: NSAlert = showAlert("You have unsaved settings",
                                                "Do you wish to cancel and save them, or quit the app anyway?",
                                                false)
@@ -372,7 +372,7 @@ final class AppDelegate: NSObject,
         
         // FROM 1.4.6
         // Reset changed prefs flag
-        self.havePrefsChanged = false
+        //self.havePrefsChanged = false
         
         // FROM 1.4.6
         // Disable menus we don't want used when the panel is open
@@ -460,38 +460,6 @@ final class AppDelegate: NSObject,
 
 
     /**
-     Called when the user selects a font from either list.
-
-     FROM 1.4.0
-
-     - Parameters:
-        - sender: The source of the action.
-     */
-    @IBAction private func doUpdateFonts(sender: Any) {
-
-        let item: NSPopUpButton = sender as! NSPopUpButton
-        setStylePopup(item == self.bodyFontPopup)
-        self.havePrefsChanged = true
-    }
-
-    
-    /**
-     When the font size slider is moved and released, this function updates the font size readout.
- 
-     FROM 1.2.0
-
-     - Parameters:
-        - sender: The source of the action.
-     */
-    @IBAction private func doMoveSlider(sender: Any) {
-
-        let index: Int = Int(self.fontSizeSlider.floatValue)
-        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
-        self.havePrefsChanged = true
-    }
-
-
-    /**
      Close the **Preferences** sheet without saving.
      
      FROM 1.2.0
@@ -509,20 +477,123 @@ final class AppDelegate: NSObject,
             self.codeColourWell.deactivate()
         }
          */
+        
+        if checkPrefs() {
+            let alert: NSAlert = showAlert("You have made changes",
+                                           "Do you wish to go back and save them, or ignore them? ",
+                                           false)
+            alert.addButton(withTitle: "Go Back")
+            alert.addButton(withTitle: "Ignore Changes")
+            alert.beginSheetModal(for: self.preferencesWindow) { (response: NSApplication.ModalResponse) in
+                if response != NSApplication.ModalResponse.alertFirstButtonReturn {
+                    // The user clicked 'Cancel'
+                    self.clearNewColours()
+                    self.closePrefsWindow()
+                }
+            }
+        } else {
+            self.clearNewColours()
+            closePrefsWindow()
+        }
+    }
+    
+    
+    /**
+        Follow-on function to close the **Preferences** sheet without saving.
+        FROM 1.5.3
 
+        - Parameters:
+            - sender: The source of the action.
+     */
+    private func closePrefsWindow() {
+        
         if self.headColourWell.isActive {
             NSColorPanel.shared.close()
             self.headColourWell.deactivate()
         }
 
-        // FROM 1.5.0
-        self.clearNewColours()
-
+        // Remove the sheet now we have the data
         self.window.endSheet(self.preferencesWindow)
         
         // FROM 1.4.6
         // Restore menus
         showPanelGenerators()
+    }
+    
+    
+    /**
+        Check prefs for differences from the initial state.
+        Used when the **Preferences** sheet is closed with the Cancel button.
+        FROM 1.5.3
+     */
+    private func checkPrefs() -> Bool {
+        
+        var haveChanged: Bool = false
+        
+        // Check for a use light background change
+        var state: Bool = self.useLightCheckbox.state == .on
+        haveChanged = (self.doShowLightBackground != state)
+        
+        // Check for a show frontmatter change
+        if !haveChanged {
+            state = self.showFrontMatterCheckbox.state == .on
+            haveChanged = (self.doShowFrontMatter != state)
+        }
+        
+        // Check for line spacing change
+        let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
+        var lineSpacing: CGFloat = 1.0
+        switch(lineIndex) {
+            case 1:
+                lineSpacing = 1.15
+            case 2:
+                lineSpacing = 1.5
+            case 3:
+                lineSpacing = 2.0
+            default:
+                lineSpacing = 1.0
+        }
+        
+        if !haveChanged {
+            haveChanged = (self.lineSpacing != lineSpacing)
+        }
+        
+        // Check for and record font and style changes
+        if let fontName: String = getPostScriptName(false) {
+            if !haveChanged {
+                haveChanged = (fontName != self.codeFontName)
+            }
+        }
+        
+        if let fontName: String = getPostScriptName(true) {
+            if !haveChanged {
+                haveChanged = (fontName != self.bodyFontName)
+            }
+        }
+        
+        // Check for and record a font size change
+        if !haveChanged {
+            haveChanged = (self.previewFontSize != BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)])
+        }
+        
+        // Check for colour changes
+        if let _ = self.displayColours["new_heads"] {
+            haveChanged = true
+        }
+
+        if let _ = self.displayColours["new_code"] {
+            haveChanged = true
+        }
+
+        if let _ = self.displayColours["new_links"] {
+            haveChanged = true
+        }
+
+        if let _ = self.displayColours["new_quote"] {
+            haveChanged = true
+        }
+        
+        return haveChanged
     }
 
 
@@ -609,21 +680,43 @@ final class AppDelegate: NSObject,
                 defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
         }
-
-        if self.headColourWell.isActive {
-            NSColorPanel.shared.close()
-            self.headColourWell.deactivate()
-        }
-
-        // Remove the sheet now we have the data
-        self.window.endSheet(self.preferencesWindow)
         
-        // FROM 1.4.6
-        // Restore menus
-        showPanelGenerators()
+        closePrefsWindow()
     }
     
     
+    /**
+     Called when the user selects a font from either list.
+
+     FROM 1.4.0
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateFonts(sender: Any) {
+
+        let item: NSPopUpButton = sender as! NSPopUpButton
+        setStylePopup(item == self.bodyFontPopup)
+        //self.havePrefsChanged = true
+    }
+
+    
+    /**
+     When the font size slider is moved and released, this function updates the font size readout.
+ 
+     FROM 1.2.0
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doMoveSlider(sender: Any) {
+
+        let index: Int = Int(self.fontSizeSlider.floatValue)
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        //self.havePrefsChanged = true
+    }
+
+
     /**
         Generic IBAction for any Prefs control to register it has been used.
      
@@ -632,7 +725,7 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func controlClicked(sender: Any) {
         
-        self.havePrefsChanged = true
+        //self.havePrefsChanged = true
     }
 
 
@@ -649,7 +742,7 @@ final class AppDelegate: NSObject,
         let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
         self.displayColours[key] = self.headColourWell.color.hexString
-        self.havePrefsChanged = true
+        //self.havePrefsChanged = true
     }
 
 
