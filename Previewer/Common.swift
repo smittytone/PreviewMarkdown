@@ -3,7 +3,7 @@
  *  Code common to Previewer and Thumbnailer
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2023 Tony Smith. All rights reserved.
+ *  Copyright © 2024 Tony Smith. All rights reserved.
  */
 
 
@@ -11,6 +11,10 @@ import Foundation
 import SwiftyMarkdown
 import Yaml
 import AppKit
+
+
+typealias ThemeAttrDict   = [String: [NSAttributedString.Key: AnyObject]]
+public typealias ThemeStringDict = [String: [String: Any]]
 
 
 // FROM 1.4.0
@@ -21,6 +25,7 @@ class Common: NSObject {
     
     var doShowLightBackground: Bool = false
     var doShowTag: Bool             = true
+    var viewWidth: CGFloat          = 512
 
     // MARK:- Private Properties
     
@@ -162,12 +167,6 @@ class Common: NSObject {
             if self.mdjs == nil {
                 if let mdjs: Markdowner = Markdowner.init() {
                     self.mdjs = mdjs
-                    mdjs.fontSize = self.fontSize
-                    mdjs.lineSpacing = self.lineSpacing
-                    mdjs.fontFamily = self.fontFamily
-                    mdjs.bodyFontName = self.bodyFontName
-                    mdjs.codeFontName = self.codeFontName
-                    mdjs.styles = setMarkdownStyles(isThumbnail: isThumbnail)
                 } else {
                     // Missing JS code file or other init error
                     output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
@@ -176,7 +175,7 @@ class Common: NSObject {
             }
             
             if output.length == 0 {
-                let styler: Styler = Styler.init(self.mdjs!.tokenise(markdownString))
+                let styler: Styler = Styler.init(self.mdjs!.tokenise(markdownString), self.doShowLightBackground)
                 styler.bodyFontName = self.bodyFontName
                 styler.codeFontName = self.codeFontName
                 styler.codeColour = self.codeColourHex
@@ -184,6 +183,7 @@ class Common: NSObject {
                 styler.bodyFontFamily = self.fontFamily
                 styler.fontSize = self.fontSize
                 styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
+                styler.initialViewWidth = self.viewWidth
                 
                 if let attStr: NSAttributedString = styler.render(isThumbnail) {
                     output = NSMutableAttributedString.init(attributedString: attStr)

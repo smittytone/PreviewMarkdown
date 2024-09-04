@@ -32,7 +32,6 @@
 		3B40FE962694400500A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE952694400500A0C09F /* SwiftyMarkdown */; };
 		3B40FE982694400B00A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE972694400B00A0C09F /* SwiftyMarkdown */; };
 		3B46226B2A89127500C4BAF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B46226A2A89127500C4BAF9 /* AppDelegate.swift */; };
-		3B46226D2A89127500C4BAF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B46226C2A89127500C4BAF9 /* Assets.xcassets */; };
 		3B4622702A89127500C4BAF9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B46226E2A89127500C4BAF9 /* MainMenu.xib */; };
 		3B4622752A89129E00C4BAF9 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */; };
 		3B4622762A89129E00C4BAF9 /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBB479529E68E9100416C1C /* Styler.swift */; };
@@ -46,6 +45,8 @@
 		3B4622802A89156C00C4BAF9 /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B46227F2A89156C00C4BAF9 /* Yaml */; };
 		3B4622812A89183800C4BAF9 /* markdown-it.js in Resources */ = {isa = PBXBuildFile; fileRef = 3B3EE36E29DD6F6700C8662C /* markdown-it.js */; };
 		3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3B6183A92C86FD290085DB48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B6183A82C86FD290085DB48 /* Assets.xcassets */; };
+		3B6183AA2C86FE470085DB48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B6183A82C86FD290085DB48 /* Assets.xcassets */; };
 		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
 		3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
@@ -127,10 +128,10 @@
 		3B3EE36E29DD6F6700C8662C /* markdown-it.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "markdown-it.js"; sourceTree = "<group>"; };
 		3B4622682A89127500C4BAF9 /* RenderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RenderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B46226A2A89127500C4BAF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3B46226C2A89127500C4BAF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B46226F2A89127500C4BAF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		3B4622712A89127500C4BAF9 /* RenderDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RenderDemo.entitlements; sourceTree = "<group>"; };
 		3B5CAA03268F4B2300A2DED1 /* PMFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMFont.swift; sourceTree = "<group>"; };
+		3B6183A82C86FD290085DB48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3B6F568629360C5300FE5189 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExtensions.swift; sourceTree = "<group>"; };
 		3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericColorExtensions.swift; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				3B46226A2A89127500C4BAF9 /* AppDelegate.swift */,
-				3B46226C2A89127500C4BAF9 /* Assets.xcassets */,
 				3B46226E2A89127500C4BAF9 /* MainMenu.xib */,
 				3B4622712A89127500C4BAF9 /* RenderDemo.entitlements */,
 			);
@@ -307,6 +307,7 @@
 				3BBB479529E68E9100416C1C /* Styler.swift */,
 				3BD85BC729DDF85D00F66539 /* HTMLUtils.swift */,
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
+				3B6183A82C86FD290085DB48 /* Assets.xcassets */,
 				3BBAEA34236ADECB009BAA05 /* Info.plist */,
 				3B1C9EB0237454F600331D75 /* licences.txt */,
 				3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */,
@@ -496,7 +497,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B46226D2A89127500C4BAF9 /* Assets.xcassets in Resources */,
+				3B6183AA2C86FE470085DB48 /* Assets.xcassets in Resources */,
 				3B4622812A89183800C4BAF9 /* markdown-it.js in Resources */,
 				3B4622702A89127500C4BAF9 /* MainMenu.xib in Resources */,
 			);
@@ -527,6 +528,7 @@
 			files = (
 				3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */,
 				3B3EE37029DD6F6700C8662C /* markdown-it.js in Resources */,
+				3B6183A92C86FD290085DB48 /* Assets.xcassets in Resources */,
 				3B1C9EB1237454F600331D75 /* licences.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

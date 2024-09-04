@@ -3,7 +3,7 @@
 //  RenderDemo
 //
 //  Created by Tony Smith on 13/08/2023.
-//  Copyright © 2023 Tony Smith. All rights reserved.
+//  Copyright © 2024 Tony Smith. All rights reserved.
 //
 
 import Cocoa
@@ -39,6 +39,8 @@ class AppDelegate:  NSObject,
         // Set the mode button
         self.modeButton.state = self.renderAsDark ? .on : .off
         self.indentButton.state = self.renderIndents ? .on : .off
+        
+        self.common.viewWidth = self.previewTextView.frame.width
 
         // Centre the main window and display
         self.window.center()
@@ -87,6 +89,8 @@ class AppDelegate:  NSObject,
     @IBAction private func doReRenderFile(_ sender: Any) {
 
         self.common = Common.init(false)
+        self.common.viewWidth = self.previewTextView.frame.width
+        self.common.doShowLightBackground = !self.renderAsDark
         let possibleError: NSError? = renderContent(self.currentURL)
         if possibleError != nil {
             // Pop up an alert
