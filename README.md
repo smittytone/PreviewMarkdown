@@ -28,7 +28,7 @@ For more information on the background to this app, please see this [blog post](
 
 *PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only, not thumbnails.
 
-From version 1.5.1, YAML front matter can be delimited with both `---` and `---`, and `---` and `...` start and end markers.
+YAML front matter can be delimited with both `---` and `---`, and `---` and `...` start and end markers.
 
 ## Known Issues
 
@@ -52,7 +52,7 @@ PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/S
 
 ## Release Notes
 
-- 1.5.3 *Unreleased*
+- 1.5.3 *7 September 2024*
     - Improve settings change checking.
     - Correctly render the YAML frontmatter separator line: revert NSTextViews to TextKit 1 (previously bumped to TextKit 2 by Xcode).
 - 1.5.2 *13 May 2024*
