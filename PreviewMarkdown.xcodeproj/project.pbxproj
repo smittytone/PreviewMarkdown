@@ -21,6 +21,9 @@
 		3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */; };
 		3B40FE962694400500A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE952694400500A0C09F /* SwiftyMarkdown */; };
 		3B40FE982694400B00A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE972694400B00A0C09F /* SwiftyMarkdown */; };
+		3B4F82102C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
+		3B4F82112C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
+		3B4F82122C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
 		3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
 		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
 		3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
@@ -34,6 +37,24 @@
 		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D924E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3BAE671728D4D09B001532BD /* PMFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE671628D4D09B001532BD /* PMFontExtensions.swift */; };
+		3BAE6ED02C897A5D0090C343 /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECA2C897A5D0090C343 /* Styler.swift */; };
+		3BAE6ED12C897A5D0090C343 /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECA2C897A5D0090C343 /* Styler.swift */; };
+		3BAE6ED22C897A5D0090C343 /* Styler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECA2C897A5D0090C343 /* Styler.swift */; };
+		3BAE6ED32C897A5D0090C343 /* Markdowner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECB2C897A5D0090C343 /* Markdowner.swift */; };
+		3BAE6ED42C897A5D0090C343 /* Markdowner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECB2C897A5D0090C343 /* Markdowner.swift */; };
+		3BAE6ED52C897A5D0090C343 /* Markdowner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECB2C897A5D0090C343 /* Markdowner.swift */; };
+		3BAE6ED62C897A5D0090C343 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECC2C897A5D0090C343 /* HTMLUtils.swift */; };
+		3BAE6ED72C897A5D0090C343 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECC2C897A5D0090C343 /* HTMLUtils.swift */; };
+		3BAE6ED82C897A5D0090C343 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6ECC2C897A5D0090C343 /* HTMLUtils.swift */; };
+		3BAE6ED92C897AE50090C343 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3BAE6EDA2C897AE70090C343 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3BAE6EDB2C897C410090C343 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3BAE6EE12C89B3720090C343 /* Layouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE02C89B3720090C343 /* Layouter.swift */; };
+		3BAE6EE22C89B3720090C343 /* Layouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE02C89B3720090C343 /* Layouter.swift */; };
+		3BAE6EE32C89B3720090C343 /* Layouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE02C89B3720090C343 /* Layouter.swift */; };
+		3BAE6EE52C8A2F310090C343 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE42C8A2F310090C343 /* markdown-it.min.js */; };
+		3BAE6EE62C8A2F310090C343 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE42C8A2F310090C343 /* markdown-it.min.js */; };
+		3BAE6EE72C8A2F310090C343 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 3BAE6EE42C8A2F310090C343 /* markdown-it.min.js */; };
 		3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */; };
 		3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */; };
 		3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
@@ -105,6 +126,7 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B4F820F2C8C1C8C00679446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Previewer/Assets.xcassets"; sourceTree = "<group>"; };
 		3B5CAA03268F4B2300A2DED1 /* PMFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMFont.swift; sourceTree = "<group>"; };
 		3B6F568629360C5300FE5189 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExtensions.swift; sourceTree = "<group>"; };
@@ -114,6 +136,12 @@
 		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BAE671628D4D09B001532BD /* PMFontExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMFontExtensions.swift; sourceTree = "<group>"; };
+		3BAE6EC72C89783C0090C343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3BAE6ECA2C897A5D0090C343 /* Styler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styler.swift; sourceTree = "<group>"; };
+		3BAE6ECB2C897A5D0090C343 /* Markdowner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markdowner.swift; sourceTree = "<group>"; };
+		3BAE6ECC2C897A5D0090C343 /* HTMLUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLUtils.swift; sourceTree = "<group>"; };
+		3BAE6EE02C89B3720090C343 /* Layouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layouter.swift; sourceTree = "<group>"; };
+		3BAE6EE42C8A2F310090C343 /* markdown-it.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "markdown-it.min.js"; sourceTree = "<group>"; };
 		3BBAEA15236ADEB0009BAA05 /* PreviewMarkdown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewMarkdown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BBAEA1D236ADEB3009BAA05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -193,6 +221,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B4F820E2C8C1C0E00679446 /* YOU MUST SUPPLY */ = {
+			isa = PBXGroup;
+			children = (
+				3B4F820F2C8C1C8C00679446 /* Assets.xcassets */,
+			);
+			name = "YOU MUST SUPPLY";
+			sourceTree = "<group>";
+		};
 		3B6F568529360C0400FE5189 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,10 +305,16 @@
 			children = (
 				3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */,
 				3B0E8DCE251B8775001AC5BC /* Common.swift */,
+				3BAE6ECB2C897A5D0090C343 /* Markdowner.swift */,
+				3BAE6ECA2C897A5D0090C343 /* Styler.swift */,
+				3BAE6EE02C89B3720090C343 /* Layouter.swift */,
+				3BAE6ECC2C897A5D0090C343 /* HTMLUtils.swift */,
+				3BAE6EE42C8A2F310090C343 /* markdown-it.min.js */,
 				3BBAEA31236ADECB009BAA05 /* PreviewViewController.xib */,
 				3BBAEA34236ADECB009BAA05 /* Info.plist */,
 				3B1C9EB0237454F600331D75 /* licences.txt */,
 				3BBAEA35236ADECB009BAA05 /* Previewer.entitlements */,
+				3B4F820E2C8C1C0E00679446 /* YOU MUST SUPPLY */,
 			);
 			path = "Markdown Previewer";
 			sourceTree = "<group>";
@@ -292,9 +334,10 @@
 			isa = PBXGroup;
 			children = (
 				3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */,
-				3BD56C302AF02E0600772A82 /* Assets.xcassets */,
 				3BD56C332AF02E0600772A82 /* MainMenu.xib */,
 				3BD56C352AF02E0600772A82 /* RenderDemo.entitlements */,
+				3BAE6EC72C89783C0090C343 /* Info.plist */,
+				3BD56C302AF02E0600772A82 /* Assets.xcassets */,
 			);
 			path = RenderDemo;
 			sourceTree = "<group>";
@@ -500,6 +543,8 @@
 			files = (
 				3BBAEA33236ADECB009BAA05 /* PreviewViewController.xib in Resources */,
 				3B1C9EB1237454F600331D75 /* licences.txt in Resources */,
+				3B4F82102C8C1C8C00679446 /* Assets.xcassets in Resources */,
+				3BAE6EE52C8A2F310090C343 /* markdown-it.min.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +552,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAE6EE62C8A2F310090C343 /* markdown-it.min.js in Resources */,
+				3B4F82112C8C1C8C00679446 /* Assets.xcassets in Resources */,
 				3B1C9EB32374565800331D75 /* licences.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,6 +564,8 @@
 			files = (
 				3BD56C312AF02E0600772A82 /* Assets.xcassets in Resources */,
 				3BD56C412AF030F800772A82 /* MainMenu.xib in Resources */,
+				3B4F82122C8C1C8C00679446 /* Assets.xcassets in Resources */,
+				3BAE6EE72C8A2F310090C343 /* markdown-it.min.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,10 +604,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAE6ED62C897A5D0090C343 /* HTMLUtils.swift in Sources */,
+				3BAE6ED02C897A5D0090C343 /* Styler.swift in Sources */,
 				3BBAEA30236ADECB009BAA05 /* PreviewViewController.swift in Sources */,
+				3BAE6ED92C897AE50090C343 /* PMFont.swift in Sources */,
 				3BEAC5B32AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DCF251B8775001AC5BC /* Common.swift in Sources */,
+				3BAE6ED32C897A5D0090C343 /* Markdowner.swift in Sources */,
+				3BAE6EE12C89B3720090C343 /* Layouter.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -567,10 +621,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAE6ED72C897A5D0090C343 /* HTMLUtils.swift in Sources */,
+				3BAE6ED12C897A5D0090C343 /* Styler.swift in Sources */,
 				3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */,
+				3BAE6EDA2C897AE70090C343 /* PMFont.swift in Sources */,
 				3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B71BD47267F550D005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B0E8DD0251B8775001AC5BC /* Common.swift in Sources */,
+				3BAE6ED42C897A5D0090C343 /* Markdowner.swift in Sources */,
+				3BAE6EE22C89B3720090C343 /* Layouter.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -579,10 +638,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BAE6ED82C897A5D0090C343 /* HTMLUtils.swift in Sources */,
+				3BAE6ED22C897A5D0090C343 /* Styler.swift in Sources */,
 				3BD56C392AF02E7C00772A82 /* Common.swift in Sources */,
+				3BAE6EDB2C897C410090C343 /* PMFont.swift in Sources */,
 				3BD56C3C2AF02EDE00772A82 /* GenericColorExtensions.swift in Sources */,
 				3BD56C3A2AF02EC700772A82 /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */,
+				3BAE6ED52C897A5D0090C343 /* Markdowner.swift in Sources */,
+				3BAE6EE32C89B3720090C343 /* Layouter.swift in Sources */,
 				3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -706,7 +770,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -726,7 +790,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 2.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -771,7 +835,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 223;
+				CURRENT_PROJECT_VERSION = 224;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -785,7 +849,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 2.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;
@@ -996,7 +1060,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RenderDemo/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Tony Smith. All rights reserved.";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -1030,7 +1095,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RenderDemo/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Tony Smith. All rights reserved.";
 				INFOPLIST_KEY_NSMainNibFile = MainMenu;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;

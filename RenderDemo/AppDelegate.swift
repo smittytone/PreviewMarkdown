@@ -117,8 +117,13 @@ class AppDelegate:  NSObject,
 
                     self.previewTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
                     self.previewScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                    
+                    // Auto-scroll to top of preview
+                    self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
+                    self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
+                        renderTextStorage.addLayoutManager(Layouter.init())
                         renderTextStorage.beginEditing()
                         renderTextStorage.setAttributedString(mdAttString)
                         renderTextStorage.endEditing()

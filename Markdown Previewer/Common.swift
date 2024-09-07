@@ -24,6 +24,8 @@ class Common: NSObject {
     
     // MARK: - Private Properties
     
+    private var mds: String = ""
+    
     private var doIndentScalars: Bool       = true
     private var doShowYaml: Bool            = false
     private var fontSize: CGFloat           = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
@@ -38,16 +40,20 @@ class Common: NSObject {
     private var newLine: NSAttributedString = NSAttributedString.init(string: "")
     
     // FROM 1.4.0
-    private var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    private var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    private var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-    private var codeFontName: String  = BUFFOON_CONSTANTS.CODE_FONT_NAME
-    private var bodyFontName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    private var codeColourHex: String       = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    private var headColourHex: String       = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    private var linkColourHex: String       = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var codeFontName: String        = BUFFOON_CONSTANTS.CODE_FONT_NAME
+    private var bodyFontName: String        = BUFFOON_CONSTANTS.BODY_FONT_NAME
     
     // FROM 1.5.0
-    private var lineSpacing: CGFloat  = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    private var quoteColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var quoteColourHex: String      = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    
+    // FROM 2.0.0
+    private var markdowner: Markdowner?     = nil
 
+    
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
@@ -132,15 +138,55 @@ class Common: NSObject {
      */
     func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
 
+        // Process the markdown string
+        var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
+        
+        
+        // Look for front matter
+        var localMarkdownString: Substring = markdownString[...]
+        
+        let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#, #"^(\.)+"#)
+        if !frontMatter.isEmpty {
+            // Remove the front matter from the main string
+            localMarkdownString = self.mds[...]
+        }
+        
+        // Load in the Markdown converter
+        var markdowner: Markdowner? = nil
+        if let markdownerJs: Markdowner = Markdowner.init() {
+            markdowner = markdownerJs
+        } else {
+            // Missing JS code file or other init error
+            output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
+                                                    attributes: self.valAtts)
+        }
+        
+        if output.length == 0 {
+            // No error encountered getting the JavaScript so proceed to render the string
+            let styler: Styler = Styler.init(markdowner!.tokenise(localMarkdownString), self.doShowLightBackground)
+            styler.bodyFontName = self.bodyFontName
+            styler.codeFontName = self.codeFontName
+            styler.codeColour = self.codeColourHex
+            styler.headColour = self.headColourHex
+            styler.bodyColourValue = (isThumbnail || self.doShowLightBackground) ? NSColor.black : NSColor.labelColor
+            styler.fontSize = self.fontSize
+            styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
+            
+            if let attStr: NSAttributedString = styler.render(isThumbnail) {
+                output = NSMutableAttributedString.init(attributedString: attStr)
+            } else {
+                output = NSMutableAttributedString.init(string: "Could not render markdown string",
+                                                        attributes: self.valAtts)
+            }
+        }
+        
+        /*
         let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
         setSwiftStyles(swiftyMarkdown, isThumbnail)
         var processed: String = processCodeTags(markdownString)
         processed = convertSpaces(processed)
         processed = processSymbols(processed)
         processed = processCheckboxes(processed)
-        
-        // Process the markdown string
-        var output: NSMutableAttributedString = NSMutableAttributedString.init(attributedString: swiftyMarkdown.attributedString(from: processed))
         
         // FROM 1.5.0
         // Adjust the line spacing of previews
@@ -150,6 +196,7 @@ class Common: NSObject {
             spacedParaStyle.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
             output.addParaStyle(with: spacedParaStyle)
         }
+        */
         
         // FROM 1.3.0
         // Render YAML front matter if requested by the user, and we're not
@@ -372,6 +419,7 @@ class Common: NSObject {
 
     // MARK: - Front Matter Functions
 
+
     /**
      Extract and return initial front matter.
 
@@ -380,50 +428,63 @@ class Common: NSObject {
      - Parameters:
         - markdown:     The markdown file content.
         - startPattern: A string literal specifying the front matter start marker Reg Ex, eg. #"^(-)+"# for ---.
-        - endPattern:   A string literal specifying the front matter endß marker Reg Ex, eg. #"^(\.)+"# for ...
+        - endPattern:   A string literal specifying the front matter end marker Reg Ex, eg. #"^(\.)+"# for ...
 
      - Returns: The parsed string, or an empty string (`""`) on error.
      */
     func getFrontMatter(_ markdown: String, _ startPattern: String, _ endPattern: String) -> String {
-
+        
         let lines = markdown.components(separatedBy: CharacterSet.newlines)
         var fm: [String] = []
+        var rs: String = ""
+        var ms: String = ""
+
         var doAdd: Bool = false
+        var done: Bool = false
         
         for line in lines {
-            // Look for the pattern on the current line
-            let dashRange: NSRange = (line as NSString).range(of: startPattern, options: .regularExpression)
-            // FROM 1.5.1
-            let dotRange: NSRange = (line as NSString).range(of: endPattern, options: .regularExpression)
-
-            if !doAdd && line.count > 0 {
-                if dashRange.location == 0 {
-                    // Front matter start
-                    doAdd = true
-                    continue
-                } else {
-                    // Some other text than front matter at the start
-                    // so break
-                    break
-                }
-            }
-            
-            let dashesFound: Bool = (dashRange.location != NSNotFound)
-            let dotsFound: Bool = (dotRange.location != NSNotFound)
-            if doAdd && (dashesFound || dotsFound) {
-                // End of front matter
-                var rs: String = ""
-                for item in fm {
-                    rs += item + "\n"
+            if !done {
+                // Look for the pattern on the current line
+                let dashRange: NSRange = (line as NSString).range(of: startPattern, options: .regularExpression)
+                let dotRange: NSRange = (line as NSString).range(of: endPattern, options: .regularExpression)
+                
+                if !doAdd && line.count > 0 {
+                    if dashRange.location == 0 {
+                        // Front matter start
+                        doAdd = true
+                        continue
+                    } else {
+                        // Some other text than front matter at the start
+                        // so break
+                        break
+                    }
                 }
                 
-                return rs
+                let dashesFound: Bool = (dashRange.location != NSNotFound)
+                let dotsFound: Bool = (dotRange.location != NSNotFound)
+                if doAdd && (dashesFound || dotsFound) {
+                    // End of front matter
+                    for item in fm {
+                        rs += item + "\n"
+                    }
+                    
+                    done = true
+                    continue
+                }
+                
+                if doAdd && line.count > 0 {
+                    // Add the line of front matter to the store
+                    fm.append(line)
+                }
+            } else {
+                ms += line + "\n"
             }
-            
-            if doAdd && line.count > 0 {
-                // Add the line of front matter to the store
-                fm.append(line)
-            }
+        }
+        
+        if !rs.isEmpty {
+            // Got front matter
+            self.mds = ms
+            return rs
         }
         
         return ""
@@ -691,5 +752,15 @@ extension NSMutableAttributedString {
             }
         }
         endEditing()
+    }
+}
+
+
+extension String {
+    
+    func containsOnlyWhitespaceAndNewlines() -> Bool {
+
+        let got: Bool = (rangeOfCharacter(from: .alphanumerics) != nil) || (rangeOfCharacter(from: .punctuationCharacters) != nil)
+        return !got
     }
 }
