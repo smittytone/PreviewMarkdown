@@ -46,7 +46,9 @@ public class Markdowner {
         }
         
         // Store the results for later
-        self.mdjs = mdjs.construct(withArguments: ["default"])
+        // NOTE We set "html" because Markdown-It 14 doesn't do this automatically
+        let jsHtml: JSValue = JSValue.init(object: ["html": true], in: context)
+        self.mdjs = mdjs.construct(withArguments: [jsHtml])
     }
     
     
