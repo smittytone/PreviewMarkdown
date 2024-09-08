@@ -47,6 +47,7 @@ class Styler {
     var headColour: String                          = "#FFFFFF"
     var codeColour: String                          = "#00FF00"
     var linkColour: String                          = "#64ACDD"
+    var quoteColour: String                         = "#FFFFFF"
     var bodyColourValue: NSColor                    = NSColor.labelColor
     
     var bodyFontName: String                        = "SF Pro"
@@ -85,6 +86,7 @@ class Styler {
     private var headColourValue: NSColor!
     private var codeColourValue: NSColor!
     private var linkColourValue: NSColor!
+    private var quoteColourValue: NSColor!
     
     private var tabbedParaStyle: NSMutableParagraphStyle!
     private var insetParaStyle:  NSMutableParagraphStyle!
@@ -261,6 +263,7 @@ class Styler {
                 // so convert the content block's paragraph breaks (\n) to NSAttributedString-friendly
                 // line-break codes.
                 if isPre {
+                    scannedString = scannedString!.trimmingCharacters(in: .newlines)
                     scannedString = scannedString!.replacingOccurrences(of: "\n", with: self.lineBreakSymbol)
                     renderedString.append(makeCodeBlockParagraph(scannedString!))
                     scannedString = ""
@@ -806,7 +809,7 @@ class Styler {
         
         return NSAttributedString(string: cellString + "\n",
                                   attributes: [.paragraphStyle: cellParagraphStyle,
-                                               .foregroundColor: self.bodyColourValue,
+                                               .foregroundColor: self.quoteColourValue!,
                                                .font: makeFont("strong", self.fontSize * H4_MULTIPLIER)!])
     }
     
@@ -819,6 +822,7 @@ class Styler {
         let cellBlockColour: NSColor = self.useLightMode ? NSColor.init(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1) : NSColor.init(white: 1.0, alpha: 0.05)
         let cellblock = NSTextTableBlock(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
         cellblock.backgroundColor = cellBlockColour
+        cellblock.setWidth(10.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
         
         let cellParagraphStyle = NSMutableParagraphStyle()
         cellParagraphStyle.alignment = .left
@@ -971,6 +975,7 @@ class Styler {
         self.headColourValue = colourFromHexString(self.headColour)
         self.codeColourValue = colourFromHexString(self.codeColour)
         self.linkColourValue = colourFromHexString(self.linkColour)
+        self.quoteColourValue = colourFromHexString(self.quoteColour)
         
         // Paragraph styles
         // H1
