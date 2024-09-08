@@ -13,6 +13,15 @@ import Yaml
 import AppKit
 
 
+class MarkdownComponents {
+    // TO-DO Replace with ranges
+    var frontMatterStart: String.Index? = nil
+    var frontMatterEnd: String.Index? = nil
+    var markdownStart: String.Index? = nil
+    var markdownEnd: String.Index? = nil
+}
+
+
 // FROM 1.4.0
 // Implement as a class
 class Common: NSObject {
@@ -141,15 +150,14 @@ class Common: NSObject {
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
         
-        
         // Look for front matter
-        var localMarkdownString: Substring = markdownString[...]
-        
-        let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#, #"^(\.)+"#)
-        if !frontMatter.isEmpty {
-            // Remove the front matter from the main string
-            localMarkdownString = self.mds[...]
+        var frontMatter: Substring = ""
+        let components: MarkdownComponents = getFrontMatter(markdownString)
+        if components.frontMatterStart != nil {
+            frontMatter = markdownString[components.frontMatterStart!...components.frontMatterEnd!]
         }
+        
+        let markdownToRender: Substring = markdownString[components.markdownStart!..<components.markdownEnd!]
         
         // Load in the Markdown converter
         var markdowner: Markdowner? = nil
@@ -163,98 +171,74 @@ class Common: NSObject {
         
         if output.length == 0 {
             // No error encountered getting the JavaScript so proceed to render the string
-            let styler: Styler = Styler.init(markdowner!.tokenise(localMarkdownString), self.doShowLightBackground)
+            let styler: Styler = Styler.init(markdowner!.tokenise(markdownToRender), self.doShowLightBackground)
             styler.bodyFontName = self.bodyFontName
             styler.codeFontName = self.codeFontName
             styler.codeColour = self.codeColourHex
             styler.headColour = self.headColourHex
+            styler.quoteColour = self.quoteColourHex
             styler.bodyColourValue = (isThumbnail || self.doShowLightBackground) ? NSColor.black : NSColor.labelColor
             styler.fontSize = self.fontSize
             styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
             
             if let attStr: NSAttributedString = styler.render(isThumbnail) {
                 output = NSMutableAttributedString.init(attributedString: attStr)
+                
+                // Render YAML front matter if requested by the user, and we're not
+                // rendering a thumbnail image (this is for previews only)
+                if !isThumbnail && self.doShowYaml && frontMatter.count > 0 {
+                    do {
+                        let yaml: Yaml = try Yaml.load(String(frontMatter))
+                        
+                        // Assemble the front matter string
+                        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "", attributes: self.valAtts)
+                        
+                        // Initial line
+                        renderedString.append(self.hr)
+                        
+                        // Render the YAML to NSAttributedString
+                        if let yamlString = renderYaml(yaml, 0, false) {
+                            renderedString.append(yamlString)
+                        }
+                        
+                        // Add a line after the front matter
+                        renderedString.append(self.hr)
+                        
+                        // Add in the orignal rendered markdown and then set the
+                        // output string to the combined string
+                        renderedString.append(output)
+                        output = renderedString
+                    } catch {
+                        // No YAML to render, or mis-formatted
+                        // No YAML to render, or the YAML was mis-formatted
+                        // Get the error as reported by YamlSwift
+                        let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
+                        var yamlErrString: String
+                        switch(yamlErr) {
+                            case .message(let s):
+                                yamlErrString = s ?? "unknown"
+                        }
+                        
+                        // Assemble the error string
+                        let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString,
+                                                                                                    attributes: self.keyAtts)
+                        
+                        // Should we include the raw text?
+                        // At least the user can see the data this way
+#if DEBUG
+                        errorString.append(self.hr)
+                        errorString.append(NSMutableAttributedString.init(string: String(frontMatter),
+                                                                          attributes: self.valAtts))
+#endif
+                        
+                        errorString.append(self.hr)
+                        errorString.append(output)
+                        output = errorString
+                    }
+                }
             } else {
                 output = NSMutableAttributedString.init(string: "Could not render markdown string",
                                                         attributes: self.valAtts)
-            }
-        }
-        
-        /*
-        let swiftyMarkdown: SwiftyMarkdown = SwiftyMarkdown.init(string: "")
-        setSwiftStyles(swiftyMarkdown, isThumbnail)
-        var processed: String = processCodeTags(markdownString)
-        processed = convertSpaces(processed)
-        processed = processSymbols(processed)
-        processed = processCheckboxes(processed)
-        
-        // FROM 1.5.0
-        // Adjust the line spacing of previews
-        if !isThumbnail {
-            let spacedParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-            // NOTE Default line spacing value, ie. for single line spacing, is zero
-            spacedParaStyle.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
-            output.addParaStyle(with: spacedParaStyle)
-        }
-        */
-        
-        // FROM 1.3.0
-        // Render YAML front matter if requested by the user, and we're not
-        // rendering a thumbnail image (this is for previews only)
-        if !isThumbnail && self.doShowYaml {
-            // Extract the front matter
-            let frontMatter: String = getFrontMatter(markdownString, #"^(-)+"#, #"^(\.)+"#)
-            if frontMatter.count > 0 {
-                // Only attempt to render the front matter if there is any
-                do {
-                    let yaml: Yaml = try Yaml.load(frontMatter)
-                    
-                    // Assemble the front matter string
-                    let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                                   attributes: self.valAtts)
-                    
-                    // Initial line
-                    renderedString.append(self.hr)
-                    
-                    // Render the YAML to NSAttributedString
-                    if let yamlString = renderYaml(yaml, 0, false) {
-                        renderedString.append(yamlString)
-                    }
-                    
-                    // Add a line after the front matter
-                    renderedString.append(self.hr)
-
-                    // Add in the orignal rendered markdown and then set the
-                    // output string to the combined string
-                    renderedString.append(output)
-                    output = renderedString
-                } catch {
-                    // No YAML to render, or mis-formatted
-                    // No YAML to render, or the YAML was mis-formatted
-                    // Get the error as reported by YamlSwift
-                    let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
-                    var yamlErrString: String
-                    switch(yamlErr) {
-                        case .message(let s):
-                            yamlErrString = s ?? "unknown"
-                    }
-
-                    // Assemble the error string
-                    let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString,
-                                                                                                attributes: self.keyAtts)
-
-                    // Should we include the raw text?
-                    // At least the user can see the data this way
-                    #if DEBUG
-                        errorString.append(self.hr)
-                        errorString.append(NSMutableAttributedString.init(string: frontMatter,
-                                                                          attributes: self.valAtts))
-                    #endif
-                    
-                    errorString.append(self.hr)
-                    errorString.append(output)
-                    output = errorString
-                }
             }
         }
 
@@ -270,224 +254,61 @@ class Common: NSObject {
     }
 
 
-    // MARK: - SwiftyMarkdown Rendering Support Functions
-
-    func processSymbols(_ base: String) -> String {
-
-        // FROM 1.1.0
-        // Find and and replace any HTML symbol markup
-        // Processed here because SwiftyMarkdown doesn't handle this markup
-
-        let codes: [String] = ["&quot;", "&amp;", "&frasl;", "&lt;", "&gt;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&bull;", "&ndash;", "&mdash;", "&trade;", "&nbsp;",  "&iexcl;", "&cent;", "&pound;", "&yen;", "&sect;", "&copy;", "&ordf;", "&reg;", "&deg;", "&ordm;", "&plusmn;", "&sup2;", "&sup3;", "&micro;", "&para;", "&middot;", "&iquest;", "&divide;", "&euro;", "&dagger;", "&Dagger;"]
-        let symbols: [String] = ["\"", "&", "/", "<", ">", "‘", "’", "“", "”", "•", "-", "—", "™", " ", "¡", "¢", "£", "¥", "§", "©", "ª", "®", "º", "º", "±", "²", "³", "µ", "¶", "·", "¿", "÷", "€", "†", "‡"]
-
-        // Look for HTML symbol code '&...;' substrings, eg. '&sup2;'
-        let pattern = #"&[a-zA-Z]+[1-9]*;"#
-        var result = base
-        var range = base.range(of: pattern, options: .regularExpression)
-
-        while range != nil {
-            // Get the symbol from the 'symbols' array that has the same index
-            // as the symbol code from the 'codes' array
-            var repText = ""
-            let find = String(result[range!])
-            if codes.contains(find) {
-                repText = symbols[codes.firstIndex(of: find)!]
-            }
-
-            // Swap out the HTML symbol code for the actual symbol
-            result = result.replacingCharacters(in: range!, with: repText)
-
-            // Get the next occurence of the pattern ready for the 'while...' check
-            range = result.range(of: pattern, options: .regularExpression)
-        }
-
-        return result
-    }
-    
-    
-    func processCheckboxes(_ base: String) -> String {
-        
-        // FROM 1.4.2
-        // Hack to present checkboxes a la GitHub
-        
-        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
-        let symbols: [String] = ["❎", "✅"]
-
-        // Look for HTML symbol code '&...;' substrings, eg. '&sup2;'
-        var i = 0
-        var result = base
-        for pattern in patterns {
-            var range = result.range(of: pattern, options: .regularExpression)
-    
-            while range != nil {
-                // Swap out the HTML symbol code for the actual symbol
-                result = result.replacingCharacters(in: range!, with: symbols[i])
-
-                // Get the next occurence of the pattern ready for the 'while...' check
-                range = result.range(of: pattern, options: .regularExpression)
-            }
-            
-            i += 1
-        }
-        
-        return result
-    }
-
-
-    func processCodeTags(_ base: String) -> String {
-
-        // FROM 1.1.0
-        // Look for markdown code blocks top'n'tailed with three ticks ```
-        // Processed here because SwiftyMarkdown doesn't handle this markup
-
-        var isBlock = false
-        var index = 0
-        var lines = base.components(separatedBy: CharacterSet.newlines)
-
-        // Run through the lines looking for initial ```
-        // Remove any found and inset the lines in between (for SwiftyMarkdown to format)
-        for line in lines {
-            if line.hasPrefix("```") {
-                // Found a code block marker: remove the line and set
-                // the marker to the opposite what it was, off or on
-                lines.remove(at: index)
-                isBlock = !isBlock
-                continue
-            }
-
-            if isBlock {
-                // Pad each line with an initial four spaces - this is what SwiftyMarkdown
-                // looks for in a code block
-                lines[index] = "    " + lines[index]
-            }
-
-            index += 1
-        }
-
-        // Re-assemble the string from the lines, spacing them with a newline
-        // (except for the final line, of course)
-        index = 0
-        var result = ""
-        for line in lines {
-            result += line + (index < lines.count - 1 ? "\n" : "")
-            index += 1
-        }
-
-        return result
-    }
-
-
-    func convertSpaces(_ base: String) -> String {
-
-        // FROM 1.1.1
-        // Convert space-formatted lists to tab-formatte lists
-        // Required because SwiftyMarkdown doesn't indent on spaces
-
-        // Find (multiline) x spaces followed by *, - or 1-9,
-        // where x >= 1
-        let pattern = #"(?m)^[ ]+([1-9]|\*|-)"#
-        var result = base as NSString
-        var nrange: NSRange = result.range(of: pattern, options: .regularExpression)
-
-        // Use NSRange and NSString because it's easier to modify the
-        // range to exclude the character *after* the spaces
-        while nrange.location != NSNotFound {
-            var tabs = ""
-
-            // Get the range of the spaces minus the detected list character
-            let crange: NSRange = NSMakeRange(nrange.location, nrange.length - 1)
-
-            // Get the number of tabs characters we need to insert
-            let tabCount = (nrange.length - 1) / BUFFOON_CONSTANTS.SPACES_FOR_A_TAB
-
-            // Assemble the required number of tabs
-            for _ in 0..<tabCount {
-                tabs += "\t"
-            }
-
-            // Swap out the spaces for the string of one or more tabs
-            result = result.replacingCharacters(in: crange, with: tabs) as NSString
-
-            // Get the next occurence of the pattern ready for the 'while...' check
-            nrange = result.range(of: pattern, options: .regularExpression)
-        }
-
-        return result as String
-    }
-
-
     // MARK: - Front Matter Functions
 
 
     /**
      Extract and return initial front matter.
 
-     FROM 1.3.0, updated 1.5.1
+     FROM 1.3.0, updated 1.5.1, 2.0.0
 
      - Parameters:
         - markdown:     The markdown file content.
-        - startPattern: A string literal specifying the front matter start marker Reg Ex, eg. #"^(-)+"# for ---.
-        - endPattern:   A string literal specifying the front matter end marker Reg Ex, eg. #"^(\.)+"# for ...
 
-     - Returns: The parsed string, or an empty string (`""`) on error.
+     - Returns: A data structure indicating front matter, markdown ranges.
      */
-    func getFrontMatter(_ markdown: String, _ startPattern: String, _ endPattern: String) -> String {
+    func getFrontMatter(_ markdown: String) -> MarkdownComponents {
         
-        let lines = markdown.components(separatedBy: CharacterSet.newlines)
-        var fm: [String] = []
-        var rs: String = ""
-        var ms: String = ""
-
-        var doAdd: Bool = false
-        var done: Bool = false
+        // Assume the data is ALL markdown
+        let components: MarkdownComponents = MarkdownComponents.init()
+        components.markdownEnd = markdown.endIndex
+        components.markdownStart = markdown.startIndex
         
-        for line in lines {
-            if !done {
-                // Look for the pattern on the current line
-                let dashRange: NSRange = (line as NSString).range(of: startPattern, options: .regularExpression)
-                let dotRange: NSRange = (line as NSString).range(of: endPattern, options: .regularExpression)
-                
-                if !doAdd && line.count > 0 {
-                    if dashRange.location == 0 {
-                        // Front matter start
-                        doAdd = true
-                        continue
-                    } else {
-                        // Some other text than front matter at the start
-                        // so break
-                        break
-                    }
-                }
-                
-                let dashesFound: Bool = (dashRange.location != NSNotFound)
-                let dotsFound: Bool = (dotRange.location != NSNotFound)
-                if doAdd && (dashesFound || dotsFound) {
-                    // End of front matter
-                    for item in fm {
-                        rs += item + "\n"
-                    }
-                    
-                    done = true
-                    continue
-                }
-                
-                if doAdd && line.count > 0 {
-                    // Add the line of front matter to the store
-                    fm.append(line)
-                }
-            } else {
-                ms += line + "\n"
+        // Look for YAML symbol code
+        let lineFindRegex = #"(?s)(?<=---\n).*(?=\n---)"#
+        let dotFindRegex = #"(?s)(?<=\.\.\.\n).*(?=\n\.\.\.)"#
+        
+        // First look for ... to ...
+        if let range = markdown.range(of: dotFindRegex, options: .regularExpression) {
+            components.frontMatterStart = range.lowerBound
+            components.frontMatterEnd = range.upperBound
+        }
+        
+        // Didn't find ... to ... so look for --- to ---
+        if let range = markdown.range(of: lineFindRegex, options: .regularExpression) {
+            components.frontMatterStart = range.lowerBound
+            components.frontMatterEnd = range.upperBound
+        }
+        
+        // Make sure the front matte, if any, is no preceded by any text
+        if components.frontMatterStart != nil {
+            let endIndex: String.Index = markdown.index(components.frontMatterStart!, offsetBy: -4)
+            let start: String = String(markdown[markdown.startIndex..<endIndex])
+            if !start.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                // Front matter comes after text, ie. it is NOT front matter
+                components.frontMatterStart = nil
+                components.frontMatterEnd = nil
             }
         }
         
-        if !rs.isEmpty {
-            // Got front matter
-            self.mds = ms
-            return rs
+        // Set the start of the markdown content (after the front matter, if any)
+        if let end = components.frontMatterEnd {
+            components.markdownStart = markdown.index(end, offsetBy: 4)
+        } else {
+            components.markdownStart = markdown.startIndex
         }
         
-        return ""
+        return components
     }
 
 
@@ -752,15 +573,5 @@ extension NSMutableAttributedString {
             }
         }
         endEditing()
-    }
-}
-
-
-extension String {
-    
-    func containsOnlyWhitespaceAndNewlines() -> Bool {
-
-        let got: Bool = (rangeOfCharacter(from: .alphanumerics) != nil) || (rangeOfCharacter(from: .punctuationCharacters) != nil)
-        return !got
     }
 }
