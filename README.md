@@ -1,6 +1,8 @@
-# PreviewMarkdown 1.5.3
+# PreviewMarkdown 2.0.0
 
-This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for Catalina and later versions of macOS.
+This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for versions of macOS 10.15 or above.
+
+Version 2.0.0 features a brand new rendering engine which adds support for tables, source code highligting, nested blockquotes and more. It adds preliminary img support
 
 ![PreviewMarkdown App Store QR code](qr-code.jpg)
 
@@ -17,18 +19,16 @@ You can alter some of the key elements of the preview by using the **Preferences
 - The base body font and text size.
 - The monospaced code font.
 - The colour of headlines, code, blockquotes and link text.
-- Whether YAML front matter should be displayed too.
-- Whether preview should be display white-on-black even in Dark Mode.
+- Whether YAML front matter should be displayed too. This is handy if you are a [Hugo](https://gohugo.io) or [Jekyll](https://jekyllrb.com) user — [see below for more details](#yaml-front-matter).
+- Whether preview should be display white-on-black even in macOS’ Dark Mode.
 
-Changing these settings will affect previews immediately, but may not affect thumbnails until you open a folder that has not been previously opened in the current login session.
-
-For more information on the background to this app, please see this [blog post](https://smittytone.wordpress.com/2019/11/07/create_previews_macos_catalina/).
+Changing these settings will affect previews immediately, but may not affect thumbnails until you open a folder that has not been previously opened in the current login session, or you log out of your macOS user account. This is because Finder caches thumbnails generated in a given session.
 
 ### YAML Front Matter
 
 *PreviewMarkdown* supports rendering YAML front matter in Markdown files. To enable it, go to **Preview Markdown > Preferences...** and check the **Show YAML front matter** checkbox. YAML will appear in QuickLook previews only, not thumbnails.
 
-YAML front matter can be delimited with both `---` and `---`, and `---` and `...` start and end markers.
+YAML front matter can be delimited with both `---` and `---`, and `---` and `...` start and end markers, as per [the YAML 1.2 specification](https://yaml.org).
 
 ## Known Issues
 
@@ -36,9 +36,7 @@ Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewM
 
 ## Source Code
 
-This repository contains the primary source code for *PreviewMarkdown*. Certain graphical assets, code components and data files are not included. To build *PreviewMarkdown* from scratch, you will need to add these files yourself or remove them from your fork.
-
-This includes minor changes made to the SwiftyMarkdown source — specifically to unset NSAttributedString’s `.link` attribute for links in order to prevent NSAttributedString applying its own link text formatting.
+This repository contains the primary source code for *PreviewMarkdown*. Certain graphical assets, code components and data files are not included. To build *PreviewMarkdown* from scratch, you will need to add these files yourself or remove them from your fork’s Xcode project.
 
 The files `REPLACE_WITH_YOUR_FUNCTIONS` and `REPLACE_WITH_YOUR_CODES` must be replaced with your own files. The former will contain your `sendFeedback(_ feedback: String) -> URLSessionTask?` function. The latter your Developer Team ID, used as the App Suite identifier prefix.
 
@@ -48,10 +46,12 @@ You will need to create your own `new` directory containing your own `new.html` 
 
 ## Acknowledgements
 
-PreviewMarkdown’s app extensions contain [SwiftyMarkdown](https://github.com/SimonFairbairn/SwiftyMarkdown) by Simon Fairbairn and other contributors, and [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors.
+PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors and [Markdown-It](https://github.com/markdown-it/markdown-it) by Vitaly Puzrin and Alex Kocharin.
 
 ## Release Notes
 
+- 2.0.0 *Unreleased*
+    - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
 - 1.5.3 *7 September 2024*
     - Improve settings change checking.
     - Correctly render the YAML frontmatter separator line: revert NSTextViews to TextKit 1 (previously bumped to TextKit 2 by Xcode).

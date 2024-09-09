@@ -18,13 +18,13 @@
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
 		3B33BEEC2898FDA20038AE9D /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEED2898FDF90038AE9D /* Yaml */; };
-		3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */; };
-		3B40FE962694400500A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE952694400500A0C09F /* SwiftyMarkdown */; };
-		3B40FE982694400B00A0C09F /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3B40FE972694400B00A0C09F /* SwiftyMarkdown */; };
 		3B4F82102C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
 		3B4F82112C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
 		3B4F82122C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
 		3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3B60A7412C8E199C00812A2D /* Highlighter in Frameworks */ = {isa = PBXBuildFile; productRef = 3B60A7402C8E199C00812A2D /* Highlighter */; };
+		3B60A7432C8E19E600812A2D /* Highlighter in Frameworks */ = {isa = PBXBuildFile; productRef = 3B60A7422C8E19E600812A2D /* Highlighter */; };
+		3B60A7452C8E238600812A2D /* Highlighter in Frameworks */ = {isa = PBXBuildFile; productRef = 3B60A7442C8E238600812A2D /* Highlighter */; };
 		3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */; };
 		3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
 		3B71BD46267F550D005F7FFC /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
@@ -71,7 +71,6 @@
 		3BD56C3A2AF02EC700772A82 /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
 		3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3BD56C3C2AF02EDE00772A82 /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */; };
-		3BD56C3E2AF02FBD00772A82 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */; };
 		3BD56C402AF02FC200772A82 /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3BD56C3F2AF02FC200772A82 /* Yaml */; };
 		3BD56C412AF030F800772A82 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3BD56C332AF02E0600772A82 /* MainMenu.xib */; };
 		3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */; };
@@ -176,7 +175,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */,
-				3B33BEF02898FDFD0038AE9D /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,8 +191,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BBAEA2D236ADECB009BAA05 /* Quartz.framework in Frameworks */,
+				3B60A7412C8E199C00812A2D /* Highlighter in Frameworks */,
 				3B218E122637F5C30024446B /* Yaml in Frameworks */,
-				3B40FE982694400B00A0C09F /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,8 +202,8 @@
 			files = (
 				3BBAEA43236ADF11009BAA05 /* QuickLookThumbnailing.framework in Frameworks */,
 				3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */,
+				3B60A7432C8E19E600812A2D /* Highlighter in Frameworks */,
 				3B218E342637FA3B0024446B /* Yaml in Frameworks */,
-				3B40FE962694400500A0C09F /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +211,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BD56C3E2AF02FBD00772A82 /* SwiftyMarkdown in Frameworks */,
+				3B60A7452C8E238600812A2D /* Highlighter in Frameworks */,
 				3BD56C402AF02FC200772A82 /* Yaml in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,7 +370,6 @@
 			name = PreviewMarkdownTests;
 			packageProductDependencies = (
 				3B33BEED2898FDF90038AE9D /* Yaml */,
-				3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */,
 			);
 			productName = PreviewMarkdownTests;
 			productReference = 3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */;
@@ -415,7 +412,7 @@
 			name = "Markdown Previewer";
 			packageProductDependencies = (
 				3B218E112637F5C30024446B /* Yaml */,
-				3B40FE972694400B00A0C09F /* SwiftyMarkdown */,
+				3B60A7402C8E199C00812A2D /* Highlighter */,
 			);
 			productName = Previewer;
 			productReference = 3BBAEA2A236ADECB009BAA05 /* Markdown Previewer.appex */;
@@ -436,7 +433,7 @@
 			name = "Markdown Thumbnailer";
 			packageProductDependencies = (
 				3B218E332637FA3B0024446B /* Yaml */,
-				3B40FE952694400500A0C09F /* SwiftyMarkdown */,
+				3B60A7422C8E19E600812A2D /* Highlighter */,
 			);
 			productName = Thumbnailer;
 			productReference = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */;
@@ -456,8 +453,8 @@
 			);
 			name = RenderDemo;
 			packageProductDependencies = (
-				3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */,
 				3BD56C3F2AF02FC200772A82 /* Yaml */,
+				3B60A7442C8E238600812A2D /* Highlighter */,
 			);
 			productName = RenderDemo;
 			productReference = 3BD56C2C2AF02E0500772A82 /* RenderDemo.app */;
@@ -503,7 +500,7 @@
 			mainGroup = 3BBAEA0C236ADEB0009BAA05;
 			packageReferences = (
 				3B218E102637F5C30024446B /* XCRemoteSwiftPackageReference "YamlSwift" */,
-				3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
+				3B60A73F2C8E199C00812A2D /* XCRemoteSwiftPackageReference "HighlighterSwift" */,
 			);
 			productRefGroup = 3BBAEA16236ADEB0009BAA05 /* Products */;
 			projectDirPath = "";
@@ -770,7 +767,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -835,7 +832,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 224;
+				CURRENT_PROJECT_VERSION = 225;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1182,9 +1179,9 @@
 				kind = branch;
 			};
 		};
-		3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
+		3B60A73F2C8E199C00812A2D /* XCRemoteSwiftPackageReference "HighlighterSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/smittytone/SwiftyMarkdown.git";
+			repositoryURL = "https://github.com/smittytone/HighlighterSwift";
 			requirement = {
 				branch = develop;
 				kind = branch;
@@ -1208,25 +1205,20 @@
 			package = 3B218E102637F5C30024446B /* XCRemoteSwiftPackageReference "YamlSwift" */;
 			productName = Yaml;
 		};
-		3B33BEEF2898FDFD0038AE9D /* SwiftyMarkdown */ = {
+		3B60A7402C8E199C00812A2D /* Highlighter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
-			productName = SwiftyMarkdown;
+			package = 3B60A73F2C8E199C00812A2D /* XCRemoteSwiftPackageReference "HighlighterSwift" */;
+			productName = Highlighter;
 		};
-		3B40FE952694400500A0C09F /* SwiftyMarkdown */ = {
+		3B60A7422C8E19E600812A2D /* Highlighter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
-			productName = SwiftyMarkdown;
+			package = 3B60A73F2C8E199C00812A2D /* XCRemoteSwiftPackageReference "HighlighterSwift" */;
+			productName = Highlighter;
 		};
-		3B40FE972694400B00A0C09F /* SwiftyMarkdown */ = {
+		3B60A7442C8E238600812A2D /* Highlighter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
-			productName = SwiftyMarkdown;
-		};
-		3BD56C3D2AF02FBD00772A82 /* SwiftyMarkdown */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B40FE9226943FEA00A0C09F /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
-			productName = SwiftyMarkdown;
+			package = 3B60A73F2C8E199C00812A2D /* XCRemoteSwiftPackageReference "HighlighterSwift" */;
+			productName = Highlighter;
 		};
 		3BD56C3F2AF02FC200772A82 /* Yaml */ = {
 			isa = XCSwiftPackageProductDependency;

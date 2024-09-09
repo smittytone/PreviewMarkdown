@@ -41,6 +41,8 @@ class AppDelegate:  NSObject,
         // Centre the main window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
+        
+        self.common.viewWidth = self.previewTextView.frame.width
     }
     
     
@@ -121,12 +123,15 @@ class AppDelegate:  NSObject,
                     // Auto-scroll to top of preview
                     self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
                     self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
-
+                    
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
-                        renderTextStorage.addLayoutManager(Layouter.init())
-                        renderTextStorage.beginEditing()
-                        renderTextStorage.setAttributedString(mdAttString)
-                        renderTextStorage.endEditing()
+                        safeMainSync {
+                            renderTextStorage.addLayoutManager(Layouter.init())
+                            renderTextStorage.beginEditing()
+                            renderTextStorage.setAttributedString(mdAttString)
+                            renderTextStorage.endEditing()
+                        }
+                        
                         return nil
                     }
 
@@ -185,6 +190,21 @@ class AppDelegate:  NSObject,
         return NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
+    }
+    
+    
+    /**
+     Execute the supplied block on the main thread.
+    */
+    private func safeMainSync(_ block: @escaping ()->()) {
+
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.sync {
+                block()
+            }
+        }
     }
 
 }

@@ -1,13 +1,13 @@
 {
-  "originHash" : "d4b7333fd95b37ec75f42587185e8b651c0b8b95c242c8dd73bf7946bec5da49",
+  "originHash" : "0393644c6242af0ee453b42f21fcc6da5fbd6b5ea446e0f2a90a7c5bc57ffa45",
   "pins" : [
     {
-      "identity" : "swiftymarkdown",
+      "identity" : "highlighterswift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/smittytone/SwiftyMarkdown.git",
+      "location" : "https://github.com/smittytone/HighlighterSwift",
       "state" : {
         "branch" : "develop",
-        "revision" : "98ef22ff831aabfee0f6d6645b696a5db0d9f44a"
+        "revision" : "7faedca3fe85b807848f8ac9729427a1abcf8a90"
       }
     },
     {
