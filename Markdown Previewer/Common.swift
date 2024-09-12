@@ -119,7 +119,7 @@ class Common: NSObject {
         ]
         
         self.valAtts = [
-            .foregroundColor: (isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.labelColor),
+            .foregroundColor: (isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.white),
             .font: font
         ]
         
@@ -152,7 +152,38 @@ class Common: NSObject {
         var frontMatter: Substring = ""
         let components: MarkdownComponents = getFrontMatter(markdownString)
         if components.frontMatterStart != nil {
-            frontMatter = markdownString[components.frontMatterStart!...components.frontMatterEnd!]
+            if !self.isThumbnail {
+                frontMatter = markdownString[components.frontMatterStart!...components.frontMatterEnd!]
+            }
+        }
+        
+        // If we're rendering a thumbnail, count the lines and update `components.markdownEnd` to skip
+        // unshown lines
+        if self.isThumbnail {
+            var wordCount: Int = 0
+            var lineCount: Int = 0
+            var glyphCount: Int = 0
+            
+            while true {
+                let c = markdownString[markdownString.index(components.markdownStart!, offsetBy: glyphCount)]
+                if c == " " {
+                    wordCount += 1
+                } else if c == "\n" {
+                    if wordCount > 0 {
+                        lineCount += 1 + (wordCount / 12)
+                        wordCount = 0
+                    } else {
+                        lineCount += 1
+                    }
+                }
+                
+                if lineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
+                    components.markdownEnd = markdownString.index(components.markdownStart!, offsetBy: glyphCount)
+                    break
+                }
+                
+                glyphCount += 1
+            }
         }
         
         // Get the markdown content that comes after the front matter (if there is any)
@@ -169,10 +200,10 @@ class Common: NSObject {
         if output.length == 0 {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
-            let styler: Styler = Styler.init(self.doShowLightBackground)
+            let styler: Styler = Styler.init(self.isThumbnail || self.doShowLightBackground)
             styler.bodyFontName = self.bodyFontName
             styler.codeFontName = self.codeFontName
-            styler.bodyColour = self.isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.labelColor
+            styler.bodyColour = self.isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.white
             styler.fontSize = self.fontSize
             styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
             styler.paraSpacing = 12.0

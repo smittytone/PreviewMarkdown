@@ -41,7 +41,7 @@ struct ColourValues {
 
 struct Colours {
     var head: NSColor!
-    var body: NSColor!                  = NSColor.labelColor
+    var body: NSColor!
     var code: NSColor!
     var link: NSColor!
     var quote: NSColor!
@@ -67,7 +67,7 @@ class Styler {
     
     var bodyFontName: String                        = "SF Pro"
     var codeFontName: String                        = "Menlo"
-    var bodyColour: NSColor                         = .labelColor
+    var bodyColour: NSColor                         = .white
     
     
     // MARK: - Private properties with defaults
@@ -248,6 +248,10 @@ class Styler {
                             var index: Int = insetLevel
                             while index > self.bullets.count {
                                 index -= self.bullets.count
+                            }
+                            
+                            if index < 1 {
+                                index = 1
                             }
                             
                             listPrefix = "\(self.bullets[index - 1]) "
@@ -866,19 +870,6 @@ class Styler {
     
     internal func makeBlockquoteParagraphCell(_ inset: Int, _ cellString: String) {
         
-        /*
-         To implement a text table programmatically, use the following sequence of steps:
-         1 Create an attributed string for the table.
-         2 Create the table object, setting the number of columns.
-         
-         3 Create the text table block for the first cell of the row, referring to the table object.
-         4 Set the attributes for the text block.
-         5 Create a paragraph style object for the cell, setting the text block as an attribute (along with any other paragraph attributes, such as alignment).
-         6 Create an attributed string for the cell, adding the paragraph style as an attribute. The cell string must end with a paragraph marker, such as a newline character.
-         7 Append the cell string to the table string.
-         Repeat steps 3–7 for each cell in the table.
-         */
-        
         // Make sure we have an NSMutableAttributedString for the whole table...
         if self.blockAttStr == nil {
             self.blockAttStr = NSMutableAttributedString()
@@ -894,10 +885,10 @@ class Styler {
         // Create the cell block
         let cellBlockColour: NSColor = self.useLightMode ? NSColor.init(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0) : NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
         let cellblock = NSTextTableBlock(table: self.blockTable!, startingRow: inset - 1, rowSpan: 1, startingColumn: 0, columnSpan: 1)
-        //cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
+        cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
         cellblock.setWidth(10.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
-        //cellblock.setBorderColor(cellBlockColour)
-        //cellblock.setBorderColor(self.colours.head!, for: .minX)
+        cellblock.setBorderColor(cellBlockColour)
+        cellblock.setBorderColor(self.colours.head!, for: .minX)
         cellblock.backgroundColor = cellBlockColour
         cellblock.verticalAlignment = .bottomAlignment
         
@@ -1127,6 +1118,7 @@ class Styler {
         self.colours.code  = Styler.colourFromHexString(self.colourValues.code)
         self.colours.link  = Styler.colourFromHexString(self.colourValues.link)
         self.colours.quote = Styler.colourFromHexString(self.colourValues.quote)
+        self.colours.body  = self.bodyColour
         
         /* Paragraph styles */
         // H1

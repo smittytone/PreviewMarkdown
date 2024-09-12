@@ -56,6 +56,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // Instantiate the common code for a thumbnail ('true')
                 let common: Common = Common.init(true)
 
+                /*
                 // FROM 1.4.1
                 // Only render the lines *likely* to appear in the thumbnail
                 let lines: [Substring] = markdownString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT + 1, omittingEmptySubsequences: false)
@@ -72,7 +73,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         continue
                     }
 
-                    if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && gotFrontMatter {
+                    if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) || lines[i].hasPrefix("...") && gotFrontMatter {
                         // Tail YAML/TOML delimiter: set the start of the Markdown
                         markdownStart = i + 1
                         break
@@ -99,6 +100,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                         break
                     }
                 }
+                */
 
                 // Set the primary NSTextView drawing frame and a base font size
                 let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
@@ -110,7 +112,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // and extend the size of its frame
                 let markdownTextField: NSTextField = NSTextField.init(frame: markdownFrame)
                 markdownTextField.lineBreakMode = .byTruncatingTail
-                markdownTextField.attributedStringValue = common.getAttributedString(displayString)
+                markdownTextField.attributedStringValue = common.getAttributedString(markdownString)
 
                 // Generate the bitmap from the rendered markdown text view
                 guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
@@ -129,10 +131,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                                 CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
                                                                 request.maximumSize.height)
                         
+                        // NOTE The `+2.0` is a hack to avoid a line above the image
                         let scaleFrame: CGRect = NSMakeRect(0.0,
                                                             0.0,
                                                             thumbnailFrame.width * request.scale,
-                                                            thumbnailFrame.height * request.scale)
+                                                            (thumbnailFrame.height * request.scale) + 2.0)
 
                         // Pass a QLThumbnailReply and no error to the supplied handler
                         handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
