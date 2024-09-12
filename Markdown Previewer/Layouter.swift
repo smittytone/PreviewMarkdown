@@ -14,7 +14,7 @@ import AppKit
 class Layouter: NSLayoutManager {
     
     // The background of KDB lozenges
-    var keyboardColour: NSColor? = nil
+    var lozengeColour: NSColor? = nil
     
     // Override this function to hijack double-line drawing and replace it with
     // a lozenge. We use this for <kdb>...</kdb> tags in PreviewMarkdown.
@@ -38,8 +38,9 @@ class Layouter: NSLayoutManager {
         }
         
         // Calculate the rect we will draw in place of the double underline
-        let firstPosition  = location(forGlyphAt: glyphRange.location).x
+        let firstPosition = location(forGlyphAt: glyphRange.location).x
         
+        // Watch out for line-spanning
         let lastPosition: CGFloat
         if NSMaxRange(glyphRange) < NSMaxRange(lineGlyphRange) {
             lastPosition = location(forGlyphAt: NSMaxRange(glyphRange)).x
@@ -47,22 +48,25 @@ class Layouter: NSLayoutManager {
             lastPosition = lineFragmentUsedRect(forGlyphAt: NSMaxRange(glyphRange) - 1, effectiveRange: nil).size.width
         }
 
-        var lineRect = lineRect
-        let height = lineRect.size.height * 0.45
+        var lozengeRect = lineRect
+        let height = lozengeRect.size.height * 0.6
         // Pad with 1.0 pixels either side
-        lineRect.origin.x += firstPosition - 1.0
-        lineRect.size.width = lastPosition - firstPosition + 2.0
-        lineRect.size.height = height
-        lineRect.origin.x += containerOrigin.x
-        lineRect.origin.y += containerOrigin.y
-        //lineRect = lineRect.integral.insetBy(dx: 0.5, dy: 0.5)
+        lozengeRect.origin.x += firstPosition - 1.0
+        lozengeRect.size.width = lastPosition - firstPosition + 2.0
+        lozengeRect.size.height = height
+        lozengeRect.origin.x += containerOrigin.x
+        lozengeRect.origin.y += containerOrigin.y - 4.0 // + baselineOffset
+        lozengeRect = lozengeRect.integral //.insetBy(dx: 0.5, dy: 0.5)
         
-        let path = NSBezierPath.init(roundedRect: lineRect, xRadius: 4.0, yRadius: 4.0)
-        if let colour: NSColor = self.keyboardColour {
+        // Draw and fill rounded path over lozenge
+        let path = NSBezierPath.init(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
+        if let colour: NSColor = self.lozengeColour {
             colour.setFill()
+        } else {
+            // Default to dark grey CHANGE
+            NSColor.darkGray.setFill()
         }
         
-        // Fill the rounded rectangle
         path.fill()
     }
 }

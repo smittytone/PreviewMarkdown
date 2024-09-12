@@ -112,10 +112,10 @@ class AppDelegate:  NSObject,
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
                 if let mdString: String = String.init(data: data, encoding: encoding) {
-                    common.doShowLightBackground = !self.renderAsDark
+                    self.common.doShowLightBackground = !self.renderAsDark
 
                     // Get the key string first
-                    let mdAttString: NSAttributedString = common.getAttributedString(mdString)
+                    let mdAttString: NSAttributedString = self.common.getAttributedString(mdString)
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
@@ -128,9 +128,9 @@ class AppDelegate:  NSObject,
                             
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
-                                let lm: Layouter = Layouter()
-                                lm.keyboardColour = Styler.colourFromHexString(self.common.codeColourHex)
-                                renderTextContainer.replaceLayoutManager(lm)
+                                let layouter: Layouter = Layouter()
+                                layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                                renderTextContainer.replaceLayoutManager(layouter)
                             }
                             
                             renderTextStorage.beginEditing()

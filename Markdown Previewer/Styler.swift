@@ -1187,10 +1187,10 @@ class Styler {
                                        .font: makeFont("code", self.fontSize)]
         
         // KBD
-        self.styles["kbd"]          = [.foregroundColor: useLightMode ? NSColor.lightGray : NSColor.black,
+        self.styles["kbd"]          = [.foregroundColor: self.colours.body,
                                        .underlineColor: useLightMode ? NSColor.black : NSColor.white,
                                        .underlineStyle: NSUnderlineStyle.double.rawValue as NSNumber,
-                                       .font: makeFont("code", self.fontSize)]
+                                       .font: makeFont("strong", self.fontSize)]
         
         // S
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,

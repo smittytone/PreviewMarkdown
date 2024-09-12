@@ -65,9 +65,9 @@ class PreviewViewController: NSViewController,
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
-                            let lm: Layouter = Layouter()
-                            lm.keyboardColour = Styler.colourFromHexString(common.codeColourHex)
-                            renderTextContainer.replaceLayoutManager(lm)
+                            let layouter: Layouter = Layouter()
+                            layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                            renderTextContainer.replaceLayoutManager(layouter)
                         }
                         
                         safeMainSync {
@@ -76,7 +76,7 @@ class PreviewViewController: NSViewController,
                             renderTextStorage.endEditing()
                             
                             // Add the subview to the instance's own view and draw
-                            self.renderTextView.needsDisplay = true
+                            self.renderTextView.needsDisplay = true // Possibly redundant
                             self.view.display()
                         }
                         
