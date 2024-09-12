@@ -115,21 +115,28 @@ class AppDelegate:  NSObject,
                     common.doShowLightBackground = !self.renderAsDark
 
                     // Get the key string first
-                    let mdAttString: NSAttributedString = common.getAttributedString(mdString, false)
+                    let mdAttString: NSAttributedString = common.getAttributedString(mdString)
 
-                    self.previewTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
-                    self.previewScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
-                    
-                    // Auto-scroll to top of preview
-                    self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
-                    self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
-                    
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
-                            renderTextStorage.addLayoutManager(Layouter.init())
+                            self.previewTextView.backgroundColor = self.common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                            self.previewScrollView.scrollerKnobStyle = self.common.doShowLightBackground ? .dark : .light
+                            
+                            // Auto-scroll to top of preview
+                            self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
+                            self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
+                            
+                            // We need to access the NSTextView's containter to apply the custom NSLayoutManager
+                            if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
+                                let lm: Layouter = Layouter()
+                                lm.keyboardColour = Styler.colourFromHexString(self.common.codeColourHex)
+                                renderTextContainer.replaceLayoutManager(lm)
+                            }
+                            
                             renderTextStorage.beginEditing()
                             renderTextStorage.setAttributedString(mdAttString)
                             renderTextStorage.endEditing()
+                            self.previewTextView.display()
                         }
                         
                         return nil

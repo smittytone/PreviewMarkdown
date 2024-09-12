@@ -56,28 +56,30 @@ class PreviewViewController: NSViewController,
                 
                 if let markdownString: String = String.init(data: data, encoding: encoding) {
                     // Instantiate the common code
-                    let common: Common = Common.init(false)
+                    let common: Common = Common.init()
+                    common.viewWidth = self.renderTextView.frame.width
                     
                     // Update the NSTextView
-                    
-                    // FROM 1.3.0
-                    // Knock back the light background to make the scroll bars visible in dark mode
-                    // NOTE If !doShowLightBackground,
-                    //              in light mode, the scrollers show up dark-on-light, in dark mode light-on-dark
-                    //      If doShowLightBackground,
-                    //              in light mode, the scrollers show up light-on-light, in dark mode light-on-dark
-                    // NOTE Changing the scrollview scroller knob style has no effect
-                    self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                    self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
                     self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        renderTextStorage.beginEditing()
-                        renderTextStorage.setAttributedString(common.getAttributedString(markdownString, false))
-                        renderTextStorage.endEditing()
+                        if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
+                            let lm: Layouter = Layouter()
+                            lm.keyboardColour = Styler.colourFromHexString(common.codeColourHex)
+                            renderTextContainer.replaceLayoutManager(lm)
+                        }
                         
-                        // Add the subview to the instance's own view and draw
-                        self.view.display()
-
+                        safeMainSync {
+                            renderTextStorage.beginEditing()
+                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString))
+                            renderTextStorage.endEditing()
+                            
+                            // Add the subview to the instance's own view and draw
+                            self.renderTextView.needsDisplay = true
+                            self.view.display()
+                        }
+                        
                         // Call the QLPreviewingController indicating no error (nil)
                         handler(nil)
                         return
@@ -173,5 +175,19 @@ class PreviewViewController: NSViewController,
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
     }
+    
+    
+    /**
+     Execute the supplied block on the main thread.
+    */
+    private func safeMainSync(_ block: @escaping ()->()) {
 
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.sync {
+                block()
+            }
+        }
+    }
 }

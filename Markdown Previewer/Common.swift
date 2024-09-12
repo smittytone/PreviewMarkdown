@@ -8,7 +8,6 @@
 
 
 import Foundation
-import SwiftyMarkdown
 import Yaml
 import AppKit
 
@@ -16,9 +15,9 @@ import AppKit
 class MarkdownComponents {
     // TO-DO Replace with ranges
     var frontMatterStart: String.Index? = nil
-    var frontMatterEnd: String.Index? = nil
-    var markdownStart: String.Index? = nil
-    var markdownEnd: String.Index? = nil
+    var frontMatterEnd: String.Index?   = nil
+    var markdownStart: String.Index?    = nil
+    var markdownEnd: String.Index?      = nil
 }
 
 
@@ -28,12 +27,11 @@ class Common: NSObject {
     
     // MARK: - Public Properties
     
-    var doShowLightBackground: Bool = false
-    var doShowTag: Bool             = true
+    var doShowLightBackground: Bool         = false
+    // FROM 2.0.0
+    var viewWidth: CGFloat                  = 512
     
     // MARK: - Private Properties
-    
-    private var mds: String = ""
     
     private var doIndentScalars: Bool       = true
     private var doShowYaml: Bool            = false
@@ -49,7 +47,7 @@ class Common: NSObject {
     private var newLine: NSAttributedString = NSAttributedString.init(string: "")
     
     // FROM 1.4.0
-    private var codeColourHex: String       = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            var codeColourHex: String       = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
     private var headColourHex: String       = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
     private var linkColourHex: String       = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
     private var codeFontName: String        = BUFFOON_CONSTANTS.CODE_FONT_NAME
@@ -61,8 +59,8 @@ class Common: NSObject {
     
     // FROM 2.0.0
     private var markdowner: Markdowner?     = nil
+    private var isThumbnail: Bool           = false
 
-    
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
@@ -70,9 +68,10 @@ class Common: NSObject {
      */
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
 
+
     // MARK: - Lifecycle Functions
     
-    init(_ isThumbnail: Bool) {
+    init(_ isThumbnail: Bool = false) {
     
         super.init()
         
@@ -86,15 +85,14 @@ class Common: NSObject {
             self.doShowYaml            = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             
             // FROM 1.4.0
-            self.codeColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.headColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.linkColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            self.codeFontName  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            self.bodyFontName  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.doShowTag     = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_SHOW_TAG)
+            self.codeColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.headColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.linkColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            self.codeFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            self.bodyFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
             
             // FROM 1.5.0
-            self.lineSpacing   = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+            self.lineSpacing    = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
             self.quoteColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
         }
         
@@ -125,45 +123,44 @@ class Common: NSObject {
             .font: font
         ]
         
+        // NOTE Requires NSTextView to use TextKit 1 for this to work
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                                   .strikethroughColor: (self.doShowLightBackground ? NSColor.black : NSColor.white)])
         
-        self.newLine = NSAttributedString.init(string: "\n",
-                                               attributes: self.valAtts)
+        self.newLine = NSAttributedString.init(string: "\n", attributes: self.valAtts)
+        self.isThumbnail = isThumbnail
     }
     
     
     // MARK: - The Primary Function
 
     /**
-     Use SwiftyMarkdown to render the input markdown.
+        Render the provided markdown.
      
      - parameters:
-        - markdownString: The markdown file contents.
-        - isThumbnail:    Are we rendering for a thumbnail (`true`) or a preview (`false`)?
+        - markdownString: The raw file contents.
      
      - returns: The rendered markdown as an NSAttributedString.
      */
-    func getAttributedString(_ markdownString: String, _ isThumbnail: Bool) -> NSAttributedString {
+    func getAttributedString(_ markdownString: String) -> NSAttributedString {
 
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
         
-        // Look for front matter
+        // Look for YAML front matter
         var frontMatter: Substring = ""
         let components: MarkdownComponents = getFrontMatter(markdownString)
         if components.frontMatterStart != nil {
             frontMatter = markdownString[components.frontMatterStart!...components.frontMatterEnd!]
         }
         
+        // Get the markdown content that comes after the front matter (if there is any)
         let markdownToRender: Substring = markdownString[components.markdownStart!..<components.markdownEnd!]
         
         // Load in the Markdown converter
-        var markdowner: Markdowner? = nil
-        if let markdownerJs: Markdowner = Markdowner.init() {
-            markdowner = markdownerJs
-        } else {
+        let markdowner: Markdowner? = Markdowner.init()
+        if markdowner == nil {
             // Missing JS code file or other init error
             output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
                                                     attributes: self.valAtts)
@@ -171,17 +168,21 @@ class Common: NSObject {
         
         if output.length == 0 {
             // No error encountered getting the JavaScript so proceed to render the string
-            let styler: Styler = Styler.init(markdowner!.tokenise(markdownToRender), self.doShowLightBackground)
+            // First set up the styler with the chosen settings
+            let styler: Styler = Styler.init(self.doShowLightBackground)
             styler.bodyFontName = self.bodyFontName
             styler.codeFontName = self.codeFontName
-            styler.codeColour = self.codeColourHex
-            styler.headColour = self.headColourHex
-            styler.quoteColour = self.quoteColourHex
-            styler.bodyColourValue = (isThumbnail || self.doShowLightBackground) ? NSColor.black : NSColor.labelColor
+            styler.bodyColour = self.isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.labelColor
             styler.fontSize = self.fontSize
             styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
+            styler.paraSpacing = 12.0
+            styler.colourValues.head = self.headColourHex
+            styler.colourValues.code = self.codeColourHex
+            styler.colourValues.link = self.linkColourHex
+            styler.colourValues.quote = self.quoteColourHex
+            styler.viewWidth = self.viewWidth
             
-            if let attStr: NSAttributedString = styler.render(isThumbnail) {
+            if let attStr: NSAttributedString = styler.render(markdowner!.tokenise(markdownToRender), self.isThumbnail) {
                 output = NSMutableAttributedString.init(attributedString: attStr)
                 
                 // Render YAML front matter if requested by the user, and we're not
@@ -276,7 +277,7 @@ class Common: NSObject {
         
         // Look for YAML symbol code
         let lineFindRegex = #"(?s)(?<=---\n).*(?=\n---)"#
-        let dotFindRegex = #"(?s)(?<=\.\.\.\n).*(?=\n\.\.\.)"#
+        let dotFindRegex  = #"(?s)(?<=---\n).*(?=\n\.\.\.)"#
         
         // First look for ... to ...
         if let range = markdown.range(of: dotFindRegex, options: .regularExpression) {
@@ -487,51 +488,6 @@ class Common: NSObject {
         indentedString.append(NSAttributedString.init(string: spaceString))
         indentedString.append(NSAttributedString.init(string: trimmedString))
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
-    }
-
-
-    // MARK: - Formatting Functions
-
-    /**
-     Set common style values for the markdown render.
-
-     - Parameters:
-        - sm:          The SwiftyMarkdown instance used for rendering
-        - isThumbnail: Are we rendering a thumbnail (`true`) or a preview (`false`).
-     */
-    func setSwiftStyles(_ sm: SwiftyMarkdown, _ isThumbnail: Bool) {
-
-        sm.setFontColorForAllStyles(with: (isThumbnail || self.doShowLightBackground) ? NSColor.black : NSColor.labelColor)
-        sm.setFontSizeForAllStyles(with: self.fontSize)
-
-        // FROM 1.4.0 -- add colour settings for headings too
-        sm.h4.fontSize = self.fontSize * 1.2
-        sm.h4.color = NSColor.hexToColour(self.headColourHex)
-        sm.h3.fontSize = self.fontSize * 1.4
-        sm.h3.color = sm.h4.color
-        sm.h2.fontSize = self.fontSize * 1.6
-        sm.h2.color = sm.h4.color
-        sm.h1.fontSize = self.fontSize * 2.0
-        sm.h1.color = sm.h4.color
-        
-        sm.setFontNameForAllStyles(with: self.bodyFontName)
-        sm.code.fontName = self.codeFontName
-        
-        // Set the code colour
-        sm.code.color = NSColor.hexToColour(self.codeColourHex) // getColour(codeColourIndex)
-
-        // NOTE The following do not set link colour - this is
-        //      a bug or issue with SwiftyMarkdown 1.2.3
-        // NOTE RESOLVED: Customise SWiftyMarkdown not to use the .link attribute as this
-        //      causes NSAttributedString to apply its own colour
-        sm.link.color = NSColor.hexToColour(self.linkColourHex) // getColour(linkColourIndex)
-        sm.link.underlineColor = NSColor.hexToColour(self.linkColourHex)
-        sm.underlineLinks = true
-
-        // FROM 1.5.0
-        sm.blockquotes.color = NSColor.hexToColour(self.quoteColourHex)
-        sm.blockquotes.fontSize = self.fontSize * 1.4
-        sm.blockquotes.fontStyle = .boldItalic
     }
     
 }

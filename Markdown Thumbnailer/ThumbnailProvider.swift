@@ -110,7 +110,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // and extend the size of its frame
                 let markdownTextField: NSTextField = NSTextField.init(frame: markdownFrame)
                 markdownTextField.lineBreakMode = .byTruncatingTail
-                markdownTextField.attributedStringValue = common.getAttributedString(displayString, true)
+                markdownTextField.attributedStringValue = common.getAttributedString(displayString)
 
                 // Generate the bitmap from the rendered markdown text view
                 guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
