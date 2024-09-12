@@ -1,6 +1,6 @@
 /*
- *  Markdownwer.swift
- *  Wrapper for MarkdownIt JavaScript
+ *  Markdowner.swift
+ *  Swift wrapper for MarkdownIt JavaScript
  *
  *  Created by Tony Smith on 23/09/2020.
  *  Copyright © 2024 Tony Smith. All rights reserved.
@@ -16,15 +16,16 @@ public class Markdowner {
     
     // MARK: - Private Properties
     
-    private let mdjs: JSValue
+    private let markdownerJavaScript: JSValue
     
     
     // MARK: - Constructor
     
     /**
-     The default initialiser.
+        The default initialiser.
      
-     - returns: `nil` on failure to load or evaluate `markdownit.js`.
+     - returns: 
+        `nil` on failure to load, evaluate or configure `markdownit.js`.
     */
     public init?() {
         
@@ -33,40 +34,40 @@ public class Markdowner {
         let bundle = Bundle(for: Markdowner.self)
 
         // Load the highlight.js code from the bundle or fail
-        guard let mdjsPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
+        guard let markdownerJavaScriptPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
             return nil
         }
 
         // Check the JavaScript or fail
-        let context = JSContext.init()!
-        let mdjsString: String = try! String.init(contentsOfFile: mdjsPath)
-        let _ = context.evaluateScript(mdjsString)
-        guard let mdjs = context.globalObject.objectForKeyedSubscript("markdownit") else {
+        let context: JSContext = JSContext.init()
+        let markdownerJavaScriptString: String = try! String.init(contentsOfFile: markdownerJavaScriptPath)
+        let _ = context.evaluateScript(markdownerJavaScriptString)
+        guard let localMarkdownerJavaScript = context.globalObject.objectForKeyedSubscript("markdownit") else {
             return nil
         }
         
         // Store the results for later
         // NOTE We set "html" because Markdown-It 14 doesn't do this automatically
-        let jsHtml: JSValue = JSValue.init(object: ["html": true], in: context)
-        self.mdjs = mdjs.construct(withArguments: [jsHtml])
+        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true], in: context)
+        self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
     
     
     // MARK: - Primary Functions
     
     /**
-     Convert the supplied Markdown file to HTML.
+        Tokenise the supplied markdown-formatted document.
     
      - Parameters:
-        - markdownString: The source code to highlight.
+        - markdown: The markdown string to convert.
      
-     - Returns: The HTML.
+     - Returns:
+        A string of tokenised data.
     */
-    func tokenise(_ markdownString: Substring) -> String {
+    func tokenise(_ markdown: Substring) -> String {
         
-        let returnValue: JSValue = mdjs.invokeMethod("render", withArguments: [markdownString])
-        let renderedHTMLString: String = returnValue.toString()
-        return renderedHTMLString
+        let returnValue: JSValue = self.markdownerJavaScript.invokeMethod("render", withArguments: [markdown])
+        return returnValue.toString()
     }
 
 }
