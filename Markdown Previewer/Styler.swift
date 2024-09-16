@@ -885,10 +885,10 @@ class Styler {
         // Create the cell block
         let cellBlockColour: NSColor = self.useLightMode ? NSColor.init(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0) : NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
         let cellblock = NSTextTableBlock(table: self.blockTable!, startingRow: inset - 1, rowSpan: 1, startingColumn: 0, columnSpan: 1)
-        cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
+        //cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
+        //cellblock.setBorderColor(cellBlockColour)
+        //cellblock.setBorderColor(self.colours.head!, for: .minX)
         cellblock.setWidth(10.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
-        cellblock.setBorderColor(cellBlockColour)
-        cellblock.setBorderColor(self.colours.head!, for: .minX)
         cellblock.backgroundColor = cellBlockColour
         cellblock.verticalAlignment = .bottomAlignment
         
@@ -1190,7 +1190,7 @@ class Styler {
         
         // SUB
         self.styles["sub"]          = [.font: makeFont("plain", self.fontSize / 1.5),
-                                       .baselineOffset: -1.0 as NSNumber]
+                                       .baselineOffset: -5.0 as NSNumber]
         
         self.styles["sup"]          = [.font: makeFont("plain", self.fontSize / 1.5),
                                        .baselineOffset: 10.0 as NSNumber]
