@@ -143,32 +143,33 @@ class Common: NSObject {
      
      - returns: The rendered markdown as an NSAttributedString.
      */
-    func getAttributedString(_ markdownString: String) -> NSAttributedString {
+    func getAttributedString(_ rawText: String) -> NSAttributedString {
 
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
         
         // Look for YAML front matter
         var frontMatter: Substring = ""
-        let components: MarkdownComponents = getFrontMatter(markdownString)
+        let components: MarkdownComponents = getFrontMatter(rawText)
         if components.frontMatterStart != nil {
             if !self.isThumbnail {
-                frontMatter = markdownString[components.frontMatterStart!...components.frontMatterEnd!]
+                frontMatter = rawText[components.frontMatterStart!...components.frontMatterEnd!]
             }
         }
         
-        // If we're rendering a thumbnail, count the lines and update `components.markdownEnd` to skip
-        // unshown lines
+        // If we're rendering a thumbnail, count the lines and paragraphcs,
+        // and update `components.markdownEnd` to skip lines we won't show
         if self.isThumbnail {
             var wordCount: Int = 0
             var lineCount: Int = 0
-            var glyphCount: Int = 0
             
-            while true {
-                let c = markdownString[markdownString.index(components.markdownStart!, offsetBy: glyphCount)]
-                if c == " " {
+            // Iterate over the raw string's markdown area
+            for index in rawText[components.markdownStart!..<components.markdownEnd!].indices {
+                // Get the character at each index
+                let characterAtIndex = rawText[index]
+                if characterAtIndex == " " {
                     wordCount += 1
-                } else if c == "\n" {
+                } else if characterAtIndex == "\n" {
                     if wordCount > 0 {
                         lineCount += 1 + (wordCount / 12)
                         wordCount = 0
@@ -177,17 +178,16 @@ class Common: NSObject {
                     }
                 }
                 
+                // Got the max. number of paragraphs? Break out
                 if lineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
-                    components.markdownEnd = markdownString.index(components.markdownStart!, offsetBy: glyphCount)
+                    components.markdownEnd = index
                     break
                 }
-                
-                glyphCount += 1
             }
         }
         
         // Get the markdown content that comes after the front matter (if there is any)
-        let markdownToRender: Substring = markdownString[components.markdownStart!..<components.markdownEnd!]
+        let markdownToRender: Substring = rawText[components.markdownStart!..<components.markdownEnd!]
         
         // Load in the Markdown converter
         let markdowner: Markdowner? = Markdowner.init()
