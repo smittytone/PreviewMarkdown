@@ -8,12 +8,15 @@
 
 
 import Foundation
-import Yaml
 import AppKit
+import Yaml
 
 
+// FROM 2.0.0
+// Simple class to hold indices (start and end) of the key elements
+// within a string of markdown-formatted text
 class MarkdownComponents {
-    // TO-DO Replace with ranges
+    // TO-DO Replace with ranges??
     var frontMatterStart: String.Index? = nil
     var frontMatterEnd: String.Index?   = nil
     var markdownStart: String.Index?    = nil
@@ -22,44 +25,44 @@ class MarkdownComponents {
 
 
 // FROM 1.4.0
-// Implement as a class
+// Implement common code as a class
 class Common: NSObject {
     
     // MARK: - Public Properties
     
-    var doShowLightBackground: Bool         = false
+    var doShowLightBackground: Bool                     = false
     // FROM 2.0.0
-    var viewWidth: CGFloat                  = 512
+    var viewWidth: CGFloat                              = 512
     
     // MARK: - Private Properties
     
-    private var doIndentScalars: Bool       = true
-    private var doShowYaml: Bool            = false
-    private var fontSize: CGFloat           = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+    private var doIndentScalars: Bool                   = true
+    private var doShowYaml: Bool                        = false
+    private var fontSize: CGFloat                       = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
 
     // FROM 1.3.0
     // Front Matter string attributes...
-    private var keyAtts: [NSAttributedString.Key:Any] = [:]
-    private var valAtts: [NSAttributedString.Key:Any] = [:]
+    private var keyAtts: [NSAttributedString.Key:Any]   = [:]
+    private var valAtts: [NSAttributedString.Key:Any]   = [:]
     
     // Front Matter rendering artefacts...
-    private var hr: NSAttributedString      = NSAttributedString.init(string: "")
-    private var newLine: NSAttributedString = NSAttributedString.init(string: "")
+    private var hr: NSAttributedString                  = NSAttributedString.init(string: "")
+    private var newLine: NSAttributedString             = NSAttributedString.init(string: "")
     
     // FROM 1.4.0
-            var codeColourHex: String       = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    private var headColourHex: String       = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    private var linkColourHex: String       = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-    private var codeFontName: String        = BUFFOON_CONSTANTS.CODE_FONT_NAME
-    private var bodyFontName: String        = BUFFOON_CONSTANTS.BODY_FONT_NAME
+            var codeColourHex: String                   = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    private var headColourHex: String                   = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    private var linkColourHex: String                   = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var codeFontName: String                    = BUFFOON_CONSTANTS.CODE_FONT_NAME
+    private var bodyFontName: String                    = BUFFOON_CONSTANTS.BODY_FONT_NAME
     
     // FROM 1.5.0
-    private var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    private var quoteColourHex: String      = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var lineSpacing: CGFloat                    = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    private var quoteColourHex: String                  = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
     
     // FROM 2.0.0
-    private var markdowner: Markdowner?     = nil
-    private var isThumbnail: Bool           = false
+    private var markdowner: Markdowner?                 = nil
+    private var isThumbnail: Bool                       = false
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -73,6 +76,7 @@ class Common: NSObject {
     
     init(_ isThumbnail: Bool = false) {
     
+        // As we're an NSObject child class...
         super.init()
         
         // Load in the user's preferred values, or set defaults
@@ -139,9 +143,10 @@ class Common: NSObject {
         Render the provided markdown.
      
      - parameters:
-        - markdownString: The raw file contents.
+        - rawText: The loaded file's contents.
      
-     - returns: The rendered markdown as an NSAttributedString.
+     - returns:
+        The rendered markdown as an NSAttributedString.
      */
     func getAttributedString(_ rawText: String) -> NSAttributedString {
 
@@ -197,6 +202,7 @@ class Common: NSObject {
                                                     attributes: self.valAtts)
         }
         
+        // Render what we have
         if output.length == 0 {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
@@ -297,35 +303,34 @@ class Common: NSObject {
      - Parameters:
         - markdown:     The markdown file content.
 
-     - Returns: A data structure indicating front matter, markdown ranges.
+     - Returns:
+        A data structure indicating front matter, markdown ranges.
      */
-    func getFrontMatter(_ markdown: String) -> MarkdownComponents {
+    func getFrontMatter(_ rawText: String) -> MarkdownComponents {
         
-        // Assume the data is ALL markdown
+        // Assume the data is ALL markdown to begin with
         let components: MarkdownComponents = MarkdownComponents.init()
-        components.markdownEnd = markdown.endIndex
-        components.markdownStart = markdown.startIndex
+        components.markdownStart = rawText.startIndex
+        components.markdownEnd = rawText.endIndex
         
-        // Look for YAML symbol code
+        // Look for YAML symbol code:
+        // Front matter delimited by --- and ---, or --- and ...
         let lineFindRegex = #"(?s)(?<=---\n).*(?=\n---)"#
         let dotFindRegex  = #"(?s)(?<=---\n).*(?=\n\.\.\.)"#
         
-        // First look for ... to ...
-        if let range = markdown.range(of: dotFindRegex, options: .regularExpression) {
+        // First look for either of the two delimiter patterns, lines first
+        if let range = rawText.range(of: dotFindRegex, options: .regularExpression) {
             components.frontMatterStart = range.lowerBound
             components.frontMatterEnd = range.upperBound
-        }
-        
-        // Didn't find ... to ... so look for --- to ---
-        if let range = markdown.range(of: lineFindRegex, options: .regularExpression) {
+        } else if let range = rawText.range(of: lineFindRegex, options: .regularExpression) {
             components.frontMatterStart = range.lowerBound
             components.frontMatterEnd = range.upperBound
         }
         
         // Make sure the front matte, if any, is no preceded by any text
         if components.frontMatterStart != nil {
-            let endIndex: String.Index = markdown.index(components.frontMatterStart!, offsetBy: -4)
-            let start: String = String(markdown[markdown.startIndex..<endIndex])
+            let endIndex: String.Index = rawText.index(components.frontMatterStart!, offsetBy: -4)
+            let start: String = String(rawText[rawText.startIndex..<endIndex])
             if !start.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 // Front matter comes after text, ie. it is NOT front matter
                 components.frontMatterStart = nil
@@ -335,9 +340,7 @@ class Common: NSObject {
         
         // Set the start of the markdown content (after the front matter, if any)
         if let end = components.frontMatterEnd {
-            components.markdownStart = markdown.index(end, offsetBy: 4)
-        } else {
-            components.markdownStart = markdown.startIndex
+            components.markdownStart = rawText.index(end, offsetBy: 4)
         }
         
         return components
@@ -345,18 +348,19 @@ class Common: NSObject {
 
 
     /**
-     Render a supplied YAML sub-component ('part') to an NSAttributedString.
-
-     Indents the value as required.
+        Render a supplied YAML sub-component ('part') to an NSAttributedString.
+        Indents the value as required.
+        Should NOT be called for thumbnails.
      
-     FROM 1.3.0
+        FROM 1.3.0
 
      - Parameters:
         - part:   A partial Yaml object.
         - indent: The number of indent spaces to add.
         - isKey:  Is the Yaml part a key?
 
-     - Returns: The rendered string as an NSAttributedString, or nil on error.
+     - Returns:
+        The rendered string as an NSAttributedString, or nil on error.
      */
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
         
@@ -508,7 +512,8 @@ class Common: NSObject {
         - baseString: The string to be indented.
         - indent:     The number of indent spaces to add.
 
-     - Returns: The indented string as an NSAttributedString.
+     - Returns:
+        The indented string as an NSAttributedString.
      */
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
         
@@ -521,44 +526,4 @@ class Common: NSObject {
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
     }
     
-}
-
-
-/**
-Get the encoding of the string formed from data.
-
-- Returns: The string's encoding or nil.
-*/
-
-extension Data {
-    
-    var stringEncoding: String.Encoding? {
-        var nss: NSString? = nil
-        guard case let rawValue = NSString.stringEncoding(for: self,
-                                                          encodingOptions: nil,
-                                                          convertedString: &nss,
-                                                          usedLossyConversion: nil), rawValue != 0 else { return nil }
-        return .init(rawValue: rawValue)
-    }
-}
-
-
-/**
-Swap the paragraph style in all of the attributes of
- an NSMutableAttributedString.
-
-- Parameters:
- - paraStyle: The injected NSParagraphStyle.
-*/
-extension NSMutableAttributedString {
-    
-    func addParaStyle(with paraStyle: NSParagraphStyle) {
-        beginEditing()
-        self.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: self.length)) { (value, range, stop) in
-            if let _ = value as? NSParagraphStyle {
-                addAttribute(.paragraphStyle, value: paraStyle, range: range)
-            }
-        }
-        endEditing()
-    }
 }

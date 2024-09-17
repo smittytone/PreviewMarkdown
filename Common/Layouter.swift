@@ -55,8 +55,8 @@ class Layouter: NSLayoutManager {
         lozengeRect.size.width = lastPosition - firstPosition + 2.0
         lozengeRect.size.height = height
         lozengeRect.origin.x += containerOrigin.x
-        lozengeRect.origin.y += containerOrigin.y - 4.0 // + baselineOffset
-        lozengeRect = lozengeRect.integral //.insetBy(dx: 0.5, dy: 0.5)
+        lozengeRect.origin.y += containerOrigin.y - 4.0
+        lozengeRect = lozengeRect.integral
         
         // Draw and fill rounded path over lozenge
         let path = NSBezierPath.init(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)

@@ -566,7 +566,7 @@ class Styler {
                     
                     // Check for a table. If we have one, style it's heading grab the whole of
                     // it up to the terminating token
-                    if token.contains("table") {
+                    if token.hasPrefix("table") {
                         // Clear the tag as we'll do all the processing here
                         tokenToApply = "none"
                         
@@ -576,7 +576,7 @@ class Styler {
                         
                         // Get the table content and style it here: scan up to the </table> tag.
                         // Add a border to the table and cells: set it to 2px thickness in the head colour
-                        self.currentTable = "<table width=\"\(self.viewWidth)px\" style=\"border: 2px solid #\(self.colourValues.head);border-collapse: collapse;\">"
+                        self.currentTable = "<table width=\"100%\" style=\"border: 2px solid #\(self.colourValues.head);border-collapse: collapse;\">"
                         
                         // Scan up to the closing tag and add the closing tag manually to the table text.
                         // NOTE Table will be rendered when the scanner code process the closing tag

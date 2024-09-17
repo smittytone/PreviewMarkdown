@@ -57,7 +57,7 @@ class PreviewViewController: NSViewController,
                 if let markdownString: String = String.init(data: data, encoding: encoding) {
                     // Instantiate the common code
                     let common: Common = Common.init()
-                    common.viewWidth = self.renderTextView.frame.width
+                    common.viewWidth = self.renderTextView.bounds.width
                     
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
