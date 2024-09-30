@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0201852CAAD0F1003C1705 /* ButtonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0201842CAAD0F1003C1705 /* ButtonManager.swift */; };
 		3B04F70725B6FC170024F39C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
 		3B170B8625B2E62600F14FDD /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B170B8525B2E62600F14FDD /* sample.md */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
@@ -102,6 +103,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3B0201842CAAD0F1003C1705 /* ButtonManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonManager.swift; sourceTree = "<group>"; };
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 			children = (
 				3B8865D624E3E99700435B1C /* Constants.swift */,
 				3BBAEA18236ADEB1009BAA05 /* AppDelegate.swift */,
+				3B0201842CAAD0F1003C1705 /* ButtonManager.swift */,
 				3BAE671628D4D09B001532BD /* PMFontExtensions.swift */,
 				3B71BD42267F4B98005F7FFC /* GenericExtensions.swift */,
 				3B71BD44267F504E005F7FFC /* GenericColorExtensions.swift */,
@@ -613,6 +616,7 @@
 				3B71BD45267F504E005F7FFC /* GenericColorExtensions.swift in Sources */,
 				3B8865D724E3E99700435B1C /* Constants.swift in Sources */,
 				3B71BD43267F4B98005F7FFC /* GenericExtensions.swift in Sources */,
+				3B0201852CAAD0F1003C1705 /* ButtonManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

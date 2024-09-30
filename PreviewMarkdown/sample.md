@@ -55,3 +55,5 @@ Some `preformatted text` in `this line`.
         self.errorReportField.stringValue = errString
         self.errorReportField.isHidden = false
     }
+
+> A Sample Blockquote

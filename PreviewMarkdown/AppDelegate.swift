@@ -77,7 +77,13 @@ final class AppDelegate: NSObject,
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
-
+    
+    // FROM 2.0.0
+    @IBOutlet weak var infoButton: NSButton!
+    @IBOutlet weak var settingsButton: NSButton!
+    @IBOutlet weak var feedbackButton: NSButton!
+    @IBOutlet weak var mainTabView: NSTabView!
+    @IBOutlet weak var mainWindow: NSWindow!
 
     // MARK: - Private Properies
 
@@ -111,6 +117,9 @@ final class AppDelegate: NSObject,
      the previewer and thumbnailer extensions.
      */
     private  var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+    
+    // FROM 2.0.0
+    private  var buttonManager: ButtonManager = ButtonManager()
 
     
     // MARK: - Class Lifecycle Functions
@@ -144,6 +153,19 @@ final class AppDelegate: NSObject,
         let theApp = NSApplication.shared
         theApp.helpMenu = dummyHelpMenu
         
+        // FROM 2.0.0
+        self.buttonManager.buttons.append(self.infoButton)
+        self.buttonManager.buttons.append(self.settingsButton)
+        self.buttonManager.buttons.append(self.feedbackButton)
+        self.buttonManager.tabView = self.mainTabView
+        self.buttonManager.window = self.mainWindow
+        self.infoButton.toolTip = "About PreviewMarkdown 2"
+        self.settingsButton.toolTip = "Set preview styles and content"
+        self.feedbackButton.toolTip = "Send feedback to the developer"
+        self.infoButton.alphaValue = 1.0
+        self.settingsButton.alphaValue = 1.0
+        self.feedbackButton.alphaValue = 1.0
+        
         // FROM 1.0.2
         // Centre window and display
         self.window.center()
@@ -154,6 +176,9 @@ final class AppDelegate: NSObject,
         // (and set up the WKWebBiew: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
         doShowWhatsNew(self)
+        
+        self.mainWindow.center()
+        self.mainWindow.makeKeyAndOrderFront(self)
     }
 
 
@@ -283,6 +308,12 @@ final class AppDelegate: NSObject,
         
         // FROM 1.5.0
         warnUserAboutReset()
+    }
+    
+    
+    @IBAction private func doSwitchTab(sender: NSButton) {
+        
+        self.buttonManager.buttonClicked(sender)
     }
 
     
