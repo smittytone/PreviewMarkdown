@@ -3,7 +3,7 @@
  *  Thumbnailer
  *
  *  Created by Tony Smith on 31/10/2019.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
@@ -56,52 +56,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // Instantiate the common code for a thumbnail ('true')
                 let common: Common = Common.init(true)
 
-                /*
-                // FROM 1.4.1
-                // Only render the lines *likely* to appear in the thumbnail
-                let lines: [Substring] = markdownString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT + 1, omittingEmptySubsequences: false)
-                var displayString: String = ""
-                var displayLineCount: Int = 0
-                var gotFrontMatter: Bool = false
-                var markdownStart: Int = 0
-
-                for i in 0..<lines.count {
-                    // Check for static site YAML/TOML front matter
-                    if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) && !gotFrontMatter {
-                        // Head YAML/TOML delimiter
-                        gotFrontMatter = true
-                        continue
-                    }
-
-                    if (lines[i].hasPrefix("---") || lines[i].hasPrefix("+++")) || lines[i].hasPrefix("...") && gotFrontMatter {
-                        // Tail YAML/TOML delimiter: set the start of the Markdown
-                        markdownStart = i + 1
-                        break
-                    }
-                }
-
-                // Count Markdown lines from the start or after any front matter
-                for i in markdownStart..<lines.count {
-                    // Split the line into words and count them (approx.)
-                    let words: [Substring] = lines[i].split(separator: " ")
-                    let approxParagraphLineCount: Int = words.count / 12
-
-                    // Estimate the number of lines the paragraph requires
-                    if approxParagraphLineCount > 1 {
-                        displayLineCount += (approxParagraphLineCount + 1)
-                    } else {
-                        displayLineCount += 1
-                    }
-
-                    // Add the paragraph to the string we'll present
-                    displayString += (String(lines[i]) + "\n")
-
-                    if displayLineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
-                        break
-                    }
-                }
-                */
-
                 // Set the primary NSTextView drawing frame and a base font size
                 let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
                                                        CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
@@ -112,7 +66,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // and extend the size of its frame
                 let markdownTextField: NSTextField = NSTextField.init(frame: markdownFrame)
                 markdownTextField.lineBreakMode = .byTruncatingTail
-                markdownTextField.attributedStringValue = common.getAttributedString(markdownString)
+                markdownTextField.attributedStringValue = common.getAttributedString(markdownString[...])
 
                 // Generate the bitmap from the rendered markdown text view
                 guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownFrame) else {
