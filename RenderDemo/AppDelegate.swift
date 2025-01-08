@@ -20,6 +20,7 @@ class AppDelegate:  NSObject,
     @IBOutlet var previewTextView: NSTextView!
     @IBOutlet var previewScrollView: NSScrollView!
     @IBOutlet var modeButton: NSButton!
+    @IBOutlet var modeIndicator: NSImageView!
 
 
     // MARK: - Private Properies
@@ -43,6 +44,17 @@ class AppDelegate:  NSObject,
         self.window.makeKeyAndOrderFront(self)
         
         self.common.viewWidth = self.previewTextView.frame.width
+        
+        var currentlyInLightMode: Bool = true
+        if #available(macOS 11.0, *) {
+            let appearance: NSAppearance = NSAppearance.currentDrawing()
+            currentlyInLightMode = appearance.name == NSAppearance.Name.aqua
+        } else {
+            let appearance: NSAppearance = NSAppearance.current
+            currentlyInLightMode = appearance.name == NSAppearance.Name.aqua
+        }
+
+        self.modeIndicator.contentTintColor = currentlyInLightMode ? .systemGreen : .systemPurple
     }
     
     
@@ -115,7 +127,7 @@ class AppDelegate:  NSObject,
                     self.common.doShowLightBackground = !self.renderAsDark
 
                     // Get the key string first
-                    let mdAttString: NSAttributedString = self.common.getAttributedString(mdString)
+                    let mdAttString: NSAttributedString = self.common.getAttributedString(mdString[...])
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
@@ -126,13 +138,14 @@ class AppDelegate:  NSObject,
                             self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
                             self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
                             
+                            /*
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter: Layouter = Layouter()
                                 layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
-                            
+                            */
                             renderTextStorage.beginEditing()
                             renderTextStorage.setAttributedString(mdAttString)
                             renderTextStorage.endEditing()

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,6 +17,7 @@
             <connections>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="Xgj-E0-Kdt"/>
                 <outlet property="modeButton" destination="cUv-yG-ROn" id="nRU-sE-vcW"/>
+                <outlet property="modeIndicator" destination="h2G-gD-wSH" id="O22-Mv-mca"/>
                 <outlet property="previewScrollView" destination="9tz-gF-DdE" id="fWy-88-plv"/>
                 <outlet property="previewTextView" destination="NAJ-g1-D1W" id="UaC-b0-EJw"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -167,14 +169,14 @@
                     <scrollView clipsToBounds="NO" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9tz-gF-DdE">
                         <rect key="frame" x="0.0" y="60" width="660" height="418"/>
                         <clipView key="contentView" clipsToBounds="YES" drawsBackground="NO" copiesOnScroll="NO" id="BJy-MZ-98D">
-                            <rect key="frame" x="0.0" y="0.0" width="660" height="418"/>
+                            <rect key="frame" x="0.0" y="0.0" width="645" height="418"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView clipsToBounds="NO" wantsLayer="YES" editable="NO" verticallyResizable="YES" selectionGranularity="word" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" linkDetection="YES" dataDetection="YES" textCompletion="NO" layoutManager="textKit1" id="NAJ-g1-D1W">
-                                    <rect key="frame" x="0.0" y="0.0" width="660" height="418"/>
+                                <textView clipsToBounds="NO" wantsLayer="YES" editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" linkDetection="YES" textCompletion="NO" layoutManager="textKit1" id="NAJ-g1-D1W">
+                                    <rect key="frame" x="0.0" y="0.0" width="645" height="418"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="660" height="418"/>
+                                    <size key="minSize" width="645" height="418"/>
                                     <size key="maxSize" width="660" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -185,7 +187,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="skS-h9-m4V">
-                            <rect key="frame" x="644" y="0.0" width="16" height="418"/>
+                            <rect key="frame" x="645" y="0.0" width="15" height="418"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -216,6 +218,15 @@
                             <action selector="doSwitchMode:" target="Voe-Tx-rLC" id="uCD-0Y-TM4"/>
                         </connections>
                     </button>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h2G-gD-wSH">
+                        <rect key="frame" x="306" y="3" width="48" height="54"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="RNs-pz-x7O"/>
+                            <constraint firstAttribute="height" constant="48" id="Uhf-HN-VQF"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="poweroutlet.type.k" catalog="system" id="NlV-fP-tn4"/>
+                        <color key="contentTintColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="f2a-59-pv7" secondAttribute="bottom" constant="20" symbolic="YES" id="3cM-yK-Yg5"/>
@@ -223,7 +234,9 @@
                     <constraint firstItem="f2a-59-pv7" firstAttribute="top" secondItem="9tz-gF-DdE" secondAttribute="bottom" constant="20" id="Dba-LX-25H"/>
                     <constraint firstAttribute="trailing" secondItem="9tz-gF-DdE" secondAttribute="trailing" id="NJ5-BP-efF"/>
                     <constraint firstItem="f2a-59-pv7" firstAttribute="leading" secondItem="cUv-yG-ROn" secondAttribute="trailing" constant="8" symbolic="YES" id="kTh-08-PZP"/>
+                    <constraint firstAttribute="bottom" secondItem="h2G-gD-wSH" secondAttribute="bottom" constant="6" id="p8h-xu-lcs"/>
                     <constraint firstAttribute="trailing" secondItem="f2a-59-pv7" secondAttribute="trailing" constant="20" symbolic="YES" id="pTc-kP-iCM"/>
+                    <constraint firstItem="h2G-gD-wSH" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="qzy-hj-eRV"/>
                     <constraint firstItem="9tz-gF-DdE" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="tNf-44-efT"/>
                     <constraint firstItem="9tz-gF-DdE" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="y1G-Qy-FRA"/>
                     <constraint firstAttribute="bottom" secondItem="cUv-yG-ROn" secondAttribute="bottom" constant="22" id="zAm-eX-srN"/>
@@ -232,4 +245,7 @@
             <point key="canvasLocation" x="290" y="458"/>
         </window>
     </objects>
+    <resources>
+        <image name="poweroutlet.type.k" catalog="system" width="15" height="15"/>
+    </resources>
 </document>
