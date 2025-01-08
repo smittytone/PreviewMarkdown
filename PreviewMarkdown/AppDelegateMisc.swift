@@ -126,23 +126,6 @@ extension AppDelegate {
     // MARK: - Misc Functions
 
     /**
-     Present an error message specific to sending feedback.
-
-     This is called from multiple locations: if the initial request can't be created,
-     there was a send failure, or a server error.
-     */
-    internal func sendFeedbackError() {
-
-        let alert: NSAlert = showAlert("Feedback Could Not Be Sent",
-                                       "Unfortunately, your comments could not be send at this time. Please try again later.")
-        alert.beginSheetModal(for: self.reportWindow) { (resp) in
-            self.window.endSheet(self.reportWindow)
-            self.showPanelGenerators()
-        }
-    }
-
-
-    /**
      Generic alert generator.
 
      - Parameters:
@@ -255,9 +238,7 @@ extension AppDelegate {
      */
     internal func hidePanelGenerators() {
         
-        self.helpMenuReportBug.isEnabled = false
         self.helpMenuWhatsNew.isEnabled = false
-        self.mainMenuSettings.isEnabled = false
         self.mainMenuResetFinder.isEnabled = false
     }
     
@@ -267,9 +248,7 @@ extension AppDelegate {
      */
     internal func showPanelGenerators() {
         
-        self.helpMenuReportBug.isEnabled = true
         self.helpMenuWhatsNew.isEnabled = true
-        self.mainMenuSettings.isEnabled = true
         self.mainMenuResetFinder.isEnabled = true
     }
     
@@ -307,11 +286,13 @@ extension AppDelegate {
             // The comment was submitted successfully
             let alert: NSAlert = showAlert("Thanks For Your Feedback!",
                                            "Your comments have been received and we’ll take a look at them shortly.")
-            alert.beginSheetModal(for: self.reportWindow) { (resp) in
+            alert.beginSheetModal(for: self.window) { (resp) in
                 // Close the feedback window when the modal alert returns
                 let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
-                    self.window.endSheet(self.reportWindow)
+                    //self.window.endSheet(self.window)
                     self.showPanelGenerators()
+                    self.hasSentFeedback = true
+                    self.messageSendButton.isEnabled = false
                 }
             }
         }
@@ -334,6 +315,28 @@ extension AppDelegate {
                 }
             }
         }
+    }
+
+
+    // MARK: - NSWindowDelegate Functions
+    
+    /**
+      Catch when the user clicks on the window's red close button.
+     */
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        
+        if !checkFeedbackOnQuit() && !checkSettingsOnQuit() {
+            // No unsaved settings or unsent feedback, so we're good to close
+            return true
+        }
+        
+        // Close mmanually
+        // NOTE The above check will fail if there are settings changes and/or
+        //      unsent feedback, in which case the following calls will trigger
+        //      alerts
+        closeBasics()
+        closeSettings()
+        return false
     }
 }
 

@@ -22,15 +22,18 @@ enum StyleType {
     case indent     // Indented block, eg. PRE or BLOCKQUOTE
 }
 
+
 class Style {
     var name: String = "p"
     var type: StyleType = .paragraph
 }
 
+
 enum ListType {
     case bullet
     case number
 }
+
 
 struct ColourValues {
     var head: String                  = "#FFFFFF"
@@ -38,6 +41,7 @@ struct ColourValues {
     var link: String                  = "#64ACDD"
     var quote: String                 = "#FFFFFF"
 }
+
 
 struct Colours {
     var head: NSColor!
@@ -47,12 +51,14 @@ struct Colours {
     var quote: NSColor!
 }
 
+
 struct FontRecord {
     var postScriptName: String = ""
     var style: String = "regular"
     var size: CGFloat = 12.0
     var font: NSFont? = nil
 }
+
 
 class Styler {
     
@@ -67,12 +73,13 @@ class Styler {
     
     var bodyFontName: String                        = "SF Pro"
     var codeFontName: String                        = "Menlo"
-    var bodyColour: NSColor                         = .white
+    var bodyColour: NSColor                         = .labelColor
+    
+    var presentForLightMode: Bool                   = false
     
     
     // MARK: - Private properties with defaults
     
-    private var useLightMode: Bool                                      = true
     private var isThumbnail: Bool                                       = false
     private var tokenString: String                                     = ""
     private var currentLink: String                                     = ""
@@ -125,22 +132,23 @@ class Styler {
         - Parameters
             - useLightModeColours - `true` to use light colours.
     */
-    init(_ useLightModeColours: Bool = true) {
+    //init(_ useLightModeColours: Bool = true) {
         
-        self.useLightMode = useLightModeColours
-    }
+        //self.useLightMode = useLightModeColours
+    //}
     
     
     /**
         Render the class' `tokenString` property.
      
         - Parameters
-            - tokenString - The tokenised string we're to render to NSAttributedString.
-            - isThumbnail - Are we rendering text for thumbnail use? Default : `false`.
+            - tokenString               - The tokenised string we'll use to render an NSAttributedString.
+            - isThumbnail               - Are we rendering text for thumbnail use? Default : `false`.
+            - useLightColoursInDarkMode - Present previews in light colours, irrespective of mode. Default : `false`.
         
-        - Returns NSAttributedString or nil or error.
+        - Returns NSAttributedString or `nil` or error.
      */
-    func render(_ tokenString: String, _ isThumbnail: Bool = false) -> NSAttributedString? {
+    func render(_ tokenString: String, _ isThumbnail: Bool = false, _ useLightColoursInDarkMode: Bool = false) -> NSAttributedString? {
         
         // Check we have an tokended string to render.
         if tokenString.isEmpty {
@@ -149,11 +157,11 @@ class Styler {
             self.tokenString = tokenString
         }
         
+        // Always render for light mode when generating thumbnail, we;'re in dakr mode but want
+        // to use light mode colours anyway, or we're actually in light mode
         self.isThumbnail = isThumbnail
-        if isThumbnail {
-            // Always render for light mode when generating thumbnails
-            self.useLightMode = true
-        }
+        self.presentForLightMode = isThumbnail || useLightColoursInDarkMode
+        self.bodyColour = useLightColoursInDarkMode ? NSColor.black : .labelColor
         
         // Generate the text styles we'll use
         generateStyles()
@@ -285,7 +293,8 @@ class Styler {
                                 // Couldn't create the highlighter
                                 NSLog("Could not load the highlighter")
                             } else {
-                                self.highlighter!.setTheme(self.useLightMode ? "atom-one-light" : "atom-one-dark")
+                                // TO-DO Make theme selection more responsive to current mode
+                                self.highlighter!.setTheme(self.presentForLightMode ? "atom-one-light" : "atom-one-dark")
                                 self.highlighter!.theme.setCodeFont(makeFont("code", self.fontSize))
                             }
                         }
@@ -883,14 +892,15 @@ class Styler {
         }
         
         // Create the cell block
-        let cellBlockColour: NSColor = self.useLightMode ? NSColor.init(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0) : NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-        let cellblock = NSTextTableBlock(table: self.blockTable!, startingRow: inset - 1, rowSpan: 1, startingColumn: 0, columnSpan: 1)
+        let cellBlockColour: NSColor = self.colours.quote! // self.presentForLightMode ? NSColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0) : .previewBlock
+        let cellblock = PMBlockquoteTextTableBlock(table: self.blockTable!, startingRow: inset - 1, rowSpan: 1, startingColumn: 0, columnSpan: 1)
         //cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
         //cellblock.setBorderColor(cellBlockColour)
         //cellblock.setBorderColor(self.colours.head!, for: .minX)
-        cellblock.setWidth(10.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
+
+        cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
         cellblock.backgroundColor = cellBlockColour
-        cellblock.verticalAlignment = .bottomAlignment
+        cellblock.verticalAlignment = .middleAlignment
         
         // Set the cell text's parastyle
         let cellParagraphStyle = NSMutableParagraphStyle()
@@ -904,7 +914,7 @@ class Styler {
         // Generate an NSMutableAttributedString for the cell text using the above attributes...
         let cellAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: cellString + self.newLineSymbol,
                                                                                         attributes: [.paragraphStyle: cellParagraphStyle,
-                                                                                                     .foregroundColor: self.colours.quote!,
+                                                                                                     .foregroundColor: NSColor.white,
                                                                                                      .font: makeFont("strong", self.fontSize * H4_MULTIPLIER)])
         
         // ...and add it to the table NSMutableAttributedString
@@ -955,7 +965,7 @@ class Styler {
         
         // Make the table's single cell
         let paragraphBlock = NSTextTableBlock(table: paragraphTable, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
-        paragraphBlock.backgroundColor = self.useLightMode ? NSColor.init(red: 0.7, green: 0.7, blue: 0.7, alpha: 1.0) : NSColor.init(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+        paragraphBlock.backgroundColor = .previewCode // self.presentForLightMode ? NSColor.init(red: 0.8, green: 0.8, blue: 0.8, alpha: 1.0) : .previewCode
         paragraphBlock.setWidth(5.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
         return paragraphBlock
     }
@@ -1018,33 +1028,102 @@ class Styler {
                             // Check if the font used is italic. If not, flag we need to set the background color
                             if fontUsed == nil || (!fontUsed!.fontName.contains("Bold") && !fontUsed!.fontName.contains("Black") && !fontUsed!.fontName.contains("Heavy") && !fontUsed!.fontName.contains("Medium")) {
                                 attributes.updateValue(self.colours.body, forKey: .backgroundColor)
-                                attributes.updateValue(self.useLightMode ? NSColor.white : NSColor.black, forKey: .foregroundColor)
+                                attributes.updateValue(NSColor.previewBackground, forKey: .foregroundColor)
                             }
                         case "img":
                             if !self.isThumbnail {
-                                var imageAttachment: NSTextAttachment
+                                // SEE https://developer.apple.com/documentation/foundation/nsurl for secure resources
+                                //let imgUrl = URL.init(fileURLWithPath: self.currentImagePath)
+                                var imageAttachment: NSTextAttachment? = nil
+                                //
+                                
+                                let fm: FileManager = FileManager.default
+                                let fileData: Data? = fm.contents(atPath: self.currentImagePath)
+                                
+                                if let fd = fileData {
+                                    let fileWrapper: FileWrapper = FileWrapper.init(regularFileWithContents: fd)
+                                    imageAttachment?.fileWrapper = fileWrapper
+                                } else {
+                                    let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
+                                    imageAttachment = NSTextAttachment.init()
+                                    if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
+                                        imageAttachment!.image = image
+                                    }
+                                }
+                                
+                                /*
+                                 var bm: Data? = nil
+                                 var ok: Bool = false
+                                 do {
+                                    bm = try imgUrl.bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess])
+                                } catch {
+                                    // NOP
+                                    NSLog("[ERROR] \(error.localizedDescription)")
+                                }
+                                
+                                if let bm = bm {
+                                    do {
+                                        let location = try URL(resolvingBookmarkData: bm, bookmarkDataIsStale: &ok)
+                                        defer {
+                                            location.stopAccessingSecurityScopedResource()
+                                        }
+                                        
+                                        do {
+                                            let wrapper: FileWrapper = try FileWrapper.init(url: location, options: [.immediate])
+                                            imageAttachment = NSTextAttachment.init(fileWrapper: wrapper)
+                                        } catch {
+                                            NSLog("[ERROR] \(error.localizedDescription)")
+                                            let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
+                                            imageAttachment = NSTextAttachment.init()
+                                            if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
+                                                imageAttachment!.image = image
+                                            }
+                                        }
+                                    } catch {
+                                        let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
+                                        imageAttachment = NSTextAttachment.init()
+                                        if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
+                                            imageAttachment!.image = image
+                                        }
+                                    }
+                                } else {
+                                    let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
+                                    imageAttachment = NSTextAttachment.init()
+                                    if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
+                                        imageAttachment!.image = image
+                                    }
+                                }
+                                */
+                                
+                                
+                                /*
                                 do {
+                                    
                                     let wrapper: FileWrapper = try FileWrapper.init(url: URL.init(fileURLWithPath: self.currentImagePath), options: [.immediate])
                                     imageAttachment = NSTextAttachment.init(fileWrapper: wrapper)
                                 } catch {
                                     NSLog("[ERROR] \(error.localizedDescription)")
-                                    let baseImageName: String = self.useLightMode ? BUFFOON_CONSTANTS.IMG_PLACEHOLDER_LIGHT : BUFFOON_CONSTANTS.IMG_PLACEHOLDER_DARK
+                                    let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
                                     imageAttachment = NSTextAttachment.init()
                                     if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
                                         imageAttachment.image = image
                                     }
                                 }
+                                */
                                 
                                 /*
-                                 let baseImageName: String = self.useLightMode ? BUFFOON_CONSTANTS.IMG_PLACEHOLDER_LIGHT : BUFFOON_CONSTANTS.IMG_PLACEHOLDER_DARK
+                                 let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
                                 if let image: NSImage = NSImage.init(contentsOfFile: self.currentImagePath) {
                                     imageAttachment.image = image
                                 } else if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
                                     imageAttachment.image = image
                                 }
                                 */
-                                let imageAttString = NSMutableAttributedString(attachment: imageAttachment)
-                                return imageAttString
+                                
+                                if let im = imageAttachment {
+                                    let imageAttString = NSMutableAttributedString(attachment: im)
+                                    return imageAttString
+                                }
                             }
                         default:
                             break
@@ -1180,7 +1259,7 @@ class Styler {
         
         // KBD
         self.styles["kbd"]          = [.foregroundColor: self.colours.body,
-                                       .underlineColor: useLightMode ? NSColor.black : NSColor.white,
+                                       .underlineColor: NSColor.gray,
                                        .underlineStyle: NSUnderlineStyle.double.rawValue as NSNumber,
                                        .font: makeFont("strong", self.fontSize)]
         
@@ -1474,36 +1553,4 @@ class Styler {
         }
     }
  
-}
-
-
-// MARK: - Extensions
-
-extension Scanner {
-    
-    func getNextCharacter(in outer: String) -> String {
-        
-        let string: NSString = self.string as NSString
-        let idx: Int = self.currentIndex.utf16Offset(in: outer)
-        let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
-        return nextChar
-    }
-}
-
-
-extension CGFloat {
-
-    func isClose(to value: CGFloat) -> Bool {
-        let absA: CGFloat = abs(self)
-        let absB: CGFloat = abs(value)
-        let diff: CGFloat = abs(self - value)
-        
-        if self == value {
-            return true
-        } else if self == .zero || value == .zero || (absA + absB) < Self.leastNormalMagnitude {
-            return diff < Self.ulpOfOne * Self.leastNormalMagnitude
-        } else {
-            return (diff / Self.minimum(CGFloat(absA + absB), Self.greatestFiniteMagnitude)) < .ulpOfOne
-        }
-    }
 }

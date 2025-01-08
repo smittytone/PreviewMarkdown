@@ -1,9 +1,9 @@
 /*
- *  Markdowner.swift
+ *  PMMarkdowner.swift
  *  Swift wrapper for MarkdownIt JavaScript
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
@@ -12,7 +12,7 @@ import JavaScriptCore
 import AppKit
 
 
-public class Markdowner {
+public class PMMarkdowner {
     
     // MARK: - Private Properties
     
@@ -24,14 +24,13 @@ public class Markdowner {
     /**
         The default initialiser.
      
-     - returns: 
-        `nil` on failure to load, evaluate or configure `markdownit.js`.
+        - Returns `nil` on failure to load, evaluate or configure `markdownit.js`.
     */
     public init?() {
         
         // Get the file's bundle based on how it's
         // being included in the host app
-        let bundle = Bundle(for: Markdowner.self)
+        let bundle = Bundle(for: PMMarkdowner.self)
 
         // Load the highlight.js code from the bundle or fail
         guard let markdownerJavaScriptPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
@@ -47,8 +46,9 @@ public class Markdowner {
         }
         
         // Store the results for later
-        // NOTE We set "html" because Markdown-It 14 doesn't do this automatically
-        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true], in: context)
+        // NOTE Set "html" because Markdown-It 14 doesn't do this automatically,
+        //      Set "breaks" to convert <br> to CR
+        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true, "breaks": true], in: context)
         self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
     
@@ -58,16 +58,14 @@ public class Markdowner {
     /**
         Tokenise the supplied markdown-formatted document.
     
-     - Parameters:
-        - markdown: The markdown string to convert.
+        - Parameters
+            - markdown - The markdown string to convert.
      
-     - Returns:
-        A string of tokenised data.
+     - Returns A string of tokenised data.
     */
     func tokenise(_ markdown: Substring) -> String {
         
-        let returnValue: JSValue = self.markdownerJavaScript.invokeMethod("render", withArguments: [markdown])
-        return returnValue.toString()
+        return self.markdownerJavaScript.invokeMethod("render", withArguments: [markdown]).toString()
     }
 
 }

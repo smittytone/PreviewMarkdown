@@ -93,10 +93,14 @@ extension AppDelegate {
                 }
             }
         }
-
+        
+        // All done, update the main stores and begin to load
+        // settings (which immediately updates the UI, via `displaySettinsg()`,
+        // which itself requires the font store to be populated
         DispatchQueue.main.async {
             self.bodyFonts = bf
             self.codeFonts = cf
+            self.loadSettings()
         }
     }
 
@@ -157,7 +161,11 @@ extension AppDelegate {
             if let styles: [PMFont] = family.styles {
                 for style: PMFont in styles {
                     if style.postScriptName == postScriptName {
+                        // We have a font match, so select the font name popup entry with the
+                        // same family name...
                         targetPopup.selectItem(withTitle: family.displayName)
+                        
+                        // ...and set the font styles popup accordingly
                         setStylePopup(isBody, style.styleName)
                         break
                     }
@@ -165,10 +173,17 @@ extension AppDelegate {
             }
         }
         
-        // FROM 1.5.0
-        // Select a font if none selected
+        // Auto-select a font if none selected. This might because the default font, System, is
+        // in play, or the font references one that was later removed by the user.
         if targetPopup.selectedItem == nil {
-            targetPopup.selectItem(at: 0);
+            if postScriptName == "System" {
+                let sysFont: NSFont = NSFont.systemFont(ofSize: 10)
+                selectFontByPostScriptName(sysFont.fontName, isBody)
+                return
+            }
+            
+            targetPopup.selectItem(at: 0)
+            setStylePopup(isBody, "Plain")
         }
     }
 
