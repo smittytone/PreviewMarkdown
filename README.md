@@ -52,6 +52,7 @@ PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behra
 
 - 2.0.0 *Unreleased*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
+    - Introduce a new UI for the host application.
 - 1.5.3 *7 September 2024*
     - Improve settings change checking.
     - Correctly render the YAML frontmatter separator line: revert NSTextViews to TextKit 1 (previously bumped to TextKit 2 by Xcode).
@@ -138,6 +139,6 @@ PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behra
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2024, Tony Smith.
+Primary app code and UI design &copy; 2025, Tony Smith.
 
 Code portions &copy; 2022 Simon Fairbairn. Code portions &copy; 2021 Behrang Noruzi Niya.
