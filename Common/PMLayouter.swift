@@ -1,9 +1,9 @@
 //
-//  Layouter.swift
+//  PMLayouter.swift
 //  PreviewMarkdown
 //
 //  Created by Tony Smith on 05/09/2024.
-//  Copyright © 2024 Tony Smith. All rights reserved.
+//  Copyright © 2025 Tony Smith. All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import AppKit
 
 
 
-class Layouter: NSLayoutManager {
+class PMLayouter: NSLayoutManager {
     
     // The background of KDB lozenges
     var lozengeColour: NSColor? = nil
@@ -49,13 +49,11 @@ class Layouter: NSLayoutManager {
         }
 
         var lozengeRect = lineRect
-        let height = lozengeRect.size.height * 0.6
-        // Pad with 1.0 pixels either side
-        lozengeRect.origin.x += firstPosition - 1.0
-        lozengeRect.size.width = lastPosition - firstPosition + 2.0
+        let height = lozengeRect.size.height
+        // Pad with 2.0 pixels either side
+        lozengeRect.origin.x += firstPosition - 2.0
+        lozengeRect.size.width = lastPosition - firstPosition + 4.0
         lozengeRect.size.height = height
-        lozengeRect.origin.x += containerOrigin.x
-        lozengeRect.origin.y += containerOrigin.y - 4.0
         lozengeRect = lozengeRect.integral
         
         // Draw and fill rounded path over lozenge
@@ -64,7 +62,7 @@ class Layouter: NSLayoutManager {
             colour.setFill()
         } else {
             // Default to dark grey CHANGE
-            NSColor.darkGray.setFill()
+            NSColor.gray.setFill()
         }
         
         path.fill()
