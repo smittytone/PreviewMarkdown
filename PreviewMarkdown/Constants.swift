@@ -3,7 +3,7 @@
  *  PreviewMarkdown
  *
  *  Created by Tony Smith on 12/08/2020.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
@@ -68,7 +68,7 @@ struct BUFFOON_CONSTANTS {
     // FROM 1.4.0
     static let HEAD_COLOUR_HEX                  = "941751FF"
     static let CODE_COLOUR_HEX                  = "00FF00FF"
-    static let BODY_FONT_NAME                   = "System"
+    static let BODY_FONT_NAME                   = "ArialMT"
     // FROM 1.5.0 -- Change default font: Courier not included with macOS now
     static let CODE_FONT_NAME                   = "AndaleMono"
     static let LINK_COLOUR_HEX                  = "0096FFFF"
@@ -117,7 +117,7 @@ struct BUFFOON_CONSTANTS {
     }
     
     // FROM 2.0.0
-    static let IMG_PLACEHOLDER_LIGHT            = "missing-img-light"
-    static let IMG_PLACEHOLDER_DARK             = "missing-img-dark"
-
+    static let IMG_PLACEHOLDER                  = "missing-img"
+    
+    static let MAX_FEEDBACK_SIZE                = 20
 }

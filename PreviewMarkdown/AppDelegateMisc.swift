@@ -1,12 +1,13 @@
-/*
- *  GenericExtensions.swift
- *  PreviewApps
- *
- *  These functions can be used by all PreviewApps
- *
- *  Created by Tony Smith on 18/06/2021.
- *  Copyright © 2024 Tony Smith. All rights reserved.
- */
+//
+//  AppDelegateMisc.swift
+//  PreviewMarkdown
+//  Extension for AppDelegate providing functionality used across PreviewApps.
+//
+//  These functions can be used by all PreviewApps
+//
+//  Created by Tony Smith on 18/06/20214.
+//  Copyright © 2025 Tony Smith. All rights reserved.
+//
 
 
 import Foundation
@@ -123,7 +124,7 @@ extension AppDelegate {
     }
 
     
-    // MARK: - Misc Functions
+    // MARK: - Alert Handler Functions
 
     /**
      Generic alert generator.
@@ -144,7 +145,9 @@ extension AppDelegate {
         return alert
     }
 
-
+    
+    // MARK: - Data Generator Functions
+    
     /**
      Build a basic 'major-manor' version string for prefs usage.
 
@@ -263,6 +266,14 @@ extension AppDelegate {
         let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
         return (appearNameString == "NSAppearanceNameAqua")
     }
+    
+    
+    func applicationSupportsSecureRestorableState() -> Bool {
+        
+        return true
+    }
+    
+    
 
     
     // MARK: - URLSession Delegate Functions
@@ -337,14 +348,5 @@ extension AppDelegate {
         closeBasics()
         closeSettings()
         return false
-    }
-}
-
-
-extension NSApplication {
-    
-    func isMacInLightMode() -> Bool {
-        
-        return (self.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua")
     }
 }

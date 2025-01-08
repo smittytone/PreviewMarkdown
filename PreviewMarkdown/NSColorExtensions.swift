@@ -1,10 +1,10 @@
-/*
- *  GenericColorExtension.swift
- *  PreviewApps
- *
- *  Created by Tony Smith on 18/06/2021.
- *  Copyright © 2024 Tony Smith. All rights reserved.
- */
+//
+//  NSColorExtension.swift
+//  PreviewApps
+//
+//  Created by Tony Smith on 18/06/2021.
+//  Copyright © 2025 Tony Smith. All rights reserved.
+//
 
 
 import Foundation

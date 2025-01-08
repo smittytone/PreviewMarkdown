@@ -1,19 +1,19 @@
 //
-//  TabManager.swift
+//  PMTabManager.swift
 //  PreviewMarkdown
 //
 //  Created by Tony Smith on 30/09/2024.
-//  Copyright © 2024 Tony Smith. All rights reserved.
+//  Copyright © 2025 Tony Smith. All rights reserved.
 //
 
 import Foundation
 import AppKit
 
 /**
- Manager class for the NSTabView
+    Manager class for the NSTabView
  */
 
-class TabManager {
+class PMTabManager {
     
     // MARK: - Public Properties
     
