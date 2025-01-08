@@ -3,7 +3,7 @@
  *  Code common to Previewer and Thumbnailer
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
@@ -26,44 +26,33 @@ class MarkdownComponents {
 
 // FROM 1.4.0
 // Implement common code as a class
-class Common: NSObject {
+class Common {
     
     // MARK: - Public Properties
     
-    var doShowLightBackground: Bool                     = false
+    var doShowLightBackground: Bool                                 = true
     // FROM 2.0.0
-    var viewWidth: CGFloat                              = 512
+    var viewWidth: CGFloat                                          = 512
+    
     
     // MARK: - Private Properties
     
-    private var doIndentScalars: Bool                   = true
-    private var doShowYaml: Bool                        = false
-    private var fontSize: CGFloat                       = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+    private var doIndentScalars: Bool                               = true
+    private var doShowYaml: Bool                                    = false
 
     // FROM 1.3.0
     // Front Matter string attributes...
-    private var keyAtts: [NSAttributedString.Key:Any]   = [:]
-    private var valAtts: [NSAttributedString.Key:Any]   = [:]
-    
+    private var yamlKeyAttributes: [NSAttributedString.Key:Any]     = [:]
+    private var yamlValueAttributes: [NSAttributedString.Key:Any]   = [:]
     // Front Matter rendering artefacts...
-    private var hr: NSAttributedString                  = NSAttributedString.init(string: "")
-    private var newLine: NSAttributedString             = NSAttributedString.init(string: "")
-    
-    // FROM 1.4.0
-            var codeColourHex: String                   = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    private var headColourHex: String                   = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    private var linkColourHex: String                   = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-    private var codeFontName: String                    = BUFFOON_CONSTANTS.CODE_FONT_NAME
-    private var bodyFontName: String                    = BUFFOON_CONSTANTS.BODY_FONT_NAME
-    
-    // FROM 1.5.0
-    private var lineSpacing: CGFloat                    = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    private var quoteColourHex: String                  = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    private var hr: NSAttributedString                              = NSAttributedString.init(string: "")
+    private var newLine: NSAttributedString                         = NSAttributedString.init(string: "")
     
     // FROM 2.0.0
-    private var markdowner: Markdowner?                 = nil
-    private var isThumbnail: Bool                       = false
-
+    private var markdowner: PMMarkdowner?                           = nil
+    private var styler: PMStyler?                                   = nil
+    private var isThumbnail: Bool                                   = false
+    
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
@@ -76,63 +65,67 @@ class Common: NSObject {
     
     init(_ isThumbnail: Bool = false) {
     
-        // As we're an NSObject child class...
-        super.init()
+        // Instantiate styler
+        self.styler = PMStyler.init()
+        guard let styler = self.styler else {
+            return
+        }
         
         // Load in the user's preferred values, or set defaults
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            self.fontSize = CGFloat(isThumbnail
-                                    ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
-                                    : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
-
-            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            // Locally relevant settings values
             self.doShowYaml            = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
+            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             
-            // FROM 1.4.0
-            self.codeColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.headColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.linkColourHex  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            self.codeFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            self.bodyFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            // The remaining settings values are passed directly to the styler
+            styler.fontSize = CGFloat(isThumbnail
+                                      ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
+                                      : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
+
+            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
             
-            // FROM 1.5.0
-            self.lineSpacing    = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
-            self.quoteColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
+            styler.codeFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            styler.bodyFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            
+            styler.lineSpacing    = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
         }
         
         // Just in case the above block reads in zero values
         // NOTE The other values CAN be zero
-        if self.fontSize < BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0] ||
-            self.fontSize > BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1] {
-            self.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+        if styler.fontSize < BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0] ||
+            styler.fontSize > BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1] {
+            styler.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
         }
 
         // FROM 1.3.0
         // Set the front matter key:value fonts and sizes
         var font: NSFont
-        if let otherFont = NSFont.init(name: self.codeFontName, size: self.fontSize) {
+        if let otherFont = NSFont.init(name: styler.codeFontName, size: styler.fontSize) {
             font = otherFont
         } else {
             // This should not be hit, but just in case...
-            font = NSFont.systemFont(ofSize: self.fontSize)
+            font = NSFont.systemFont(ofSize: styler.fontSize)
         }
         
-        self.keyAtts = [
-            .foregroundColor: NSColor.hexToColour(self.codeColourHex),
+        self.yamlKeyAttributes = [
+            .foregroundColor: NSColor.hexToColour(styler.colourValues.code),
             .font: font
         ]
         
-        self.valAtts = [
-            .foregroundColor: (isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.white),
+        self.yamlValueAttributes = [
+            .foregroundColor: NSColor.labelColor,
             .font: font
         ]
         
         // NOTE Requires NSTextView to use TextKit 1 for this to work
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
-                                                  .strikethroughColor: (self.doShowLightBackground ? NSColor.black : NSColor.white)])
+                                                  .strikethroughColor: NSColor.labelColor])
         
-        self.newLine = NSAttributedString.init(string: "\n", attributes: self.valAtts)
+        self.newLine = NSAttributedString.init(string: "\n", attributes: self.yamlValueAttributes)
         self.isThumbnail = isThumbnail
     }
     
@@ -142,13 +135,12 @@ class Common: NSObject {
     /**
         Render the provided markdown.
      
-     - parameters:
-        - rawText: The loaded file's contents.
+        - parameters
+            - rawText - The loaded file's contents.
      
-     - returns:
-        The rendered markdown as an NSAttributedString.
+        - returns The rendered markdown as an NSAttributedString.
      */
-    func getAttributedString(_ rawText: String) -> NSAttributedString {
+    func getAttributedString(_ rawText: Substring) -> NSAttributedString {
 
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
@@ -195,31 +187,21 @@ class Common: NSObject {
         let markdownToRender: Substring = rawText[components.markdownStart!..<components.markdownEnd!]
         
         // Load in the Markdown converter
-        let markdowner: Markdowner? = Markdowner.init()
+        let markdowner: PMMarkdowner? = PMMarkdowner.init()
         if markdowner == nil {
             // Missing JS code file or other init error
             output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
-                                                    attributes: self.valAtts)
+                                                    attributes: self.yamlValueAttributes)
         }
         
         // Render what we have
-        if output.length == 0 {
+        if output.length == 0 && self.styler != nil {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
-            let styler: Styler = Styler.init(self.isThumbnail || self.doShowLightBackground)
-            styler.bodyFontName = self.bodyFontName
-            styler.codeFontName = self.codeFontName
-            styler.bodyColour = self.isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.white
-            styler.fontSize = self.fontSize
-            styler.lineSpacing = (self.lineSpacing - 1.0) * self.fontSize
-            styler.paraSpacing = 12.0
-            styler.colourValues.head = self.headColourHex
-            styler.colourValues.code = self.codeColourHex
-            styler.colourValues.link = self.linkColourHex
-            styler.colourValues.quote = self.quoteColourHex
-            styler.viewWidth = self.viewWidth
+            self.styler?.viewWidth = self.viewWidth
+            self.styler?.paraSpacing = 12.0
             
-            if let attStr: NSAttributedString = styler.render(markdowner!.tokenise(markdownToRender), self.isThumbnail) {
+            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
                 output = NSMutableAttributedString.init(attributedString: attStr)
                 
                 // Render YAML front matter if requested by the user, and we're not
@@ -229,7 +211,7 @@ class Common: NSObject {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
                         
                         // Assemble the front matter string
-                        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "", attributes: self.valAtts)
+                        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "", attributes: self.yamlValueAttributes)
                         
                         // Initial line
                         renderedString.append(self.hr)
@@ -247,7 +229,6 @@ class Common: NSObject {
                         renderedString.append(output)
                         output = renderedString
                     } catch {
-                        // No YAML to render, or mis-formatted
                         // No YAML to render, or the YAML was mis-formatted
                         // Get the error as reported by YamlSwift
                         let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
@@ -259,14 +240,14 @@ class Common: NSObject {
                         
                         // Assemble the error string
                         let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString,
-                                                                                                    attributes: self.keyAtts)
+                                                                                                    attributes: self.yamlKeyAttributes)
                         
                         // Should we include the raw text?
                         // At least the user can see the data this way
 #if DEBUG
                         errorString.append(self.hr)
                         errorString.append(NSMutableAttributedString.init(string: String(frontMatter),
-                                                                          attributes: self.valAtts))
+                                                                          attributes: self.yamlValueAttributes))
 #endif
                         
                         errorString.append(self.hr)
@@ -276,7 +257,7 @@ class Common: NSObject {
                 }
             } else {
                 output = NSMutableAttributedString.init(string: "Could not render markdown string",
-                                                        attributes: self.valAtts)
+                                                        attributes: self.yamlValueAttributes)
             }
         }
 
@@ -284,7 +265,7 @@ class Common: NSObject {
         // Guard against non-trapped errors
         if output.length == 0 {
             return NSAttributedString.init(string: "No valid Markdown to render.",
-                                           attributes: self.keyAtts)
+                                           attributes: self.yamlKeyAttributes)
         }
         
         // Return the rendered NSAttributedString to Previewer or Thumbnailer
@@ -306,7 +287,7 @@ class Common: NSObject {
      - Returns:
         A data structure indicating front matter, markdown ranges.
      */
-    func getFrontMatter(_ rawText: String) -> MarkdownComponents {
+    func getFrontMatter(_ rawText: Substring) -> MarkdownComponents {
         
         // Assume the data is ALL markdown to begin with
         let components: MarkdownComponents = MarkdownComponents.init()
@@ -327,7 +308,7 @@ class Common: NSObject {
             components.frontMatterEnd = range.upperBound
         }
         
-        // Make sure the front matte, if any, is no preceded by any text
+        // Make sure the front matter, if any, is no preceded by any text
         if components.frontMatterStart != nil {
             let endIndex: String.Index = rawText.index(components.frontMatterStart!, offsetBy: -4)
             let start: String = String(rawText[rawText.startIndex..<endIndex])
@@ -354,18 +335,17 @@ class Common: NSObject {
      
         FROM 1.3.0
 
-     - Parameters:
-        - part:   A partial Yaml object.
-        - indent: The number of indent spaces to add.
-        - isKey:  Is the Yaml part a key?
+        - Parameters
+            - part:   A partial Yaml object.
+            - indent: The number of indent spaces to add.
+            - isKey:  Is the Yaml part a key?
 
-     - Returns:
-        The rendered string as an NSAttributedString, or nil on error.
+        - Returns: The rendered string as an NSAttributedString, or nil on error.
      */
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
         
         let returnString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                     attributes: keyAtts)
+                                                                                     attributes: yamlKeyAttributes)
         
         switch (part) {
         case .array:
@@ -469,14 +449,14 @@ class Common: NSObject {
                     returnString.append(getIndentedString(keyOrValue, indent))
                 }
 
-                returnString.setAttributes((isKey ? self.keyAtts : self.valAtts),
+                returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
                                            range: NSMakeRange(0, returnString.length))
-                returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: self.valAtts) : self.newLine)
+                returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: self.yamlValueAttributes) : self.newLine)
                 return returnString
             }
         case .null:
             returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
-            returnString.setAttributes((isKey ? self.keyAtts : self.valAtts),
+            returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
                                        range: NSMakeRange(0, returnString.length))
             returnString.append(isKey ? NSAttributedString.init(string: " ") : self.newLine)
             return returnString
@@ -493,7 +473,7 @@ class Common: NSObject {
                 returnString.append(getIndentedString("UNKNOWN-TYPE\n", indent))
             }
             
-            returnString.setAttributes(self.valAtts,
+            returnString.setAttributes(self.yamlValueAttributes,
                                        range: NSMakeRange(0, returnString.length))
             return returnString
         }
@@ -504,16 +484,16 @@ class Common: NSObject {
 
 
     /**
-     Return a space-prefix NSAttributedString.
+        Return a space-prefix NSAttributedString.
      
-     FROM 1.3.0
+        FROM 1.3.0
 
-     - Parameters:
-        - baseString: The string to be indented.
-        - indent:     The number of indent spaces to add.
+        - Parameters
+            - baseString: The string to be indented.
+            - indent:     The number of indent spaces to add.
 
-     - Returns:
-        The indented string as an NSAttributedString.
+        - Returns
+            The indented string as an NSAttributedString.
      */
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
         
@@ -525,5 +505,5 @@ class Common: NSObject {
         indentedString.append(NSAttributedString.init(string: trimmedString))
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
     }
-    
+
 }
