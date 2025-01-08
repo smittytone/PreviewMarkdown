@@ -3,7 +3,7 @@
  *  Previewer
  *
  *  Created by Tony Smith on 31/10/2019.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
@@ -16,9 +16,9 @@ class PreviewViewController: NSViewController,
 
     // MARK: - Class UI Properties
 
-    @IBOutlet var errorReportField: NSTextField!
-    @IBOutlet var renderTextView: NSTextView!
-    @IBOutlet var renderTextScrollView: NSScrollView!
+    @IBOutlet weak var errorReportField: NSTextField!
+    @IBOutlet weak var renderTextView: NSTextView!
+    @IBOutlet weak var renderTextScrollView: NSScrollView!
 
 
     // MARK: - Private Properties
@@ -54,30 +54,46 @@ class PreviewViewController: NSViewController,
                 // Get the string's encoding, or fail back to .utf8
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
                 
+                // Convert the data to a string
                 if let markdownString: String = String.init(data: data, encoding: encoding) {
                     // Instantiate the common code
                     let common: Common = Common.init()
+                    
+                    // FROM 2.0.0
+                    // Pass on the initial width of the preview
                     common.viewWidth = self.renderTextView.bounds.width
+                    
+                    // FROM 2.0.0
+                    // Set the view to display in light mode, even if the Mac is set to dakr mode,
+                    // if that's required by the user. This means we can stick to as few fixed colours
+                    // as possible: AppKit will flip accordingly.
+                    if common.doShowLightBackground {
+                        self.view.appearance = NSAppearance.init(named: .aqua)
+                    }
                     
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
-                    self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                    //self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
-                            let layouter: Layouter = Layouter()
-                            layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-                            renderTextContainer.replaceLayoutManager(layouter)
-                        }
                         
                         safeMainSync {
                             renderTextStorage.beginEditing()
-                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString))
+                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
+                            
+                            /*
+                            if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
+                                let layouter: PMLayouter = PMLayouter()
+                                layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                                renderTextContainer.replaceLayoutManager(layouter)
+                            }
+                            */
+                            
                             renderTextStorage.endEditing()
                             
                             // Add the subview to the instance's own view and draw
-                            self.renderTextView.needsDisplay = true // Possibly redundant
-                            self.view.display()
+                            self.renderTextView.needsDisplay = true     // Possibly redundant
+                            self.view.display()                         // Ditto
                         }
                         
                         // Call the QLPreviewingController indicating no error (nil)
