@@ -29,7 +29,6 @@ class AppDelegate:  NSObject,
     private var currentURL: URL? = nil
     private var renderAsDark: Bool = true
     private var renderIndents: Bool = false
-    private var common: Common = Common.init(false)
 
     
     // MARK: - Class Lifecycle Functions
@@ -42,8 +41,6 @@ class AppDelegate:  NSObject,
         // Centre the main window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
-        
-        self.common.viewWidth = self.previewTextView.frame.width
         
         var currentlyInLightMode: Bool = true
         if #available(macOS 11.0, *) {
@@ -112,7 +109,7 @@ class AppDelegate:  NSObject,
     func renderContent(_ fileToRender: URL?) -> NSError? {
         
         var reportError: NSError? = nil
-
+        
         do {
             if let mdUrl: URL = fileToRender {
                 self.window.title = mdUrl.absoluteString
@@ -124,28 +121,30 @@ class AppDelegate:  NSObject,
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
                 if let mdString: String = String.init(data: data, encoding: encoding) {
-                    self.common.doShowLightBackground = !self.renderAsDark
+                    let common = Common.init(false)
+                    common.viewWidth = self.previewTextView.frame.width
+                    common.doShowLightBackground = !self.renderAsDark
 
                     // Get the key string first
-                    let mdAttString: NSAttributedString = self.common.getAttributedString(mdString[...])
+                    let mdAttString: NSAttributedString = common.getAttributedString(mdString[...])
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
-                            self.previewTextView.backgroundColor = self.common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
-                            self.previewScrollView.scrollerKnobStyle = self.common.doShowLightBackground ? .dark : .light
+                            self.previewTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                            self.previewScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
                             
                             // Auto-scroll to top of preview
                             self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
                             self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
                             
-                            /*
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
-                                let layouter: Layouter = Layouter()
-                                layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                                let layouter = PMLayouter()
+                                layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
+                                layouter.fontSize = common.fontSize
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
-                            */
+                            
                             renderTextStorage.beginEditing()
                             renderTextStorage.setAttributedString(mdAttString)
                             renderTextStorage.endEditing()
