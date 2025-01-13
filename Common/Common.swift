@@ -33,6 +33,7 @@ class Common {
     var doShowLightBackground: Bool                                 = true
     // FROM 2.0.0
     var viewWidth: CGFloat                                          = 512
+    var fontSize: CGFloat                                           = 0.0
     
     
     // MARK: - Private Properties
@@ -99,6 +100,10 @@ class Common {
             styler.fontSize > BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1] {
             styler.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
         }
+        
+        // Set paragraph spacing
+        self.fontSize = styler.fontSize
+        styler.paraSpacing = self.fontSize * 1.4
 
         // FROM 1.3.0
         // Set the front matter key:value fonts and sizes
@@ -199,7 +204,6 @@ class Common {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
             self.styler?.viewWidth = self.viewWidth
-            self.styler?.paraSpacing = 12.0
             
             if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
                 output = NSMutableAttributedString.init(attributedString: attStr)
