@@ -73,27 +73,22 @@ class PreviewViewController: NSViewController,
                     
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
-                    //self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
-
+                    self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                    
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         
                         safeMainSync {
-                            renderTextStorage.beginEditing()
-                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
-                            
-                            /*
                             if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
-                                let layouter: PMLayouter = PMLayouter()
-                                layouter.lozengeColour = NSColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+                                let layouter = PMLayouter()
+                                layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
+                                layouter.fontSize = common.fontSize
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
-                            */
                             
+                            renderTextStorage.beginEditing()
+                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
                             renderTextStorage.endEditing()
-                            
-                            // Add the subview to the instance's own view and draw
-                            self.renderTextView.needsDisplay = true     // Possibly redundant
-                            self.view.display()                         // Ditto
+                            self.view.display()
                         }
                         
                         // Call the QLPreviewingController indicating no error (nil)
