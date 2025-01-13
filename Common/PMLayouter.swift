@@ -14,7 +14,9 @@ import AppKit
 class PMLayouter: NSLayoutManager {
     
     // The background of KDB lozenges
-    var lozengeColour: NSColor? = nil
+    var lozengeColour: NSColor?     = nil
+    var fontSize: CGFloat           = 13.0
+    
     
     // Override this function to hijack double-line drawing and replace it with
     // a lozenge. We use this for <kdb>...</kdb> tags in PreviewMarkdown.
@@ -37,24 +39,12 @@ class PMLayouter: NSLayoutManager {
             return
         }
         
-        // Calculate the rect we will draw in place of the double underline
-        let firstPosition = location(forGlyphAt: glyphRange.location).x
-        
-        // Watch out for line-spanning
-        let lastPosition: CGFloat
-        if NSMaxRange(glyphRange) < NSMaxRange(lineGlyphRange) {
-            lastPosition = location(forGlyphAt: NSMaxRange(glyphRange)).x
-        } else {
-            lastPosition = lineFragmentUsedRect(forGlyphAt: NSMaxRange(glyphRange) - 1, effectiveRange: nil).size.width
-        }
-
+        // Get the bounding rect of the glyphs themselves and pad left and right
+        // with the pad being font size dependent
         var lozengeRect = lineRect
-        let height = lozengeRect.size.height
-        // Pad with 2.0 pixels either side
-        lozengeRect.origin.x += firstPosition - 2.0
-        lozengeRect.size.width = lastPosition - firstPosition + 4.0
-        lozengeRect.size.height = height
-        lozengeRect = lozengeRect.integral
+        lozengeRect = self.boundingRect(forGlyphRange: glyphRange, in: self.textContainers[0])
+        lozengeRect.origin.x -= (self.fontSize > 18 ? 4.0 : 2.0)
+        lozengeRect.size.width += (self.fontSize > 18 ? 8.0 : 4.0)
         
         // Draw and fill rounded path over lozenge
         let path = NSBezierPath.init(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
@@ -62,7 +52,7 @@ class PMLayouter: NSLayoutManager {
             colour.setFill()
         } else {
             // Default to dark grey CHANGE
-            NSColor.gray.setFill()
+            NSColor.green.setFill()
         }
         
         path.fill()
