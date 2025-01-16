@@ -75,14 +75,19 @@ class AppDelegate:  NSObject,
 
         if self.openDialog!.runModal() == .OK {
             self.currentURL = self.openDialog!.url
-            let possibleError: NSError? = renderContent(self.openDialog!.url)
-            if possibleError != nil {
-                let errorAlert: NSAlert = NSAlert.init(error: possibleError!)
+        } else {
+            self.currentURL = nil
+        }
+
+        self.openDialog!.close()
+        self.openDialog = nil
+        
+        if let openURL = self.currentURL {
+            if let possibleError = renderContent(openURL) {
+                let errorAlert: NSAlert = NSAlert.init(error: possibleError)
                 errorAlert.beginSheetModal(for: self.window)
             }
         }
-
-        self.openDialog = nil
     }
     
     
