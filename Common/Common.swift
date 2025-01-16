@@ -64,12 +64,14 @@ class Common {
 
     // MARK: - Lifecycle Functions
     
-    init(_ isThumbnail: Bool = false) {
-    
+    init?(_ isThumbnail: Bool = false) {
+        
+        self.isThumbnail = isThumbnail
+        
         // Instantiate styler
         self.styler = PMStyler.init()
         guard let styler = self.styler else {
-            return
+            return nil
         }
         
         // Load in the user's preferred values, or set defaults
@@ -115,6 +117,7 @@ class Common {
             font = NSFont.systemFont(ofSize: styler.fontSize)
         }
         
+        // YAML front matter styling attributes
         self.yamlKeyAttributes = [
             .foregroundColor: NSColor.hexToColour(styler.colourValues.code),
             .font: font
@@ -125,13 +128,12 @@ class Common {
             .font: font
         ]
         
-        // NOTE Requires NSTextView to use TextKit 1 for this to work
+        // NOTE This hack for an HR Requires NSTextView to use TextKit 1 for it to work
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                                   .strikethroughColor: NSColor.labelColor])
         
         self.newLine = NSAttributedString.init(string: "\n", attributes: self.yamlValueAttributes)
-        self.isThumbnail = isThumbnail
     }
     
     
@@ -153,10 +155,8 @@ class Common {
         // Look for YAML front matter
         var frontMatter: Substring = ""
         let components: MarkdownComponents = getFrontMatter(rawText)
-        if components.frontMatterStart != nil {
-            if !self.isThumbnail {
-                frontMatter = rawText[components.frontMatterStart!...components.frontMatterEnd!]
-            }
+        if components.frontMatterStart != nil && !self.isThumbnail {
+            frontMatter = rawText[components.frontMatterStart!...components.frontMatterEnd!]
         }
         
         // If we're rendering a thumbnail, count the lines and paragraphcs,
@@ -199,7 +199,7 @@ class Common {
                                                     attributes: self.yamlValueAttributes)
         }
         
-        // Render what we have
+        // Render the Markdown
         if output.length == 0 && self.styler != nil {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
@@ -288,8 +288,7 @@ class Common {
      - Parameters:
         - markdown:     The markdown file content.
 
-     - Returns:
-        A data structure indicating front matter, markdown ranges.
+     - Returns: A data structure indicating front matter, markdown ranges.
      */
     func getFrontMatter(_ rawText: Substring) -> MarkdownComponents {
         
