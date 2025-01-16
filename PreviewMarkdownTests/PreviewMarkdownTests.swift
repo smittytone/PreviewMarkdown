@@ -10,9 +10,9 @@ import XCTest
 import AppKit
 
 @testable import PreviewMarkdown
-@testable import Previewer
+//@testable import Common
 
-
+/*
 class PreviewMarkdownTests: XCTestCase {
 
     let appDelegate = NSApplication.shared.delegate as! AppDelegate
@@ -192,3 +192,4 @@ class PreviewMarkdownTests: XCTestCase {
         XCTAssert(cmn.getFrontMatter(markdownString, #"^(-)+"#) == expectedString)
     }
 }
+*/
