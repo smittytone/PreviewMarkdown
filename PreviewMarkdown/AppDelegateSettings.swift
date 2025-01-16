@@ -150,7 +150,7 @@ extension AppDelegate {
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             }
 
-            // Thumbnail view base font size, stored as a CGFloat, not currently used
+            // Thumbnail view base font size, stored as a CGFloat, NOT CURRENTLY USED
             // Default: 14.0
             let thumbFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             if thumbFontSizeDefault == nil {

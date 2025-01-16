@@ -118,6 +118,5 @@ struct BUFFOON_CONSTANTS {
     
     // FROM 2.0.0
     static let IMG_PLACEHOLDER                  = "missing-img"
-    
-    static let MAX_FEEDBACK_SIZE                = 20
+    static let MAX_FEEDBACK_SIZE                = 512
 }

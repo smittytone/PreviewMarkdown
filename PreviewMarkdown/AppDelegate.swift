@@ -86,20 +86,10 @@ final class AppDelegate: NSObject,
 
     internal var feedbackTask: URLSessionTask? = nil
     internal var whatsNewNav: WKNavigation? = nil
-    
-    //internal var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
-    //internal var doShowLightBackground: Bool = false
-    //internal var doShowFrontMatter: Bool = false
-    //private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-    //private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-    //internal var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
-    //internal var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
-    //internal var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    //private  var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-    //internal var displayColours: [String:String] = [:]
-
+    
+    
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
@@ -111,10 +101,20 @@ final class AppDelegate: NSObject,
     private  var tabManager: PMTabManager = PMTabManager.init()
     internal var hasSentFeedback: Bool = false
     internal var initialLoadDone: Bool = false
-    
     internal let defaultSettings: Settings = Settings()
     internal var currentSettings: Settings = Settings()
-
+    
+    // Version 1.x LEGACY
+    //internal var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+    //internal var doShowLightBackground: Bool = false
+    //internal var doShowFrontMatter: Bool = false
+    //private  var codeColourHex: String = BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+    //private  var headColourHex: String = BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+    //internal var bodyFontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME
+    //internal var codeFontName: String = BUFFOON_CONSTANTS.CODE_FONT_NAME//internal var lineSpacing: CGFloat = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    //private  var linkColourHex: String = BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+    //internal var displayColours: [String:String] = [:]
+    
     
     // MARK: - Class Lifecycle Functions
 
@@ -122,6 +122,8 @@ final class AppDelegate: NSObject,
         
         // FROM 1.4.0
         // Pre-load fonts in a separate thread
+        // NOTE This ultimately calls `loadSettings()` which we delay until after the fonts
+        //      have loaded asynchronously because they reference loaded fonts.
         let dq: DispatchQueue = DispatchQueue.init(label: "com.bps.previewmarkdown.async-queue")
         dq.async {
             self.asyncGetFonts()
@@ -197,6 +199,7 @@ final class AppDelegate: NSObject,
 
     @IBAction private func doClose(_ sender: Any) {
         
+        //FROM 2.0.0
         closeBasics()
         closeSettings()
     }
@@ -204,6 +207,8 @@ final class AppDelegate: NSObject,
     
     /**
      Close sheets and perform other general close-related tasks.
+     
+     FROM 2.0.0
      */
     internal func closeBasics() {
         
@@ -221,6 +226,8 @@ final class AppDelegate: NSObject,
     /**
      Handle a settings-change call to action, if there is one, and either bail (to allow the user
      to save the settings) or move on to the feedback check.
+     
+     FROM 2.0.0
      */
     internal func closeSettings() {
         
@@ -250,6 +257,8 @@ final class AppDelegate: NSObject,
     /**
      Handle a feedback-unsent call to action, if one is needed, and either bail (to all the user
      to send the feedback) or close the main window.
+     
+     FROM 2.0.0
      */
     internal func closeFeedback() {
         
@@ -277,11 +286,10 @@ final class AppDelegate: NSObject,
     
     
     /**
-     
+     Open the websites for contributors, etc.
      */
     @IBAction @objc private func doShowSites(sender: Any) {
         
-        // Open the websites for contributors
         let item: NSMenuItem = sender as! NSMenuItem
         var path: String = BUFFOON_CONSTANTS.URL_MAIN
         
@@ -311,21 +319,26 @@ final class AppDelegate: NSObject,
     }
     
     
+    /**
+     Alternative route to help.
+     
+     FROM 1.5.0
+     */
     @IBAction private func doShowPrefsHelp(sender: Any) {
         
-        // FROM 1.5.0
-        // Alternative route to help
         let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
         NSWorkspace.shared.open(URL.init(string:path)!)
-
+        
     }
-
-
-    @IBAction private func doOpenSysPrefs(sender: Any) {
-
-        // FROM 1.1.0
-        // Open the System Preferences app at the Extensions pane
-        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
+    
+    
+    /**
+     Open the System Preferences app at the Extensions pane.
+     FROM 1.1.0
+     */
+    @IBAction @objc private func doOpenSysPrefs(sender: Any) {
+        
+       NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
     }
     
     
@@ -343,7 +356,7 @@ final class AppDelegate: NSObject,
     }
     
     
-    @objc @IBAction func doShowSettings(sender: Any) {
+    @IBAction private func doShowSettings(sender: Any) {
         
         // FROM 2.0.0
         self.tabManager.programmaticallyClickButton(at: 1)
@@ -360,8 +373,8 @@ final class AppDelegate: NSObject,
     // MARK: - Window Set Up Functions
     
     /**
-     Create and display the information text label. Done programmatically because
-     we're using an NSAttributedString rather than a plain string.
+     Create and display the information text label. This is done programmatically
+     because we're using an NSAttributedString rather than a plain string.
      */
     private func setInfoText() {
         
@@ -376,7 +389,7 @@ final class AppDelegate: NSObject,
             .foregroundColor: NSColor.labelColor
         ]
         
-        let infoText: NSMutableAttributedString = NSMutableAttributedString.init(string: "You need only run this app once, to register its Previewer and Thumbnailer application extensions with macOS.\nYou can then manage these extensions in ", attributes: bodyAtts)
+        let infoText: NSMutableAttributedString = NSMutableAttributedString.init(string: "You need only run this app once, to register its Markdown Previewer and Markdown Thumbnailer application extensions with macOS. You can then manage these extensions in ", attributes: bodyAtts)
         let boldText: NSAttributedString = NSAttributedString.init(string: "System Settings > Extensions > Quick Look", attributes: boldAtts)
         infoText.append(boldText)
         infoText.append(NSAttributedString.init(string: ".\n\nCases where previews cannot be rendered can usually be resolved by logging out of your Mac, logging in again and running this app once more.", attributes: bodyAtts))

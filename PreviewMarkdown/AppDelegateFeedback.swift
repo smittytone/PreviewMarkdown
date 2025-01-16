@@ -98,6 +98,7 @@ extension AppDelegate {
      */
     internal func sendFeedbackError() {
 
+        hidePanelGenerators()
         let alert: NSAlert = showAlert("Feedback Could Not Be Sent",
                                        "Unfortunately, your comments could not be send at this time. Please try again later.")
         

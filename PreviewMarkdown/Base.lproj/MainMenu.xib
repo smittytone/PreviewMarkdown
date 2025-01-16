@@ -119,6 +119,50 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Edit" id="E6T-eh-KPb">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Edit" id="j3p-34-hRz">
+                        <items>
+                            <menuItem title="Undo" keyEquivalent="z" id="atf-s2-VYL">
+                                <connections>
+                                    <action selector="undo:" target="-1" id="lXu-Ap-AYw"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Redo" keyEquivalent="Z" id="irp-lO-TJI">
+                                <connections>
+                                    <action selector="redo:" target="-1" id="8w7-4m-oWX"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="wan-M6-P4y"/>
+                            <menuItem title="Cut" keyEquivalent="x" id="Uch-Rw-TnB">
+                                <connections>
+                                    <action selector="cut:" target="-1" id="85u-I8-C23"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Copy" keyEquivalent="c" id="2XX-5d-LkS">
+                                <connections>
+                                    <action selector="copy:" target="-1" id="5g3-ux-h3M"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Paste" keyEquivalent="v" id="sab-Bn-eWU">
+                                <connections>
+                                    <action selector="paste:" target="-1" id="zwt-bb-7EE"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Delete" id="wEV-lC-3Du">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="delete:" target="-1" id="WvF-Ka-9pZ"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Select All" keyEquivalent="a" id="jgB-Wa-9AW">
+                                <connections>
+                                    <action selector="selectAll:" target="-1" id="ffC-XC-Oux"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="aUF-d1-5bR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
@@ -380,7 +424,7 @@ DQ
                     <constraint firstItem="zKx-i4-faD" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="vUf-bc-gST"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-470" y="-254"/>
+            <point key="canvasLocation" x="-712" y="-479"/>
         </window>
         <window title="Send Feedback" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="Qvu-BL-pGS">
             <windowStyleMask key="styleMask" titled="YES"/>
@@ -786,23 +830,23 @@ Gw
                     <constraint firstAttribute="bottom" secondItem="Kxb-3y-zsN" secondAttribute="bottom" constant="20" symbolic="YES" id="y9e-xW-kqr"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-470" y="267"/>
+            <point key="canvasLocation" x="-712" y="28"/>
         </window>
-        <window title="What's New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="9wj-wl-UO6">
+        <window title="What’s New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="9wj-wl-UO6">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="206" width="760" height="400"/>
+            <rect key="contentRect" x="196" y="206" width="760" height="600"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
-            <value key="minSize" type="size" width="760" height="400"/>
-            <value key="maxSize" type="size" width="760" height="400"/>
-            <value key="minFullScreenContentSize" type="size" width="760" height="400"/>
-            <value key="maxFullScreenContentSize" type="size" width="760" height="400"/>
+            <value key="minSize" type="size" width="760" height="600"/>
+            <value key="maxSize" type="size" width="760" height="600"/>
+            <value key="minFullScreenContentSize" type="size" width="760" height="600"/>
+            <value key="maxFullScreenContentSize" type="size" width="760" height="600"/>
             <view key="contentView" id="vdn-fg-L2O">
-                <rect key="frame" x="0.0" y="0.0" width="760" height="400"/>
+                <rect key="frame" x="0.0" y="0.0" width="760" height="600"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edS-kL-I2r">
-                        <rect key="frame" x="4" y="39" width="752" height="361"/>
+                        <rect key="frame" x="4" y="39" width="752" height="561"/>
                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
@@ -813,7 +857,7 @@ Gw
                     </wkWebView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AQa-FM-Ece">
                         <rect key="frame" x="347" y="3" width="66" height="32"/>
-                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tnq-MK-fJq">
+                        <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tnq-MK-fJq">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                             <string key="keyEquivalent" base64-UTF8="YES">
@@ -839,7 +883,7 @@ DQ
                     <constraint firstItem="edS-kL-I2r" firstAttribute="top" secondItem="vdn-fg-L2O" secondAttribute="top" id="yLx-iS-xyl"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="387" y="245"/>
+            <point key="canvasLocation" x="257" y="376"/>
         </window>
         <window title="PreviewMarkdown 2" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="eiK-Wj-BIF">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
@@ -869,8 +913,8 @@ DQ
                                             </constraints>
                                             <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="left" id="JET-7P-X43">
                                                 <font key="font" metaFont="menu" size="9"/>
-                                                <string key="title">PreviewMarkdown © 2024, Tony Smith. 
-Contains Markdown-It © 2014-24 Vitaly Puzrin, Alex Kocharin; Highlight.js © 2006-24 Josh Goebel and other contributors; YamlSwift © 2015 Behrang Noruzi Niya.</string>
+                                                <string key="title">PreviewMarkdown © 2025, Tony Smith. 
+Contains Markdown-It © 2014-25 Vitaly Puzrin, Alex Kocharin; Highlight.js © 2006-25 Josh Goebel and other contributors; YamlSwift © 2015 Behrang Noruzi Niya.</string>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -1260,13 +1304,10 @@ running this app once more.</string>
                                                 <constraint firstAttribute="width" constant="760" id="J8K-e5-XfY"/>
                                                 <constraint firstAttribute="height" constant="227" id="u3g-HJ-dzO"/>
                                             </constraints>
-                                            <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your comments here..." drawsBackground="YES" id="QdL-zZ-d66">
+                                            <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your comments here..." drawsBackground="YES" allowsEditingTextAttributes="YES" id="QdL-zZ-d66">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <allowedInputSourceLocales>
-                                                    <string>NSAllRomanInputSourcesLocaleIdentifier</string>
-                                                </allowedInputSourceLocales>
                                             </textFieldCell>
                                             <connections>
                                                 <outlet property="delegate" destination="Voe-Tx-rLC" id="0q6-q4-kuY"/>
