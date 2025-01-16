@@ -35,10 +35,10 @@ extension NSColor {
     /**
      Generate a new NSColor from an RGB+A hex string..
 
-     - Parameters:
+     - Parameters
         - hex: The RGB+A hex string, eg.`AABBCCFF`.
 
-     - Returns: An NSColor instance.
+     - Returns An NSColor instance.
      */
     static func hexToColour(_ hex: String) -> NSColor {
         

@@ -1,16 +1,17 @@
-//
-//  PMTabManager.swift
-//  PreviewMarkdown
-//
-//  Created by Tony Smith on 30/09/2024.
-//  Copyright © 2025 Tony Smith. All rights reserved.
-//
+/*
+ *  PMTabManager.swift
+ *  PreviewMarkdown
+ *
+ *  Created by Tony Smith on 30/09/2024.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
+ */
 
 import Foundation
 import AppKit
 
+
 /**
-    Manager class for the NSTabView
+    Manager class for the tabless NSTabView.
  */
 
 class PMTabManager {
@@ -23,11 +24,12 @@ class PMTabManager {
     var currentIndex: Int = 0
     
     
+    // MARK: - Functions
+    
     /**
      Return the most recently clicked button.
      
-     - Returns:
-        The button as an NSButton instance.
+     - Returns The button as an NSButton instance.
      */
     func currentButton() -> NSButton {
         
@@ -67,8 +69,6 @@ class PMTabManager {
                     self.buttons[i].state = .on
                 }
             }
-            
-            
             
             // Perform tab-specific logic BEFORE switching
             // NOTE These closures are set in the app delegate
@@ -110,5 +110,3 @@ class PMTabManager {
         buttonClicked(self.buttons[index])
     }
 }
-
-
