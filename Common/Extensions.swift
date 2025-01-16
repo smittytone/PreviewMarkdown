@@ -13,9 +13,9 @@ import AppKit
 extension Data {
     
     /**
-    Get the encoding of the string formed from data.
+     Get the encoding of the string formed from data.
 
-    - Returns: The string's encoding or nil.
+     - Returns The string's encoding or nil.
     */
     var stringEncoding: String.Encoding? {
         var nss: NSString? = nil
@@ -30,12 +30,13 @@ extension Data {
 
 extension NSMutableAttributedString {
     
-    ///
-    /// Swap the paragraph style in all of the attributes of an NSMutableAttributedString.
-    ///
-    /// - Parameters:
-    /// - paraStyle: The injected NSParagraphStyle.
-    ///
+    /**
+     Swap the paragraph style in all of the attributes of an NSMutableAttributedString
+     with the supplied new paragraph style.
+     
+     - Parameters:
+        - paraStyle: The injected NSParagraphStyle.
+     */
     func addParaStyle(with paraStyle: NSParagraphStyle) {
 
         beginEditing()
@@ -51,12 +52,30 @@ extension NSMutableAttributedString {
 
 extension Scanner {
     
+    /**
+     Look ahead and return the next character in the sequence without
+     altering the current location of the scanner.
+     
+     - Parameters
+        - in: The string being scanned.
+     
+     - Returns The next character as a string.
+     */
     func getNextCharacter(in outer: String) -> String {
         
         let string: NSString = self.string as NSString
         let idx: Int = self.currentIndex.utf16Offset(in: outer)
         let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
         return nextChar
+    }
+    
+    
+    func skipNextCharacter() {
+        
+        /**
+         Step over the next character.
+         */
+        self.currentIndex = self.string.index(after: self.currentIndex)
     }
 }
 
@@ -66,11 +85,10 @@ extension CGFloat {
     /**
      Determine if the instance is near enough the specified value as makes no odds.
      
-     - Parameters:
+     - Parameters
         - value: The float value we're comparing the instance to.
      
-     - Returns:
-        `true` if the values are proximate, otherwise `false`.
+     - Returns `true` if the values are proximate, otherwise `false`.
      */
     func isClose(to value: CGFloat) -> Bool {
 
@@ -91,6 +109,12 @@ extension CGFloat {
 
 extension NSColor {
     
+    /**
+     Class function to return an NSColor object that matches the colour supplied as a RGBA hex value.
+     
+     - Paramaters:
+        - colourValue: The colour as a hex string `RRGGBBAA`, eg `FF00AA88`.
+     */
     static func colourFromHexString(_ colourValue: String) -> NSColor {
         
         var colourString: String = colourValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)

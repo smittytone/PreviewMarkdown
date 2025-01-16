@@ -57,7 +57,12 @@ class PreviewViewController: NSViewController,
                 // Convert the data to a string
                 if let markdownString: String = String.init(data: data, encoding: encoding) {
                     // Instantiate the common code
-                    let common: Common = Common.init()
+                    guard let common: Common = Common.init() else {
+                        reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+                        showError(reportError!)
+                        handler(reportError)
+                        return
+                    }
                     
                     // FROM 2.0.0
                     // Pass on the initial width of the preview
@@ -76,20 +81,17 @@ class PreviewViewController: NSViewController,
                     self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
                     
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
-                        
-                        safeMainSync {
-                            if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
-                                let layouter = PMLayouter()
-                                layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
-                                layouter.fontSize = common.fontSize
-                                renderTextContainer.replaceLayoutManager(layouter)
-                            }
-                            
-                            renderTextStorage.beginEditing()
-                            renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
-                            renderTextStorage.endEditing()
-                            self.view.display()
+                        if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
+                            let layouter = PMLayouter()
+                            layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
+                            layouter.fontSize = common.fontSize
+                            renderTextContainer.replaceLayoutManager(layouter)
                         }
+                        
+                        renderTextStorage.beginEditing()
+                        renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
+                        renderTextStorage.endEditing()
+                        self.view.display()
                         
                         // Call the QLPreviewingController indicating no error (nil)
                         handler(nil)

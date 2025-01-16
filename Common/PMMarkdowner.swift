@@ -26,7 +26,7 @@ public class PMMarkdowner {
      
         - Returns `nil` on failure to load, evaluate or configure `markdownit.js`.
     */
-    public init?() {
+    init?() {
         
         // Get the file's bundle based on how it's
         // being included in the host app
@@ -59,7 +59,7 @@ public class PMMarkdowner {
         Tokenise the supplied markdown-formatted document.
     
         - Parameters
-            - markdown - The markdown string to convert.
+            - markdown - The markdown to convert.
      
      - Returns A string of tokenised data.
     */

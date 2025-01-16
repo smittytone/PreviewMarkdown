@@ -24,6 +24,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         case badFileUnsupportedFile(String)
         case badGfxBitmap
         case badGfxDraw
+        case appComponentMissing
     }
 
 
@@ -54,7 +55,10 @@ class ThumbnailProvider: QLThumbnailProvider {
                 }
 
                 // Instantiate the common code for a thumbnail ('true')
-                let common: Common = Common.init(true)
+                guard let common: Common = Common.init(true) else {
+                    handler(nil, ThumbnailerError.appComponentMissing)
+                    return
+                }
 
                 // Set the primary NSTextView drawing frame and a base font size
                 let markdownFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
@@ -78,27 +82,24 @@ class ThumbnailProvider: QLThumbnailProvider {
                 markdownTextField.cacheDisplay(in: markdownFrame, to: bodyImageRep)
 
                 if let image: CGImage = bodyImageRep.cgImage {
-                    if let cgImage: CGImage = image.copy() {
-                        // Set the thumbnail frame
-                        let thumbnailFrame: CGRect = NSMakeRect(0.0,
-                                                                0.0,
-                                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
-                                                                request.maximumSize.height)
-                        
-                        // NOTE The `+2.0` is a hack to avoid a line above the image
-                        let scaleFrame: CGRect = NSMakeRect(0.0,
+                    let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                             0.0,
-                                                            thumbnailFrame.width * request.scale,
-                                                            (thumbnailFrame.height * request.scale) + 2.0)
+                                                            CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
+                                                            request.maximumSize.height)
+                    
+                    // NOTE The `+2.0` is a hack to avoid a line above the image
+                    let scaleFrame: CGRect = NSMakeRect(0.0,
+                                                        0.0,
+                                                        thumbnailFrame.width * request.scale,
+                                                        (thumbnailFrame.height * request.scale) + 2.0)
 
-                        // Pass a QLThumbnailReply and no error to the supplied handler
-                        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
-                            // `scaleFrame` and `cgImage` are immutable
-                            context.draw(cgImage, in: scaleFrame, byTiling: false)
-                            return true
-                        }, nil)
-                        return
-                    }
+                    // Pass a QLThumbnailReply and no error to the supplied handler
+                    handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
+                        // `scaleFrame` and `cgImage` are immutable
+                        context.draw(image, in: scaleFrame, byTiling: false)
+                        return true
+                    }, nil)
+                    return
                 }
 
                 handler(nil, ThumbnailerError.badGfxDraw)
