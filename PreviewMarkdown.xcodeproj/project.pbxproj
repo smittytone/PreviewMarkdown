@@ -74,6 +74,15 @@
 		3BBAEA44236ADF11009BAA05 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEA2C236ADECB009BAA05 /* Quartz.framework */; };
 		3BBAEA47236ADF11009BAA05 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3BBAEA4C236ADF11009BAA05 /* Markdown Thumbnailer.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3BBAEA41236ADF11009BAA05 /* Markdown Thumbnailer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3BC7DDAB2D390C0B0066B644 /* PreviewMarkdown2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC7DDAA2D390C0B0066B644 /* PreviewMarkdown2Tests.swift */; };
+		3BC7DDAC2D390C820066B644 /* PMStyler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE13A2D2EDE48009D0C34 /* PMStyler.swift */; };
+		3BC7DDAD2D390C870066B644 /* PMMarkdowner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1392D2EDE48009D0C34 /* PMMarkdowner.swift */; };
+		3BC7DDAE2D390DC70066B644 /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
+		3BC7DDAF2D390DDF0066B644 /* PMFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5CAA03268F4B2300A2DED1 /* PMFont.swift */; };
+		3BC7DDB02D390E1E0066B644 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1352D2EDE48009D0C34 /* Extensions.swift */; };
+		3BC7DDB12D390E2A0066B644 /* HTMLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1362D2EDE48009D0C34 /* HTMLUtils.swift */; };
+		3BC7DDB22D390E640066B644 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
+		3BC7DDB32D390E780066B644 /* PMLayouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1382D2EDE48009D0C34 /* PMLayouter.swift */; };
 		3BC8325F2CB96BF50098F076 /* NSApplicationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8325E2CB96BF50098F076 /* NSApplicationExtensions.swift */; };
 		3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */; };
 		3BD56C312AF02E0600772A82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BD56C302AF02E0600772A82 /* Assets.xcassets */; };
@@ -173,6 +182,7 @@
 		3BBAEA48236ADF11009BAA05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3BBAEA49236ADF11009BAA05 /* Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3BC7DDAA2D390C0B0066B644 /* PreviewMarkdown2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdown2Tests.swift; sourceTree = "<group>"; };
 		3BC8325E2CB96BF50098F076 /* NSApplicationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSApplicationExtensions.swift; sourceTree = "<group>"; };
 		3BD56C2C2AF02E0500772A82 /* RenderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RenderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BD56C2E2AF02E0500772A82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */,
+				3BC7DDAA2D390C0B0066B644 /* PreviewMarkdown2Tests.swift */,
 				3B7D308A251504A900A37F96 /* Info.plist */,
 			);
 			path = PreviewMarkdownTests;
@@ -551,6 +562,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BC7DDB22D390E640066B644 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,11 +617,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B33BEEC2898FDA20038AE9D /* NSColorExtensions.swift in Sources */,
+				3BC7DDB32D390E780066B644 /* PMLayouter.swift in Sources */,
+				3BC7DDB12D390E2A0066B644 /* HTMLUtils.swift in Sources */,
+				3BC7DDAC2D390C820066B644 /* PMStyler.swift in Sources */,
 				3B7D30A02515077300A37F96 /* Constants.swift in Sources */,
+				3BC7DDAF2D390DDF0066B644 /* PMFont.swift in Sources */,
 				3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */,
 				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,
 				3BBAE14A2D2EDE48009D0C34 /* Common.swift in Sources */,
+				3BC7DDB02D390E1E0066B644 /* Extensions.swift in Sources */,
+				3BC7DDAE2D390DC70066B644 /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3BC7DDAD2D390C870066B644 /* PMMarkdowner.swift in Sources */,
 				3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */,
+				3BC7DDAB2D390C0B0066B644 /* PreviewMarkdown2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
