@@ -1,13 +1,13 @@
-//
-//  AppDelegateFeedback.swift
-//  PreviewMarkdown
-//  Extension for AppDelegate providing feedback handling functionality.
-//
-//  Created by Tony Smith on 08/10/2024.
-//  Copyright © 2025 Tony Smith. All rights reserved.
-//
+/*
+ *  AppDelegateFeedback.swift
+ *  PreviewMarkdown
+ *  Extension for AppDelegate providing feedback handling functionality.
+ *
+ *  Created by Tony Smith on 08/10/2024.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
+ */
 
-import Foundation
+
 import AppKit
 
 
@@ -58,7 +58,9 @@ extension AppDelegate {
      The user clicked the Feedback > Send button, so get the message (if there is one)
      from the text field and send it off.
      */
-    @IBAction @objc private func doSendFeedback(sender: Any) {
+    @IBAction
+    @objc
+    private func doSendFeedback(sender: Any) {
 
         let feedback: String = self.feedbackText.stringValue
 

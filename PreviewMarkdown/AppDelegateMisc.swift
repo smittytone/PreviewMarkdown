@@ -1,17 +1,16 @@
-//
-//  AppDelegateMisc.swift
-//  PreviewMarkdown
-//  Extension for AppDelegate providing functionality used across PreviewApps.
-//
-//  These functions can be used by all PreviewApps
-//
-//  Created by Tony Smith on 18/06/20214.
-//  Copyright © 2025 Tony Smith. All rights reserved.
-//
+/*
+ *  AppDelegateMisc.swift
+ *  PreviewMarkdown
+ *  Extension for AppDelegate providing functionality used across PreviewApps.
+ *
+ *  These functions can be used by all PreviewApps
+ *
+ *  Created by Tony Smith on 18/06/20214.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
+ */
 
 
-import Foundation
-import Cocoa
+import AppKit
 import WebKit
 import UniformTypeIdentifiers
 
@@ -33,25 +32,25 @@ extension AppDelegate {
      - Returns: `true` if the operation was successful, otherwise `false`.
      */
     internal func runProcess(app path: String, with args: [String]) -> Bool {
-
+        
         let task: Process = Process()
         task.executableURL = URL.init(fileURLWithPath: path)
         task.arguments = args
-
+        
         // Pipe out the output to avoid putting it in the log
         let outputPipe = Pipe()
         task.standardOutput = outputPipe
         task.standardError = outputPipe
-
+        
         do {
             try task.run()
         } catch {
             return false
         }
-
+        
         // Block until the task has completed (short tasks ONLY)
         task.waitUntilExit()
-
+        
         if !task.isRunning {
             if (task.terminationStatus != 0) {
                 // Command failed -- collect the output if there is any
@@ -60,7 +59,7 @@ extension AppDelegate {
                 if let line = String(data: outputHandle.availableData, encoding: String.Encoding.utf8) {
                     outString = line
                 }
-
+                
                 if outString.count > 0 {
                     print("\(outString)")
                 } else {
@@ -69,7 +68,7 @@ extension AppDelegate {
                 return false
             }
         }
-
+        
         return true
     }
     
@@ -123,7 +122,7 @@ extension AppDelegate {
         }
     }
 
-    
+
     // MARK: - Alert Handler Functions
 
     /**
@@ -137,7 +136,7 @@ extension AppDelegate {
      - Returns:     The NSAlert.
      */
     internal func showAlert(_ head: String, _ message: String, _ addOkButton: Bool = true) -> NSAlert {
-
+        
         let alert: NSAlert = NSAlert()
         alert.messageText = head
         alert.informativeText = message
@@ -154,7 +153,7 @@ extension AppDelegate {
      - Returns: The version string.
      */
     internal func getVersion() -> String {
-
+        
         let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         let parts: [String] = (version as NSString).components(separatedBy: ".")
         return parts[0] + "-" + parts[1]
@@ -272,14 +271,12 @@ extension AppDelegate {
         
         return true
     }
-    
-    
 
-    
+
     // MARK: - URLSession Delegate Functions
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-
+        
         // Some sort of connection error - report it
         self.connectionProgress.stopAnimation(self)
         sendFeedbackError()
@@ -287,7 +284,7 @@ extension AppDelegate {
 
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-
+        
         // The operation to send the comment completed
         self.connectionProgress.stopAnimation(self)
         if let _ = error {
@@ -313,10 +310,10 @@ extension AppDelegate {
     // MARK: - WKWebNavigation Delegate Functions
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
+        
         // Asynchronously show the sheet once the HTML has loaded
         // (triggered by delegate method)
-
+        
         if let nav = self.whatsNewNav {
             if nav == navigation {
                 // Display the sheet

@@ -1,13 +1,13 @@
-//
-//  AppDelegateWhatsNew.swift
-//  PreviewMarkdown
-//  Extension for AppDelegate providing What's New sheet functionality.
-//
-//  Created by Tony Smith on 10/10/2024.
-//  Copyright © 2025 Tony Smith. All rights reserved.
-//
+/*
+ *  AppDelegateWhatsNew.swift
+ *  PreviewMarkdown
+ *  Extension for AppDelegate providing What's New sheet functionality.
+ *
+ *  Created by Tony Smith on 10/10/2024.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
+ */
 
-import Foundation
+
 import AppKit
 
 
@@ -25,8 +25,9 @@ extension AppDelegate {
      - Parameters:
         - sender: The source of the action.
      */
-    @IBAction internal func doShowWhatsNew(_ sender: Any) {
-
+    @IBAction
+    internal func doShowWhatsNew(_ sender: Any) {
+        
         // See if we're coming from a menu click (sender != self) or
         // directly in code from 'appDidFinishLoading()' (sender == self)
         var doShowSheet: Bool = type(of: self) != type(of: sender)
@@ -49,13 +50,13 @@ extension AppDelegate {
             
             // First, get the folder path
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
-
+            
             // Set WebView properties: limit scrollers and elasticity
             self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
             self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
             self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
             self.whatsNewWebView.configuration.suppressesIncrementalRendering = true
-
+            
             // Just in case, make sure we can load the file
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
                 let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
@@ -72,20 +73,20 @@ extension AppDelegate {
      
      FROM 1.2.0
      */
-    @IBAction private func doCloseWhatsNew(_ sender: Any) {
-
+    @IBAction
+    private func doCloseWhatsNew(_ sender: Any) {
+        
         // Close the sheet
         self.window.endSheet(self.whatsNewWindow)
         
         // Scroll the web view back to the top
         self.whatsNewWebView.evaluateJavaScript("window.scrollTo(0,0)", completionHandler: nil)
-
+        
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             defaults.setValue(false, forKey: key)
-
-#if DEBUG
+#if DEBUG2
             print("\(key) reset back to true")
             defaults.setValue(true, forKey: key)
 #endif

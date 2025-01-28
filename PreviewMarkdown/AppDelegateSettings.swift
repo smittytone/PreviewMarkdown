@@ -1,18 +1,17 @@
-//
-//  AppDelegateSettings.swift
-//  PreviewMarkdown
-//  Extension for AppDelegate providing settings handling functionality.
-//
-//  Created by Tony Smith on 07/10/2024.
-//  Copyright © 2025 Tony Smith. All rights reserved.
-//
+/*
+ *  AppDelegateSettings.swift
+ *  PreviewMarkdown
+ *  Extension for AppDelegate providing settings handling functionality.
+ *
+ *  Created by Tony Smith on 07/10/2024.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
+ */
 
-import Foundation
+
 import AppKit
 
 
 extension AppDelegate {
-    
     
     // MARK: - User Action Functions
     
@@ -24,7 +23,8 @@ extension AppDelegate {
      - Parameters:
         - sender: The source of the action.
       */
-     @IBAction internal func doMoveSlider(sender: Any) {
+    @IBAction
+    internal func doMoveSlider(sender: Any) {
 
          let index: Int = Int(self.fontSizeSlider.floatValue)
          self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
@@ -39,7 +39,8 @@ extension AppDelegate {
       - Parameters:
         - sender: The source of the action.
      */
-    @IBAction internal func doUpdateFonts(sender: Any) {
+    @IBAction
+    internal func doUpdateFonts(sender: Any) {
 
         let item: NSPopUpButton = sender as! NSPopUpButton
         setStylePopup(item == self.bodyFontPopup)
@@ -55,7 +56,9 @@ extension AppDelegate {
      - Parameters:
         - sender: The source of the action.
      */
-    @objc @IBAction internal func colourSelected(sender: Any) {
+    @IBAction
+    @objc
+    internal func colourSelected(sender: Any) {
 
         let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
@@ -72,7 +75,8 @@ extension AppDelegate {
      - Parameters:
         - sender: The source of the action.
      */
-    @IBAction internal func doChooseColourType(sender: Any) {
+    @IBAction
+    internal func doChooseColourType(sender: Any) {
 
         let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = keys[self.colourSelectionPopup.indexOfSelectedItem]
@@ -102,7 +106,8 @@ extension AppDelegate {
      - Parameters:
         - sender: The source of the action.
      */
-     @IBAction internal func doApplyCurrentSettings(sender: Any) {
+    @IBAction
+    internal func doApplyCurrentSettings(sender: Any) {
          
          // First, make sure changes have been made
          if checkSettingsOnQuit() {
@@ -110,7 +115,7 @@ extension AppDelegate {
              // NOTE This call updates the current settings values from the Settings tab UI.
              saveSettings()
          }
-     }
+    }
 
 
      /**
@@ -123,7 +128,8 @@ extension AppDelegate {
       - Parameters:
          - sender: The source of the action.     
       */
-     @IBAction internal func doApplyDefaultSettings(sender: Any) {
+    @IBAction
+    internal func doApplyDefaultSettings(sender: Any) {
          
          displaySettings(self.defaultSettings)
      }
@@ -144,24 +150,21 @@ extension AppDelegate {
             // Check if each preference value exists -- set if it doesn't
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
-            let bodyFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
-            if bodyFontSizeDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE) == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE),
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             }
 
             // Thumbnail view base font size, stored as a CGFloat, NOT CURRENTLY USED
             // Default: 14.0
-            let thumbFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
-            if thumbFontSizeDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE) == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE),
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             }
             
             // Use light background even in dark mode, stored as a bool
             // Default: false
-            let useLightDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            if useLightDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT) == nil {
                 defaults.setValue(false,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
@@ -173,70 +176,61 @@ extension AppDelegate {
             // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
             // should be shown this run
             let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
-            let showNewDefault: Any? = defaults.object(forKey: key)
-            if showNewDefault == nil {
+            if defaults.object(forKey: key) == nil {
                 defaults.setValue(true, forKey: key)
             }
             
             // FROM 1.3.0
             // Show any YAML front matter, if present
             // Default: true
-            let showFrontMatterDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
-            if showFrontMatterDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML) == nil {
                 defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             }
             
             // FROM 1.4.0
             // Colour of links in the preview, stored as hex string
-            let linkColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
-            if linkColourDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of code blocks in the preview, stored as hex string
-            let codeColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
-            if codeColourDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of headings in the preview, stored as hex string
-            let headColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
-            if headColourDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             }
             
             // FROM 1.4.0
             // Font for body test in the preview, stored as a PostScript name
-            let bodyFontDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
-            if bodyFontDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
             }
 
             // FROM 1.4.0
             // Font for code blocks in the preview, stored as a PostScript name
-            let codeFontDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
-            if codeFontDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
             }
             
             // FROM 1.5.0
             // Store the preview line spacing value
-            let lineSpacingDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
-            if lineSpacingDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
 
             // The blockquote colour, stored as hex string
-            let quoteColourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
-            if quoteColourDefault == nil {
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
