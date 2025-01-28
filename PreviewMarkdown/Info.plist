@@ -32,6 +32,34 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSServices</key>
+	<array>
+		<dict>
+			<key>NSPortName</key>
+			<string>PreviewMarkdown</string>
+			<key>NSReturnTypes</key>
+			<array>
+				<string>public.plain-text</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>NSSendTypes</key>
+			<array>
+				<string>NSStringPboardType</string>
+				<string>public.plain-text</string>
+			</array>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Convert Markdown Text to HTML</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>convertToHtml</string>
+			<key>NSRestricted</key>
+			<false/>
+			<key>NSRequiredContext</key>
+			<dict/>
+		</dict>
+	</array>
 	<key>NSSupportsAutomaticTermination</key>
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
