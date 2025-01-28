@@ -174,6 +174,11 @@ final class AppDelegate: NSObject,
         //      It must happen after we've got a list of fonts
         initialiseFeedback()
         
+        // FROM 2.0.0
+        // Register our Markdown to HTML service
+        NSApplication.shared.servicesProvider = HTMLServiceProvider()
+        NSUpdateDynamicServices()
+        
         // FROM 1.2.0
         // Show 'What's New' if we need to
         // (and set up the WKWebBiew: no elasticity, horizontal scroller)
