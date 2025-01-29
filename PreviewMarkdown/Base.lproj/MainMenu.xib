@@ -1299,10 +1299,10 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbe-TC-ye0">
-                                            <rect key="frame" x="20" y="63" width="760" height="227"/>
+                                            <rect key="frame" x="20" y="63" width="760" height="235"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="760" id="J8K-e5-XfY"/>
-                                                <constraint firstAttribute="height" constant="227" id="u3g-HJ-dzO"/>
+                                                <constraint firstAttribute="height" constant="235" id="u3g-HJ-dzO"/>
                                             </constraints>
                                             <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your comments here..." drawsBackground="YES" allowsEditingTextAttributes="YES" id="QdL-zZ-d66">
                                                 <font key="font" metaFont="system"/>
@@ -1369,7 +1369,7 @@ running this app once more.</string>
                                         <constraint firstItem="hbe-TC-ye0" firstAttribute="leading" secondItem="tf1-sZ-Jm1" secondAttribute="leading" constant="20" symbolic="YES" id="by2-yx-uK1"/>
                                         <constraint firstItem="X9d-Ne-g1h" firstAttribute="leading" secondItem="G2a-Vc-UAR" secondAttribute="leading" id="cDc-A5-SJT"/>
                                         <constraint firstItem="G2a-Vc-UAR" firstAttribute="top" secondItem="tf1-sZ-Jm1" secondAttribute="top" id="dC0-mM-pE7"/>
-                                        <constraint firstItem="hbe-TC-ye0" firstAttribute="top" secondItem="G2a-Vc-UAR" secondAttribute="bottom" constant="8" id="edo-70-wAh"/>
+                                        <constraint firstItem="hbe-TC-ye0" firstAttribute="top" secondItem="G2a-Vc-UAR" secondAttribute="bottom" id="edo-70-wAh"/>
                                         <constraint firstAttribute="trailing" secondItem="G2a-Vc-UAR" secondAttribute="trailing" constant="20" id="fTJ-vp-v6t"/>
                                         <constraint firstAttribute="trailing" secondItem="zVb-Qo-WXM" secondAttribute="trailing" constant="20" id="rUU-3A-kk3"/>
                                         <constraint firstItem="GpQ-VE-CQL" firstAttribute="centerY" secondItem="zVb-Qo-WXM" secondAttribute="centerY" id="sXo-pS-bJh"/>

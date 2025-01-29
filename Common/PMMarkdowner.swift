@@ -6,8 +6,6 @@
  *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
-
-import Foundation
 import JavaScriptCore
 import AppKit
 

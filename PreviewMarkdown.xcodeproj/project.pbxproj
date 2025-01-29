@@ -16,6 +16,9 @@
 		3B218E342637FA3B0024446B /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B218E332637FA3B0024446B /* Yaml */; };
 		3B33BEEC2898FDA20038AE9D /* NSColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B71BD44267F504E005F7FFC /* NSColorExtensions.swift */; };
 		3B33BEEE2898FDF90038AE9D /* Yaml in Frameworks */ = {isa = PBXBuildFile; productRef = 3B33BEED2898FDF90038AE9D /* Yaml */; };
+		3B363F482D48F63100F0982F /* PMServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B363F432D48F63100F0982F /* PMServices.swift */; };
+		3B363F492D48F7EC00F0982F /* PMMarkdowner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1392D2EDE48009D0C34 /* PMMarkdowner.swift */; };
+		3B3C2ADF2D490CC2000D0C92 /* markdown-it.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 3BBAE1372D2EDE48009D0C34 /* markdown-it.min.js */; };
 		3B3E7C662CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E7C652CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift */; };
 		3B4F82102C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
 		3B4F82112C8C1C8C00679446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B4F820F2C8C1C8C00679446 /* Assets.xcassets */; };
@@ -143,6 +146,7 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B363F432D48F63100F0982F /* PMServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMServices.swift; sourceTree = "<group>"; };
 		3B3E7C652CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateWhatsNew.swift; sourceTree = "<group>"; };
 		3B4F820F2C8C1C8C00679446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Previewer/Assets.xcassets"; sourceTree = "<group>"; };
 		3B5CAA03268F4B2300A2DED1 /* PMFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMFont.swift; sourceTree = "<group>"; };
@@ -323,6 +327,7 @@
 				3BAE671628D4D09B001532BD /* AppDelegateFontHandling.swift */,
 				3B71BD42267F4B98005F7FFC /* AppDelegateMisc.swift */,
 				3B0201842CAAD0F1003C1705 /* PMTabManager.swift */,
+				3B363F432D48F63100F0982F /* PMServices.swift */,
 				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
 				3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */,
 				3B71BD44267F504E005F7FFC /* NSColorExtensions.swift */,
@@ -572,6 +577,7 @@
 			files = (
 				3BEAC5B92AA39EF200958FFC /* new in Resources */,
 				3BBAEA1E236ADEB3009BAA05 /* MainMenu.xib in Resources */,
+				3B3C2ADF2D490CC2000D0C92 /* markdown-it.min.js in Resources */,
 				3B170B8625B2E62600F14FDD /* sample.md in Resources */,
 				3BEAC5B72AA39ED700958FFC /* Assets.xcassets in Resources */,
 			);
@@ -641,6 +647,7 @@
 				3B3E7C662CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift in Sources */,
 				3BAE671728D4D09B001532BD /* AppDelegateFontHandling.swift in Sources */,
 				3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3B363F492D48F7EC00F0982F /* PMMarkdowner.swift in Sources */,
 				3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */,
 				3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */,
 				3B71BD45267F504E005F7FFC /* NSColorExtensions.swift in Sources */,
@@ -649,6 +656,7 @@
 				3BC8325F2CB96BF50098F076 /* NSApplicationExtensions.swift in Sources */,
 				3B71BD43267F4B98005F7FFC /* AppDelegateMisc.swift in Sources */,
 				3BB40F6F2CB56DA5004CBF74 /* PMSettings.swift in Sources */,
+				3B363F482D48F63100F0982F /* PMServices.swift in Sources */,
 				3B0201852CAAD0F1003C1705 /* PMTabManager.swift in Sources */,
 				3BB40F6D2CB5687E004CBF74 /* AppDelegateFeedback.swift in Sources */,
 			);

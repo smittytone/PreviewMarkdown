@@ -77,7 +77,7 @@ class PMStyler {
     // MARK: - Private properties with defaults
     
     private var isThumbnail: Bool                                       = false
-    private var tokenString: String                                     = ""
+    internal var tokenString: String                                     = ""
     private var outputString: String                                    = ""
     private var currentLink: String                                     = ""
     private var currentImagePath: String                                = ""
@@ -123,7 +123,6 @@ class PMStyler {
     
     private var blockAttStr: NSMutableAttributedString?                 = nil
     private var blockTable: NSTextTable?                                = nil
-
 
     // MARK: - Rendering Functions
     
@@ -203,7 +202,7 @@ class PMStyler {
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
         
-#if DEBUG
+#if DEBUG2
         let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
@@ -218,7 +217,8 @@ class PMStyler {
             // Have we got content (ie. text between tags or right at the start) to style? Do so now.
             if var content = scanned, !content.isEmpty {
 #if DEBUG
-                NSLog("[CONTENT] \((content == self.newLineSymbol) ? "\\n" : content)")
+                let printContent = content.replacingOccurrences(of: self.newLineSymbol, with: "[NL]")
+                NSLog("[CONTENT] \(printContent) (\(content.count))")
 #endif
                 // Flag for nested paragraphs LI detection
                 var itemListNestFound: Bool = false
@@ -233,6 +233,7 @@ class PMStyler {
                         content = ""
                         itemListNestFound = true
                     } else {
+                        // Text immediately following the LI - it's a single-line item.
                         isListItem = false
                         if listTypes[insetLevel] == .bullet {
                             // Add a standard bullet. We set six types and we cycle around
@@ -293,7 +294,7 @@ class PMStyler {
                 if isBlockquote {
                     // Just make a block cell for the current inset.
                     // The whole block will be rendered at the final </block>
-                    makeBlockquoteParagraphCell(blockLevel, content)
+                    makeBlockquoteParagraph(blockLevel, content)
                     content = ""
                 }
                 
@@ -343,7 +344,7 @@ class PMStyler {
             }
             
             // Reached a token delimiter: step over it
-            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+            scanner.skipNextCharacter()
 
             // Get the first character of the tag
             let nextChar: String = scanner.getNextCharacter(in: self.tokenString)
@@ -351,7 +352,7 @@ class PMStyler {
             // MARK: Closing Token
             if nextChar == "/" {
                 // Found a close tag, so step over the `/`
-                scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                scanner.skipNextCharacter()
 
                 // Get the remainder of the tag up to the delimiter
                 if let closeToken: String = scanner.scanUpToString(self.htmlTagEnd) {
@@ -365,7 +366,7 @@ class PMStyler {
                     var doSkipNewLine: Bool = false
                     
                     // Should be convert the end-of-line LF to LB?
-                    //let doReplaceNewLine: Bool = false
+                    var doReplaceNewLine: Bool = false
                     
                     // Process the closing token by type
                     switch(closeToken) {
@@ -400,6 +401,9 @@ class PMStyler {
                             // Remove LFs on nested solitary </LI> tags
                             if previousToken != "li" {
                                 doSkipNewLine = true
+                            } else {
+                                doReplaceNewLine = true
+                                previousToken = ""
                             }
                         /* Blocks */
                         case "blockquote":
@@ -467,11 +471,11 @@ class PMStyler {
                     }
 
                     // Step over the token delimiter
-                    scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                    scanner.skipNextCharacter()
                     
                     if doSkipNewLine {
                         // Step over the tailing LF
-                        scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                        scanner.skipNextCharacter()
                     }
                     
                     // Pop the last style
@@ -543,10 +547,11 @@ class PMStyler {
                         
                         // Step over the tag's delimiter
                         // TO-DO Check this works with pre-styled tables
-                        scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                        scanner.skipNextCharacter()
                         
                         // Get the table content and style it: set it up with a coloured border around table and cells
-                        self.currentTable = "<table width=\"100%\" style=\"border: 2px solid #\(self.colourValues.head);border-collapse: collapse;\">"
+                        //self.currentTable = "<table width=\"100%\" style=\"border: 2px solid #\(self.colourValues.head);border-collapse: collapse;\">"
+                        self.currentTable = "<table width=\"100%\" style=\"border-collapse:collapse;\">"
                         
                         // Scan up to the closing </table> tag and add the closing tag manually to the table text.
                         // NOTE Table will be rendered when the scanner code process the closing tag
@@ -559,10 +564,20 @@ class PMStyler {
                         
                         // Set the style for all the table cells, including header cells, retaining any existing
                         // styling (typically `text-align`)
-                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th style=\"", with: "<th style=\"border: 2px solid #\(self.colourValues.head);padding: 12px;")
-                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th>", with: "<th style=\"border: 2px solid #\(self.colourValues.head);padding: 12px;\">")
-                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td style=\"", with: "<td style=\"border: 2px solid #\(self.colourValues.head);padding: 12px;")
-                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td>", with: "<td style=\"border: 2px solid #\(self.colourValues.head);padding: 12px;\">")
+                        
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th style=\"", with: "<th style=\"border:0.5px solid #444444;padding:12px;")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th>", with: "<th style=\"border:0.5px solid #444444;padding:12px;\">")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td style=\"", with: "<td style=\"border:0.5px solid #444444;padding:12px;")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td>", with: "<td style=\"border:0.5px solid #444444;padding:12px;\">")
+                        
+                        /*
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th style=\"", with: "<th style=\"padding:12px;")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<th>", with: "<th style=\"padding:12px;\">")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td style=\"", with: "<td style=\"padding:12px;")
+                        self.currentTable = self.currentTable.replacingOccurrences(of: "<td>", with: "<td style=\"padding:12px;\">")
+                         */
+                        // Remove weird space char inserted by MarkdownIt in place of &nbsp;
+                        self.currentTable = self.currentTable.replacingOccurrences(of: " ", with: " ")
                         
                         // Move the scanner back to face the final </table> so we can trap it
                         // as a closing tag and process the formatted table we've just made
@@ -688,7 +703,7 @@ class PMStyler {
                     }
                     
                     // Step over the token's delimiter
-                    scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                    scanner.skipNextCharacter()
                     
                     // Check for use of <br> within a paragraph, not at the end of a line.
                     // If we find one, add an LB as there's no LF to replace
@@ -700,7 +715,7 @@ class PMStyler {
                     // If required, remove the LF at the end of the line (ie. right after the tag)
                     // This will be for OL, UL, BLOCKQUOTE, PRE+CODE, HR, BR, LI+P
                     if doSkipNewLine {
-                        scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+                        scanner.skipNextCharacter()
                     }
                     
                     // If required, replace the LF at the end of the line with an LB.
@@ -743,32 +758,7 @@ class PMStyler {
     }
     
     
-    /**
-        Convert all the occurences of `[ ]` and `[x]` in the specified
-        string into emoji symbols.
-     */
-    internal func processCheckboxes() {
-
-        // Hack to present checkboxes a la GitHub
-        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
-        let symbols: [String] = ["❎", "✅"]
-
-        var i = 0
-        for pattern in patterns {
-            var range = self.tokenString.range(of: pattern, options: .regularExpression)
-
-            while range != nil {
-                // Swap out the HTML symbol code for the actual symbol
-                self.tokenString = self.tokenString.replacingCharacters(in: range!, with: symbols[i])
-
-                // Get the next occurence of the pattern ready for the 'while...' check
-                range = self.tokenString.range(of: pattern, options: .regularExpression)
-            }
-
-            i += 1
-        }
-    }
-    
+    // MARK: - Value Extraction Functions
     
     /**
         Get a URL or path embedded in an A HREF tag.
@@ -831,37 +821,39 @@ class PMStyler {
     }
     
     
+    // MARK: - Paragraph Generation Functions
+    
     /**
-        Prepare a paragraph inset to the requested depth.
+     Prepare a paragraph inset to the requested depth.
      
-        - Parameters
-            - inset:      The indentation factor. This is multiplied by 40 points.
-            - headInset:  Any offset to apply to the whole para other than line 1. Default: 0.0.
-            - firstInset: Any offset to apply to the first line. Default: 0.0, ie. matches the para as whole.
+     - Parameters
+        - inset:      The indentation factor. This is multiplied by 40 points.
+        - headInset:  Any offset to apply to the whole para other than line 1. Default: 0.0.
+        - firstInset: Any offset to apply to the first line. Default: 0.0, ie. matches the para as whole.
      
-        - Returns The inset NSParagraphStyle.
+     - Returns The inset NSParagraphStyle.
      */
     internal func getInsetParagraphStyle(_ inset: Int, _ headInset: CGFloat = 0.0, _ firstInset: CGFloat = 0.0) -> NSMutableParagraphStyle {
         
         var insetParaStyle: NSMutableParagraphStyle
         let styleName: String = String.init(format: "inset%02d", inset)
+        
         if self.paragraphs[styleName] != nil {
             insetParaStyle = self.paragraphs[styleName]!
         } else {
-            insetParaStyle = NSMutableParagraphStyle.init()
-            insetParaStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-            insetParaStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
-            insetParaStyle.alignment = .left
-            insetParaStyle.headIndent = 40.0 * CGFloat(inset) + headInset
-            insetParaStyle.firstLineHeadIndent = 40.0 * CGFloat(inset) + firstInset
-            
             let table: NSTextTable = NSTextTable.init()
             table.numberOfColumns = 1
+            
             let block: NSTextTableBlock = NSTextTableBlock.init(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
             block.setValue(512.0, type: .absoluteValueType, for: .minimumWidth)
-            block.setBorderColor(self.colours.head, for: .minX)
-            insetParaStyle.textBlocks.append(block)
             
+            insetParaStyle = NSMutableParagraphStyle.init()
+            insetParaStyle.lineSpacing = self.lineSpacing
+            insetParaStyle.paragraphSpacing = self.paraSpacing
+            insetParaStyle.alignment = .left
+            insetParaStyle.headIndent = 48.0 * CGFloat(inset) + headInset
+            insetParaStyle.firstLineHeadIndent = 40.0 * CGFloat(inset) + firstInset
+            insetParaStyle.textBlocks.append(block)
             self.paragraphs[styleName] = insetParaStyle
         }
         
@@ -881,42 +873,41 @@ class PMStyler {
      */
     internal func makeBlockquoteParagraphCell(_ inset: Int, _ cellText: String) {
         
+        
         // Make sure we have an NSMutableAttributedString for the whole table...
         if self.blockAttStr == nil {
-            self.blockAttStr = NSMutableAttributedString.init(string: "\n")
+            self.blockAttStr = NSMutableAttributedString.init(string: "")
         }
         
         // ...and a table objectx
         if self.blockTable == nil {
             self.blockTable = NSTextTable.init()
             self.blockTable?.numberOfColumns = 1
-            self.blockTable?.collapsesBorders = false
-            self.blockTable?.hidesEmptyCells = true
+            //self.blockTable?.collapsesBorders = false
+            //self.blockTable?.hidesEmptyCells = true
         }
         
         // Create the cell block
-        let cellBlockColour: NSColor = .previewBlock
         let cellblock = NSTextTableBlock(table: self.blockTable!, startingRow: inset, rowSpan: 1, startingColumn: 0, columnSpan: 1)
-        cellblock.setWidth(4.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
         cellblock.setWidth(16.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
-        //cellblock.setWidth(0.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.margin)
-        
-        cellblock.setBorderColor(cellBlockColour)
-        cellblock.setBorderColor(self.colours.quote!, for: .minX)
-        cellblock.backgroundColor = cellBlockColour
         cellblock.verticalAlignment = .middleAlignment
+        cellblock.backgroundColor = .previewBlock
+        
+        cellblock.setWidth(8.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.border)
+        cellblock.setBorderColor(.previewBlock)
+        cellblock.setBorderColor(self.colours.quote!, for: .minX)
         
         // Set the cell text's parastyle
         let cellParagraphStyle = NSMutableParagraphStyle()
         cellParagraphStyle.alignment = .left
-        cellParagraphStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        cellParagraphStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
-        cellParagraphStyle.headIndent = 50.0 * CGFloat(inset - 1)
-        cellParagraphStyle.firstLineHeadIndent = 50.0 * CGFloat(inset - 1)
-        cellParagraphStyle.textBlocks = [cellblock]
+        cellParagraphStyle.lineSpacing = self.lineSpacing
+        cellParagraphStyle.paragraphSpacing = self.paraSpacing
+        cellParagraphStyle.headIndent = 100.0 + 100.0 * CGFloat(inset - 1)
+        cellParagraphStyle.firstLineHeadIndent = 100.0 + 100.0 * CGFloat(inset - 1)
+        cellParagraphStyle.textBlocks.append(cellblock)
         
         // Generate an NSMutableAttributedString for the cell text using the above attributes...
-        let cellAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: cellText + self.newLineSymbol,
+        let cellAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: inset > 1 ? self.lineFeedSymbol + cellText : cellText,
                                                                                         attributes: [.paragraphStyle: cellParagraphStyle,
                                                                                                      .foregroundColor: self.colours.quote!,
                                                                                                      .font: makeFont("strong", self.fontSize * H4_MULTIPLIER)])
@@ -926,26 +917,47 @@ class PMStyler {
     }
     
     
+    internal func makeBlockquoteParagraph(_ inset: Int, _ cellText: String) {
+        
+        // Make sure we have an NSMutableAttributedString for the whole table...
+        if self.blockAttStr == nil {
+            self.blockAttStr = NSMutableAttributedString.init(string: "")
+        }
+        
+        let cellParagraphStyle = NSMutableParagraphStyle()
+        cellParagraphStyle.alignment = .left
+        cellParagraphStyle.lineSpacing = self.lineSpacing
+        cellParagraphStyle.paragraphSpacing = self.paraSpacing
+        cellParagraphStyle.headIndent = 100 + 100.0 * CGFloat(inset - 1)
+        cellParagraphStyle.firstLineHeadIndent = 100 + 100.0 * CGFloat(inset - 1)
+        
+        // Generate an NSMutableAttributedString for the cell text using the above attributes...
+        let cellAttributedString: NSMutableAttributedString = NSMutableAttributedString(string: inset > 1 ? self.lineFeedSymbol + cellText : cellText,
+                                                                                        attributes: [.paragraphStyle: cellParagraphStyle,
+                                                                                                     .foregroundColor: self.colours.quote!,
+                                                                                                     .font: makeFont("strong", self.fontSize * H4_MULTIPLIER)])
+        
+        // ...and add it to the table NSMutableAttributedString
+        self.blockAttStr!.append(cellAttributedString)
+    }
+
     /**
-        Add a highlighted code paragraph style to un-highlighted code.
+        Create a styled string containing plain text code or just plain text
+        set against a background. This is typically for PRE and PRE+CODE
+        structures.
      
         - Parameters
-            - unhighlightedCode: The background-less highlighted code.
+            - plainCode: The plain text code.
      
         - Returns The assembled paragraph as an attributed string.
      */
-    internal func makePlainCodeParagraph(_ unhighlightedCode: String) -> NSMutableAttributedString {
+    internal func makePlainCodeParagraph(_ plainCode: String) -> NSMutableAttributedString {
         
         // Make the single paragraph style
-        // TO-DO Cache for later usage
-        let cellParagraphStyle = NSMutableParagraphStyle()
-        cellParagraphStyle.alignment = .left
-        cellParagraphStyle.lineSpacing = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        cellParagraphStyle.paragraphSpacing = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
-        cellParagraphStyle.textBlocks = [makeCodeParagraphCell()]
+        let cellParagraphStyle = makeCodeParagraphStyle()
         
         // Return the plain code on the background block
-        return NSMutableAttributedString(string: unhighlightedCode,
+        return NSMutableAttributedString(string: plainCode,
                                          attributes: [.paragraphStyle: cellParagraphStyle,
                                                       .foregroundColor: self.colours.code!,
                                                       .font: makeFont("code", self.fontSize)])
@@ -953,23 +965,16 @@ class PMStyler {
     
     
     /**
-        Add a highlighted code paragraph style to highlighted code.
+     Create a styled string setting highlighted code against a background.
      
-        - Parameters
-            - highlightedCode: The background-less highlighted code.
-     
-         - Returns The assembled paragraph as an attributed string.
+     - Parameters
+        - highlightedCode: The background-less highlighted code.
+ 
+     - Returns The assembled paragraph as an attributed string.
      */
     internal func makeHighlightedCodeParagraph(_ highlightedCode: NSMutableAttributedString) -> NSMutableAttributedString {
         
-        // Make the single paragraph style
-        // TO-DO Cache for later usage
-        let cellParagraphStyle = NSMutableParagraphStyle()
-        cellParagraphStyle.alignment = .left
-        cellParagraphStyle.lineSpacing = 2.0
-        cellParagraphStyle.paragraphSpacing = 0.0
-        cellParagraphStyle.textBlocks = [makeCodeParagraphCell()]
-        
+        let cellParagraphStyle = makeCodeParagraphStyle()
         highlightedCode.addAttributes([.paragraphStyle: cellParagraphStyle],
                                       range: NSMakeRange(0, highlightedCode.length))
         return highlightedCode
@@ -977,11 +982,29 @@ class PMStyler {
     
     
     /**
-        Generate a paragraph table block for presenting code of any kind.
+     Generate a generic code paragraph style.
      
-        - Returns A paragraph table block.
+     - Returns The paragraph style.
      */
-    internal func makeCodeParagraphCell() -> NSTextTableBlock {
+    internal func makeCodeParagraphStyle() -> NSMutableParagraphStyle {
+        
+        // Make the single paragraph style
+        // TO-DO Cache for later usage
+        let cellParagraphStyle = NSMutableParagraphStyle()
+        cellParagraphStyle.alignment = .left
+        cellParagraphStyle.lineSpacing = self.lineSpacing
+        cellParagraphStyle.paragraphSpacing = self.paraSpacing
+        cellParagraphStyle.textBlocks = [makeCodeParagraphBlock()]
+        return cellParagraphStyle
+    }
+    
+    
+    /**
+     Generate a single table block for presenting code of any kind.
+     
+     - Returns A text table block.
+     */
+    internal func makeCodeParagraphBlock() -> NSTextTableBlock {
         
         // Make a table for the block: it will be 1 x 1
         let paragraphTable = NSTextTable.init()
@@ -991,20 +1014,20 @@ class PMStyler {
         // Make the table's single cell
         let paragraphBlock = NSTextTableBlock(table: paragraphTable, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
         paragraphBlock.backgroundColor = .previewCode
-        paragraphBlock.setWidth(5.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
+        paragraphBlock.setWidth(8.0, type: NSTextBlock.ValueType.absoluteValueType, for: NSTextBlock.Layer.padding)
         return paragraphBlock
     }
     
     
     /**
-        Generate an attributed string from an individual source string by iterating through
-        the style stack and applying each.
+     Generate an attributed string from an individual source string by iterating through
+     the style stack and applying each.
      
-        - Parameters
-            - plainText: The raw string.
-            - styleList: The style stack.
+     - Parameters
+        - plainText: The raw string.
+        - styleList: The style stack.
      
-        - Returns An attributed string.
+     - Returns An attributed string.
      */
     internal func styleString(_ plainText: String, _ styleList: [Style]) -> NSMutableAttributedString {
        
@@ -1060,72 +1083,23 @@ class PMStyler {
                             // Don't show images in thumbnails
                             if !self.isThumbnail {
                                 // SEE https://developer.apple.com/documentation/foundation/nsurl for secure resources
-                                //let imgUrl = URL.init(fileURLWithPath: self.currentImagePath)
-                                var imageAttachment: NSTextAttachment? = nil
-                                
-                                let fm: FileManager = FileManager.default
-                                let fileData: Data? = fm.contents(atPath: self.currentImagePath)
-                                
-                                if let fd = fileData {
-                                    let fileWrapper: FileWrapper = FileWrapper.init(regularFileWithContents: fd)
-                                    imageAttachment?.fileWrapper = fileWrapper
+                                let imageUrl = URL.init(fileURLWithPath: self.currentImagePath)
+                                var imageAttachment: NSTextAttachment
+                                if let image = NSImage.init(contentsOf: imageUrl) {
+                                    imageAttachment = NSTextAttachment.init()
+                                    imageAttachment.image = image
                                 } else {
                                     let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
                                     imageAttachment = NSTextAttachment.init()
                                     if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
-                                        imageAttachment!.image = image
+                                        imageAttachment.image = image
                                     }
                                 }
-                                
-                                /*
-                                var bm: Data? = nil
-                                var ok: Bool = false
-                                do {
-                                    bm = try imgUrl.bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess])
-                                } catch {
-                                    // NOP
-                                    NSLog("[ERROR] \(error.localizedDescription)")
-                                }
-                                
-                                if let bm = bm {
-                                    do {
-                                        let location = try URL(resolvingBookmarkData: bm, bookmarkDataIsStale: &ok)
-                                        defer {
-                                            location.stopAccessingSecurityScopedResource()
-                                        }
-                                        
-                                        do {
-                                            let wrapper: FileWrapper = try FileWrapper.init(url: location, options: [.immediate])
-                                            imageAttachment = NSTextAttachment.init(fileWrapper: wrapper)
-                                        } catch {
-                                            NSLog("[ERROR] \(error.localizedDescription)")
-                                            let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
-                                            imageAttachment = NSTextAttachment.init()
-                                            if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
-                                                imageAttachment!.image = image
-                                            }
-                                        }
-                                    } catch {
-                                        let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
-                                        imageAttachment = NSTextAttachment.init()
-                                        if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
-                                            imageAttachment!.image = image
-                                        }
-                                    }
-                                } else {
-                                    let baseImageName: String = BUFFOON_CONSTANTS.IMG_PLACEHOLDER
-                                    imageAttachment = NSTextAttachment.init()
-                                    if let image: NSImage = NSImage.init(named: NSImage.Name(stringLiteral: baseImageName)) {
-                                        imageAttachment!.image = image
-                                    }
-                                }
-                                */
                                 
                                 // IMG should be at the top the the stack, so we can return immediately
-                                if let im = imageAttachment {
-                                    let imageAttString = NSMutableAttributedString(attachment: im)
-                                    return imageAttString
-                                }
+                                let imageAttString = NSMutableAttributedString(attachment: imageAttachment)
+                                imageAttString.append(NSAttributedString.init(string: self.lineFeedSymbol))
+                                return imageAttString
                             }
                         default:
                             break
@@ -1145,22 +1119,53 @@ class PMStyler {
     }
     
     
+    /**
+     Convert all the occurences of `[ ]` and `[x]` in the specified
+     string into emoji symbols.
+     */
+    internal func processCheckboxes() {
+
+        // Hack to present checkboxes a la GitHub
+        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
+        let symbols: [String] = ["❎", "✅"]
+
+        var i = 0
+        for pattern in patterns {
+            var range = self.tokenString.range(of: pattern, options: .regularExpression)
+
+            while range != nil {
+                // Swap out the HTML symbol code for the actual symbol
+                self.tokenString = self.tokenString.replacingCharacters(in: range!, with: symbols[i])
+
+                // Get the next occurence of the pattern ready for the 'while...' check
+                range = self.tokenString.range(of: pattern, options: .regularExpression)
+            }
+
+            i += 1
+        }
+    }
+    
+    
     // MARK: - Data Initialisation Functions
     
     /**
-        At the start of a rendering run, set up all the base styles we will need,
-        including the fonts and colours we'll use.
+     At the start of a rendering run, set up all the base styles we will need,
+     including all the fonts and colours we will use.
      */
     internal func generateStyles() {
         
         // Prepare the fonts we'll use
         prepareFonts()
         
+        self.lineSpacing = ((self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0) - 1.0) * self.fontSize
+        self.paraSpacing = self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0
+        
         // Set the paragraph styles
         // Base paragraph style: No left inset
         let tabbedParaStyle: NSMutableParagraphStyle    = NSMutableParagraphStyle()
-        tabbedParaStyle.lineSpacing                     = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        tabbedParaStyle.paragraphSpacing                = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
+        tabbedParaStyle.lineSpacing                     = self.lineSpacing
+        tabbedParaStyle.paragraphSpacing                = self.paraSpacing
+        tabbedParaStyle.paragraphSpacingBefore          = 0.5
         tabbedParaStyle.alignment                       = .left
         tabbedParaStyle.tabStops                        = [NSTextTab(textAlignment: .left, location: 30.0, options: [:]),
                                                            NSTextTab(textAlignment: .left, location: 60.0, options: [:])]
@@ -1169,20 +1174,27 @@ class PMStyler {
         
         // Nested list
         let listParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
-        listParaStyle.lineSpacing                       = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        listParaStyle.paragraphSpacing                  = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
+        listParaStyle.lineSpacing                       = self.lineSpacing
+        listParaStyle.paragraphSpacing                  = self.paraSpacing
         listParaStyle.alignment                         = .left
-        listParaStyle.headIndent                        = 56.0
+        listParaStyle.headIndent                        = 60.0
         listParaStyle.firstLineHeadIndent               = 40.0
         self.paragraphs["list"]                         = listParaStyle
         
-        //  HR paragraph
+        // HR paragraph
         let lineParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
-        lineParaStyle.lineSpacing                       = (self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0)
-        lineParaStyle.paragraphSpacing                  = (self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0)
+        lineParaStyle.lineSpacing                       = self.lineSpacing
+        lineParaStyle.paragraphSpacing                  = self.paraSpacing
         lineParaStyle.alignment                         = .left
         lineParaStyle.tabStops                          = [NSTextTab(textAlignment: .right, location: 120.0, options: [:])]
         self.paragraphs["line"]                         = lineParaStyle
+        
+        // HR paragraph
+        let imgParaStyle: NSMutableParagraphStyle       = NSMutableParagraphStyle()
+        imgParaStyle.lineSpacing                        = self.lineSpacing
+        imgParaStyle.paragraphSpacing                   = self.paraSpacing
+        imgParaStyle.alignment                          = .left
+        self.paragraphs["img"]                          = imgParaStyle
         
         // Set the colours
         self.colours.head  = NSColor.colourFromHexString(self.colourValues.head)
@@ -1250,10 +1262,10 @@ class PMStyler {
                                        .font: makeFont("code", self.fontSize)]
         
         // KBD
-        self.styles["kbd"]          = [.foregroundColor: self.colours.body,
+        self.styles["kbd"]          = [.foregroundColor: NSColor.white,
                                        .underlineColor: NSColor.gray,
                                        .underlineStyle: NSUnderlineStyle.double.rawValue as NSNumber,
-                                       .font: makeFont("strong", self.fontSize)]
+                                       .font: makeFont("code", self.fontSize)]
         
         // S
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,
@@ -1290,13 +1302,13 @@ class PMStyler {
         // MISC
         self.styles["line"]         = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.fontSize),
-                                       .paragraphStyle: self.paragraphs["line"]!]
+                                       .paragraphStyle: self.paragraphs["img"]!]
     }
 
 
     /**
-        Determine what styles are available for the chosen body font,
-        which is set by the calling code (as is the base font size).
+     Determine what styles are available for the chosen body font,
+     which is set by the calling code (as is the base font size).
      */
     internal func prepareFonts() {
         
@@ -1322,13 +1334,13 @@ class PMStyler {
     
     
     /**
-        Generate a specific font to match the specified style and size.
+     Generate a specific font to match the specified style and size.
      
-        - Parameters
-            - fontStyle: The style, eg. `strong`.
-            - size:      The point size.
+     - Parameters
+        - fontStyle: The style, eg. `strong`.
+        - size:      The point size.
      
-        - Returns The NSFont, or nil on error.
+     - Returns A font that can be used.
      */
     internal func makeFont(_ requiredStyle: String, _ size: CGFloat) -> NSFont {
         
@@ -1406,17 +1418,17 @@ class PMStyler {
     }
     
     /**
-        Try and find an installed font that matches our requirements. Hopefully, the
-        user has selected sensibly, but in case not, we need to try and get something
-        approximately right.
+     Try and find an installed font that matches our requirements. Hopefully, the
+     user has selected sensibly, but in case not, we need to try and get something
+     approximately right.
      
-        - Parameters
-            - requiredStyle: The style we want, eg. 'strong'
-            - styleNames:    An array of possible font style names we might use, eg. 'Heavy', 'Bold'.
-            - family:        An existing font family mapping.
-            - size:          The size we want.
-        
-        - Returns The font we want or `nil` on error.
+     - Parameters
+        - requiredStyle: The style we want, eg. 'strong'
+        - styleNames:    An array of possible font style names we might use, eg. 'Heavy', 'Bold'.
+        - family:        An existing font family mapping.
+        - size:          The size we want.
+     
+     - Returns The font we want or `nil` on error.
      */
     internal func matchFont(_ requiredStyle: String, _ styleNames: [String], _ family: PMFont, _ size: CGFloat) -> NSFont? {
         
@@ -1438,12 +1450,12 @@ class PMStyler {
     
     
     /**
-        Store a font record for subsequent use.
+     Store a font record for subsequent use.
      
-        - Parameters
-            - style: The style using the font.
-            - size:  The point size of the font.
-            - font:  The font itself.
+     - Parameters
+        - style: The style using the font.
+        - size:  The point size of the font.
+        - font:  The font itself.
      */
     internal func recordFont(_ style: String, _ size: CGFloat, _ font: NSFont?) {
         
@@ -1456,13 +1468,13 @@ class PMStyler {
     
     
     /**
-        Calculate the real size of a style entity based on the
-        base font size.
+     Calculate the real size of a style entity from the
+     base font size.
      
-        - Parameters
-            - tagName: An HTML tag.
+     - Parameters
+        - tagName: An HTML tag.
      
-        - Returns The font size to use.
+     - Returns The font size to use.
      */
     internal func setSize(_ tagName: String) -> CGFloat {
         
@@ -1487,6 +1499,11 @@ class PMStyler {
     }
     
     
+    /**
+     Instantiate a Highlighter object for code colouring.
+     
+     - Note This should only be called if required.
+     */
     internal func makeHighlighter() {
         
         if self.highlighter == nil {
