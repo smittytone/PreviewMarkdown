@@ -166,3 +166,12 @@ extension NSColor {
         return NSColor(red: CGFloat(r) / divisor, green: CGFloat(g) / divisor, blue: CGFloat(b) / divisor, alpha: alpha)
     }
 }
+
+
+extension URL {
+    
+    func unixpath() -> String {
+        
+        return self.absoluteString.replacingOccurrences(of: "file://", with: "")
+    }
+}
