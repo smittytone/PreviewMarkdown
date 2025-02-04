@@ -65,8 +65,9 @@ class PreviewViewController: NSViewController,
                     }
                     
                     // FROM 2.0.0
-                    // Pass on the initial width of the preview
+                    // Pass on the initial width of the preview and the source file's directory
                     common.viewWidth = self.renderTextView.bounds.width
+                    common.workingDirectory = (url.path as NSString).deletingLastPathComponent
                     
                     // FROM 2.0.0
                     // Set the view to display in light mode, even if the Mac is set to dakr mode,
