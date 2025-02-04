@@ -126,9 +126,17 @@ class AppDelegate:  NSObject,
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
                 if let mdString: String = String.init(data: data, encoding: encoding) {
-                    let common = Common.init(false)
+                    guard let common = Common.init(false) else {
+                        let errDesc: String = "No file selected to render"
+                        reportError = NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
+                                              code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
+                                              userInfo: [NSLocalizedDescriptionKey: errDesc])
+                        return reportError
+                    }
+                    
                     common.viewWidth = self.previewTextView.frame.width
                     common.doShowLightBackground = !self.renderAsDark
+                    common.workingDirectory = (mdUrl.unixpath() as NSString).deletingLastPathComponent
 
                     // Get the key string first
                     let mdAttString: NSAttributedString = common.getAttributedString(mdString[...])
