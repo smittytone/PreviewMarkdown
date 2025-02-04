@@ -34,6 +34,7 @@ class Common {
     // FROM 2.0.0
     var viewWidth: CGFloat                                          = 512
     var fontSize: CGFloat                                           = 0.0
+    var workingDirectory: String                                    = ""
     
     
     // MARK: - Private Properties
@@ -204,6 +205,7 @@ class Common {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
             self.styler?.viewWidth = self.viewWidth
+            self.styler?.workingDirectory = self.workingDirectory
             
             if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
                 output = NSMutableAttributedString.init(attributedString: attStr)
