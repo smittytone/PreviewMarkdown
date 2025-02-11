@@ -46,7 +46,7 @@ public class PMMarkdowner {
         // Store the results for later
         // NOTE Set "html" because Markdown-It 14 doesn't do this automatically,
         //      Set "breaks" to convert <br> to CR
-        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true, "breaks": true], in: context)
+        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true, "breaks": true, "typographer": true], in: context)
         self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
     
