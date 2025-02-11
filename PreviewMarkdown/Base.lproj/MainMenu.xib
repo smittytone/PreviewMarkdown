@@ -978,6 +978,9 @@ running this app once more.</string>
                                 <view key="view" id="aQS-58-W7R">
                                     <rect key="frame" x="0.0" y="0.0" width="800" height="322"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <userGuides>
+                                        <userLayoutGuide location="400" affinity="minX"/>
+                                    </userGuides>
                                     <subviews>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ib5-2j-aQH">
                                             <rect key="frame" x="387" y="16" width="25" height="25"/>
@@ -1217,7 +1220,7 @@ running this app once more.</string>
                                             </connections>
                                         </colorWell>
                                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NcV-2X-lAf">
-                                            <rect key="frame" x="410" y="126" width="129" height="25"/>
+                                            <rect key="frame" x="409" y="126" width="129" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <popUpButtonCell key="cell" type="push" title="Single" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="Bca-Ak-5o4" id="Bif-ci-mAw">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1235,7 +1238,7 @@ running this app once more.</string>
                                             </popUpButtonCell>
                                         </popUpButton>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rq-9E-THR">
-                                            <rect key="frame" x="263" y="132" width="144" height="16"/>
+                                            <rect key="frame" x="262" y="132" width="144" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview line spacing:" id="xdm-1T-xb4">
                                                 <font key="font" usesAppearanceFont="YES"/>
@@ -1244,7 +1247,7 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DGX-Ye-M9S">
-                                            <rect key="frame" x="212" y="95" width="374" height="18"/>
+                                            <rect key="frame" x="237" y="93" width="382" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="mOs-nO-lDb">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1252,7 +1255,7 @@ running this app once more.</string>
                                             </buttonCell>
                                         </button>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6Z-2z-3G7">
-                                            <rect key="frame" x="212" y="73" width="374" height="18"/>
+                                            <rect key="frame" x="237" y="71" width="382" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Style YAML front matter, if present" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
