@@ -371,7 +371,7 @@ extension AppDelegate {
         }
         
         if !settingsHaveChanged {
-            settingsHaveChanged = (self.currentSettings.lineSpacing != lineSpacing)
+            settingsHaveChanged = (self.currentSettings.lineSpacing.isClose(to: lineSpacing))
         }
         
         // Check for and record font and style changes
