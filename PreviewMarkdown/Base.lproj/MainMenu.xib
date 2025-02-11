@@ -1254,7 +1254,7 @@ running this app once more.</string>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6Z-2z-3G7">
                                             <rect key="frame" x="212" y="73" width="374" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Show YAML front matter" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
+                                            <buttonCell key="cell" type="check" title="Style YAML front matter, if present" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
