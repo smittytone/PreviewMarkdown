@@ -14,7 +14,7 @@ import Foundation
  Values are pre-set to the app defaults.
  */
 
-struct Settings {
+struct PMSettings {
     
     var doShowLightBackground: Bool         = false
     var doShowFrontMatter: Bool             = false

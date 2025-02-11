@@ -101,8 +101,8 @@ final class AppDelegate: NSObject,
     private  var tabManager: PMTabManager = PMTabManager.init()
     internal var hasSentFeedback: Bool = false
     internal var initialLoadDone: Bool = false
-    internal let defaultSettings: Settings = Settings()
-    internal var currentSettings: Settings = Settings()
+    internal let defaultSettings: PMSettings = PMSettings()
+    internal var currentSettings: PMSettings = PMSettings()
     
     // Version 1.x LEGACY
     //internal var previewFontSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)

@@ -244,7 +244,7 @@ extension AppDelegate {
      - Parameters:
         - settings: The settings to show in the UI.
      */
-    internal func displaySettings(_ settings: Settings) {
+    internal func displaySettings(_ settings: PMSettings) {
         
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
