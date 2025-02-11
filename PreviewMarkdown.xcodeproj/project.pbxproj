@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3B0201852CAAD0F1003C1705 /* PMTabManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0201842CAAD0F1003C1705 /* PMTabManager.swift */; };
 		3B04F70725B6FC170024F39C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BBAEB8F236AE1D4009BAA05 /* WebKit.framework */; };
+		3B0C90132D5B6F73003FD494 /* PMSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */; };
+		3B0C90142D5B6F73003FD494 /* PMSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */; };
 		3B170B8625B2E62600F14FDD /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B170B8525B2E62600F14FDD /* sample.md */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
@@ -100,6 +102,11 @@
 		3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
 		3BEAC5B72AA39ED700958FFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B62AA39ED700958FFC /* Assets.xcassets */; };
 		3BEAC5B92AA39EF200958FFC /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B82AA39EF200958FFC /* new */; };
+		3BF2DC4C2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
+		3BF2DC4D2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
+		3BF2DC4E2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
+		3BF2DC4F2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
+		3BF2DC502D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +204,7 @@
 		3BEAC5B02AA39E5C00958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = REPLACE_WITH_YOUR_FUNCTIONS.swift; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewApps/REPLACE_WITH_YOUR_FUNCTIONS.swift"; sourceTree = "<absolute>"; };
 		3BEAC5B62AA39ED700958FFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/Assets.xcassets"; sourceTree = "<absolute>"; };
 		3BEAC5B82AA39EF200958FFC /* new */ = {isa = PBXFileReference; lastKnownFileType = folder; name = new; path = "/Users/smitty/Library/CloudStorage/OneDrive-Personal/Programming/PreviewMarkdown/new"; sourceTree = "<absolute>"; };
+		3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMStylerEntities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +288,7 @@
 			children = (
 				3BBAE1342D2EDE48009D0C34 /* Common.swift */,
 				3BBAE13A2D2EDE48009D0C34 /* PMStyler.swift */,
+				3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */,
 				3BBAE1392D2EDE48009D0C34 /* PMMarkdowner.swift */,
 				3BBAE1382D2EDE48009D0C34 /* PMLayouter.swift */,
 				3BBAE1352D2EDE48009D0C34 /* Extensions.swift */,
@@ -623,6 +632,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B33BEEC2898FDA20038AE9D /* NSColorExtensions.swift in Sources */,
+				3BF2DC4C2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3BC7DDB32D390E780066B644 /* PMLayouter.swift in Sources */,
 				3BC7DDB12D390E2A0066B644 /* HTMLUtils.swift in Sources */,
 				3BC7DDAC2D390C820066B644 /* PMStyler.swift in Sources */,
@@ -648,6 +658,7 @@
 				3BAE671728D4D09B001532BD /* AppDelegateFontHandling.swift in Sources */,
 				3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B363F492D48F7EC00F0982F /* PMMarkdowner.swift in Sources */,
+				3BF2DC502D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3B5CAA04268F4B2300A2DED1 /* PMFont.swift in Sources */,
 				3BEAC5B12AA39E9100958FFC /* REPLACE_WITH_YOUR_FUNCTIONS.swift in Sources */,
 				3B71BD45267F504E005F7FFC /* NSColorExtensions.swift in Sources */,
@@ -671,11 +682,13 @@
 				3BEAC5B32AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BBAE13C2D2EDE48009D0C34 /* PMStyler.swift in Sources */,
 				3BBAE13D2D2EDE48009D0C34 /* Extensions.swift in Sources */,
+				3B0C90132D5B6F73003FD494 /* PMSettings.swift in Sources */,
 				3BBAE13E2D2EDE48009D0C34 /* PMMarkdowner.swift in Sources */,
 				3BBAE13F2D2EDE48009D0C34 /* Common.swift in Sources */,
 				3BBAE1402D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1412D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3B71BD46267F550D005F7FFC /* NSColorExtensions.swift in Sources */,
+				3BF2DC4E2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -689,11 +702,13 @@
 				3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BBAE1432D2EDE48009D0C34 /* PMStyler.swift in Sources */,
 				3BBAE1442D2EDE48009D0C34 /* Extensions.swift in Sources */,
+				3B0C90142D5B6F73003FD494 /* PMSettings.swift in Sources */,
 				3BBAE1452D2EDE48009D0C34 /* PMMarkdowner.swift in Sources */,
 				3BBAE1462D2EDE48009D0C34 /* Common.swift in Sources */,
 				3BBAE1472D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1482D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3B71BD47267F550D005F7FFC /* NSColorExtensions.swift in Sources */,
+				3BF2DC4D2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -712,6 +727,7 @@
 				3BBAE1502D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1512D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */,
+				3BF2DC4F2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
