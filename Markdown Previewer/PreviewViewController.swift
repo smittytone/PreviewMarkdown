@@ -86,6 +86,7 @@ class PreviewViewController: NSViewController,
                             let layouter = PMLayouter()
                             layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
                             layouter.fontSize = common.fontSize
+                            layouter.lineSpacing = common.lineSpacing
                             renderTextContainer.replaceLayoutManager(layouter)
                         }
                         

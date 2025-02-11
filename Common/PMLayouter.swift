@@ -16,6 +16,7 @@ class PMLayouter: NSLayoutManager {
     // The background of KDB lozenges
     var lozengeColour: NSColor?     = nil
     var fontSize: CGFloat           = 13.0
+    var lineSpacing: CGFloat        = 1.0
     
     
     // Override this function to hijack double-line drawing and replace it with
@@ -45,6 +46,9 @@ class PMLayouter: NSLayoutManager {
         lozengeRect = self.boundingRect(forGlyphRange: glyphRange, in: self.textContainers[0])
         lozengeRect.origin.x -= (self.fontSize > 18 ? 4.0 : 2.0)
         lozengeRect.size.width += (self.fontSize > 18 ? 8.0 : 4.0)
+        
+        // Allow for larger line spacing values 'stretching' the rect
+        lozengeRect.size.height = lozengeRect.size.height / self.lineSpacing
         
         // Draw and fill rounded path over lozenge
         let path = NSBezierPath.init(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)

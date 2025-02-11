@@ -34,14 +34,13 @@ class Common {
     // FROM 2.0.0
     var viewWidth: CGFloat                                          = 512
     var fontSize: CGFloat                                           = 0.0
+    var lineSpacing: CGFloat                                        = 1.0
     var workingDirectory: String                                    = ""
     
     
     // MARK: - Private Properties
     
-    private var doIndentScalars: Bool                               = true
-    private var doShowYaml: Bool                                    = false
-
+    private var doShowFrontMatter: Bool                             = false
     // FROM 1.3.0
     // Front Matter string attributes...
     private var yamlKeyAttributes: [NSAttributedString.Key:Any]     = [:]
@@ -49,7 +48,6 @@ class Common {
     // Front Matter rendering artefacts...
     private var hr: NSAttributedString                              = NSAttributedString.init(string: "")
     private var newLine: NSAttributedString                         = NSAttributedString.init(string: "")
-    
     // FROM 2.0.0
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
@@ -78,7 +76,7 @@ class Common {
         // Load in the user's preferred values, or set defaults
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             // Locally relevant settings values
-            self.doShowYaml            = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
+            self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             
             // The remaining settings values are passed directly to the styler
@@ -105,8 +103,11 @@ class Common {
         }
         
         // Set paragraph spacing
+        styler.paraSpacing = styler.fontSize * 1.4
+        
+        // Retain these value for easy layouter access
         self.fontSize = styler.fontSize
-        styler.paraSpacing = self.fontSize * 1.4
+        self.lineSpacing = styler.lineSpacing
 
         // FROM 1.3.0
         // Set the front matter key:value fonts and sizes
@@ -141,12 +142,12 @@ class Common {
     // MARK: - The Primary Function
 
     /**
-        Render the provided markdown.
+     Render the provided markdown.
      
-        - parameters
-            - rawText - The loaded file's contents.
+     - Parameters
+         - rawText - The loaded file's contents.
      
-        - returns The rendered markdown as an NSAttributedString.
+     - Returns The rendered markdown as an NSAttributedString.
      */
     func getAttributedString(_ rawText: Substring) -> NSAttributedString {
 
@@ -212,7 +213,7 @@ class Common {
                 
                 // Render YAML front matter if requested by the user, and we're not
                 // rendering a thumbnail image (this is for previews only)
-                if !isThumbnail && self.doShowYaml && frontMatter.count > 0 {
+                if !self.isThumbnail && self.doShowFrontMatter && frontMatter.count > 0 {
                     do {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
                         
@@ -245,7 +246,7 @@ class Common {
                         }
                         
                         // Assemble the error string
-                        let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the YAML. Error: " + yamlErrString,
+                        let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the front matter. Error: " + yamlErrString,
                                                                                                     attributes: self.yamlKeyAttributes)
                         
                         // Should we include the raw text?
@@ -263,7 +264,7 @@ class Common {
                 }
             } else {
                 output = NSMutableAttributedString.init(string: "Could not render markdown string",
-                                                        attributes: self.yamlValueAttributes)
+                                                        attributes: self.yamlKeyAttributes)
             }
         }
 
@@ -287,10 +288,10 @@ class Common {
 
      FROM 1.3.0, updated 1.5.1, 2.0.0
 
-     - Parameters:
+     - Parameters
         - markdown:     The markdown file content.
 
-     - Returns: A data structure indicating front matter, markdown ranges.
+     - Returns A data structure indicating front matter, markdown ranges.
      */
     func getFrontMatter(_ rawText: Substring) -> MarkdownComponents {
         
@@ -334,18 +335,18 @@ class Common {
 
 
     /**
-        Render a supplied YAML sub-component ('part') to an NSAttributedString.
-        Indents the value as required.
-        Should NOT be called for thumbnails.
+     Render a supplied YAML sub-component ('part') to an NSAttributedString.
+     Indents the value as required.
+     Should NOT be called for thumbnails.
      
-        FROM 1.3.0
-
-        - Parameters
-            - part:   A partial Yaml object.
-            - indent: The number of indent spaces to add.
-            - isKey:  Is the Yaml part a key?
-
-        - Returns: The rendered string as an NSAttributedString, or nil on error.
+     FROM 1.3.0
+     
+     - Parameters
+         - part:   A partial Yaml object.
+         - indent: The number of indent spaces to add.
+         - isKey:  Is the Yaml part a key?
+     
+     - Returns The rendered string as an NSAttributedString, or nil on error.
      */
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
         
@@ -428,11 +429,8 @@ class Common {
                     }
                     
                     // If the value is a collection, we drop to the next line and indent
-                    var valueIndent: Int = 0
-                    if value.array != nil || value.dictionary != nil || self.doIndentScalars {
-                        valueIndent = indent + BUFFOON_CONSTANTS.YAML_INDENT
-                        returnString.append(self.newLine)
-                    }
+                    let valueIndent: Int = indent + BUFFOON_CONSTANTS.YAML_INDENT
+                    returnString.append(self.newLine)
                     
                     // Render the key's value
                     if let yamlString = renderYaml(value, valueIndent, false) {
@@ -489,16 +487,15 @@ class Common {
 
 
     /**
-        Return a space-prefix NSAttributedString.
+     Return a space-prefix NSAttributedString.
      
-        FROM 1.3.0
+     FROM 1.3.0
+     
+     - Parameters
+        - baseString: The string to be indented.
+        - indent:     The number of indent spaces to add.
 
-        - Parameters
-            - baseString: The string to be indented.
-            - indent:     The number of indent spaces to add.
-
-        - Returns
-            The indented string as an NSAttributedString.
+     - Returns The indented string as an NSAttributedString.
      */
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
         
