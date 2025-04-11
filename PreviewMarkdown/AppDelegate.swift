@@ -29,10 +29,10 @@ final class AppDelegate: NSObject,
     @IBOutlet var helpMenuMarkdownIt: NSMenuItem!
     @IBOutlet var helpMenuHighlightjs: NSMenuItem!
     @IBOutlet var helpMenuYamlSwift: NSMenuItem!
-    @IBOutlet var helpMenuOthersPreviewYaml: NSMenuItem!
+    //@IBOutlet var helpMenuOthersPreviewYaml: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewCode: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewJson: NSMenuItem!
-    @IBOutlet var helpMenuOthersPreviewText: NSMenuItem!
+    //@IBOutlet var helpMenuOthersPreviewText: NSMenuItem!
     
     @IBOutlet var helpMenuOnlineHelp: NSMenuItem!
     @IBOutlet var helpMenuReportBug: NSMenuItem!
@@ -309,15 +309,15 @@ final class AppDelegate: NSObject,
             path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
         } else if item == self.helpMenuOnlineHelp {
             path += "#how-to-use-previewmarkdown"
-        } else if item == self.helpMenuOthersPreviewYaml {
-            path = BUFFOON_CONSTANTS.APP_URLS.PY
+        //} else if item == self.helpMenuOthersPreviewYaml {
+        //    path = BUFFOON_CONSTANTS.APP_URLS.PY
         } else if item == self.helpMenuOthersPreviewCode {
             path = BUFFOON_CONSTANTS.APP_URLS.PC
         } else if item == self.helpMenuOthersPreviewJson {
             path = BUFFOON_CONSTANTS.APP_URLS.PJ
-        } else if item == self.helpMenuOthersPreviewText {
-            path = BUFFOON_CONSTANTS.APP_URLS.PT
-        }
+        } //else if item == self.helpMenuOthersPreviewText {
+        //    path = BUFFOON_CONSTANTS.APP_URLS.PT
+        //}
         
         // Open the selected website
         NSWorkspace.shared.open(URL.init(string:path)!)

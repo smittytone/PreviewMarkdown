@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23727"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,8 +34,6 @@
                 <outlet property="helpMenuOnlineHelp" destination="NdQ-kU-ZWH" id="35O-NO-TXc"/>
                 <outlet property="helpMenuOthersPreviewCode" destination="s6y-wo-6b3" id="lc4-CR-REH"/>
                 <outlet property="helpMenuOthersPreviewJson" destination="a2B-RL-t2t" id="MrP-8k-c5z"/>
-                <outlet property="helpMenuOthersPreviewText" destination="nZN-5w-HB4" id="4rp-RT-JPg"/>
-                <outlet property="helpMenuOthersPreviewYaml" destination="A8d-f6-JOo" id="m0E-TA-VTl"/>
                 <outlet property="helpMenuReportBug" destination="WK3-2e-U4U" id="6pq-Ca-lHQ"/>
                 <outlet property="helpMenuWhatsNew" destination="RVo-0J-2sd" id="Qhh-FZ-Qrh"/>
                 <outlet property="helpMenuYamlSwift" destination="O46-Mu-Ivb" id="9dw-JC-5IZ"/>
@@ -218,18 +216,6 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="WLc-Fg-dcZ"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="PreviewYaml" id="A8d-f6-JOo">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="Ip6-wC-Yb7"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="PreviewText" id="nZN-5w-HB4">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="7IF-fD-hfE"/>
                                             </connections>
                                         </menuItem>
                                     </items>

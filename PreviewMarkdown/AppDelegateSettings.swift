@@ -241,8 +241,10 @@ extension AppDelegate {
     /**
      Update the UI with the supplied settings.
      
+     FROM 2.0.0
+     
      - Parameters:
-        - settings: The settings to show in the UI.
+        - settings: An instance holding the settings to show in the UI.
      */
     internal func displaySettings(_ settings: PMSettings) {
         
@@ -288,16 +290,34 @@ extension AppDelegate {
         selectFontByPostScriptName(settings.codeFontName, false)
 
         // Set the line spacing selector
-        switch(round(settings.lineSpacing * 100) / 100.0) {
-            case 1.15:
-                self.lineSpacingPopup.selectItem(at: 1)
-            case 1.5:
-                self.lineSpacingPopup.selectItem(at: 2)
-            case 2.0:
-                self.lineSpacingPopup.selectItem(at: 3)
-            default:
-                self.lineSpacingPopup.selectItem(at: 0)
-        }
+        let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
+        self.lineSpacingPopup.selectItem(at: linespacingValues.firstIndex(of: round(settings.lineSpacing * 100) / 100.0) ?? 0)
+    }
+    
+    
+    /**
+     Generate a set of settings derived from the state of the UI - except for the colour values,
+     as these are stored directly in the current settings store. THIS WILL CHANGE
+     
+     FROM 2.0.0
+     
+     - Returns A settings instance.
+     */
+    internal func settingsFromDisplay() -> PMSettings {
+        
+        let displayedSettings = PMSettings()
+        displayedSettings.fontSize = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
+        displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
+        displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
+        displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+        displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+        
+        // Set the actual linespacing according to the index of the menu
+        let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
+        assert(self.lineSpacingPopup.indexOfSelectedItem < linespacingValues.count)
+        displayedSettings.lineSpacing = linespacingValues[self.lineSpacingPopup.indexOfSelectedItem]
+        
+        return displayedSettings
     }
     
     
@@ -306,23 +326,8 @@ extension AppDelegate {
      */
     internal func loadSettings() {
         
-        // The suite name is the app group name, set in each extension's entitlements, and the host app's
-        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            self.currentSettings.fontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
-            self.currentSettings.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
-            
-            self.currentSettings.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            self.currentSettings.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
-            
-            self.currentSettings.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            self.currentSettings.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            
-            self.currentSettings.displayColours["heads"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.currentSettings.displayColours["code"]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.currentSettings.displayColours["links"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            self.currentSettings.displayColours["quote"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ??
-                BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
-        }
+        // Get the settings
+        self.currentSettings.loadSettings(self.appSuiteName)
 
         // Use the loaded settings to update the Settings tab UI
         displaySettings(self.currentSettings)
@@ -336,89 +341,20 @@ extension AppDelegate {
     
     
     /**
-     Compare the current Settings page values to those we have stored in `currentSettings`.
-     If any are different, we need to warn the user.
-     
-     - Returns:
-        `true` if one or more settings has changed, otherwise `false`.
-     */
-    internal func checkSettingsOnQuit() -> Bool {
-        
-        var settingsHaveChanged: Bool = false
-        
-        // Check for a use light background change
-        var state: Bool = self.useLightCheckbox.state == .on
-        settingsHaveChanged = (self.currentSettings.doShowLightBackground != state)
-        
-        // Check for a show frontmatter change
-        if !settingsHaveChanged {
-            state = self.showFrontMatterCheckbox.state == .on
-            settingsHaveChanged = (self.currentSettings.doShowFrontMatter != state)
-        }
-        
-        // Check for line spacing change
-        let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
-        var lineSpacing: CGFloat = 1.0
-        switch(lineIndex) {
-            case 1:
-                lineSpacing = 1.15
-            case 2:
-                lineSpacing = 1.5
-            case 3:
-                lineSpacing = 2.0
-            default:
-                lineSpacing = 1.0
-        }
-        
-        if !settingsHaveChanged {
-            settingsHaveChanged = (self.currentSettings.lineSpacing.isClose(to: lineSpacing))
-        }
-        
-        // Check for and record font and style changes
-        if let fontName: String = getPostScriptName(false) {
-            if !settingsHaveChanged {
-                settingsHaveChanged = (self.currentSettings.codeFontName != fontName)
-            }
-        }
-        
-        if let fontName: String = getPostScriptName(true) {
-            if !settingsHaveChanged {
-                settingsHaveChanged = (self.currentSettings.bodyFontName != fontName)
-            }
-        }
-        
-        // Check for and record a font size change
-        if !settingsHaveChanged {
-            settingsHaveChanged = (self.currentSettings.fontSize != BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)])
-        }
-        
-        // Check for colour changes
-        if let _ = self.currentSettings.displayColours["new_heads"] {
-            settingsHaveChanged = true
-        }
-
-        if let _ = self.currentSettings.displayColours["new_code"] {
-            settingsHaveChanged = true
-        }
-
-        if let _ = self.currentSettings.displayColours["new_links"] {
-            settingsHaveChanged = true
-        }
-
-        if let _ = self.currentSettings.displayColours["new_quote"] {
-            settingsHaveChanged = true
-        }
-        
-        return settingsHaveChanged
-    }
-    
-    
-    /**
      Write Settings page state values to disk, but only those that have been changed.
      If this happens, also update the current settings store
      */
     internal func saveSettings() {
         
+        // Update the current settings store with values from the UI
+        // NOTE We need to preserve the `displayColours` values, so copy them to
+        //      the temporary store first.
+        let displayedSettings = settingsFromDisplay()
+        displayedSettings.displayColours = self.currentSettings.displayColours
+        self.currentSettings = displayedSettings
+        self.currentSettings.saveSettings(self.appSuiteName)
+        
+        /*
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.currentSettings.fontSize {
@@ -495,6 +431,59 @@ extension AppDelegate {
                 defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
         }
+         */
+    }
+    
+    
+    /**
+     Compare the current Settings page values to those we have stored in `currentSettings`.
+     If any are different, we need to warn the user.
+     
+     - Returns:
+        `true` if one or more settings has changed, otherwise `false`.
+     */
+    internal func checkSettingsOnQuit() -> Bool {
+        
+        let displayedSettings = settingsFromDisplay()
+        var settingsHaveChanged = self.currentSettings.doShowLightBackground != displayedSettings.doShowLightBackground
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.doShowFrontMatter != displayedSettings.doShowFrontMatter
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = !self.currentSettings.lineSpacing.isClose(to: displayedSettings.lineSpacing)
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.codeFontName != displayedSettings.codeFontName
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.bodyFontName != displayedSettings.bodyFontName
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.fontSize != displayedSettings.fontSize
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_HEADS] != nil
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_CODE] != nil
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_LINKS] != nil
+        }
+        
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_QUOTES] != nil
+        }
+        
+        return settingsHaveChanged
     }
     
     

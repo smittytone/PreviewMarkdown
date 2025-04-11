@@ -120,4 +120,16 @@ struct BUFFOON_CONSTANTS {
     static let MISSING_IMG                      = "missing-img"
     static let LOCKED_IMG                       = "locked-img"
     static let MAX_FEEDBACK_SIZE                = 512
+    
+    struct COLOUR_IDS {
+        
+        static let HEADS                        = "heads"
+        static let CODE                         = "code"
+        static let LINKS                        = "links"
+        static let QUOTES                       = "quote"
+        static let NEW_HEADS                    = "new_heads"
+        static let NEW_CODE                     = "new_code"
+        static let NEW_LINKS                    = "new_links"
+        static let NEW_QUOTES                   = "new_quote"
+    }
 }
