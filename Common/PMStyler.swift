@@ -18,7 +18,7 @@ class PMStyler {
     var fontSize: CGFloat                                               = 24.0
     var lineSpacing: CGFloat                                            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     var paraSpacing: CGFloat                                            = 18.0
-    var viewWidth: CGFloat                                              = 1024.0
+    //var viewWidth: CGFloat                                              = 1024.0
     var bodyFontName: String                                            = "SF Pro"
     var codeFontName: String                                            = "Menlo"
     var workingDirectory: String                                        = "/Users/"
@@ -90,7 +90,7 @@ class PMStyler {
      */
     public func render(_ tokenString: String, _ isThumbnail: Bool = false, _ useLightColoursInDarkMode: Bool = false) -> NSAttributedString? {
         
-        // Check we have an tokended string to render.
+        // Check we have an tokened string to render.
         if tokenString.isEmpty {
             return nil
         } else {
@@ -153,7 +153,7 @@ class PMStyler {
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
         
-#if DEBUG
+#if DEBUG2
         let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
@@ -194,7 +194,8 @@ class PMStyler {
                     }
                     
                     // Set the paragraph style with the current indent
-                    let prefixWidth = (listItemPrefix as NSString).size().width * 1.3
+                    // NOTE Really should take into account the correctly rendered width
+                    let prefixWidth = (listItemPrefix as NSString).size().width * 1.6
                     self.styles["li"]?[.paragraphStyle] = makeInsetParagraphStyle(insetLevel, prefixWidth, 0.0)
                 }
                 
@@ -220,7 +221,7 @@ class PMStyler {
                 // inset to the same level.
                 // NOTE This is why we don't set `isNested` when we discover nesting above
                 if isNested {
-                    self.styles["li"]![.paragraphStyle] = makeInsetParagraphStyle(insetLevel, 16.0, listItemPrefix.isEmpty ? 16.0 : 0.0)
+                    self.styles["li"]![.paragraphStyle] = makeInsetParagraphStyle(insetLevel, 20.0, listItemPrefix.isEmpty ? 20.0 : 0.0)
                 }
                 
                 // Style the content if we have some...
@@ -327,7 +328,7 @@ class PMStyler {
                         case "table":
                             // Render the table here after detecting table end
                             renderedString.append(renderCurrentTable())
-                            addNewLine(renderedString)
+                            //addNewLine(renderedString)
                             self.currentTable = ""
                         default:
                             break
@@ -378,7 +379,7 @@ class PMStyler {
                     if token.hasPrefix("a") {
                         // We have a link -- get the destination from HREF
                         tokenToApply = "a"
-                        getLinkRef(token)
+                        getLinkRef(openToken)
                     }
                     
                     // Check for an image. If we have one, get the source and
@@ -474,7 +475,7 @@ class PMStyler {
                         case "blockquote":
                             isBlockquote = true
                             blockLevel += 1
-                            tokenToApply = "none"   // Don't push style to
+                            tokenToApply = "none"   // Don't push style to stack
                         case "pre":
                             // ASSUMPTION PRE is ALWAYS followed by CODE (not in HTML, but certainly in MD->HTML)
                             isPre = true
@@ -656,7 +657,7 @@ class PMStyler {
     private func getTable(_ tableCode: String?) {
         
         // Get the table content and style it: set it up with a coloured border around table and cells
-        self.currentTable = "<table width=\"100%\" style=\"border-collapse:collapse;\">"
+        self.currentTable = "<table width=\"200%\" style=\"border-collapse:collapse;\">"
         
         guard let code = tableCode else {
             self.currentTable += "<tr><td>Malformed table</td></tr></table>\n"
@@ -691,12 +692,12 @@ class PMStyler {
      */
     internal func makeInsetParagraphStyle(_ inset: Int, _ headInset: CGFloat = 0.0, _ firstInset: CGFloat = 0.0) -> NSMutableParagraphStyle {
         
-        var insetParaStyle: NSMutableParagraphStyle
         let styleName: String = String.init(format: "inset%02d", inset)
         
         if self.paragraphs[styleName] != nil {
-            insetParaStyle = self.paragraphs[styleName]!
+            return self.paragraphs[styleName]!
         } else {
+            var insetParaStyle: NSMutableParagraphStyle
             let table: NSTextTable = NSTextTable.init()
             table.numberOfColumns = 1
             
@@ -712,9 +713,8 @@ class PMStyler {
             insetParaStyle.textBlocks.append(block)
 
             self.paragraphs[styleName] = insetParaStyle
+            return insetParaStyle
         }
-        
-        return insetParaStyle
     }
 
 
@@ -948,7 +948,7 @@ class PMStyler {
      */
     private func renderCurrentTable() -> NSMutableAttributedString {
         
-        if let data: Data = self.currentTable.data(using: .utf8) {
+        if let data: Data = self.currentTable.data(using: .utf16) {
             if let tableString: NSMutableAttributedString = NSMutableAttributedString.init(html: data, documentAttributes: nil) {
                 // Now we have to set our font style for each element within the table
                 tableString.enumerateAttribute(.font, in: NSMakeRange(0, tableString.length)) { (value: Any?, range: NSRange, got: UnsafeMutablePointer<ObjCBool>) in
@@ -1057,7 +1057,7 @@ class PMStyler {
         let quoteParaStyle: NSMutableParagraphStyle     = NSMutableParagraphStyle()
         quoteParaStyle.lineSpacing                      = self.lineSpacing
         quoteParaStyle.paragraphSpacing                 = self.paraSpacing * 2.0
-        quoteParaStyle.alignment                        = .left
+        quoteParaStyle.alignment                        = .right
         quoteParaStyle.paragraphSpacingBefore           = self.paraSpacing
         quoteParaStyle.headIndent                       = self.BLOCK_INSET_BASE
         quoteParaStyle.firstLineHeadIndent              = self.BLOCK_INSET_BASE
@@ -1088,37 +1088,30 @@ class PMStyler {
         self.colours.body  = self.bodyColour
         
         // Generate specific paragraph entity styles
-        // H1
         self.styles["h1"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("strong", self.fontSize * H1_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // H2
         self.styles["h2"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("strong", self.fontSize * H2_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // H3
         self.styles["h3"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("strong", self.fontSize * H3_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // H4
         self.styles["h4"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("strong", self.fontSize * H4_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // H5
         self.styles["h5"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("strong", self.fontSize * H5_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // H6
         self.styles["h6"]           = [.foregroundColor: self.colours.head,
                                        .font: makeFont("plain", self.fontSize *  H6_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // P
         self.styles["p"]            = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
@@ -1128,34 +1121,27 @@ class PMStyler {
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         // Set the character styles we need
-        // A
         self.styles["a"]            = [.foregroundColor: self.colours.link,
                                        .underlineStyle: NSUnderlineStyle.single.rawValue as NSNumber,
                                        .underlineColor: self.colours.link]
         
-        // EM
         self.styles["em"]           = [.foregroundColor: self.colours.body,
                                        .font: makeFont("em", self.fontSize)]
         
-        // STRONG
         self.styles["strong"]       = [.foregroundColor: self.colours.body,
                                        .font: makeFont("strong", self.fontSize)]
         
-        // CODE
         self.styles["code"]         = [.foregroundColor: self.colours.code,
                                        .font: makeFont("code", self.fontSize)]
         
-        // KBD
         self.styles["kbd"]          = [.foregroundColor: NSColor.white,
                                        .underlineColor: NSColor.gray,
                                        .underlineStyle: NSUnderlineStyle.double.rawValue as NSNumber,
                                        .font: makeFont("code", self.fontSize)]
         
-        // S
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,
                                        .strikethroughColor: self.colours.body]
         
-        // SUB
         self.styles["sub"]          = [.font: makeFont("plain", self.fontSize / 1.5),
                                        .baselineOffset: -5.0 as NSNumber]
         
@@ -1163,27 +1149,22 @@ class PMStyler {
                                        .baselineOffset: 10.0 as NSNumber]
         
         // Set up the block styles we need
-        // PRE
         self.styles["pre"]          = [.foregroundColor: self.colours.code,
                                        .font: makeFont("code", self.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // BLOCKQUOTE
         self.styles["blockquote"]   = [.foregroundColor: self.colours.quote,
                                        .font: makeFont("strong", self.fontSize * H4_MULTIPLIER),
                                        .paragraphStyle: self.paragraphs["quote"]!]
         
-        // LI
         self.styles["li"]           = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.fontSize),
                                        .paragraphStyle: self.paragraphs["list"]!]
         
-        // IMG
         self.styles["img"]          = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.fontSize),
-                                       .paragraphStyle: self.paragraphs["line"]!]
+                                       .paragraphStyle: self.paragraphs["tabbed"]!]
         
-        // MISC
         self.styles["line"]         = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
@@ -1419,7 +1400,7 @@ class PMStyler {
         var canGet = false
         if self.currentImagePath.hasPrefix("http") {
             // TODO load in internet image
-            if doLoadWebContent {
+            if self.doLoadWebContent {
                 // TODO
             } else {
                 setMissingImage(imageAttachment)
@@ -1440,10 +1421,8 @@ class PMStyler {
         
         // IMG should be at the top the the stack, so we can return immediately
         let renderedImage = NSMutableAttributedString.init(attachment: imageAttachment)
-#if DEBUG2
-        renderedImage.append(NSAttributedString.init(string: " " + self.currentImagePath, attributes: self.styles["p"]))
-#endif
-        addNewLine(renderedImage)
+        renderedImage.append(NSAttributedString.init(string: "\n" + self.currentImagePath, attributes: self.styles["p"]))
+        //addNewLine(renderedImage)
         
         // Add the path as a tooltip. Does the even show?
         renderedImage.addAttribute(.toolTip, value: self.currentImagePath, range: NSRange(location: 0, length: renderedImage.length))

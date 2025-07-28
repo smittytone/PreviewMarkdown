@@ -32,7 +32,7 @@ class Common {
     
     var doShowLightBackground: Bool                                 = true
     // FROM 2.0.0
-    var viewWidth: CGFloat                                          = 512
+    //var viewWidth: CGFloat                                          = 512
     var fontSize: CGFloat                                           = 0.0
     var lineSpacing: CGFloat                                        = 1.0
     var workingDirectory: String                                    = ""
@@ -59,6 +59,7 @@ class Common {
      the previewer and thumbnailer extensions.
      */
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+    
 
 
     // MARK: - Lifecycle Functions
@@ -191,7 +192,10 @@ class Common {
         }
         
         // Get the markdown content that comes after the front matter (if there is any)
-        let markdownToRender: Substring = rawText[components.markdownStart!..<components.markdownEnd!]
+        var markdownToRender: Substring = rawText[components.markdownStart!..<components.markdownEnd!]
+        if markdownToRender.count == 0 {
+            markdownToRender = "*Empty File*"
+        }
         
         // Load in the Markdown converter
         let markdowner: PMMarkdowner? = PMMarkdowner.init()
@@ -205,7 +209,7 @@ class Common {
         if output.length == 0 && self.styler != nil {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
-            self.styler?.viewWidth = self.viewWidth
+            //self.styler?.viewWidth = self.viewWidth
             self.styler?.workingDirectory = self.workingDirectory
             
             if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
@@ -500,8 +504,7 @@ class Common {
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
         
         let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
-        let spaces = "                                                     "
-        let spaceString = String(spaces.suffix(indent))
+        let spaceString = String.init(repeating: " ", count: indent)
         let indentedString: NSMutableAttributedString = NSMutableAttributedString.init()
         indentedString.append(NSAttributedString.init(string: spaceString))
         indentedString.append(NSAttributedString.init(string: trimmedString))

@@ -134,7 +134,7 @@ class AppDelegate:  NSObject,
                         return reportError
                     }
                     
-                    common.viewWidth = self.previewTextView.frame.width
+                    //common.viewWidth = self.previewTextView.frame.width
                     common.doShowLightBackground = !self.renderAsDark
                     common.workingDirectory = (mdUrl.unixpath() as NSString).deletingLastPathComponent
 
@@ -153,7 +153,7 @@ class AppDelegate:  NSObject,
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter = PMLayouter()
-                                layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
+                                //layouter.lozengeColour = .
                                 layouter.fontSize = common.fontSize
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }

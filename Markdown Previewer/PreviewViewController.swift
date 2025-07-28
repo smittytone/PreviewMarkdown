@@ -66,7 +66,7 @@ class PreviewViewController: NSViewController,
                     
                     // FROM 2.0.0
                     // Pass on the initial width of the preview and the source file's directory
-                    common.viewWidth = self.renderTextView.bounds.width
+                    //common.viewWidth = self.renderTextView.bounds.width
                     common.workingDirectory = (url.path as NSString).deletingLastPathComponent
                     
                     // FROM 2.0.0
@@ -84,7 +84,7 @@ class PreviewViewController: NSViewController,
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
                             let layouter = PMLayouter()
-                            layouter.lozengeColour = NSColor.init(red: 0.5 , green: 0.5, blue: 0.5, alpha: 1.0)
+                            //layouter.lozengeColour = .red
                             layouter.fontSize = common.fontSize
                             layouter.lineSpacing = common.lineSpacing
                             renderTextContainer.replaceLayoutManager(layouter)

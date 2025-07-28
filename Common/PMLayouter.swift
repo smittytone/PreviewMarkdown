@@ -55,8 +55,8 @@ class PMLayouter: NSLayoutManager {
         if let colour: NSColor = self.lozengeColour {
             colour.setFill()
         } else {
-            // Default to dark grey CHANGE
-            NSColor.green.setFill()
+            // Default to dark grey
+            NSColor.systemGray.setFill()
         }
         
         path.fill()
