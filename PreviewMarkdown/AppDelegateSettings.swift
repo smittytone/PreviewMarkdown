@@ -16,6 +16,17 @@ extension AppDelegate {
     // MARK: - User Action Functions
     
     /**
+     Update UI when we are about to switch to it
+     */
+    internal func willShowSettingsPage() {
+        
+        // Disable the Feedback > Send button if we have sent a message.
+        // It will be re-enabled by typing something
+        self.applyButton.isEnabled = checkSettingsOnQuit()
+    }
+    
+    
+    /**
      When the font size slider is moved and released, this function updates the font size readout.
   
      FROM 1.2.0
@@ -26,8 +37,9 @@ extension AppDelegate {
     @IBAction
     internal func doMoveSlider(sender: Any) {
 
-         let index: Int = Int(self.fontSizeSlider.floatValue)
-         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        let index: Int = Int(self.fontSizeSlider.floatValue)
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        willShowSettingsPage()
      }
 
 
@@ -44,6 +56,7 @@ extension AppDelegate {
 
         let item: NSPopUpButton = sender as! NSPopUpButton
         setStylePopup(item == self.bodyFontPopup)
+        willShowSettingsPage()
     }
     
     
@@ -63,6 +76,7 @@ extension AppDelegate {
         let keys: [String] = ["heads", "code", "links", "quote"]
         let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
         self.currentSettings.displayColours[key] = self.headColourWell.color.hexString
+        willShowSettingsPage()
     }
 
 
@@ -91,10 +105,25 @@ extension AppDelegate {
             }
         }
 
-        // Set the colourwell with the stored colour
+        // Set the colourwell with the initial colour
         if let colour: String = self.currentSettings.displayColours[key] {
             self.headColourWell.color = NSColor.hexToColour(colour)
         }
+    }
+
+
+    /**
+     Handler for controls whose values are read.
+     
+     FROM 2.0.0
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction
+    internal func doChangeValue(sender: Any) {
+
+        willShowSettingsPage()
     }
 
 
@@ -114,6 +143,7 @@ extension AppDelegate {
              // Changes are present, so save them.
              // NOTE This call updates the current settings values from the Settings tab UI.
              saveSettings()
+             willShowSettingsPage()
          }
     }
 
@@ -131,7 +161,9 @@ extension AppDelegate {
     @IBAction
     internal func doApplyDefaultSettings(sender: Any) {
          
-         displaySettings(self.defaultSettings)
+        displaySettings(self.defaultSettings)
+        applyDefaultColours()
+        willShowSettingsPage()
      }
 
 
@@ -353,85 +385,6 @@ extension AppDelegate {
         displayedSettings.displayColours = self.currentSettings.displayColours
         self.currentSettings = displayedSettings
         self.currentSettings.saveSettings(self.appSuiteName)
-        
-        /*
-        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
-            if newValue != self.currentSettings.fontSize {
-                self.currentSettings.fontSize = newValue
-                defaults.setValue(newValue,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
-            }
-            
-            var state: Bool = self.useLightCheckbox.state == .on
-            if self.currentSettings.doShowLightBackground != state {
-                self.currentSettings.doShowLightBackground = state
-                defaults.setValue(state, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            }
-
-            state = self.showFrontMatterCheckbox.state == .on
-            if self.currentSettings.doShowFrontMatter != state {
-                self.currentSettings.doShowFrontMatter = state
-                defaults.setValue(state, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
-            }
-
-            if let psname: String = getPostScriptName(false) {
-                if psname != self.currentSettings.codeFontName {
-                    self.currentSettings.codeFontName = psname
-                    defaults.setValue(psname, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
-                }
-            }
-
-            if let psname = getPostScriptName(true) {
-                if psname != self.currentSettings.bodyFontName {
-                    self.currentSettings.bodyFontName = psname
-                    defaults.setValue(psname, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
-                }
-            }
-            
-            let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
-            var lineSpacing: CGFloat = 1.0
-            switch lineIndex {
-                case 1:
-                    lineSpacing = 1.15
-                case 2:
-                    lineSpacing = 1.5
-                case 3:
-                    lineSpacing = 2.0
-                default:
-                    lineSpacing = 1.0
-            }
-            
-            if self.currentSettings.lineSpacing != lineSpacing {
-                self.currentSettings.lineSpacing = lineSpacing
-                defaults.setValue(lineSpacing, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
-            }
-
-            if let newColour: String = self.currentSettings.displayColours["new_heads"] {
-                self.currentSettings.displayColours["heads"] = newColour
-                self.currentSettings.displayColours["new_heads"] = nil
-                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
-            }
-
-            if let newColour: String = self.currentSettings.displayColours["new_code"] {
-                self.currentSettings.displayColours["code"] = newColour
-                self.currentSettings.displayColours["new_code"] = nil
-                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
-            }
-
-            if let newColour: String = self.currentSettings.displayColours["new_links"] {
-                self.currentSettings.displayColours["links"] = newColour
-                self.currentSettings.displayColours["new_links"] = nil
-                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
-            }
-
-            if let newColour: String = self.currentSettings.displayColours["new_quote"] {
-                self.currentSettings.displayColours["quote"] = newColour
-                self.currentSettings.displayColours["new_quote"] = nil
-                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
-            }
-        }
-         */
     }
     
     
@@ -499,6 +452,20 @@ extension AppDelegate {
             if let _: String = self.currentSettings.displayColours["new_" + key] {
                 self.currentSettings.displayColours["new_" + key] = nil
             }
+        }
+    }
+    
+    
+    /**
+     Set colours to defaults any temporary colour values.
+     
+     FROM 2.0.0
+     */
+    internal func applyDefaultColours() {
+
+        let keys: [String] = ["heads", "code", "links", "quote"]
+        for key in keys {
+            self.currentSettings.displayColours["new_" + key] = self.defaultSettings.displayColours[key]
         }
     }
 }

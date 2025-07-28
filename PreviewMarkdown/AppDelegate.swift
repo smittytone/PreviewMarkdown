@@ -65,6 +65,7 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var colourSelectionPopup: NSPopUpButton!
+    @IBOutlet weak var applyButton: NSButton!
     
     // Window > Feedback Tab Items
     @IBOutlet weak var feedbackText: NSTextField!
@@ -164,7 +165,9 @@ final class AppDelegate: NSObject,
         
         // Add callback closures, one per tab, to the tab manager
         self.tabManager.callbacks.append(nil)   // Info tab
-        self.tabManager.callbacks.append(nil)   // Settings tab
+        self.tabManager.callbacks.append {      // Settings tab
+            self.willShowSettingsPage()
+        }
         self.tabManager.callbacks.append {
             self.willShowFeedbackPage()         // Feedback tab
         }

@@ -17,6 +17,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="applyButton" destination="kFy-Nr-jYW" id="auY-ol-XGY"/>
                 <outlet property="bodyFontPopup" destination="tcO-mr-eBH" id="gc7-Qr-swo"/>
                 <outlet property="bodyStylePopup" destination="eAc-MW-Aa2" id="mV6-v0-rx4"/>
                 <outlet property="codeFontPopup" destination="avr-vk-Cfi" id="7bY-dk-m6h"/>
@@ -1150,6 +1151,9 @@ running this app once more.</string>
                                                         <menuItem title="Italic" id="NV9-vi-hkE"/>
                                                     </items>
                                                 </menu>
+                                                <connections>
+                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="7Wz-vf-Hyd"/>
+                                                </connections>
                                             </popUpButtonCell>
                                         </popUpButton>
                                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RUJ-H0-Y69">
@@ -1165,6 +1169,9 @@ running this app once more.</string>
                                                         <menuItem title="Condensed" id="qUk-NQ-rYN"/>
                                                     </items>
                                                 </menu>
+                                                <connections>
+                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="eSm-th-Vu8"/>
+                                                </connections>
                                             </popUpButtonCell>
                                         </popUpButton>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07b-y9-FNN">
@@ -1221,6 +1228,9 @@ running this app once more.</string>
                                                         <menuItem title="Double" id="zMh-bK-QWf"/>
                                                     </items>
                                                 </menu>
+                                                <connections>
+                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="cJS-Mx-mGy"/>
+                                                </connections>
                                             </popUpButtonCell>
                                         </popUpButton>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rq-9E-THR">
@@ -1238,6 +1248,9 @@ running this app once more.</string>
                                             <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="mOs-nO-lDb">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
+                                                <connections>
+                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="pFO-7P-cfY"/>
+                                                </connections>
                                             </buttonCell>
                                         </button>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6Z-2z-3G7">
@@ -1246,6 +1259,9 @@ running this app once more.</string>
                                             <buttonCell key="cell" type="check" title="Style YAML front matter, if present" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="system"/>
+                                                <connections>
+                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="hRE-Oy-FA2"/>
+                                                </connections>
                                             </buttonCell>
                                         </button>
                                     </subviews>
