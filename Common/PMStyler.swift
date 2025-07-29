@@ -60,7 +60,7 @@ class PMStyler {
     private let HTML_TAG_START: String                                  = "<"
     private let HTML_TAG_END: String                                    = ">"
     
-#if DEBUG2
+#if PARASYM
     private let LINE_BREAK_SYMBOL: String                               = "†\u{2028}"
     private let LINE_FEED_SYMBOL: String                                = "¶\u{2029}"
 #else
@@ -119,17 +119,18 @@ class PMStyler {
     private func processTokenString() -> NSAttributedString? {
         
         // Rendering control variables
-        var isListItem: Bool                = false
-        var isNested: Bool                  = false
+        var isListItem: Bool                = false // Add a bullet or not
         var isBlockquote: Bool              = false
         var isPre: Bool                     = false
         
         var blockLevel: Int                 = 0
         var insetLevel: Int                 = 0
+        
         var orderedListCounts: [Int]        = Array.init(repeating: 0, count: 12)
         var listTypes: [ListType]           = Array.init(repeating: .bullet, count: 12)
+        var isListNested: [Bool]            = Array.init(repeating: false, count: 12)
         
-        var previousToken: String           = ""
+        var previousCloseToken: String      = ""
         
         // Font-less horizontal rule
         let hr: NSAttributedString          = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n",
@@ -149,11 +150,12 @@ class PMStyler {
         self.tokenString = self.tokenString.replacingOccurrences(of: self.WINDOWS_LINE_SYMBOL, with: "")
         
         // Render the HTML
+        var prefixWidth: CGFloat = 0.0
         var scanned: String? = nil
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
         
-#if DEBUG2
+#if INCHTML
         let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
@@ -193,10 +195,8 @@ class PMStyler {
                         listItemPrefix = "\(orderedListCounts[insetLevel]). "
                     }
                     
-                    // Set the paragraph style with the current indent
-                    // NOTE Really should take into account the correctly rendered width
-                    let prefixWidth = (listItemPrefix as NSString).size().width * 1.6
-                    self.styles["li"]?[.paragraphStyle] = makeInsetParagraphStyle(insetLevel, prefixWidth, 0.0)
+                    // Set the paragraph style with the current indent based on P style
+                    prefixWidth = (listItemPrefix as NSString).size(withAttributes: self.styles["p"]).width
                 }
                 
                 // Pre-formatted lines (ie. code) should be presented as a single paragraph with inner
@@ -212,29 +212,23 @@ class PMStyler {
                 if isBlockquote {
                     // Just make a block cell for the current inset.
                     // The whole block will be rendered at the final </block>
-                    let indent = insetLevel + blockLevel
-                    self.styles["blockquote"]?[.paragraphStyle] = makeBlockParagraphStyle(indent)
+                    self.styles["blockquote"]?[.paragraphStyle] = makeBlockParagraphStyle(insetLevel + blockLevel)
                 }
                 
                 // Nested paragraphs (P tags under LIs) need special handling. The first paragraph (ie.
                 // the one with the list prefix) is run on from the prefix; following paragraphs are
                 // inset to the same level.
-                // NOTE This is why we don't set `isNested` when we discover nesting above
-                if isNested {
-                    self.styles["li"]![.paragraphStyle] = makeInsetParagraphStyle(insetLevel, 20.0, listItemPrefix.isEmpty ? 20.0 : 0.0)
+                if insetLevel > 0 {
+                    // Add a suitable indented para spec to the LI style, inset as a multiple of 50pt
+                    self.styles["li"]?[.paragraphStyle] = makeInsetParagraphStyle(insetLevel,
+                                                                                  listItemPrefix.isEmpty ? prefixWidth : 0.0,
+                                                                                  prefixWidth)
                 }
-                
+
                 // Style the content if we have some...
                 if !content.isEmpty {
-                    var partialRenderedString: NSMutableAttributedString
                     if listItemPrefix.count > 0 {
-                        // Style the list prefix and then the content
-                        let listItemPrefixStyle: Style = Style.init()
-                        listItemPrefixStyle.name = "li"
-                        listItemPrefixStyle.type = .indent
-                        partialRenderedString = NSMutableAttributedString.init(attributedString: styleString(listItemPrefix, [listItemPrefixStyle]))
-                        partialRenderedString.append(styleString(content, styleStack))
-                        renderedString.append(partialRenderedString)
+                        renderedString.append(NSMutableAttributedString.init(attributedString: styleString(listItemPrefix + content, styleStack)))
                     } else {
                         // Style all other non-list content
                         renderedString.append(styleString(content, styleStack))
@@ -279,31 +273,29 @@ class PMStyler {
                         case "p":
                             break
                         /* Ordered or unordered lists */
-                        case "ul":
-                            fallthrough
                         case "ol":
                             // Reset the current level's inset count
                             orderedListCounts[insetLevel] = 0
-                            
+                            fallthrough
+                        case "ul":
                             // Reduce the inset level
+                            isListNested[insetLevel] = false
                             insetLevel -= 1
                             if insetLevel <= 0 {
                                 insetLevel = 0
-                                self.styles["li"]![.paragraphStyle] = self.paragraphs["list"]!
+                                self.styles["li"]?[.paragraphStyle] = self.paragraphs["list"]!
                             }
                             
                             // No style stacked for these
                             isStackOp = false
                         /* List items */
                         case "li":
-                            // TO-DO See what happens with inner nests
-                            if isNested {
-                               isNested = false
-                            }
-                            
-                            // Remove LFs on nested solitary </LI> tags
-                            if previousToken != "li" {
+                            // If the current list contains nested items, eg. Ps,
+                            // don't append a CR. Only do so if there is no nesting,
+                            // ie. on simple list items
+                            if isListNested[insetLevel] {
                                 doAddNewLine = false
+                                isListNested[insetLevel] = false
                             }
                         /* Blocks */
                         case "blockquote":
@@ -312,7 +304,7 @@ class PMStyler {
                             if blockLevel <= 0 {
                                 blockLevel = 0
                                 isBlockquote = false
-                                self.styles["blockquote"]![.paragraphStyle] = self.paragraphs["quote"]!
+                                self.styles["blockquote"]?[.paragraphStyle] = self.paragraphs["quote"]!
                             }
                             
                             // No style stacked for these
@@ -320,10 +312,10 @@ class PMStyler {
                         case "pre":
                             // Clear the current language
                             self.currentLanguage = ""
+                            isPre = false
                             
                             // No style stacked for these
                             isStackOp = false
-                            isPre = false
                         /* Tables */
                         case "table":
                             // Render the table here after detecting table end
@@ -342,18 +334,22 @@ class PMStyler {
                         // Get the style at the top of the stack...
                         let currentParagraphStyle = styleStack.removeLast()
 #if DEBUG
-                        print("[STACK] \(currentParagraphStyle.name) pulled (count: \(styleStack.count))")
+                        print("[STACK] pulled \(currentParagraphStyle.name) (count: \(styleStack.count))")
 #endif
 
                         // Add a tailing New Line if we need one after the para (only in certain cases)
                         if doAddNewLine && currentParagraphStyle.type != .character {
+#if PARATAG
+                            renderedString.append(NSMutableAttributedString.init(attributedString: styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+#else
                             renderedString.append(NSMutableAttributedString.init(attributedString: styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+#endif
                         }
                     }
                     
                     // Record the tag we've just processed, provided it's not related to a character style
                     if !["strong", "b", "em", "i", "a", "s", "img", "code", "kbd"].contains(closeToken) {
-                        previousToken = closeToken
+                        previousCloseToken = closeToken
                     }
                 }
             } else {
@@ -364,15 +360,16 @@ class PMStyler {
                     var token: String = openToken.lowercased()
                     
                     // This is the tag we will use to format the content. It may not
-                    // be the actual tag detected, eg. for LI- or BLOCKQUOTE-nested Ps we use LI
+                    // be the actual tag detected, eg. for LI- or BLOCKQUOTE-nested Ps we use LI or BLOCK
                     var tokenToApply: String = token
                     
                     // In special circumstances we need to add a New Line to the output.
                     // This is the flag we set to do so
-                    var doAddNewLinePrefix = false
+                    var doAddNewLineFirst = false
                     
                     /* Handle certain tokens outside of the switch statement
-                     because the raw tokens contain extra, non-comparable text */
+                       because the raw tokens contain extra, non-comparable text
+                     */
                     
                     // Check for a link. If we have one, get the destination and
                     // record it for processing later
@@ -397,7 +394,6 @@ class PMStyler {
                         getCodeLanguage(token)
                     }
                     
-                    // FROM 2.0.0
                     // Look for ol start="x" which indicates use of a fixed starting
                     // point for a numbered list
                     var numberedListStart = 0
@@ -407,8 +403,7 @@ class PMStyler {
                         token = "ol"
                     }
                     
-                    // Check for a table. If we have one, style it's heading grab the whole of
-                    // it up to the terminating token
+                    // Check for a table. If we have one, grab the whole of it up to the terminating token
                     if token.hasPrefix("table") {
                         tokenToApply = "none"
                         scanner.skipNextCharacter()
@@ -429,22 +424,21 @@ class PMStyler {
                             // Already inside another element? Set the style accordingly
                             if isBlockquote {
                                 tokenToApply = "blockquote"
+                                if insetLevel > 0 {
+                                    isListNested[insetLevel] = true
+                                }
                             } else if insetLevel > 0 {
                                 tokenToApply = "li"
-                                isNested = true
+                                isListNested[insetLevel] = true
                             }
                             /* Ordered or unordered lists and items */
                         case "ul":
                             fallthrough
                         case "ol":
-                            // Set the list type and increment the current indent
+                            // Set the list type
                             let listItem: ListType = token == "ul" ? .bullet : .number
                             
-                            if insetLevel > 0 {
-                                doAddNewLinePrefix = true
-                            }
-                            
-                            // Add an indentation level if we need to
+                            // Increment the indentation level and add the bullet and number counts to the stack
                             insetLevel += 1
                             if insetLevel == listTypes.count {
                                 listTypes.append(listItem)
@@ -454,10 +448,16 @@ class PMStyler {
                                 orderedListCounts[insetLevel] = numberedListStart
                             }
                             
-                            // Handle adjacent lists
-                            if previousToken == "ul" || previousToken == "ol" {
-                                doAddNewLinePrefix = true
+                            // Handle adjacent lists by adding a spacer between them.
+                            // Handle sub-lists by adding a spacer between them, but ONLY if the
+                            // parently list contains nested items
+                            if insetLevel > 1 && !isListNested[insetLevel - 1] || previousCloseToken == "ul" || previousCloseToken == "ol" {
+                                doAddNewLineFirst = true
                             }
+                            
+                            // Mark the parent list as containing nested items.
+                            // This ensures correct line-breaking when the parent items's </LI> tag is found
+                            isListNested[insetLevel - 1] = true
                         case "li":
                             // NOTE mdit has two LI modes: simple and nested.
                             //      Simple (short) text is placed immediately after the tag;
@@ -479,7 +479,7 @@ class PMStyler {
                         case "pre":
                             // ASSUMPTION PRE is ALWAYS followed by CODE (not in HTML, but certainly in MD->HTML)
                             isPre = true
-                            tokenToApply = "none"
+                            tokenToApply = "none"   // Don't push style to stack
                             /* Tokens that can be handled immediately */
                         case "hr":
                             renderedString.append(hr)
@@ -502,7 +502,7 @@ class PMStyler {
                     }
                     
 #if DEBUG
-                    NSLog("[TOKEN] -> \(token) as \(tokenToApply)")
+                    NSLog("[TOKEN] Found \(token), use as \(tokenToApply)")
 #endif
                     
                     // Compare the tag to use with those we apply.
@@ -515,6 +515,8 @@ class PMStyler {
                         // Set character styles (inherit style from parent)
                         if ["strong", "em", "a", "s", "img", "sub", "sup", "code", "kbd"].contains(tokenToApply) {
                             style.type = .character
+                            
+                            // Handle paragraph-level code, ie. code blocks not inlines
                             if tokenToApply == "code" && isPre {
                                 style.type = .paragraph
                             }
@@ -526,15 +528,14 @@ class PMStyler {
                         }
                         
                         // Record the tag for later use
-                        if style.type == .paragraph || style.type == .indent {
-                            previousOpenToken = tokenToApply
-                        }
+                        //if style.type == .paragraph || style.type == .indent {
+                        //    previousOpenToken = tokenToApply
+                        //}
                         
                         // Push the new style onto the stack
                         styleStack.append(style)
-                        
 #if DEBUG
-                        print("[STACK] \(style.name) pushed (count: \(styleStack.count))")
+                        print("[STACK] pushed \(style.name) (count: \(styleStack.count))")
 #endif
                     }
                     
@@ -547,8 +548,8 @@ class PMStyler {
                         addNewLine(renderedString, withLineBreak: true)
                     }
                     
-                    // Add a New Line prefix if we need to
-                    if doAddNewLinePrefix {
+                    // Add a New Line before the content if we need to
+                    if doAddNewLineFirst {
                         addNewLine(renderedString)
                     }
                 
@@ -690,10 +691,10 @@ class PMStyler {
      
      - Returns The inset NSParagraphStyle.
      */
-    internal func makeInsetParagraphStyle(_ inset: Int, _ headInset: CGFloat = 0.0, _ firstInset: CGFloat = 0.0) -> NSMutableParagraphStyle {
-        
-        let styleName: String = String.init(format: "inset%02d", inset)
-        
+    internal func makeInsetParagraphStyle(_ inset: Int, _ first: CGFloat = 0.0, _ rest: CGFloat = 0.0) -> NSMutableParagraphStyle {
+
+        let styleName: String = String.init(format: "inset%02d-%03.02f-%03.02f", inset, first, rest)
+
         if self.paragraphs[styleName] != nil {
             return self.paragraphs[styleName]!
         } else {
@@ -708,10 +709,9 @@ class PMStyler {
             insetParaStyle.lineSpacing = self.lineSpacing
             insetParaStyle.paragraphSpacing = self.paraSpacing
             insetParaStyle.alignment = .left
-            insetParaStyle.headIndent = headInset + (self.LIST_INSET_BASE * CGFloat(inset))
-            insetParaStyle.firstLineHeadIndent = firstInset + (self.LIST_INSET_BASE * CGFloat(inset))
+            insetParaStyle.headIndent = rest + (self.LIST_INSET_BASE * CGFloat(inset))
+            insetParaStyle.firstLineHeadIndent = first + (self.LIST_INSET_BASE * CGFloat(inset))
             insetParaStyle.textBlocks.append(block)
-
             self.paragraphs[styleName] = insetParaStyle
             return insetParaStyle
         }
@@ -841,7 +841,8 @@ class PMStyler {
      
      - Parameters
         - plainText: The raw string.
-        - styleList: The style stack.
+        - styleList: The style stack to apply. It's a param so that we can apply
+                     arbitrary stacks.
      
      - Returns An attributed string.
      */
@@ -973,15 +974,15 @@ class PMStyler {
                         tableString.addAttribute(.foregroundColor, value: self.colours.body!, range: range)
                     }
                 }
-                
+
                 return tableString
             }
         }
-        
+
         return NSMutableAttributedString.init()
     }
-    
-    
+
+
     /**
      Formmat a code string for presentation.
      
@@ -1012,8 +1013,8 @@ class PMStyler {
         // No highlighter, or no language detected, so render as plain
         return makePlainCodeParagraph(code, inset)
     }
-    
-    
+
+
     /**
      Add a base paragraph styled New Line symbol to the supplied attributed string.
      String passed by reference so this function only has side effects.
@@ -1023,8 +1024,13 @@ class PMStyler {
         - withLineBreak:  `true` to add a Line Break in place of a New Line. Default `false`.
      */
     private func addNewLine(_ renderedString: NSMutableAttributedString, withLineBreak: Bool = false) {
-        
-        renderedString.append(NSAttributedString(string: (withLineBreak ? self.LINE_BREAK_SYMBOL : self.LINE_FEED_SYMBOL), attributes: self.styles["p"]))
+
+#if PARATAG
+        let symbol = "<"+self.LINE_FEED_SYMBOL
+#else
+        let symbol = self.LINE_FEED_SYMBOL
+#endif
+        renderedString.append(NSAttributedString(string: (withLineBreak ? self.LINE_BREAK_SYMBOL : symbol), attributes: self.styles["p"]))
     }
     
     
