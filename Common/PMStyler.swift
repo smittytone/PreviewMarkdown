@@ -527,7 +527,7 @@ class PMStyler {
                         
                         // Record the tag for later use
                         if style.type == .paragraph || style.type == .indent {
-                            previousToken = tokenToApply
+                            previousOpenToken = tokenToApply
                         }
                         
                         // Push the new style onto the stack

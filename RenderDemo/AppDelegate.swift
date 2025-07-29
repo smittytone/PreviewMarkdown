@@ -6,7 +6,9 @@
 //  Copyright © 2024 Tony Smith. All rights reserved.
 //
 
-import Cocoa
+import AppKit
+import UniformTypeIdentifiers
+
 
 @main
 class AppDelegate:  NSObject,
@@ -72,6 +74,10 @@ class AppDelegate:  NSObject,
         self.openDialog!.allowsMultipleSelection = false
         self.openDialog!.delegate = self
         self.openDialog!.directoryURL = URL.init(fileURLWithPath: "")
+        
+        if let uti = UTType.init("net.daringfireball.markdown") {
+            self.openDialog!.allowedContentTypes = [uti]
+        }
 
         if self.openDialog!.runModal() == .OK {
             self.currentURL = self.openDialog!.url
