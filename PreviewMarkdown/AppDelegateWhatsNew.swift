@@ -86,7 +86,7 @@ extension AppDelegate {
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             defaults.setValue(false, forKey: key)
-#if DEBUG2
+#if DEBUG
             print("\(key) reset back to true")
             defaults.setValue(true, forKey: key)
 #endif
