@@ -18,7 +18,6 @@ class PMStyler {
     var fontSize: CGFloat                                               = 24.0
     var lineSpacing: CGFloat                                            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     var paraSpacing: CGFloat                                            = 18.0
-    //var viewWidth: CGFloat                                              = 1024.0
     var bodyFontName: String                                            = "SF Pro"
     var codeFontName: String                                            = "Menlo"
     var workingDirectory: String                                        = "/Users/"
@@ -228,11 +227,15 @@ class PMStyler {
                 // Style the content if we have some
                 if !content.isEmpty {
                     if listItemPrefix.count > 0 {
-                        renderedString.append(NSMutableAttributedString(attributedString: styleString(listItemPrefix + content, styleStack)))
-                    } else {
-                        // Style all other non-list content
-                        renderedString.append(styleString(content, styleStack))
+                        // Style the list prefix and then the content
+                        let listItemPrefixStyle = Style()
+                        listItemPrefixStyle.name = "li"
+                        listItemPrefixStyle.type = .indent
+                        renderedString.append(styleString(listItemPrefix, [listItemPrefixStyle]))
                     }
+
+                    // Style all other non-list content
+                    renderedString.append(styleString(content, styleStack))
                 }
                 
                 // Break out of the upper scanner loop if we're done
@@ -339,9 +342,9 @@ class PMStyler {
                         // Add a tailing New Line if we need one after the para (only in certain cases)
                         if doAddNewLine && currentParagraphStyle.type != .character {
 #if PARATAG
-                            renderedString.append(NSMutableAttributedString(attributedString: styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+                            renderedString.append(styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle]))
 #else
-                            renderedString.append(NSMutableAttributedString(attributedString: styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+                            renderedString.append(styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle]))
 #endif
                         }
                     }
