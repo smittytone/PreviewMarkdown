@@ -80,7 +80,12 @@ class PreviewViewController: NSViewController,
                     // Update the NSTextView
                     self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
                     self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
-                    
+
+                    // FROM 2.0.0
+                    // Correct way to set a text view's link colouring, etc. - and have it stick
+                    self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
+                                                              NSAttributedString.Key.cursor: NSCursor.pointingHand ]
+
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
                             let layouter = PMLayouter()
