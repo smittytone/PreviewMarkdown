@@ -11,14 +11,14 @@ import AppKit
 
 
 public class PMMarkdowner {
-    
+
     // MARK: - Private Properties
-    
+
     private let markdownerJavaScript: JSValue
-    
-    
+
+
     // MARK: - Constructor
-    
+
     /**
         The default initialiser.
      
@@ -49,8 +49,8 @@ public class PMMarkdowner {
         let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true, "breaks": true, "typographer": true], in: context)
         self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
-    
-    
+
+
     // MARK: - Primary Functions
     
     /**

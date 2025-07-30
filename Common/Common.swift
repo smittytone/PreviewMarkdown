@@ -29,17 +29,19 @@ class MarkdownComponents {
 class Common {
     
     // MARK: - Public Properties
-    
+
     var doShowLightBackground: Bool                                 = true
     // FROM 2.0.0
-    //var viewWidth: CGFloat                                          = 512
     var fontSize: CGFloat                                           = 0.0
     var lineSpacing: CGFloat                                        = 1.0
     var workingDirectory: String                                    = ""
-    
-    
+    var linkColor: NSColor                                          = .linkColor    // Used to pass the user's
+                                                                                    // preferred link colour up to
+                                                                                    // the main text view
+
+
     // MARK: - Private Properties
-    
+
     private var doShowFrontMatter: Bool                             = false
     // FROM 1.3.0
     // Front Matter string attributes...
@@ -52,14 +54,13 @@ class Common {
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
     private var isThumbnail: Bool                                   = false
-    
+
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
      the previewer and thumbnailer extensions.
      */
     private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    
 
 
     // MARK: - Lifecycle Functions
@@ -137,9 +138,12 @@ class Common {
                                                   .strikethroughColor: NSColor.labelColor])
         
         self.newLine = NSAttributedString.init(string: "\n", attributes: self.yamlValueAttributes)
+
+        // FROM 2.0.0
+        self.linkColor = NSColor.hexToColour(styler.colourValues.link)
     }
-    
-    
+
+
     // MARK: - The Primary Function
 
     /**

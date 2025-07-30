@@ -11,7 +11,7 @@ import AppKit
 
 
 extension Data {
-    
+
     /**
      Get the encoding of the string formed from data.
 
@@ -29,7 +29,7 @@ extension Data {
 
 
 extension NSMutableAttributedString {
-    
+
     /**
      Swap the paragraph style in all of the attributes of an NSMutableAttributedString
      with the supplied new paragraph style.
@@ -51,7 +51,7 @@ extension NSMutableAttributedString {
 
 
 extension Scanner {
-    
+
     /**
      Look ahead and return the next character in the sequence without
      altering the current location of the scanner.
@@ -68,20 +68,20 @@ extension Scanner {
         let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
         return nextChar
     }
-    
-    
+
+
+    /**
+     Step over the next character.
+     */
     func skipNextCharacter() {
-        
-        /**
-         Step over the next character.
-         */
+
         self.currentIndex = self.string.index(after: self.currentIndex)
     }
 }
 
 
 extension CGFloat {
-    
+
     /**
      Determine if the instance is near enough the specified value as makes no odds.
      
@@ -113,18 +113,26 @@ extension CGFloat {
 
 
 extension NSColor {
-    
+
     /**
      Generate a new NSColor from an RGB+A hex string..
 
      - Parameters
         - hex: The RGB+A hex string, eg.`AABBCCFF`.
 
-     - Returns An NSColor instance.
+     - Returns An NSColor object.
      */
     static func hexToColour(_ hex: String) -> NSColor {
-        
-        if hex.count != 8 {
+
+        var colourString: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+
+        if (colourString.hasPrefix("#")) {
+            // The colour is defined by a hex value
+            let index = colourString.index(colourString.startIndex, offsetBy: 1)
+            colourString = String(colourString[index...])
+        }
+
+        if colourString.count != 8 {
             return NSColor.red
         }
         
@@ -132,23 +140,25 @@ extension NSColor {
             return CGFloat(UInt8(hs, radix: 16) ?? 0)
         }
         
-        let hexns: NSString = hex as NSString
-        let red: CGFloat = hexToFloat(hexns.substring(with: NSRange.init(location: 0, length: 2))) / 255
-        let green: CGFloat = hexToFloat(hexns.substring(with: NSRange.init(location: 2, length: 2))) / 255
-        let blue: CGFloat = hexToFloat(hexns.substring(with: NSRange.init(location: 4, length: 2))) / 255
-        let alpha: CGFloat = hexToFloat(hexns.substring(with: NSRange.init(location: 6, length: 2))) / 255
+        let cns: NSString = colourString as NSString
+        let red: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 0, length: 2))) / 255
+        let green: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 2, length: 2))) / 255
+        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 4, length: 2))) / 255
+        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 6, length: 2))) / 255
         return NSColor.init(srgbRed: red, green: green, blue: blue, alpha: alpha)
     }
-    
-    
+
+
     /**
      Class function to return an NSColor object that matches the colour supplied as a RGBA hex value.
      
-     - Paramaters:
+     - Parameters:
         - colourValue: The colour as a hex string `RRGGBBAA`, eg `FF00AA88`.
-     */
-    static func colourFromHexString(_ colourValue: String) -> NSColor {
-        
+
+     - Returns An NSColor object.
+
+    static func cns(_ colourValue: String) -> NSColor {
+
         var colourString: String = colourValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         if (colourString.hasPrefix("#")) {
@@ -197,10 +207,10 @@ extension NSColor {
 
         return NSColor(red: CGFloat(r) / divisor, green: CGFloat(g) / divisor, blue: CGFloat(b) / divisor, alpha: alpha)
     }
-    
-    
+    */
+
     /**
-     Convert a colour's internal representation into an RGB+A hex string.
+     Property providing a colour's internal representation into an RGB+A hex string.
      */
     var hexString: String {
         
@@ -216,23 +226,25 @@ extension NSColor {
         let hexString: NSString = NSString(format: "%02X%02X%02X%02X", red, green, blue, alpha)
         return hexString as String
     }
-    
-    
-    
 }
 
 
 extension URL {
-    
+
+    /**
+     Get a Unix-styled path from a file URL.
+
+     - Returns The Unix-stype path.
+     */
     func unixpath() -> String {
-        
+
         return self.absoluteString.replacingOccurrences(of: "file://", with: "")
     }
 }
 
 
 extension NSApplication {
-    
+
     /**
      Determine if the Mac is currently presenting in light mode.
      

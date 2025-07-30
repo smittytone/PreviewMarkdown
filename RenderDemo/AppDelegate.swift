@@ -159,7 +159,6 @@ class AppDelegate:  NSObject,
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter = PMLayouter()
-                                //layouter.lozengeColour = .
                                 layouter.fontSize = common.fontSize
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }

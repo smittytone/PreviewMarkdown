@@ -12,13 +12,13 @@ import AppKit
 
 
 class PMLayouter: NSLayoutManager {
-    
+
     // The background of KDB lozenges
     var lozengeColour: NSColor?     = nil
     var fontSize: CGFloat           = 13.0
     var lineSpacing: CGFloat        = 1.0
-    
-    
+
+
     // Override this function to hijack double-line drawing and replace it with
     // a lozenge. We use this for <kdb>...</kdb> tags in PreviewMarkdown.
     override func drawUnderline(forGlyphRange glyphRange: NSRange,

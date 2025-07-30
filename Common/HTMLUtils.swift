@@ -41,7 +41,7 @@ internal class HTMLUtils {
         }
     }
 
-    
+
     /**
      Decode a numerically encoded HTML character entity to the corresponding Unicode character.
      

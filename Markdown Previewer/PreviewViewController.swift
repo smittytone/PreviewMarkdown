@@ -89,7 +89,6 @@ class PreviewViewController: NSViewController,
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
                             let layouter = PMLayouter()
-                            //layouter.lozengeColour = .red
                             layouter.fontSize = common.fontSize
                             layouter.lineSpacing = common.lineSpacing
                             renderTextContainer.replaceLayoutManager(layouter)
