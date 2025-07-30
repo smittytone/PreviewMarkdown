@@ -39,19 +39,19 @@ class ThumbnailProvider: QLThumbnailProvider {
         do {
             // Get the file contents as a string, making sure it's not cached
             // as we're not going to read it again any time soon
-            let data: Data = try Data.init(contentsOf: request.fileURL, options: [.uncached])
+            let data: Data = try Data(contentsOf: request.fileURL, options: [.uncached])
 
             // FROM 1.4.3
             // Get the string's encoding, or fail back to .utf8
             let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
-            guard let markdownString: String = String.init(data: data, encoding: encoding) else {
+            guard let markdownString: String = String(data: data, encoding: encoding) else {
                 handler(nil, ThumbnailerError.badFileLoad(request.fileURL.path))
                 return
             }
 
             // Instantiate the common code for a thumbnail ('true')
-            guard let common: Common = Common.init(true) else {
+            guard let common: Common = Common(true) else {
                 handler(nil, ThumbnailerError.appComponentMissing)
                 return
             }
@@ -64,7 +64,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
             // Instantiate an NSTextField to display the NSAttributedString render of the Markdown,
             // and extend the size of its frame
-            let markdownTextField: NSTextField = NSTextField.init(frame: markdownFrame)
+            let markdownTextField: NSTextField = NSTextField(frame: markdownFrame)
             markdownTextField.lineBreakMode = .byTruncatingTail
             markdownTextField.attributedStringValue = common.getAttributedString(markdownString[...])
 
@@ -90,7 +90,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                     (thumbnailFrame.height * request.scale) + 2.0)
 
                 // Pass a QLThumbnailReply and no error to the supplied handler
-                handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
+                handler(QLThumbnailReply(contextSize: thumbnailFrame.size) { (context) -> Bool in
                     // `scaleFrame` and `cgImage` are immutable
                     context.draw(image, in: scaleFrame, byTiling: false)
                     return true

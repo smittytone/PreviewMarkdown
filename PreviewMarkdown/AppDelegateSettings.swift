@@ -12,7 +12,7 @@ import AppKit
 
 
 extension AppDelegate {
-    
+
     // MARK: - User Action Functions
     
     /**
@@ -24,8 +24,8 @@ extension AppDelegate {
         // It will be re-enabled by typing something
         self.applyButton.isEnabled = checkSettingsOnQuit()
     }
-    
-    
+
+
     /**
      When the font size slider is moved and released, this function updates the font size readout.
   
@@ -58,8 +58,8 @@ extension AppDelegate {
         setStylePopup(item == self.bodyFontPopup)
         willShowSettingsPage()
     }
-    
-    
+
+
     /**
      Update the colour preferences dictionary with a value from the
      colour well when a colour is chosen.
@@ -268,8 +268,8 @@ extension AppDelegate {
             }
         }
     }
-    
-    
+
+
     /**
      Update the UI with the supplied settings.
      
@@ -325,8 +325,8 @@ extension AppDelegate {
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
         self.lineSpacingPopup.selectItem(at: linespacingValues.firstIndex(of: round(settings.lineSpacing * 100) / 100.0) ?? 0)
     }
-    
-    
+
+
     /**
      Generate a set of settings derived from the state of the UI - except for the colour values,
      as these are stored directly in the current settings store. THIS WILL CHANGE
@@ -351,8 +351,8 @@ extension AppDelegate {
         
         return displayedSettings
     }
-    
-    
+
+
     /**
      Populate the current settings value with those read from disk.
      */
@@ -370,8 +370,8 @@ extension AppDelegate {
             self.initialLoadDone = true
         }
     }
-    
-    
+
+
     /**
      Write Settings page state values to disk, but only those that have been changed.
      If this happens, also update the current settings store
@@ -386,8 +386,8 @@ extension AppDelegate {
         self.currentSettings = displayedSettings
         self.currentSettings.saveSettings(self.appSuiteName)
     }
-    
-    
+
+
     /**
      Compare the current Settings page values to those we have stored in `currentSettings`.
      If any are different, we need to warn the user.
@@ -438,8 +438,8 @@ extension AppDelegate {
         
         return settingsHaveChanged
     }
-    
-    
+
+
     /**
      Zap any temporary colour values.
      
@@ -454,8 +454,8 @@ extension AppDelegate {
             }
         }
     }
-    
-    
+
+
     /**
      Set colours to defaults any temporary colour values.
      

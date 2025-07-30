@@ -15,7 +15,7 @@ import Foundation
  */
 
 class PMSettings {
-    
+
     var doShowLightBackground: Bool         = false
     var doShowFrontMatter: Bool             = false
     
@@ -31,8 +31,8 @@ class PMSettings {
     
     var fontSize: CGFloat                   = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
     var lineSpacing: CGFloat                = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    
-    
+
+
     /**
      Populate the current settings value with those read from disk.
      */
@@ -52,8 +52,8 @@ class PMSettings {
             self.displayColours["quote"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
         }
     }
-    
-    
+
+
     /**
      Write Settings page state values to disk, but only those that have been changed.
      If this happens, also update the current settings store

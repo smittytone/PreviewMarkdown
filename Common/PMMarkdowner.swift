@@ -36,8 +36,8 @@ public class PMMarkdowner {
         }
 
         // Check the JavaScript or fail
-        let context: JSContext = JSContext.init()
-        let markdownerJavaScriptString: String = try! String.init(contentsOfFile: markdownerJavaScriptPath)
+        let context: JSContext = JSContext()
+        let markdownerJavaScriptString: String = try! String(contentsOfFile: markdownerJavaScriptPath)
         let _ = context.evaluateScript(markdownerJavaScriptString)
         guard let localMarkdownerJavaScript = context.globalObject.objectForKeyedSubscript("markdownit") else {
             return nil
@@ -46,7 +46,7 @@ public class PMMarkdowner {
         // Store the results for later
         // NOTE Set "html" because Markdown-It 14 doesn't do this automatically,
         //      Set "breaks" to convert <br> to CR
-        let markdownerHtmlOption: JSValue = JSValue.init(object: ["html": true, "breaks": true, "typographer": true], in: context)
+        let markdownerHtmlOption: JSValue = JSValue(object: ["html": true, "breaks": true, "typographer": true], in: context)
         self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
 

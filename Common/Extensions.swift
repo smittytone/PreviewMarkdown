@@ -141,11 +141,11 @@ extension NSColor {
         }
         
         let cns: NSString = colourString as NSString
-        let red: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 0, length: 2))) / 255
-        let green: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 2, length: 2))) / 255
-        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 4, length: 2))) / 255
-        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange.init(location: 6, length: 2))) / 255
-        return NSColor.init(srgbRed: red, green: green, blue: blue, alpha: alpha)
+        let red: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 0, length: 2))) / 255
+        let green: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 2, length: 2))) / 255
+        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 4, length: 2))) / 255
+        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 6, length: 2))) / 255
+        return NSColor(srgbRed: red, green: green, blue: blue, alpha: alpha)
     }
 
 

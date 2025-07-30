@@ -15,15 +15,15 @@ import AppKit
  */
 
 class PMTabManager {
-    
+
     // MARK: - Public Properties
     
     var buttons: [NSButton] = []
     var callbacks: [(()->Void)?] = []
     var parent: AppDelegate? = nil
     var currentIndex: Int = 0
-    
-    
+
+
     // MARK: - Functions
     
     /**
@@ -35,8 +35,8 @@ class PMTabManager {
         
         return self.buttons[self.currentIndex]
     }
-    
-    
+
+
     /**
      Process the action of clicking one of the tab manager's buttons.
      
@@ -91,8 +91,8 @@ class PMTabManager {
             appDelegate.mainTabView.selectTabViewItem(at: nextIndex)
         }
     }
-    
-    
+
+
     /**
      Auto-click a button by passing in the 'clicked' button.
      */
@@ -100,8 +100,8 @@ class PMTabManager {
         
         buttonClicked(button)
     }
-    
-    
+
+
     /**
      Auto-click a button by passing in the index of the 'clicked' button.
      */

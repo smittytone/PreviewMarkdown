@@ -16,7 +16,7 @@ final class PreviewMarkdown2Tests: XCTestCase {
     
     let appDelegate = NSApplication.shared.delegate as! AppDelegate
     let pvc: PreviewViewController = PreviewViewController()
-    let cwm = Common.init()
+    let cwm = Common()
     let pms: PMStyler = PMStyler()
     
     override func setUpWithError() throws {

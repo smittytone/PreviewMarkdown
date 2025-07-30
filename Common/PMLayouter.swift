@@ -1,6 +1,6 @@
 //
 //  PMLayouter.swift
-//  PreviewMarkdown
+//  NSLayoutManager for text lozenge handling
 //
 //  Created by Tony Smith on 05/09/2024.
 //  Copyright © 2025 Tony Smith. All rights reserved.
@@ -51,7 +51,7 @@ class PMLayouter: NSLayoutManager {
         lozengeRect.size.height = lozengeRect.size.height / self.lineSpacing
         
         // Draw and fill rounded path over lozenge
-        let path = NSBezierPath.init(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
+        let path = NSBezierPath(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
         if let colour: NSColor = self.lozengeColour {
             colour.setFill()
         } else {

@@ -14,7 +14,7 @@ import Foundation
  Utility class for processing certain HTML entities.
  */
 internal class HTMLUtils {
-    
+
     /**
      Decode the HTML character entity to the corresponding Unicode character.
      

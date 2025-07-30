@@ -34,7 +34,7 @@ extension AppDelegate {
     internal func runProcess(app path: String, with args: [String]) -> Bool {
         
         let task: Process = Process()
-        task.executableURL = URL.init(fileURLWithPath: path)
+        task.executableURL = URL(fileURLWithPath: path)
         task.arguments = args
         
         // Pipe out the output to avoid putting it in the log
@@ -71,8 +71,8 @@ extension AppDelegate {
         
         return true
     }
-    
-    
+
+
     // MARK: - Finder Database Reset Functions
     
     internal func warnUserAboutReset() {
@@ -101,8 +101,8 @@ extension AppDelegate {
             }
         }
     }
-    
-    
+
+
     /**
      Reset Finder's launch services database using a sub-process.
      */
@@ -144,9 +144,9 @@ extension AppDelegate {
         return alert
     }
 
-    
+
     // MARK: - Data Generator Functions
-    
+
     /**
      Build a basic 'major-manor' version string for prefs usage.
 
@@ -211,7 +211,7 @@ extension AppDelegate {
         
         if FileManager.default.fileExists(atPath: samplePath) {
             // Create a URL reference to the sample file
-            let sampleURL = URL.init(fileURLWithPath: samplePath)
+            let sampleURL = URL(fileURLWithPath: samplePath)
             
             do {
                 // Read back the UTI from the URL
@@ -233,8 +233,8 @@ extension AppDelegate {
         
         return localUTI
     }
-    
-    
+
+
     /**
      Disable all panel-opening menu items.
      */
@@ -243,8 +243,8 @@ extension AppDelegate {
         self.helpMenuWhatsNew.isEnabled = false
         self.mainMenuResetFinder.isEnabled = false
     }
-    
-    
+
+
     /**
      Enable all panel-opening menu items.
      */
@@ -253,8 +253,8 @@ extension AppDelegate {
         self.helpMenuWhatsNew.isEnabled = true
         self.mainMenuResetFinder.isEnabled = true
     }
-    
-    
+
+
     /**
      Determine whether the host Mac is in light mode.
      
@@ -265,8 +265,8 @@ extension AppDelegate {
         let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
         return (appearNameString == "NSAppearanceNameAqua")
     }
-    
-    
+
+
     func applicationSupportsSecureRestorableState() -> Bool {
         
         return true

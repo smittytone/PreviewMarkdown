@@ -1,6 +1,6 @@
 /*
  *  Common.swift
- *  Code common to Previewer and Thumbnailer
+ *  Code common to Markdown Previewer and Markdown Thumbnailer
  *
  *  Created by Tony Smith on 23/09/2020.
  *  Copyright © 2025 Tony Smith. All rights reserved.
@@ -27,7 +27,7 @@ class MarkdownComponents {
 // FROM 1.4.0
 // Implement common code as a class
 class Common {
-    
+
     // MARK: - Public Properties
 
     var doShowLightBackground: Bool                                 = true
@@ -43,17 +43,17 @@ class Common {
     // MARK: - Private Properties
 
     private var doShowFrontMatter: Bool                             = false
+    private var isThumbnail: Bool                                   = false
     // FROM 1.3.0
     // Front Matter string attributes...
     private var yamlKeyAttributes: [NSAttributedString.Key:Any]     = [:]
     private var yamlValueAttributes: [NSAttributedString.Key:Any]   = [:]
     // Front Matter rendering artefacts...
-    private var hr: NSAttributedString                              = NSAttributedString.init(string: "")
-    private var newLine: NSAttributedString                         = NSAttributedString.init(string: "")
+    private var hr: NSAttributedString                              = NSAttributedString(string: "")
+    private var newLine: NSAttributedString                         = NSAttributedString(string: "")
     // FROM 2.0.0
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
-    private var isThumbnail: Bool                                   = false
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -64,13 +64,13 @@ class Common {
 
 
     // MARK: - Lifecycle Functions
-    
+
     init?(_ isThumbnail: Bool = false) {
         
         self.isThumbnail = isThumbnail
         
         // Instantiate styler
-        self.styler = PMStyler.init()
+        self.styler = PMStyler()
         guard let styler = self.styler else {
             return nil
         }
@@ -91,10 +91,10 @@ class Common {
             styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
             styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
             
-            styler.codeFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            styler.bodyFontName   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            
-            styler.lineSpacing    = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+            styler.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
+            styler.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+
+            styler.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
         }
         
         // Just in case the above block reads in zero values
@@ -114,7 +114,7 @@ class Common {
         // FROM 1.3.0
         // Set the front matter key:value fonts and sizes
         var font: NSFont
-        if let otherFont = NSFont.init(name: styler.codeFontName, size: styler.fontSize) {
+        if let otherFont = NSFont(name: styler.codeFontName, size: styler.fontSize) {
             font = otherFont
         } else {
             // This should not be hit, but just in case...
@@ -137,7 +137,7 @@ class Common {
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                                   .strikethroughColor: NSColor.labelColor])
         
-        self.newLine = NSAttributedString.init(string: "\n", attributes: self.yamlValueAttributes)
+        self.newLine = NSAttributedString(string: "\n", attributes: self.yamlValueAttributes)
 
         // FROM 2.0.0
         self.linkColor = NSColor.hexToColour(styler.colourValues.link)
@@ -157,7 +157,7 @@ class Common {
     func getAttributedString(_ rawText: Substring) -> NSAttributedString {
 
         // Process the markdown string
-        var output: NSMutableAttributedString = NSMutableAttributedString.init(string: "")
+        var output: NSMutableAttributedString = NSMutableAttributedString(string: "")
         
         // Look for YAML front matter
         var frontMatter: Substring = ""
@@ -202,22 +202,21 @@ class Common {
         }
         
         // Load in the Markdown converter
-        let markdowner: PMMarkdowner? = PMMarkdowner.init()
+        let markdowner: PMMarkdowner? = PMMarkdowner()
         if markdowner == nil {
             // Missing JS code file or other init error
-            output = NSMutableAttributedString.init(string: "Could not instantiate MDJS",
-                                                    attributes: self.yamlValueAttributes)
+            output = NSMutableAttributedString(string: "Could not instantiate MDJS",
+                                               attributes: self.yamlValueAttributes)
         }
         
         // Render the Markdown
         if output.length == 0 && self.styler != nil {
             // No error encountered getting the JavaScript so proceed to render the string
             // First set up the styler with the chosen settings
-            //self.styler?.viewWidth = self.viewWidth
             self.styler?.workingDirectory = self.workingDirectory
             
             if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
-                output = NSMutableAttributedString.init(attributedString: attStr)
+                output = NSMutableAttributedString(attributedString: attStr)
                 
                 // Render YAML front matter if requested by the user, and we're not
                 // rendering a thumbnail image (this is for previews only)
@@ -226,7 +225,7 @@ class Common {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
                         
                         // Assemble the front matter string
-                        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: "", attributes: self.yamlValueAttributes)
+                        let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: "", attributes: self.yamlValueAttributes)
                         
                         // Initial line
                         renderedString.append(self.hr)
@@ -254,15 +253,12 @@ class Common {
                         }
                         
                         // Assemble the error string
-                        let errorString: NSMutableAttributedString = NSMutableAttributedString.init(string: "Could not render the front matter. Error: " + yamlErrString,
-                                                                                                    attributes: self.yamlKeyAttributes)
-                        
-                        // Should we include the raw text?
-                        // At least the user can see the data this way
+                        let errorString: NSMutableAttributedString = NSMutableAttributedString(string: "Could not render the front matter. Error: " + yamlErrString, attributes: self.yamlKeyAttributes)
+
 #if DEBUG
                         errorString.append(self.hr)
-                        errorString.append(NSMutableAttributedString.init(string: String(frontMatter),
-                                                                          attributes: self.yamlValueAttributes))
+                        errorString.append(NSMutableAttributedString(string: String(frontMatter),
+                                                                     attributes: self.yamlValueAttributes))
 #endif
                         
                         errorString.append(self.hr)
@@ -271,16 +267,16 @@ class Common {
                     }
                 }
             } else {
-                output = NSMutableAttributedString.init(string: "Could not render markdown string",
-                                                        attributes: self.yamlKeyAttributes)
+                output = NSMutableAttributedString(string: "Could not render markdown string",
+                                                   attributes: self.yamlKeyAttributes)
             }
         }
 
         // FROM 1.3.0
         // Guard against non-trapped errors
         if output.length == 0 {
-            return NSAttributedString.init(string: "No valid Markdown to render.",
-                                           attributes: self.yamlKeyAttributes)
+            return NSAttributedString(string: "No valid Markdown to render.",
+                                      attributes: self.yamlKeyAttributes)
         }
         
         // Return the rendered NSAttributedString to Previewer or Thumbnailer
@@ -304,7 +300,7 @@ class Common {
     func getFrontMatter(_ rawText: Substring) -> MarkdownComponents {
         
         // Assume the data is ALL markdown to begin with
-        let components: MarkdownComponents = MarkdownComponents.init()
+        let components: MarkdownComponents = MarkdownComponents()
         components.markdownStart = rawText.startIndex
         components.markdownEnd = rawText.endIndex
         
@@ -358,8 +354,8 @@ class Common {
      */
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
         
-        let returnString: NSMutableAttributedString = NSMutableAttributedString.init(string: "",
-                                                                                     attributes: yamlKeyAttributes)
+        let returnString: NSMutableAttributedString = NSMutableAttributedString(string: "",
+                                                                                attributes: yamlKeyAttributes)
         
         switch (part) {
         case .array:
@@ -462,14 +458,14 @@ class Common {
 
                 returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
                                            range: NSMakeRange(0, returnString.length))
-                returnString.append(isKey ? NSAttributedString.init(string: " ", attributes: self.yamlValueAttributes) : self.newLine)
+                returnString.append(isKey ? NSAttributedString(string: " ", attributes: self.yamlValueAttributes) : self.newLine)
                 return returnString
             }
         case .null:
             returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
             returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
                                        range: NSMakeRange(0, returnString.length))
-            returnString.append(isKey ? NSAttributedString.init(string: " ") : self.newLine)
+            returnString.append(isKey ? NSAttributedString(string: " ") : self.newLine)
             return returnString
         default:
             // Place all the scalar values here
@@ -508,10 +504,10 @@ class Common {
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
         
         let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
-        let spaceString = String.init(repeating: " ", count: indent)
-        let indentedString: NSMutableAttributedString = NSMutableAttributedString.init()
-        indentedString.append(NSAttributedString.init(string: spaceString))
-        indentedString.append(NSAttributedString.init(string: trimmedString))
+        let spaceString = String(repeating: " ", count: indent)
+        let indentedString: NSMutableAttributedString = NSMutableAttributedString()
+        indentedString.append(NSAttributedString(string: spaceString))
+        indentedString.append(NSAttributedString(string: trimmedString))
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
     }
 

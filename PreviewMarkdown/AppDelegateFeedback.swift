@@ -12,7 +12,7 @@ import AppKit
 
 
 extension AppDelegate {
-    
+
     /**
      Set up the UI for the first time.
      */
@@ -24,8 +24,8 @@ extension AppDelegate {
         self.messageSizeLabel.stringValue = "0/512"
         self.messageSendButton.isEnabled = false
     }
-    
-    
+
+
     /**
      Update UI when we are about to switch to it
      */
@@ -35,8 +35,8 @@ extension AppDelegate {
         // It will be re-enabled by typing something
         self.messageSendButton.isEnabled = (!self.feedbackText.stringValue.isEmpty && !self.hasSentFeedback)
     }
-    
-    
+
+
     /**
      Check if feedback has been entered and, if so, whether it has been sent.
      
@@ -52,8 +52,8 @@ extension AppDelegate {
         
         return true
     }
-    
-    
+
+
     /**
      The user clicked the Feedback > Send button, so get the message (if there is one)
      from the text field and send it off.
@@ -88,8 +88,8 @@ extension AppDelegate {
         // Restore menus
         showPanelGenerators()
     }
-    
-    
+
+
     // MARK: - Alert Functions
     
     /**
@@ -138,10 +138,12 @@ extension AppDelegate {
         // Set the text length label
         self.messageSizeLabel.stringValue = "\(self.feedbackText.stringValue.count)/\(BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE)"
     }
-    
-    
+
+
     /**
      Briefly set the Text Field's background to red.
+
+     FROM 2.0.0
      */
     func flashField() {
         

@@ -12,8 +12,7 @@ import AppKit
 
 
 extension AppDelegate {
-    
-    
+
     /**
      Show the **What's New** sheet.
 
@@ -59,8 +58,8 @@ extension AppDelegate {
             
             // Just in case, make sure we can load the file
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
-                let htmlFileURL = URL.init(fileURLWithPath: htmlFolderPath + "/new.html")
-                let htmlFolderURL = URL.init(fileURLWithPath: htmlFolderPath)
+                let htmlFileURL = URL(fileURLWithPath: htmlFolderPath + "/new.html")
+                let htmlFolderURL = URL(fileURLWithPath: htmlFolderPath)
                 self.whatsNewNav = self.whatsNewWebView.loadFileURL(htmlFileURL, allowingReadAccessTo: htmlFolderURL)
             }
         }

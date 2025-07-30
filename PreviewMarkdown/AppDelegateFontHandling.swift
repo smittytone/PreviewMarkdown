@@ -54,7 +54,7 @@ extension AppDelegate {
             if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
                 // This will hold a font family: individual fonts will be added to
                 // the 'styles' array
-                var familyRecord: PMFont = PMFont.init()
+                var familyRecord: PMFont = PMFont()
                 familyRecord.displayName = family
                 
                 for font: [Any] in fonts {
@@ -71,7 +71,7 @@ extension AppDelegate {
                     
                     if doUseFont {
                         // The font is good to use, so add it to the list
-                        var fontRecord: PMFont = PMFont.init()
+                        var fontRecord: PMFont = PMFont()
                         fontRecord.postScriptName = psname
                         fontRecord.styleName = font[1] as! String
                         fontRecord.traits = traits
@@ -139,7 +139,7 @@ extension AppDelegate {
         // FROM 1.5.0
         // Select a style if none selected
         if targetPopup.selectedItem == nil {
-            targetPopup.selectItem(at: 0);
+            targetPopup.selectItem(at: 0)
         }
     }
 

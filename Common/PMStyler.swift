@@ -126,9 +126,9 @@ class PMStyler {
         var blockLevel: Int                 = 0
         var insetLevel: Int                 = 0
         
-        var orderedListCounts: [Int]        = Array.init(repeating: 0, count: 12)
-        var listTypes: [ListType]           = Array.init(repeating: .bullet, count: 12)
-        var isListNested: [Bool]            = Array.init(repeating: false, count: 12)
+        var orderedListCounts: [Int]        = Array(repeating: 0, count: 12)
+        var listTypes: [ListType]           = Array(repeating: .bullet, count: 12)
+        var isListNested: [Bool]            = Array(repeating: false, count: 12)
         
         var previousCloseToken: String      = ""
         
@@ -228,7 +228,7 @@ class PMStyler {
                 // Style the content if we have some
                 if !content.isEmpty {
                     if listItemPrefix.count > 0 {
-                        renderedString.append(NSMutableAttributedString.init(attributedString: styleString(listItemPrefix + content, styleStack)))
+                        renderedString.append(NSMutableAttributedString(attributedString: styleString(listItemPrefix + content, styleStack)))
                     } else {
                         // Style all other non-list content
                         renderedString.append(styleString(content, styleStack))
@@ -339,9 +339,9 @@ class PMStyler {
                         // Add a tailing New Line if we need one after the para (only in certain cases)
                         if doAddNewLine && currentParagraphStyle.type != .character {
 #if PARATAG
-                            renderedString.append(NSMutableAttributedString.init(attributedString: styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+                            renderedString.append(NSMutableAttributedString(attributedString: styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
 #else
-                            renderedString.append(NSMutableAttributedString.init(attributedString: styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
+                            renderedString.append(NSMutableAttributedString(attributedString: styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle])))
 #endif
                         }
                     }
@@ -778,7 +778,7 @@ class PMStyler {
      */
     internal func makeInsetParagraphStyle(_ inset: Int, _ first: CGFloat = 0.0, _ rest: CGFloat = 0.0) -> NSMutableParagraphStyle {
 
-        let styleName: String = String.init(format: "inset%02d-%03.02f-%03.02f", inset, first, rest)
+        let styleName: String = String(format: "inset%02d-%03.02f-%03.02f", inset, first, rest)
 
         if self.paragraphs[styleName] != nil {
             return self.paragraphs[styleName]!
@@ -801,7 +801,7 @@ class PMStyler {
      */
     internal func makeBlockParagraphStyle(_ inset: Int) -> NSMutableParagraphStyle {
         
-        let styleName: String = String.init(format: "block%02d", inset)
+        let styleName: String = String(format: "block%02d", inset)
         
         if self.paragraphs[styleName] != nil {
             return self.paragraphs[styleName]!
@@ -827,7 +827,7 @@ class PMStyler {
         let table: NSTextTable = NSTextTable()
         table.numberOfColumns = 1
 
-        let block: NSTextTableBlock = NSTextTableBlock.init(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
+        let block: NSTextTableBlock = NSTextTableBlock(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
         block.setValue(512.0, type: .absoluteValueType, for: .minimumWidth)
 
         let newParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
@@ -992,7 +992,7 @@ class PMStyler {
             }
         }
 
-        return NSMutableAttributedString.init()
+        return NSMutableAttributedString()
     }
 
 
@@ -1394,7 +1394,7 @@ class PMStyler {
      */
     private func loadImage() -> NSMutableAttributedString {
         
-        let imageAttachment = NSTextAttachment.init()
+        let imageAttachment = NSTextAttachment()
 
         if self.currentImagePath.hasPrefix("http") {
             // TODO load in internet image
@@ -1406,7 +1406,7 @@ class PMStyler {
         } else {
             // SEE https://developer.apple.com/documentation/foundation/nsurl for secure resources
             if FileManager.default.isReadableFile(atPath: self.currentImagePath) {
-                if let image = NSImage.init(contentsOfFile: self.currentImagePath) {
+                if let image = NSImage(contentsOfFile: self.currentImagePath) {
                     imageAttachment.image = image
                 } else {
                     setMissingImage(imageAttachment)
@@ -1417,8 +1417,8 @@ class PMStyler {
         }
         
         // IMG should be at the top the the stack, so we can return immediately
-        let renderedImage = NSMutableAttributedString.init(attachment: imageAttachment)
-        renderedImage.append(NSAttributedString.init(string: "\n" + self.currentImagePath, attributes: self.styles["p"]))
+        let renderedImage = NSMutableAttributedString(attachment: imageAttachment)
+        renderedImage.append(NSAttributedString(string: "\n" + self.currentImagePath, attributes: self.styles["p"]))
         
         // Add the path as a tooltip. Does this even show? No, doesn't look like it
         // renderedImage.addAttribute(.toolTip, value: self.currentImagePath, range: NSRange(location: 0, length: renderedImage.length))

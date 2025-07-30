@@ -71,7 +71,7 @@ class PreviewViewController: NSViewController,
                 // if that's required by the user. This means we can stick to as few fixed colours
                 // as possible: AppKit will flip accordingly.
                 if common.doShowLightBackground {
-                    self.view.appearance = NSAppearance.init(named: .aqua)
+                    self.view.appearance = NSAppearance(named: .aqua)
                 }
 
                 // Update the NSTextView

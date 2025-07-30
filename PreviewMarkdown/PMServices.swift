@@ -11,17 +11,17 @@ import AppKit
 
 
 class HTMLServiceProvider: NSObject {
-    
+
     // MARK: -  Enumerations
     
     enum Errors: NSString {
         case badText = "Cannot access Markdown text to convert"
         case badConverter = "Cannot load essential app components"
     }
-    
-    
+
+
     // MARK: - Service Provider Functions
-    
+
     @objc
     func convertToHtml(_ pasteboard: NSPasteboard, userData: String?, error: AutoreleasingUnsafeMutablePointer<NSString>) {
         
@@ -42,5 +42,4 @@ class HTMLServiceProvider: NSObject {
         pasteboard.clearContents()
         pasteboard.setString(html, forType: .string)
     }
-    
 }
