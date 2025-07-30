@@ -169,7 +169,7 @@ final class AppDelegate: NSObject,
         
         // FROM 1.2.0
         // Show 'What's New' if we need to
-        // (and set up the WKWebBiew: no elasticity, horizontal scroller)
+        // (and set up the WKWebView: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
         doShowWhatsNew(self)
         
