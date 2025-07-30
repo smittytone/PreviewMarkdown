@@ -46,7 +46,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-cs-coC">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-cs-coC">
                     <rect key="frame" x="18" y="126" width="444" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="oiv-6o-W1w"/>
