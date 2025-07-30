@@ -148,6 +148,7 @@
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
+		3B312E4D2E3A557E008DEE3B /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		3B363F432D48F63100F0982F /* PMServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMServices.swift; sourceTree = "<group>"; };
 		3B3E7C652CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateWhatsNew.swift; sourceTree = "<group>"; };
 		3B4F820F2C8C1C8C00679446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../../Library/Mobile Documents/com~apple~CloudDocs/Documents/Programming/PreviewMarkdown/Previewer/Assets.xcassets"; sourceTree = "<group>"; };
@@ -262,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				3B6F568629360C5300FE5189 /* README.md */,
+				3B312E4D2E3A557E008DEE3B /* LICENSE.md */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -938,6 +940,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -977,6 +980,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PreviewMarkdown/PreviewMarkdown.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";

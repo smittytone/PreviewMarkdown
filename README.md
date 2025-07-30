@@ -4,7 +4,7 @@ This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax
 
 Version 2.0.0 features a brand new rendering engine which adds support for tables, source code highligting, nested blockquotes and more. It adds preliminary img support
 
-![PreviewMarkdown App Store QR code](qr-code.jpg)
+[![PreviewMarkdown App Store QR code](qr-code.jpg)](https://apps.apple.com/gb/app/previewmarkdown/id1492280469)
 
 ## Installation and Usage
 
@@ -52,6 +52,7 @@ PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behra
 
 - 2.0.0 *Unreleased*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
+        - Now supports tables, highlighted code blocks, image placement and more.
     - Introduce a new UI for the host application.
     - Add a `Convert Markdown Text to HTML` system-wide text service.
 - 1.5.3 *7 September 2024*
@@ -142,4 +143,4 @@ PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behra
 
 Primary app code and UI design &copy; 2025, Tony Smith.
 
-Code portions &copy; 2022 Simon Fairbairn. Code portions &copy; 2021 Behrang Noruzi Niya.
+Code portions &copy; 2014-25 Vitaly Puzrin, Alex Kocharin; &copy; 2006-25, Josh Goebel and Other Contributors; &copy; 2015 Behrang Noruzi Niya. 
