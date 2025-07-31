@@ -32,7 +32,8 @@ YAML front matter can be delimited with both `---` and `---`, and `---` and `...
 
 ## Known Issues
 
-Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewMarkdown-produced previews. This is because those apps claim ownership of key Markdown file UTIs which may cause Finder to pre-empt PreviewMarkdown. There is no workaround at this time.
+1. Tables containing nested remote images may take an extended time to render while `NSAttributedString`’s WebKit-based HTML parser attempts to request the image. We are exploring mititgations.
+1. Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewMarkdown-produced previews. This is because those apps claim ownership of key Markdown file UTIs which may cause Finder to pre-empt PreviewMarkdown. There is no workaround at this time.
 
 ## Source Code
 
