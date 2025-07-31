@@ -79,6 +79,10 @@ class AppDelegate:  NSObject,
             self.openDialog!.allowedContentTypes = [uti]
         }
 
+        if let uti = UTType.init("net.ia.markdown") {
+            self.openDialog!.allowedContentTypes.append(uti)
+        }
+
         if self.openDialog!.runModal() == .OK {
             self.currentURL = self.openDialog!.url
         } else {
