@@ -987,10 +987,18 @@ class PMStyler {
                 tableString.enumerateAttribute(.font, in: NSMakeRange(0, tableString.length)) { (value: Any?, range: NSRange, got: UnsafeMutablePointer<ObjCBool>) in
                     if value != nil {
                         let font: NSFont = value as! NSFont
+                        var textColour: NSColor = self.colours.body!
                         var cellFont: NSFont
-                        
+
+                        // Convert default fonts to the user's preferred ones,
+                        // and set the correct foreground colour
                         if let fontName: String = font.displayName {
-                            if fontName.contains("Bold") {
+                            if fontName == "Courier" {
+                                // NSAttributedString's default code font is Courier so use this
+                                // to format inline code correctly
+                                cellFont = self.makeFont("code", self.fontSize)
+                                textColour = self.colours.code
+                            } else if fontName.contains("Bold") {
                                 cellFont = self.makeFont("strong", self.fontSize)
                             } else if fontName.contains("Italic") {
                                 cellFont = self.makeFont("em", self.fontSize)
@@ -1003,7 +1011,7 @@ class PMStyler {
                         
                         // Style the cell's font and colour
                         tableString.addAttribute(.font, value: cellFont, range: range)
-                        tableString.addAttribute(.foregroundColor, value: self.colours.body!, range: range)
+                        tableString.addAttribute(.foregroundColor, value: textColour, range: range)
                     }
                 }
 
