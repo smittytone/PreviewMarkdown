@@ -151,7 +151,11 @@ class AppDelegate:  NSObject,
                         safeMainSync {
                             self.previewTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
                             self.previewScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
-                            
+
+                            // Correct way to set a text view's link colouring, etc. - and have it stick
+                            self.previewTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
+                                                                      NSAttributedString.Key.cursor: NSCursor.pointingHand ]
+
                             // Auto-scroll to top of preview
                             self.previewScrollView.contentView.scroll(to: NSMakePoint(0, 0))
                             self.previewScrollView.reflectScrolledClipView(self.previewScrollView.contentView)
