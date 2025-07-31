@@ -1478,7 +1478,11 @@ class PMStyler {
             absolutePath = processRelativePath(absolutePath)
         }
         
-        // Return the absolute path
+        // Return the absolute path (minus `%20` etc)
+        if let path = absolutePath.removingPercentEncoding {
+            return path
+        }
+
         return absolutePath
     }
 
