@@ -9,7 +9,7 @@
 
 import AppKit
 import Highlighter
-
+import WebKit
 
 class PMStyler {
     
@@ -616,6 +616,15 @@ class PMStyler {
                     }
                 }
 
+                // Hack to make sure CODE in H1, BLOCK etc. is sized correctly
+                // Really, CODE should not specify a size, but since it needs to specify
+                // a font, it has to. Fortunately, using CODE within headings etc is not
+                // common, but it does happen. There has to be more efficient
+                if style.name == "code" && parentStyle.name != "p" {
+                    fontUsed = makeFont("code", setFontSize(parentStyle.name))
+                    attributes.updateValue(fontUsed!, forKey: .font)
+                }
+
                 // Does the style apply to character sequences within paras?
                 if style.type == .character {
                     // Extra adjustments need to be made here -- additions that cannot be applied generically
@@ -966,7 +975,14 @@ class PMStyler {
     private func renderTable(_ table: String) -> NSMutableAttributedString {
 
         if let data: Data = table.data(using: .utf16) {
-            if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: data, documentAttributes: nil) {
+            // NOTE We use WebPreferences, which is part of the deprecated WebKit, in order to
+            //      halt the loading of images within tables (which are processed by NSAttributedString
+            //      not by us). This should be replaced as soon as we have a better solution to
+            //      Known Issue #1 
+            let wp = WebPreferences()
+            wp.loadsImagesAutomatically = false
+            let options = [NSAttributedString.DocumentReadingOptionKey.webPreferences: wp]
+            if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: data, options: options, documentAttributes: nil) {
                 // Now we have to set our font style for each element within the table
                 tableString.enumerateAttribute(.font, in: NSMakeRange(0, tableString.length)) { (value: Any?, range: NSRange, got: UnsafeMutablePointer<ObjCBool>) in
                     if value != nil {
