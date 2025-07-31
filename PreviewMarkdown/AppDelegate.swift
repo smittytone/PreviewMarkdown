@@ -19,7 +19,8 @@ final class AppDelegate: NSObject,
                          URLSessionDataDelegate,
                          WKNavigationDelegate,
                          NSControlTextEditingDelegate,
-                         NSWindowDelegate {
+                         NSWindowDelegate,
+                         NSMenuDelegate {
 
     // MARK: - Class UI Properies
 
@@ -35,7 +36,8 @@ final class AppDelegate: NSObject,
     @IBOutlet var helpMenuReportBug: NSMenuItem!
     @IBOutlet var helpMenuAppStoreRating: NSMenuItem!
     @IBOutlet var helpMenuWhatsNew: NSMenuItem!
-    
+
+    @IBOutlet var mainMenu: NSMenu!
     @IBOutlet var mainMenuSettings: NSMenuItem!
     @IBOutlet var mainMenuResetFinder: NSMenuItem!
     
@@ -172,7 +174,10 @@ final class AppDelegate: NSObject,
         // (and set up the WKWebView: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
         doShowWhatsNew(self)
-        
+
+        // FROM 2.0.0
+        mainMenuResetFinder.isHidden = true
+
         // Show the main window
         setInfoText()
         self.window.delegate = self

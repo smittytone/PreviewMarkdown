@@ -82,18 +82,40 @@ extension AppDelegate {
         
         // Warn the user about the risks (minor)
         let alert: NSAlert = showAlert("Are you sure you wish to reset Finder’s UTI database?",
-                                       "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac. Logging out of your Mac fixes most issues where previews are not being correctly shown and should be tried first.",
-                                        false)
+                                       "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac.\n\nLogging out of your Mac fixes most issues and should be tried first.\n\nUSE THIS OPTION AT YOUR OWN RISK — WE ACCEPT NO RESPONSIBILITY WHATSOEVER FOR THIS OPTION’s EFFECTS",
+                                        false, true)
         alert.addButton(withTitle: "Go Back")
         alert.addButton(withTitle: "Continue")
         
         // Show the alert
         alert.beginSheetModal(for: self.window) { (resp) in
+            // Close alert and restore menus
+            alert.window.close()
             
+            // If the user wants to continue, perform the reset
+            if resp == .alertSecondButtonReturn {
+                // Perform the reset
+                self.doubleCheck()
+            } else {
+                self.showPanelGenerators()
+            }
+        }
+    }
+
+
+    internal func doubleCheck() {
+
+        // Warn the user about the risks (minor)
+        let alert: NSAlert = showAlert("Are you really sure you wish to reset Finder’s UTI database?", "", false, true)
+        alert.addButton(withTitle: "No")
+        alert.addButton(withTitle: "Yes")
+
+        // Show the alert
+        alert.beginSheetModal(for: self.window) { (resp) in
             // Close alert and restore menus
             alert.window.close()
             self.showPanelGenerators()
-            
+
             // If the user wants to continue, perform the reset
             if resp == .alertSecondButtonReturn {
                 // Perform the reset
@@ -107,7 +129,7 @@ extension AppDelegate {
      Reset Finder's launch services database using a sub-process.
      */
     internal func doResetFinderDatabase() {
-        
+
         // Perform the Finder reset
         // NOTE Cannot access the system domain from within the Sandbox
         let success: Bool = runProcess(app: BUFFOON_CONSTANTS.SYS_LAUNCH_SERVICES,
@@ -135,12 +157,13 @@ extension AppDelegate {
 
      - Returns:     The NSAlert.
      */
-    internal func showAlert(_ head: String, _ message: String, _ addOkButton: Bool = true) -> NSAlert {
-        
+    internal func showAlert(_ head: String, _ message: String, _ addOkButton: Bool = true, _ isCritical: Bool = false) -> NSAlert {
+
         let alert: NSAlert = NSAlert()
         alert.messageText = head
         alert.informativeText = message
         if addOkButton { alert.addButton(withTitle: "OK") }
+        if isCritical { alert.alertStyle = .critical }
         return alert
     }
 
@@ -327,7 +350,7 @@ extension AppDelegate {
 
 
     // MARK: - NSWindowDelegate Functions
-    
+
     /**
       Catch when the user clicks on the window's red close button.
      */
@@ -345,5 +368,16 @@ extension AppDelegate {
         closeBasics()
         closeSettings()
         return false
+    }
+
+
+    // MARK: - NSMenuDelegate Functions
+
+    internal func menuWillOpen(_ menu: NSMenu) {
+
+        if menu == self.mainMenu {
+            // Check to see if the Option key was down when the menu was clicked
+            mainMenuResetFinder.isHidden = !NSEvent.modifierFlags.contains(NSEvent.ModifierFlags.option)
+        }
     }
 }
