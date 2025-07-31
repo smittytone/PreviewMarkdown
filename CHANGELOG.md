@@ -1,0 +1,91 @@
+## Release Notes
+
+- 2.0.0 *Unreleased*
+    - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
+        - Now supports tables, highlighted code blocks, image placement, multiple styles in blockquotes, and more.
+    - More fully support escaped characters in Markdown.
+    - Introduce a new tab-based UI for the host application.
+    - Add a `Convert Markdown Text to HTML` system-wide text service.
+- 1.5.3 *7 September 2024*
+    - Improve settings change checking.
+    - Correctly render the YAML frontmatter separator line: revert NSTextViews to TextKit 1 (previously bumped to TextKit 2 by Xcode).
+- 1.5.2 *13 May 2024*
+    - Revise thumbnailer to improve memory utilization and efficiency.
+- 1.5.1 *2 November 2023*
+    - Support the emerging `public.markdown` UTI.
+    - Support YAML front matter that uses the `...` end marker (Thanks, anonymous).
+    - Better **What’s New** dialog presentation in dark mode.
+- 1.5.0 *1 October 2023*
+    - Use *PreviewApps*’ new preview element colour selection UI.
+    - Allow link colours to be changed.
+    - Allow blockquote colours to be changed.
+    - Add line-spacing setting for previews.
+    - Add link to help on **Preferences** panel.
+    - Add experimental Finder UTI database reset option.
+    - Rename extensions `Markdown Previewer` and `Markdown Thumbnailer`.
+    - Improve font edge-case handling.
+    - Fix link text formatting.
+    - Remove dynamic UTIs.
+- 1.4.6 *21 January 2023*
+    - Add link to [PreviewText](https://smittytone.net/previewtext/index.html).
+    - Better menu handling when panels are visible.
+    - Better app exit management.
+- 1.4.5 *23 December 2022*
+    - Add UTI `com.nutstore.down`.
+- 1.4.4 *2 October 2022*
+    - Fix UTI generation.
+    - Add link to [PreviewJson](https://smittytone.net/previewjson/index.html).
+- 1.4.3 *26 August 2022*
+    - Initial support for non-utf8 source code file encodings.
+- 1.4.2 *7 August 2022*
+    - Upgrade to SwiftyMarkdown 1.2.4.
+    - Support checkboxes (`[x]`, `[ ]`).
+- 1.4.1 *20 November 2021*
+    - Disable selection of thumbnail tags under macOS 12 Monterey to avoid clash with system-added tags.
+- 1.4.0 *28 July 2021*
+    - Allow any installed font to be selected.
+    - Allow the heading colour to be selected.
+    - Allow any colour to be chosen using macOS’ colour picker.
+    - Tighten the thumbnailer code.
+    - Fixed a rare bug in the previewer error reporting code.
+- 1.3.1 *18 June 2021*
+    - Add links to other PreviewApps.
+    - Support macOS 11 Big Sur’s UTType API.
+    - Stability improvements.
+- 1.3.0 *9 May 2021*
+    - Add optional presentation of YAML front matter to previews.
+    - Recode Thumbnailer to make it thread safe: this should prevent crashes leading to generic or editor-specific thumbnail icons being seen.
+    - Update user-agent string.
+    - Minor code and UI improvements.
+- 1.2.0 *4 February 2021*
+    - Add preview display preferences (requested by various anonymous feedback senders)
+    - Add file type ident tag to thumbnails (requested by @chamiu).
+    - Add **What’s New** sheet to be shown with new major/minor versions.
+    - Include local markdown UTI with user-submitted feedback.
+    - Add link for app reviews.
+- 1.1.4 *16 January 2021*
+    - Add UTI `net.ia.markdown`.
+- 1.1.3 *14 January 2021*
+    - Add UTI `pro.writer.markdown`.
+- 1.1.2 *18 November 2020*
+    - Apple Silicon version included.
+- 1.1.1 *1 October 2020*
+    - Add report bugs/send feedback mechanism.
+    - Add usage advice to main window.
+    - Handle markdown formatting not yet rendered by SwiftyMarkdown: three-tick code blocks, HTML symbols, space-inset lists.
+- 1.1.0 *25 September 2020*
+    - Add macOS Big Sur support.
+    - Better macOS dark/light mode support.
+    - Migrate engine to [SwiftyMarkdown 1.2.3](https://github.com/SimonFairbairn/SwiftyMarkdown).
+- 1.0.5 *9 April 2020*
+    - App Store release version.
+- 1.0.4 *Unreleased*
+    - Minor cosmetic changes to app menus.
+- 1.0.3 *10 December 2019*
+    - Add version number to app’s info panel.
+- 1.0.2 *4 December 2019*
+    - Fix random crash (`string index out of range` in SwiftyMarkdown).
+- 1.0.1 *20 November 2019*
+    - Correct thumbnailer styles.
+- 1.0.0 *8 November 2019*
+    - Initial public release.
