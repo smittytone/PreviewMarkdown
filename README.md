@@ -2,7 +2,7 @@
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for versions of macOS 10.15 or above.
 
-Version 2.0.0 features a brand new rendering engine which adds support for tables, source code highligting, nested blockquotes and more. It adds preliminary img support
+Version 2.0.0 features a brand new rendering engine which adds support for tables, source code highlighting, nested blockquotes and more. It adds preliminary img support
 
 [![PreviewMarkdown App Store QR code](qr-code.jpg)](https://apps.apple.com/gb/app/previewmarkdown/id1492280469)
 
@@ -32,8 +32,8 @@ YAML front matter can be delimited with both `---` and `---`, and `---` and `...
 
 ## Known Issues
 
-1. Tables containing nested remote images may take an extended time to render while `NSAttributedString`’s WebKit-based HTML parser attempts to request the image, which utimately fails. We are exploring mititgations.
-1. Tables are intermittently rendered with horizontal blanks in place of borders. Resizing the preview window fixes them (though may cause other horizontal lines to disappear). We are exploring mititgations.
+1. Tables containing nested remote images may take an extended time to render while `NSAttributedString`’s WebKit-based HTML parser attempts to request the image, which ultimately fails. We are exploring mitigations.
+1. Tables are intermittently rendered with horizontal blanks in place of borders. Resizing the preview window fixes them (though may cause other horizontal lines to disappear). We are exploring mitigations.
 1. Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewMarkdown-produced previews. This is because those apps claim ownership of key Markdown file UTIs which may cause Finder to pre-empt PreviewMarkdown. There is no workaround at this time.
 
 ## Source Code
@@ -48,7 +48,7 @@ You will need to create your own `new` directory containing your own `new.html` 
 
 ## Acknowledgements
 
-PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors and [Markdown-It](https://github.com/markdown-it/markdown-it) by Vitaly Puzrin and Alex Kocharin.
+PreviewMarkdown’s app extensions contains [YamlSwift](https://github.com/behrang/YamlSwift) by Behrang Noruzi Niya and other contributors, and [Markdown-It](https://github.com/markdown-it/markdown-it) by Vitaly Puzrin and Alex Kocharin.
 
 ## Release Notes
 

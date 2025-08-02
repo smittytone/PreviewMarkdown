@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.0.0 *Unreleased*
+- 2.0.0 *8 August 2025*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
         - Now supports tables, highlighted code blocks, image placement, multiple styles in blockquotes, and more.
     - More fully support escaped characters in Markdown.
