@@ -78,6 +78,12 @@ class PreviewViewController: NSViewController,
                 self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
 
+                // FROM 2.1.0
+                // Add margin if required
+                if common.doShowMargin {
+                    self.renderTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_MARGIN_SIZE
+                }
+
                 // FROM 2.0.0
                 // Correct way to set a text view's link colouring, etc. - and have it stick
                 self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,

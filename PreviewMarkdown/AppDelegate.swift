@@ -65,7 +65,9 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var colourSelectionPopup: NSPopUpButton!
     @IBOutlet weak var applyButton: NSButton!
-    
+    // FROM 2.1.0
+    @IBOutlet weak var showMarginCheckbox: NSButton!
+
     // Window > Feedback Tab Items
     @IBOutlet weak var feedbackText: NSTextField!
     @IBOutlet weak var connectionProgress: NSProgressIndicator!

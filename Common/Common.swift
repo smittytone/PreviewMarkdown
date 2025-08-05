@@ -38,6 +38,8 @@ class Common {
     var linkColor: NSColor                                          = .linkColor    // Used to pass the user's
                                                                                     // preferred link colour up to
                                                                                     // the main text view
+    // FROM 2.1.0
+    var doShowMargin: Bool                                          = true
 
 
     // MARK: - Private Properties
@@ -80,21 +82,26 @@ class Common {
             // Locally relevant settings values
             self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            
+            // FROM 2.1.0
+            self.doShowMargin = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
+
             // The remaining settings values are passed directly to the styler
             styler.fontSize = CGFloat(isThumbnail
                                       ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
                                       : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
 
-            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)  ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)  ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)  ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
             styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
             
             styler.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             styler.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
 
             styler.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
+
+            // FROM 2.1.0
+            styler.colourValues.yamlkey = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) ?? BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX
         }
         
         // Just in case the above block reads in zero values
@@ -123,7 +130,7 @@ class Common {
         
         // YAML front matter styling attributes
         self.yamlKeyAttributes = [
-            .foregroundColor: NSColor.hexToColour(styler.colourValues.code),
+            .foregroundColor: NSColor.hexToColour(styler.colourValues.yamlkey),
             .font: font
         ]
         

@@ -17,13 +17,16 @@ import Foundation
 class PMSettings {
 
     var doShowLightBackground: Bool         = false
-    var doShowFrontMatter: Bool             = false
-    
+    var doShowFrontMatter: Bool             = true
+    // FROM 2.1.0
+    var doShowMargin: Bool                  = false
+
     var displayColours: [String: String]    = [
-        "heads": BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
-        "code": BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
-        "link": BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
-        "quote": BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
+        BUFFOON_CONSTANTS.COLOUR_IDS.HEADS:     BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
+        BUFFOON_CONSTANTS.COLOUR_IDS.CODE:      BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
+        BUFFOON_CONSTANTS.COLOUR_IDS.LINKS:     BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
+        BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES:    BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX,
+        BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS: BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX
     ]
     
     var bodyFontName: String                = BUFFOON_CONSTANTS.BODY_FONT_NAME
@@ -46,10 +49,18 @@ class PMSettings {
             self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             self.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
             self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.displayColours["heads"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            self.displayColours["code"]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            self.displayColours["links"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            self.displayColours["quote"] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
+            self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
+                                                                        ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
+            self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]   = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
+                                                                        ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
+            self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
+                                                                        ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
+            self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
+                                                                        ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
+            // FROM 2.1.0
+            self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
+                                                                            ?? BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX
+            self.doShowMargin = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
         }
     }
 
@@ -94,6 +105,15 @@ class PMSettings {
                 self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_QUOTES] = nil
                 defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
+
+            // FROM 2.1.0
+            if let newColour: String = self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_YAML_KEYS] {
+                self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS] = newColour
+                self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_YAML_KEYS] = nil
+                defaults.setValue(newColour, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
+            }
+
+            defaults.setValue(self.doShowMargin, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
         }
     }
 }

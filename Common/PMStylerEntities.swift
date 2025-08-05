@@ -45,6 +45,7 @@ struct ColourValues {
     var code: String                  = "#00FF00"
     var link: String                  = "#64ACDD"
     var quote: String                 = "#FFFFFF"
+    var yamlkey: String               = "#00FF00"
 }
 
 
@@ -54,4 +55,6 @@ struct Colours {
     var code: NSColor!
     var link: NSColor!
     var quote: NSColor!
+    // FROM 2.1.0
+    var yamlkey: NSColor!
 }

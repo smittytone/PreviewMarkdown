@@ -73,7 +73,7 @@ extension AppDelegate {
     @objc
     internal func colourSelected(sender: Any) {
 
-        let keys: [String] = ["heads", "code", "links", "quote"]
+        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         let key: String = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
         self.currentSettings.displayColours[key] = self.headColourWell.color.hexString
         willShowSettingsPage()
@@ -92,7 +92,7 @@ extension AppDelegate {
     @IBAction
     internal func doChooseColourType(sender: Any) {
 
-        let keys: [String] = ["heads", "code", "links", "quote"]
+        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         let key: String = keys[self.colourSelectionPopup.indexOfSelectedItem]
 
         // If there's no `new_xxx` key, the next line will evaluate to false
@@ -266,6 +266,18 @@ extension AppDelegate {
                 defaults.setValue(BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
+
+            // FROM 2.1.0
+            // The YAML key colour, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
+            }
+
+            // Show a margin or not
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN) == nil {
+                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
+            }
         }
     }
 
@@ -289,10 +301,12 @@ extension AppDelegate {
         // Set the checkboxes
         self.useLightCheckbox.state = settings.doShowLightBackground ? .on : .off
         self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
-        
+        // FROM 2.1.0
+        self.showMarginCheckbox.state = settings.doShowMargin ? .on : .off
+
         // Set the colour well
         // NOTE This has only one colour, so we always reset to "heads" on changes
-        self.headColourWell.color = NSColor.hexToColour(settings.displayColours["heads"] ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX)
+        self.headColourWell.color = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS] ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX)
         self.colourSelectionPopup.selectItem(at: 0)
         self.clearNewColours()
         
@@ -343,7 +357,9 @@ extension AppDelegate {
         displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
         displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
         displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-        
+        // FROM 2.1.0
+        displayedSettings.doShowMargin = self.showMarginCheckbox.state == .on
+
         // Set the actual linespacing according to the index of the menu
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
         assert(self.lineSpacingPopup.indexOfSelectedItem < linespacingValues.count)
@@ -435,7 +451,16 @@ extension AppDelegate {
         if !settingsHaveChanged {
             settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_QUOTES] != nil
         }
-        
+
+        // FROM 2.1.0
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.NEW_YAML_KEYS] != nil
+        }
+
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.doShowMargin != displayedSettings.doShowMargin
+        }
+
         return settingsHaveChanged
     }
 
@@ -447,7 +472,7 @@ extension AppDelegate {
      */
     internal func clearNewColours() {
 
-        let keys: [String] = ["heads", "code", "links", "quote"]
+        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         for key in keys {
             if let _: String = self.currentSettings.displayColours["new_" + key] {
                 self.currentSettings.displayColours["new_" + key] = nil
@@ -463,7 +488,7 @@ extension AppDelegate {
      */
     internal func applyDefaultColours() {
 
-        let keys: [String] = ["heads", "code", "links", "quote"]
+        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         for key in keys {
             self.currentSettings.displayColours["new_" + key] = self.defaultSettings.displayColours[key]
         }

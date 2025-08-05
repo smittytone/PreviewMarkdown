@@ -73,6 +73,8 @@ struct BUFFOON_CONSTANTS {
     static let CODE_FONT_NAME                   = "AndaleMono"
     static let LINK_COLOUR_HEX                  = "0096FFFF"
     static let QUOTE_COLOUR_HEX                 = "22528EFF"
+    // FROM 2.1.0
+    static let YAML_KEY_COLOUR_HEX              = "00FF00FF"
     
     static let SAMPLE_UTI_FILE                  = "sample.md"
 
@@ -99,7 +101,6 @@ struct BUFFOON_CONSTANTS {
     struct PREFS_IDS {
         
         static let MAIN_WHATS_NEW               = "com-bps-previewmarkdown-do-show-whats-new-"
-        
         static let PREVIEW_BODY_FONT_SIZE       = "com-bps-previewmarkdown-base-font-size"
         static let PREVIEW_BODY_FONT_NAME       = "com-bps-previewmarkdown-body-font-name"
         static let PREVIEW_CODE_FONT_NAME       = "com-bps-previewmarkdown-code-font-name"
@@ -109,11 +110,11 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_CODE_COLOUR          = "com-bps-previewmarkdown-code-colour-hex"
         static let PREVIEW_HEAD_COLOUR          = "com-bps-previewmarkdown-head-colour-hex"
         static let PREVIEW_QUOTE_COLOUR         = "com-bps-previewmarkdown-quote-colour-hex"
+        static let PREVIEW_YAML_KEY_COLOUR      = "com-bps-previewmarkdown-yaml-key-colour-hex"
         static let PREVIEW_LINE_SPACE           = "com-bps-previewmarkdown-line-spacing"
-        
         static let THUMB_FONT_SIZE              = "com-bps-previewmarkdown-thumb-font-size"
         static let THUMB_SHOW_TAG               = "com-bps-previewmarkdown-do-show-tag"
-        
+        static let PREVIEW_SHOW_MARGIN          = "com-bps-previewmarkdown-do-show-margin"
     }
     
     // FROM 2.0.0
@@ -127,9 +128,20 @@ struct BUFFOON_CONSTANTS {
         static let CODE                         = "code"
         static let LINKS                        = "links"
         static let QUOTES                       = "quote"
+        static let YAML_KEYS                    = "yamlkeys"
         static let NEW_HEADS                    = "new_heads"
         static let NEW_CODE                     = "new_code"
         static let NEW_LINKS                    = "new_links"
         static let NEW_QUOTES                   = "new_quote"
+        static let NEW_YAML_KEYS                = "new_yamlkeys"
     }
+
+    // FROM 2.1.0
+    static let COLOUR_OPTIONS                   = [BUFFOON_CONSTANTS.COLOUR_IDS.HEADS,
+                                                   BUFFOON_CONSTANTS.COLOUR_IDS.CODE,
+                                                   BUFFOON_CONSTANTS.COLOUR_IDS.LINKS,
+                                                   BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES,
+                                                   BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS]
+
+    static let PREVIEW_MARGIN_SIZE              = NSSize(width: 20.0, height: 16.0)
 }

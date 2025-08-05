@@ -39,7 +39,7 @@ class AppDelegate:  NSObject,
         
         // Set the mode button
         self.modeButton.state = self.renderAsDark ? .on : .off
-        
+
         // Centre the main window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
@@ -147,6 +147,13 @@ class AppDelegate:  NSObject,
                     //common.viewWidth = self.previewTextView.frame.width
                     common.doShowLightBackground = !self.renderAsDark
                     common.workingDirectory = (mdUrl.unixpath() as NSString).deletingLastPathComponent
+
+                    if common.doShowMargin {
+                        // Add an inset margin to the main text view
+                        // TODO What are the best sizes? Want to add a little whitespace to increase
+                        //      clarity, but not to make an obvious blank space
+                        self.previewTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_MARGIN_SIZE
+                    }
 
                     // Get the key string first
                     let mdAttString: NSAttributedString = common.getAttributedString(mdString[...])
