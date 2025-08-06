@@ -143,5 +143,6 @@ struct BUFFOON_CONSTANTS {
                                                    BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES,
                                                    BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS]
 
-    static let PREVIEW_MARGIN_SIZE              = NSSize(width: 20.0, height: 16.0)
+    static let MARGIN_WIDTH                     = 16.0
+    static let PREVIEW_MARGIN_SIZE              = NSSize(width: MARGIN_WIDTH, height: MARGIN_WIDTH)
 }
