@@ -230,21 +230,28 @@ class Common {
                 if !self.isThumbnail && self.doShowFrontMatter && frontMatter.count > 0 {
                     do {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
-                        
-                        // Assemble the front matter string
-                        let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: "", attributes: self.yamlValueAttributes)
-                        
-                        // Initial line
-                        renderedString.append(self.hr)
-                        
-                        // Render the YAML to NSAttributedString
-                        if let yamlString = renderYaml(yaml, 0, false) {
-                            renderedString.append(yamlString)
+
+                        var ys = ""
+                        if let rs = renderYaml2(yaml, 0, false) {
+                            ys = "<TABLE style=\"width:100%;\">"+rs+"</TABLE>"
+                        } else {
+                            ys = "NONE"
                         }
-                        
+
+                        // Assemble the front matter string
+                        let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: ys, attributes: self.yamlValueAttributes)
+
+                        // Initial line
+                        //renderedString.append(self.hr)
+
+                        // Render the YAML to NSAttributedString
+                        //if let yamlString = renderYaml(yaml, 0, false) {
+                        //    renderedString.append(yamlString)
+                        //}
+
                         // Add a line after the front matter
-                        renderedString.append(self.hr)
-                        
+                        // renderedString.append(self.hr)
+
                         // Add in the orignal rendered markdown and then set the
                         // output string to the combined string
                         renderedString.append(output)
@@ -497,6 +504,345 @@ class Common {
     }
 
 
+    func getKeys(_ yaml: Substring) -> [String] {
+
+        var keys: [String] = []
+        let lines = String(yaml).components(separatedBy: "\n")
+        for line in lines {
+            if line.hasPrefix(" ") {
+                continue
+            }
+
+            let parts = line.components(separatedBy: ":")
+            keys.append(parts[0].trimmingCharacters(in: .whitespacesAndNewlines))
+        }
+
+        return keys
+    }
+
+
+    func renderYamlObject(_ yamlPart: Yaml, _ indent: Int) -> String? {
+
+        /*
+         ITERATE OVER KEYS/VALS IN DICT/ARRAY [CAN BE EITHER]
+         IF ARRAY VAL IS DICT
+            RECURSE WITH VAL
+
+         IF ARRAY VAL IS NOT DICT, OR DICT KEY IS NOT DICT
+            IF INPUT IS DICT
+                MORE = VAL FOR KEY
+            ELIF INPUT IS ARRAY
+                ITERATE OVER ARRAY ITEMS AS NEW ROWS
+                EXIT
+
+            IF MORE iS DICT
+                ADD KEY TO TABLE
+                RECURSE WITH MORE
+            ELIF MORE IS ARRAY
+                IF INDENT IS 0
+                    ADD BLANK ROW TO TABLE
+                ADD KEY TO TABLE
+                ITERATE OVER ARRAY ITEMS
+                    IF ITEM IS DICT
+                        RECURSE WITH ITEM
+            ELSE
+                ADD ROW WITH ITEM AS KEY, VAL FOR ITEM
+        */
+        var returnString = ""
+
+        switch yamlPart {
+            case .dictionary:
+                if let dict = yamlPart.dictionary {
+                    for (key, value) in dict {
+                        if let _ = value.dictionary {
+                            returnString += String(repeating: "  ", count: indent) + "\(outputScalar(key))\n"
+                            returnString += renderYamlObject(value, indent + 1) ?? ""
+                        } else if let _ = value.array {
+                            returnString += String(repeating: "  ", count: indent) + "\(outputScalar(key))\n"
+                            returnString += renderYamlObject(value, indent + 1) ?? ""
+                        } else {
+                            returnString += String(repeating: "  ", count: indent) + "\(outputScalar(key)) | \(outputScalar(value))"
+                        }
+                    }
+
+                    return returnString + "\n"
+                }
+            case .array:
+                if let list = yamlPart.array {
+                    for value in list {
+                        returnString += renderYamlObject(value, indent + 1) ?? ""
+                    }
+
+                    return returnString + "\n"
+                }
+            case .null:
+                returnString += "NULL"
+                return returnString
+            case .string:
+                if let keyOrValue = yamlPart.string {
+                    let parts: [String] = keyOrValue.components(separatedBy: "\n")
+                    if parts.count > 1 {
+                        for i in 0..<parts.count {
+                            returnString += parts[i]
+                        }
+                    } else {
+                        returnString += keyOrValue
+                    }
+
+                    return returnString
+                }
+            default:
+                // Place all the scalar values here
+                // TODO These *may* be keys too, so we need to check that
+                if let val = yamlPart.int {
+                    returnString += "\(val)\n"
+                } else if let val = yamlPart.double {
+                    returnString += "\(val)\n"
+                } else if let val = yamlPart.bool {
+                    returnString += (val ? "TRUE\n" : "FALSE\n")
+                } else {
+                    returnString += "UNKNOWN-TYPE\n"
+                }
+
+                return returnString
+        }
+
+        // Error
+        return nil
+    }
+
+    func outputScalar(_ yamlPart: Yaml) -> String {
+
+        switch yamlPart {
+            case .null:
+                return "NULL"
+            case .string:
+                if let keyOrValue = yamlPart.string {
+                    let parts: [String] = keyOrValue.components(separatedBy: "\n")
+                    if parts.count > 1 {
+                        var rs = ""
+                        for i in 0..<parts.count {
+                            rs += parts[i]
+                        }
+                        return rs
+                    } else {
+                        return keyOrValue
+                    }
+                }
+            default:
+                // Place all the scalar values here
+                // TODO These *may* be keys too, so we need to check that
+                if let val = yamlPart.int {
+                    return "\(val)"
+                } else if let val = yamlPart.double {
+                    return "\(val)"
+                } else if let val = yamlPart.bool {
+                    return (val ? "TRUE" : "FALSE")
+                } else {
+                    return "UNKNOWN-TYPE"
+                }
+        }
+
+        return ""
+    }
+
+
+    func yamlToTable(_ part: Yaml, _ yaml: Substring) -> String? {
+
+        let orderedKeys = getKeys(yaml)
+        var returnString = "<table width=\"200%\" style=\"border-collapse:collapse;\">"
+
+        switch (part) {
+        case .array:
+            if let value = part.array {
+                // Iterate through array elements
+                // NOTE A given element can be of any YAML type
+                for i in 0..<value.count {
+                    if let yamlString = renderYamlObject(value[i], 1) {
+                        returnString += yamlString
+                    }
+                }
+            }
+        case .dictionary:
+            if let dict = part.dictionary {
+                // Iterate through the dictionary's keys and their values
+                // NOTE A given value can be of any YAML type
+
+                // Iterate through the sorted keys array at head
+                for i in 0..<orderedKeys.count {
+                    // Get the key:value pair
+                    let key = Yaml(stringLiteral: orderedKeys[i])
+                    let value: Yaml = dict[key] ?? ""
+                    if let yamlString = renderYamlObject(value, 1) {
+                        returnString += "\(orderedKeys[i]) | " + yamlString
+                    }
+                }
+            }
+        case .null:
+            returnString += "NULL"
+        case .string:
+            if let keyOrValue = part.string {
+                let parts: [String] = keyOrValue.components(separatedBy: "\n")
+                if parts.count > 2 {
+                    for i in 0..<parts.count {
+                        let part: String = parts[i]
+                        returnString += part + (i < parts.count - 2 ? "\n" : "")
+                    }
+                } else {
+                    returnString += keyOrValue
+                }
+            }
+        default:
+            // Place all the scalar values here
+            // TODO These *may* be keys too, so we need to check that
+            if let val = part.int {
+                returnString += "\(val)"
+            } else if let val = part.double {
+                returnString += "\(val)\n"
+            } else if let val = part.bool {
+                returnString += (val ? "TRUE\n" : "FALSE")
+            } else {
+                returnString += "UNKNOWN-TYPE\n"
+            }
+        }
+
+        // Error condition
+        return returnString + "</TABLE>"
+    }
+
+
+    func renderYaml2(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> String? {
+
+        var returnString = ""
+        var workString = ""
+
+        switch (part) {
+        case .array:
+            if let value = part.array {
+                // Iterate through array elements
+                // NOTE A given element can be of any YAML type
+                for i in 0..<value.count {
+                    if let yamlString = renderYaml2(value[i], indent, false) {
+                        // Apply a prefix to separate array and dictionary elements
+                        if i > 0 && (value[i].array != nil || value[i].dictionary != nil) {
+                            returnString += "<br />"
+                        }
+
+                        // Add the element itself
+                        returnString += yamlString
+
+                        if i > 0 && (value[i].array != nil || value[i].dictionary != nil) {
+                            returnString += "<br />"
+                        }
+                    }
+                }
+
+                return returnString
+            }
+        case .dictionary:
+            if let dict = part.dictionary {
+                // Iterate through the dictionary's keys and their values
+                // NOTE A given value can be of any YAML type
+
+                // Sort the dictionary's keys (ascending)
+                // We assume all keys will be strings, ints, doubles or bools
+                var keys: [Yaml] = Array(dict.keys)
+                /*
+                keys = keys.sorted(by: { (a, b) -> Bool in
+                    // Strings?
+                    if let a_s: String = a.string {
+                        if let b_s: String = b.string {
+                            return (a_s.lowercased() < b_s.lowercased())
+                        }
+                    }
+
+                    // Ints?
+                    if let a_i: Int = a.int {
+                        if let b_i: Int = b.int {
+                            return (a_i < b_i)
+                        }
+                    }
+
+                    // Doubles?
+                    if let a_d: Double = a.double {
+                        if let b_d: Double = b.double {
+                            return (a_d < b_d)
+                        }
+                    }
+
+                    // Bools
+                    if let a_b: Bool = a.bool {
+                        if let b_b: Bool = b.bool {
+                            return (a_b && !b_b)
+                        }
+                    }
+
+                    return false
+                })
+                 */
+
+                // Iterate through the sorted keys array
+                for i in 0..<keys.count {
+                    if indent == 0 {
+                        returnString += "<tr>"
+                        workString = makeRow()
+                    }
+
+                    // Prefix root-level key:value pairs after the first with a new line
+                    if indent == 0 && i > 0 {
+                        //returnString.append(self.newLine)
+                    }
+
+                    // Get the key:value pairs
+                    let key: Yaml = keys[i]
+                    let value: Yaml = dict[key] ?? ""
+
+                    // Render the key
+                    var keyString = "~~"
+                    if let yamlString = renderYaml2(key, indent, true) {
+                        keyString = yamlString
+                    }
+
+                    // If the value is a collection, we drop to the next line and indent
+                    let valueIndent: Int = indent + BUFFOON_CONSTANTS.YAML_INDENT
+                    //returnString.append(self.newLine)
+
+                    // Render the key's value
+                    var valString = ""
+                    if let yamlString = renderYaml2(value, valueIndent, false) {
+                        valString =
+                    }
+
+                    workString = addToRow(StringkeyString, <#T##value: String##String#>, workString)
+                    returnString += indent == 0 ? "</tr>" : ""
+                }
+
+                return returnString
+            }
+        case .string:
+            if let keyOrValue = part.string {
+                let parts: [String] = keyOrValue.components(separatedBy: "\n")
+                if parts.count > 2 {
+                    for i in 0..<parts.count {
+                        let part: String = parts[i]
+                        //returnString.append(getIndentedString(part + (i < parts.count - 2 ? "\n" : ""), indent))
+                        returnString += parts[i]
+                    }
+                } else {
+                    returnString += keyOrValue
+                }
+
+                return returnString
+            }
+        default:
+            return returnString + outputScalar(part)
+        }
+
+        // Error condition
+        return nil
+    }
+
+
     /**
      Return a space-prefix NSAttributedString.
      
@@ -518,4 +864,77 @@ class Common {
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
     }
 
+
+    func makeRow(_ key: String = "", _ value: String = "") -> String {
+
+        if key.isEmpty && value.isEmpty {
+            return "<tr>%%</tr>"
+        }
+        
+        return "<tr><td>\(key)</td><td>\(value)</td></tr>"
+    }
+
+
+    func addToRow(_ key: String, _ value: String, _ row: String) -> String {
+
+        if !row.contains("%%") {
+            return makeRow(key, value)
+        }
+
+        return row.replacingOccurrences(of: "%%", with: "<td>\(key)</td><td>\(value)</td>")
+    }
+
+
+    func processYaml(_ yamlText: Substring) -> String {
+
+        let keyValueSeparator = ":"
+        let lineSeparator = "\n"
+
+        var indent = 0
+        var row = 0
+
+        struct RowItem {
+            var key: String = ""
+            var val: String = ""
+        }
+
+        var rows: [RowItem] = []
+        var currentRow: RowItem? = nil
+
+        var isArray: Bool = false
+
+        let base = String(yamlText)
+        let lines = yamlText.components(separatedBy: .newlines)
+        for var line in lines {
+            var isIndented = false
+            if line.hasPrefix(" ") {
+                isIndented = true
+                line = line.trimmingCharacters(in: .whitespaces)
+            }
+
+            if line.hasPrefix("-") {
+                isArray = true
+            }
+
+            let parts = line.components(separatedBy: keyValueSeparator)
+            if parts.count == 1 {
+                // No separator - should be a value
+            } else {
+                if parts[1].isEmpty {
+                    // Next line indented value
+                    indent += 1
+                } else {
+                    var item = RowItem()
+                    item.key = parts[0].trimmingCharacters(in: .whitespaces)
+                    item.val = parts[1].trimmingCharacters(in: .whitespaces)
+                    rows.append(item)
+                    currentRow = item
+
+                    if item.key.hasPrefix("-") {
+                        isArray = true
+                    }
+            }
+        }
+
+    }
 }
