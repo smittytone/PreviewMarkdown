@@ -302,13 +302,13 @@ final class AppDelegate: NSObject,
         } else if item == self.helpMenuYamlSwift {
             path = "https://github.com/behrang/YamlSwift"
         } else if item == self.helpMenuAppStoreRating {
-            path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
+            path = BUFFOON_CONSTANTS.APP_STORE_URLS.PM + "?action=write-review"
         } else if item == self.helpMenuOnlineHelp {
             path += "#how-to-use-previewmarkdown"
         } else if item == self.helpMenuOthersPreviewCode {
-            path = BUFFOON_CONSTANTS.APP_URLS.PC
+            path = BUFFOON_CONSTANTS.APP_STORE_URLS.PC
         } else if item == self.helpMenuOthersPreviewJson {
-            path = BUFFOON_CONSTANTS.APP_URLS.PJ
+            path = BUFFOON_CONSTANTS.APP_STORE_URLS.PJ
         }
         
         // Open the selected website

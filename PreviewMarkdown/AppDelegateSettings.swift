@@ -38,7 +38,7 @@ extension AppDelegate {
     internal func doMoveSlider(sender: Any) {
 
         let index: Int = Int(self.fontSizeSlider.floatValue)
-        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
         willShowSettingsPage()
      }
 
@@ -183,14 +183,14 @@ extension AppDelegate {
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE) == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE),
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE),
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
             }
 
             // Thumbnail view base font size, stored as a CGFloat, NOT CURRENTLY USED
             // Default: 14.0
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE) == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE),
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE),
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             }
             
@@ -222,55 +222,55 @@ extension AppDelegate {
             // FROM 1.4.0
             // Colour of links in the preview, stored as hex string
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.LINK_COLOUR_HEX,
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.LINK,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of code blocks in the preview, stored as hex string
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_COLOUR_HEX,
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.CODE,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
             }
             
             // FROM 1.4.0
             // Colour of headings in the preview, stored as hex string
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEAD_COLOUR_HEX,
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.HEAD,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
             }
             
             // FROM 1.4.0
             // Font for body test in the preview, stored as a PostScript name
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BODY_FONT_NAME,
+                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.BODY,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
             }
 
             // FROM 1.4.0
             // Font for code blocks in the preview, stored as a PostScript name
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.CODE_FONT_NAME,
+                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.CODE,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
             }
             
             // FROM 1.5.0
             // Store the preview line spacing value
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
+                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
             }
 
             // The blockquote colour, stored as hex string
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX,
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
             }
 
             // FROM 2.1.0
             // The YAML key colour, stored as hex string
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX,
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.YAML,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
             }
 
@@ -294,10 +294,10 @@ extension AppDelegate {
         
         // Get the menu item index from the stored value
         // NOTE The other values are currently stored as indexes -- should this be the same?
-        let index: Int = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.lastIndex(of: settings.fontSize) ?? 3
+        let index: Int = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS.lastIndex(of: settings.fontSize) ?? 3
         self.fontSizeSlider.floatValue = Float(index)
-        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
-        
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
+
         // Set the checkboxes
         self.useLightCheckbox.state = settings.doShowLightBackground ? .on : .off
         self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
@@ -306,7 +306,7 @@ extension AppDelegate {
 
         // Set the colour well
         // NOTE This has only one colour, so we always reset to "heads" on changes
-        self.headColourWell.color = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS] ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX)
+        self.headColourWell.color = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS] ?? BUFFOON_CONSTANTS.HEX_COLOUR.HEAD)
         self.colourSelectionPopup.selectItem(at: 0)
         self.clearNewColours()
         
@@ -352,11 +352,11 @@ extension AppDelegate {
     internal func settingsFromDisplay() -> PMSettings {
         
         let displayedSettings = PMSettings()
-        displayedSettings.fontSize = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
+        displayedSettings.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
         displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
         displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
-        displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-        displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+        displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
+        displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
         // FROM 2.1.0
         displayedSettings.doShowMargin = self.showMarginCheckbox.state == .on
 

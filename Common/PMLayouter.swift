@@ -15,10 +15,10 @@ class PMLayouter: NSLayoutManager {
 
     // The background of KDB lozenges
     var lozengeColour: NSColor?     = nil
-    var fontSize: CGFloat           = 13.0
-    var lineSpacing: CGFloat        = 1.0
+    var fontSize: CGFloat           = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
+    var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
     // FROM 1.2.0
-    var marginAdd: CGFloat          = BUFFOON_CONSTANTS.MARGIN_WIDTH
+    var marginAdd: CGFloat          = BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH
 
 
     // Override this function to hijack double-line drawing and replace it with

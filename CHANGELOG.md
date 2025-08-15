@@ -3,6 +3,7 @@
 - 2.1.0 *Unreleased*
     - Add whitespace margin around previews, with option to disable in **Settings**.
     - Allow the colour of front-matter YAML keys to be changed in **Settings**.
+    - Reorganisation and consolidation of constant values.
 - 2.0.0 *8 August 2025*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
         - Now supports tables, highlighted code blocks, image placement, multiple styles in blockquotes, and more.
