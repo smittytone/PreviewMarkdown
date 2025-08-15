@@ -148,7 +148,14 @@ class PMStyler {
                 if isListItem {
                     // Text immediately following the LI - it's a single-line item.
                     isListItem = false
-                    
+
+                    // FROM 2.1.0
+                    // If the content is just a newline, ignore it.
+                    // It will have been included by Markdown-It after pre-formatted HTML.
+                    if content == BUFFOON_CONSTANTS.LINE_END.LF {
+                        content = ""
+                    }
+
                     // Process the list item to set the prefix
                     if listTypes[insetLevel] == .bullet {
                         // Add a standard bullet. We set six types and we cycle around

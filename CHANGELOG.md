@@ -5,6 +5,7 @@
     - Allow the colour of front-matter YAML keys to be changed in **Settings**.
     - Update the design of the What’s New panel. 
     - Fix disabling/re-enabling of **Settings** menu item when sheets open/close.
+    - Fix extraneous `\n` added by Markdown-It after including pre-formatted HTML. 
     - Reorganise and consolidate constant values.
 - 2.0.0 *8 August 2025*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
