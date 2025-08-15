@@ -1142,19 +1142,19 @@ class PMStyler {
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,
                                        .strikethroughColor: self.colours.body]
         
-        self.styles["sub"]          = [.font: makeFont("plain", self.fontSize / 1.5),
-                                       .baselineOffset: -5.0 as NSNumber]
-        
-        self.styles["sup"]          = [.font: makeFont("plain", self.fontSize / 1.5),
-                                       .baselineOffset: 10.0 as NSNumber]
-        
+        self.styles["sub"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+                                       .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUB_OFFSET as NSNumber]
+
+        self.styles["sup"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+                                       .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUPER_OFFSET as NSNumber]
+
         // Set up the block styles we need
         self.styles["pre"]          = [.foregroundColor: self.colours.code,
                                        .font: makeFont("code", self.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["blockquote"]   = [.foregroundColor: self.colours.quote,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H4),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK),
                                        .paragraphStyle: self.paragraphs["quote"]!]
         
         self.styles["li"]           = [.foregroundColor: self.colours.body,
@@ -1232,7 +1232,7 @@ class PMStyler {
                 } else {
                     if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
                                                   traits: .boldFontMask,
-                                                  weight: 10,
+                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.BOLD,
                                                   size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
@@ -1246,7 +1246,7 @@ class PMStyler {
                 } else {
                     if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
                                                   traits: .italicFontMask,
-                                                  weight: 5,
+                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.ITALIC,
                                                   size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
@@ -1350,7 +1350,7 @@ class PMStyler {
             case "h4":
                 fallthrough
             case "blockquote":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H4
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK
             case "h5":
                 return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5
             case "h6":

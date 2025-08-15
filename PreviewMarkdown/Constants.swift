@@ -127,6 +127,10 @@ struct BUFFOON_CONSTANTS {
         static let H4                           = 1.4
         static let H5                           = 1.2
         static let H6                           = 1.2
+        static let BLOCK                        = 1.6
+        static let BASELINE_SHIFT               = 0.67
+        static let SUB_OFFSET                   = -5.0
+        static let SUPER_OFFSET                 = 10.0
     }
 
     struct INSET {
@@ -168,6 +172,12 @@ struct BUFFOON_CONSTANTS {
 
         static let BODY                         = "SFPro-Regular"
         static let CODE                         = "AndaleMono"
+    }
+
+    struct FONT_WEIGHT {
+
+        static let BOLD                         = 10
+        static let ITALIC                       = 5
     }
 
     struct DELIMITERS {
