@@ -87,28 +87,28 @@ class Common {
 
             // The remaining settings values are passed directly to the styler
             styler.fontSize = CGFloat(isThumbnail
-                                      ? BUFFOON_CONSTANTS.THUMBNAIL_FONT_SIZE
+                                      ? BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE
                                       : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
 
-            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)  ?? BUFFOON_CONSTANTS.CODE_COLOUR_HEX
-            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)  ?? BUFFOON_CONSTANTS.HEAD_COLOUR_HEX
-            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)  ?? BUFFOON_CONSTANTS.LINK_COLOUR_HEX
-            styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.QUOTE_COLOUR_HEX
-            
-            styler.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.CODE_FONT_NAME
-            styler.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.CODE
+            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.HEAD
+            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.LINK
+            styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE
+
+            styler.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
+            styler.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
 
             styler.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
 
             // FROM 2.1.0
-            styler.colourValues.yamlkey = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) ?? BUFFOON_CONSTANTS.YAML_KEY_COLOUR_HEX
+            styler.colourValues.yamlkey = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) ?? BUFFOON_CONSTANTS.HEX_COLOUR.YAML
         }
         
         // Just in case the above block reads in zero values
         // NOTE The other values CAN be zero
-        if styler.fontSize < BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0] ||
-            styler.fontSize > BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1] {
-            styler.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_FONT_SIZE)
+        if styler.fontSize < BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[0] ||
+            styler.fontSize > BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS.count - 1] {
+            styler.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE)
         }
         
         // Set paragraph spacing
@@ -195,7 +195,7 @@ class Common {
                 }
                 
                 // Got the max. number of paragraphs? Break out
-                if lineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
+                if lineCount >= BUFFOON_CONSTANTS.THUMBNAIL_SIZE.LINE_COUNT {
                     components.markdownEnd = index
                     break
                 }
@@ -447,7 +447,7 @@ class Common {
                     }
                     
                     // If the value is a collection, we drop to the next line and indent
-                    let valueIndent: Int = indent + BUFFOON_CONSTANTS.YAML_INDENT
+                    let valueIndent: Int = indent + BUFFOON_CONSTANTS.INSET.YAML
                     returnString.append(self.newLine)
                     
                     // Render the key's value

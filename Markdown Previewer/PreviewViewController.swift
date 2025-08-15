@@ -96,7 +96,7 @@ class PreviewViewController: NSViewController,
                         // we are using as a proxy for lozenged text - the layouter will
                         // do the replacement work
                         let layouter = PMLayouter()
-                        layouter.marginAdd = common.doShowMargin ? BUFFOON_CONSTANTS.MARGIN_WIDTH : 0.0
+                        layouter.marginAdd = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
                         layouter.fontSize = common.fontSize
                         layouter.lineSpacing = common.lineSpacing
                         renderTextContainer.replaceLayoutManager(layouter)

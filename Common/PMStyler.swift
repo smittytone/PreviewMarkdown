@@ -15,11 +15,11 @@ class PMStyler {
     
     // MARK: - Publicly accessible properties
     
-    var fontSize: CGFloat                                               = 24.0
-    var lineSpacing: CGFloat                                            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    var paraSpacing: CGFloat                                            = 18.0
-    var bodyFontName: String                                            = "SF Pro"
-    var codeFontName: String                                            = "Menlo"
+    var fontSize: CGFloat                                               = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
+    var lineSpacing: CGFloat                                            = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
+    var paraSpacing: CGFloat                                            = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
+    var bodyFontName: String                                            = BUFFOON_CONSTANTS.FONT_NAME.BODY
+    var codeFontName: String                                            = BUFFOON_CONSTANTS.FONT_NAME.CODE
     var workingDirectory: String                                        = "/Users/"
     var bodyColour: NSColor                                             = .labelColor
     var colourValues: ColourValues                                      = ColourValues()
@@ -46,33 +46,7 @@ class PMStyler {
 
     // MARK: - Constants
     
-    // Headline size vs body font size scaler values
-    private let H1_MULTIPLIER: CGFloat                                  = 2.6
-    private let H2_MULTIPLIER: CGFloat                                  = 2.2
-    private let H3_MULTIPLIER: CGFloat                                  = 1.8
-    private let H4_MULTIPLIER: CGFloat                                  = 1.4
-    private let H5_MULTIPLIER: CGFloat                                  = 1.2
-    private let H6_MULTIPLIER: CGFloat                                  = 1.2
-    private let LIST_INSET_BASE: CGFloat                               = 50.0
-    private let BLOCK_INSET_BASE: CGFloat                              = 50.0
     
-    private let HTML_TAG_START: String                                  = "<"
-    private let HTML_TAG_END: String                                    = ">"
-    
-#if PARASYM
-    private let LINE_BREAK_SYMBOL: String                               = "†\u{2028}"
-    private let LINE_FEED_SYMBOL: String                                = "¶\u{2029}"
-#else
-    private let LINE_BREAK_SYMBOL: String                               = "\u{2028}"
-    private let LINE_FEED_SYMBOL: String                                = "\u{2029}"
-#endif
-    private let NEW_LINE_SYMBOL: String                                 = "\n"
-    private let WINDOWS_LINE_SYMBOL: String                             = "\n\r"
-    
-    private let APPLIED_TAGS: [String]                                  = ["p", "a", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "code", "kbd", "em",
-                                                                           "strong", "blockquote", "s", "img", "li", "sub", "sup"]
-    private let BULLET_STYLES: [String]                                 = ["\u{25CF}", "\u{25CB}", "\u{25A0}", "\u{25A1}", "\u{25C6}", "\u{25C7}"]
-    private let HTML_ESCAPE_REGEX: NSRegularExpression                  = try! NSRegularExpression(pattern: "&#?[a-zA-Z0-9]+?;", options: .caseInsensitive)
 
 
     // MARK: - Rendering Functions
@@ -146,8 +120,8 @@ class PMStyler {
         processCheckboxes()
         
         // 2. Convert Windows LFCR line endings and remove unwanted New Lines
-        self.tokenString = self.tokenString.replacingOccurrences(of: self.WINDOWS_LINE_SYMBOL, with: "")
-        
+        self.tokenString = self.tokenString.replacingOccurrences(of: BUFFOON_CONSTANTS.LINE_END.WINDOWS, with: "")
+
         // Render the HTML
         var prefixWidth: CGFloat = 0.0
         var scanned: String? = nil
@@ -163,8 +137,8 @@ class PMStyler {
         // Iterate over the stored tokenised string
         while !scanner.isAtEnd {
             // Scan up to the next token delimiter
-            scanned = scanner.scanUpToString(self.HTML_TAG_START)
-            
+            scanned = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_START)
+
             // MARK: Content Processing
             // Have we got content (ie. text between tags or right at the start) to style? Do so now.
             if var content = scanned, !content.isEmpty {
@@ -174,21 +148,28 @@ class PMStyler {
                 if isListItem {
                     // Text immediately following the LI - it's a single-line item.
                     isListItem = false
-                    
+
+                    // FROM 2.1.0
+                    // If the content is just a newline, ignore it.
+                    // It will have been included by Markdown-It after pre-formatted HTML.
+                    if content == BUFFOON_CONSTANTS.LINE_END.LF {
+                        content = ""
+                    }
+
                     // Process the list item to set the prefix
                     if listTypes[insetLevel] == .bullet {
                         // Add a standard bullet. We set six types and we cycle around
                         // when the indent level is greater than that that number.
                         var index: Int = insetLevel
-                        while index > self.BULLET_STYLES.count {
-                            index -= self.BULLET_STYLES.count
+                        while index > BUFFOON_CONSTANTS.BULLET_STYLES.count {
+                            index -= BUFFOON_CONSTANTS.BULLET_STYLES.count
                         }
                         
                         if index < 1 {
                             index = 1
                         }
                         
-                        listItemPrefix = "\(self.BULLET_STYLES[index - 1]) "
+                        listItemPrefix = "\(BUFFOON_CONSTANTS.BULLET_STYLES[index - 1]) "
                     } else {
                         // Add a numeral. The value was calculated when we encountered the initial LI
                         listItemPrefix = "\(orderedListCounts[insetLevel]). "
@@ -257,7 +238,7 @@ class PMStyler {
                 scanner.skipNextCharacter()
 
                 // Get the remainder of the tag up to the delimiter
-                if let closeToken: String = scanner.scanUpToString(self.HTML_TAG_END) {
+                if let closeToken: String = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
 #if DEBUG
                     NSLog("[TOKEN] <- \(closeToken)")
 #endif
@@ -342,9 +323,9 @@ class PMStyler {
                         // Add a tailing New Line if we need one after the para (only in certain cases)
                         if doAddNewLine && currentParagraphStyle.type != .character {
 #if PARATAG
-                            renderedString.append(styleString(">"+self.LINE_FEED_SYMBOL, [currentParagraphStyle]))
+                            renderedString.append(styleString(">" + BUFFOON_CONSTANTS.LINE_END.FEED, [currentParagraphStyle]))
 #else
-                            renderedString.append(styleString(self.LINE_FEED_SYMBOL, [currentParagraphStyle]))
+                            renderedString.append(styleString(BUFFOON_CONSTANTS.LINE_END.FEED, [currentParagraphStyle]))
 #endif
                         }
                     }
@@ -357,7 +338,7 @@ class PMStyler {
             } else {
                 // MARK: Opening Token
                 // We've got a new token, so get it up to the delimiter
-                if let openToken: String = scanner.scanUpToString(self.HTML_TAG_END) {
+                if let openToken: String = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
                     // NOTE mdit generates lowercase HTML tags, but we should probably not assume that
                     var token: String = openToken.lowercased()
                     
@@ -509,13 +490,13 @@ class PMStyler {
                     
                     // Compare the tag to use with those we apply.
                     // Some, such as list markers, we do not style here
-                    if self.APPLIED_TAGS.contains(tokenToApply) {
+                    if BUFFOON_CONSTANTS.SUPPORTED_TAGS.contains(tokenToApply) {
                         // Push the tag's style to the stack
                         let style: Style = Style()
                         style.name = tokenToApply
                         
                         // Set character styles (inherit style from parent)
-                        if ["strong", "em", "a", "s", "img", "sub", "sup", "code", "kbd"].contains(tokenToApply) {
+                        if BUFFOON_CONSTANTS.CHARACTER_STYLES.contains(tokenToApply) {
                             style.type = .character
                             
                             // Handle paragraph-level code, ie. code blocks not inlines
@@ -564,9 +545,9 @@ class PMStyler {
         }
         
         // We have composed the string. Now process HTML escapes not already addressed
-        let results: [NSTextCheckingResult] = self.HTML_ESCAPE_REGEX.matches(in: renderedString.string,
-                                                                      options: [.reportCompletion],
-                                                                      range: NSMakeRange(0, renderedString.length))
+        let results: [NSTextCheckingResult] = BUFFOON_CONSTANTS.HTML_ESCAPE_REGEX.matches(in: renderedString.string,
+                                                                                          options: [.reportCompletion],
+                                                                                          range: NSMakeRange(0, renderedString.length))
         if results.count > 0 {
             var localOffset: Int = 0
             for result: NSTextCheckingResult in results {
@@ -782,7 +763,7 @@ class PMStyler {
      Prepare a paragraph inset to the requested depth.
      
      - Parameters
-        - inset:      The indentation factor. This is multiplied by LIST_INSET_BASE points.
+        - inset:      The indentation factor. This is multiplied by BUFFOON_CONSTANTS.INSET.LIST points.
         - headInset:  Any offset to apply to the whole para other than line 1. Default: 0.0.
         - firstInset: Any offset to apply to the first line. Default: 0.0, ie. matches the para as whole.
      
@@ -797,8 +778,8 @@ class PMStyler {
         }
 
         let newParaStyle: NSMutableParagraphStyle = makeBaseParagraphStyle(styleName)
-        newParaStyle.headIndent = rest + (self.LIST_INSET_BASE * CGFloat(inset))
-        newParaStyle.firstLineHeadIndent = first + (self.LIST_INSET_BASE * CGFloat(inset))
+        newParaStyle.headIndent = rest + (BUFFOON_CONSTANTS.INSET.LIST * CGFloat(inset))
+        newParaStyle.firstLineHeadIndent = first + (BUFFOON_CONSTANTS.INSET.LIST * CGFloat(inset))
         return newParaStyle
     }
 
@@ -807,8 +788,8 @@ class PMStyler {
      Prepare a block paragraph inset to the requested depth.
      
      - Parameters
-        - inset: The indentation factor. This is multiplied by BLOCK_INSET_BASE points.
-     
+        - inset: The indentation factor. This is multiplied by BUFFOON_CONSTANTS.INSET.BLOCK points.
+
      - Returns The inset NSParagraphStyle.
      */
     internal func makeBlockParagraphStyle(_ inset: Int) -> NSMutableParagraphStyle {
@@ -820,7 +801,7 @@ class PMStyler {
         }
 
         let newParaStyle: NSMutableParagraphStyle = makeBaseParagraphStyle(styleName)
-        newParaStyle.headIndent = self.BLOCK_INSET_BASE * CGFloat(inset)
+        newParaStyle.headIndent = BUFFOON_CONSTANTS.INSET.BLOCK * CGFloat(inset)
         newParaStyle.firstLineHeadIndent = newParaStyle.headIndent
         return newParaStyle
     }
@@ -1034,7 +1015,7 @@ class PMStyler {
     private func renderCode(_ someCode: String, _ inset: Int) -> NSAttributedString {
         
         // Tidy up the code
-        let code = someCode.trimmingCharacters(in: .newlines).replacingOccurrences(of: self.NEW_LINE_SYMBOL, with: self.LINE_BREAK_SYMBOL)
+        let code = someCode.trimmingCharacters(in: .newlines).replacingOccurrences(of: BUFFOON_CONSTANTS.LINE_END.LF, with: BUFFOON_CONSTANTS.LINE_END.BREAK)
 
         if !self.currentLanguage.isEmpty {
             // Have we a highlighter available? If not, generate one
@@ -1085,8 +1066,8 @@ class PMStyler {
         quoteParaStyle.paragraphSpacing                 = self.paraSpacing * 2.0
         quoteParaStyle.alignment                        = .right
         quoteParaStyle.paragraphSpacingBefore           = self.paraSpacing
-        quoteParaStyle.headIndent                       = self.BLOCK_INSET_BASE
-        quoteParaStyle.firstLineHeadIndent              = self.BLOCK_INSET_BASE
+        quoteParaStyle.headIndent                       = BUFFOON_CONSTANTS.INSET.BLOCK
+        quoteParaStyle.firstLineHeadIndent              = BUFFOON_CONSTANTS.INSET.LIST
         self.paragraphs["quote"]                        = quoteParaStyle
         
         // Nested list
@@ -1115,27 +1096,27 @@ class PMStyler {
         
         // Generate specific paragraph entity styles
         self.styles["h1"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * H1_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h2"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * H2_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h3"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * H3_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h4"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * H4_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H4),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h5"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * H5_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h6"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("plain", self.fontSize *  H6_MULTIPLIER),
+                                       .font: makeFont("plain", self.fontSize *  BUFFOON_CONSTANTS.MULTIPLIER.H6),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["p"]            = [.foregroundColor: self.colours.body,
@@ -1168,19 +1149,19 @@ class PMStyler {
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,
                                        .strikethroughColor: self.colours.body]
         
-        self.styles["sub"]          = [.font: makeFont("plain", self.fontSize / 1.5),
-                                       .baselineOffset: -5.0 as NSNumber]
-        
-        self.styles["sup"]          = [.font: makeFont("plain", self.fontSize / 1.5),
-                                       .baselineOffset: 10.0 as NSNumber]
-        
+        self.styles["sub"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+                                       .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUB_OFFSET as NSNumber]
+
+        self.styles["sup"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+                                       .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUPER_OFFSET as NSNumber]
+
         // Set up the block styles we need
         self.styles["pre"]          = [.foregroundColor: self.colours.code,
                                        .font: makeFont("code", self.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["blockquote"]   = [.foregroundColor: self.colours.quote,
-                                       .font: makeFont("strong", self.fontSize * H4_MULTIPLIER),
+                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK),
                                        .paragraphStyle: self.paragraphs["quote"]!]
         
         self.styles["li"]           = [.foregroundColor: self.colours.body,
@@ -1258,7 +1239,7 @@ class PMStyler {
                 } else {
                     if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
                                                   traits: .boldFontMask,
-                                                  weight: 10,
+                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.BOLD,
                                                   size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
@@ -1272,7 +1253,7 @@ class PMStyler {
                 } else {
                     if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
                                                   traits: .italicFontMask,
-                                                  weight: 5,
+                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.ITALIC,
                                                   size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
@@ -1368,19 +1349,19 @@ class PMStyler {
         
         switch tagName {
             case "h1":
-                return self.fontSize * H1_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1
             case "h2":
-                return self.fontSize * H2_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2
             case "h3":
-                return self.fontSize * H3_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3
             case "h4":
                 fallthrough
             case "blockquote":
-                return self.fontSize * H4_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK
             case "h5":
-                return self.fontSize * H5_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5
             case "h6":
-                return self.fontSize * H6_MULTIPLIER
+                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H6
             default:
                 return self.fontSize
         }
@@ -1542,11 +1523,11 @@ class PMStyler {
     private func addNewLine(_ renderedString: NSMutableAttributedString, withLineBreak: Bool = false) {
 
 #if PARATAG
-        let symbol = "<"+self.LINE_FEED_SYMBOL
+        let symbol = "<" + BUFFOON_CONSTANTS.LINE_END.FEED
 #else
-        let symbol = self.LINE_FEED_SYMBOL
+        let symbol = BUFFOON_CONSTANTS.LINE_END.FEED
 #endif
-        renderedString.append(NSAttributedString(string: (withLineBreak ? self.LINE_BREAK_SYMBOL : symbol), attributes: self.styles["p"]))
+        renderedString.append(NSAttributedString(string: (withLineBreak ? BUFFOON_CONSTANTS.LINE_END.BREAK : symbol), attributes: self.styles["p"]))
     }
 
 }

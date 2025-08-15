@@ -265,6 +265,7 @@ extension AppDelegate {
         
         self.helpMenuWhatsNew.isEnabled = false
         self.mainMenuResetFinder.isEnabled = false
+        self.mainMenuSettings.isEnabled = false
     }
 
 
@@ -275,6 +276,7 @@ extension AppDelegate {
         
         self.helpMenuWhatsNew.isEnabled = true
         self.mainMenuResetFinder.isEnabled = true
+        self.mainMenuSettings.isEnabled = true
     }
 
 

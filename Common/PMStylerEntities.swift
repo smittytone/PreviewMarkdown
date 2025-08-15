@@ -27,25 +27,26 @@ enum StyleType {
 
 
 class Style {
-    var name: String = "p"
+    var name: String    = "p"
     var type: StyleType = .paragraph
 }
 
 
 struct FontRecord {
     var postScriptName: String = ""
-    var style: String = "regular"
-    var size: CGFloat = 12.0
-    var font: NSFont? = nil
+    var style: String   = "regular"
+    var size: CGFloat   = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
+    var font: NSFont?   = nil
 }
 
 
 struct ColourValues {
-    var head: String                  = "#FFFFFF"
-    var code: String                  = "#00FF00"
-    var link: String                  = "#64ACDD"
-    var quote: String                 = "#FFFFFF"
-    var yamlkey: String               = "#00FF00"
+    var head: String    = BUFFOON_CONSTANTS.HEX_COLOUR.HEAD
+    var code: String    = BUFFOON_CONSTANTS.HEX_COLOUR.CODE
+    var link: String    = BUFFOON_CONSTANTS.HEX_COLOUR.LINK
+    var quote: String   = BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE
+    // FROM 2.1.0
+    var yamlkey: String = BUFFOON_CONSTANTS.HEX_COLOUR.YAML
 }
 
 
