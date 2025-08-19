@@ -234,7 +234,7 @@ class Common {
                         var ys = ""
                         if let rs = processYaml(yaml, self.styler!.colourValues.yamlkey) { // renderYaml2(yaml, 0, false) {
                             let size = String(format:"%f", self.styler!.fontSize)
-                            let font: String = "Abel"
+                            let font: String = "Avenir"
                             ys = "<TABLE style=\"width:300%;border:0px solid;border-collapse:collapse;font-family:\(font);color:#ffffff;font-size: " + size + "px;\">" + rs +  "</TABLE>"
                         }
 
@@ -534,129 +534,6 @@ class Common {
 
     var SPACE_CHAR = "~"
 
-    /*
-     func renderCollection(_ collection: Yaml, _ keyStack: [String], _ valStack: [String], _ indent: Int) -> ([String], [String]) {
-
-     var nk = keyStack
-     var nv = valStack
-
-     switch collection {
-     case .dictionary:
-     if let dict = collection.dictionary {
-     // Pad value of outer key
-     // TODO May not have one if within an array...
-     let keys: [Yaml] = Array(dict.keys)
-     for key in keys {
-     let value = dict[key] ?? ""
-     if value.dictionary != nil || value.array != nil {
-     let (ks, vs) = renderCollection(value, [String(repeating: SPACE_CHAR, count: indent * 4) + processScalar(key)], [], indent + 1)
-     nk.append(contentsOf: ks)
-     nv.append(contentsOf: vs)
-     while nk.count < nv.count {
-     nk.append(SPACE_CHAR)
-     }
-     } else {
-     nk.append(String(repeating: SPACE_CHAR, count: indent * 4) + processScalar(key))
-     nv.append(processScalar(value))
-     }
-     }
-     }
-     case .array:
-     if let list = collection.array {
-     for value in list {
-     if value.dictionary != nil {
-     if value == list.first {
-     nv.append(SPACE_CHAR)   // Add empty value adjacent to key
-
-     }
-     let (ks, vs) = renderCollection(value, [], [], indent + 1)
-     nk.append(contentsOf: ks)
-     nv.append(contentsOf: vs)
-     while nk.count < nv.count {
-     nk.append(SPACE_CHAR)
-     }
-
-     if value != list.last {
-     nk.append(SPACE_CHAR)
-     nv.append(SPACE_CHAR)
-     }
-     } else if value.array != nil {
-     if value == list.first {
-     nv.append(SPACE_CHAR)
-     }
-     let (_, vs) = renderCollection(value, [], [], indent + 1)
-     nv.append(contentsOf: vs)
-     while nk.count < nv.count {
-     nk.append(SPACE_CHAR)
-     }
-
-     if value != list.last {
-     nk.append(SPACE_CHAR)
-     nv.append(SPACE_CHAR)
-     }
-     } else {
-     // Scalar value: just add it to the stack
-     nv.append(processScalar(value))
-     }
-     }
-     }
-     default:
-     break
-     }
-
-     return (nk, nv)
-     }
-
-
-     func processYaml(_ yaml: Yaml) -> String? {
-
-     var table = "" //addHeaders(["Field", "Value"])
-
-     // Proceed on assumption `yaml` is a dictionary, which
-     // is reasonable for front matter
-     if let dict = yaml.dictionary {
-     var keys: [Yaml] = Array(dict.keys)
-     // Sort keys - assume strings for front matter
-     keys = keys.sorted(by: { (a, b) -> Bool in
-     if let a_s: String = a.string {
-     if let b_s: String = b.string {
-     return (a_s.lowercased() < b_s.lowercased())
-     }
-     }
-
-     return false
-     })
-
-     // Iterate over the front matter dictionary's keys
-     for key in keys {
-     let value = dict[key] ?? ""
-     if value.dictionary != nil || value.array != nil {
-     // Collection type so process its elements
-     var (ks, vs) = renderCollection(value, [processScalar(key)], [], 0)
-
-     // Make sure key and value stacks have the same length
-     // to ensure correct positioning within the table row
-     while ks.count > vs.count {
-     _ = ks.popLast()
-     }
-
-     while ks.count < vs.count {
-     ks.append(SPACE_CHAR)
-     }
-     table = addRow(table, [listify(ks), listify(vs)])
-     } else {
-     // Row comprises key and single scalar value
-     table = addRow(table, [processScalar(key), processScalar(value)])
-     }
-     }
-     }
-
-     // Replace space markers with actual spaces
-     table = table.replacingOccurrences(of: SPACE_CHAR, with: "&nbsp;")
-     return table
-     }
-     */
-
     func renderCollection(_ leadKey: Yaml?, _ collection: Yaml, _ rows: [Row], _ indent: Int, _ flag: Bool = false) -> [Row] {
 
         var nuRows = rows
@@ -810,16 +687,16 @@ class Common {
                     }
                 }
             case .null:
-                returnable = "NULL"
+                returnable = "<code>NULL</code>"
             default:
                 if let val = part.int {
                     returnable = "\(val)"
                 } else if let val = part.bool {
-                    returnable = val ? "TRUE" : "FALSE"
+                    returnable = val ? "<code>TRUE</code>" : "<code>FALSE</code>"
                 } else if let val = part.double {
                     returnable = "\(val)"
                 } else {
-                    returnable = "NON SCALAR"
+                    returnable = "<code>ERROR, NON-SCALAR</code>"
                 }
         }
 
