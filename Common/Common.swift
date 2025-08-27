@@ -24,6 +24,15 @@ class MarkdownComponents {
 }
 
 
+// FROM 2.2.0
+// Structure to hold front matter row components.
+struct Row {
+    var key: String     = BUFFOON_CONSTANTS.HARDSPACE
+    var val: String     = BUFFOON_CONSTANTS.HARDSPACE
+    var rule: Double    = 0.5
+}
+
+
 // FROM 1.4.0
 // Implement common code as a class
 class Common {
@@ -231,14 +240,13 @@ class Common {
                     do {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
 
-                        var ys = ""
-                        if let rs = processYaml(yaml, self.styler!.colourValues.yamlkey) { // renderYaml2(yaml, 0, false) {
-                            let size = String(format:"%f", self.styler!.fontSize)
-                            let font: String = "Avenir"
-                            ys = "<TABLE style=\"width:300%;border:0px solid;border-collapse:collapse;font-family:\(font);color:#ffffff;font-size: " + size + "px;\">" + rs +  "</TABLE>"
+                        // FROM 2.2.0
+                        var yamlString = ""
+                        if let tableString = processYaml(yaml, self.styler!.fontSize, self.styler!.colourValues) {
+                            yamlString = tableString
                         }
 
-                        if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: ys.data(using: .utf8)!, options: [:], documentAttributes: nil) {
+                        if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: yamlString.data(using: .utf16)!, options: [:], documentAttributes: nil) {
                             tableString.append(NSAttributedString(string: BUFFOON_CONSTANTS.LINE_END.FEED + BUFFOON_CONSTANTS.LINE_END.FEED))
                             tableString.append(output)
                             output = tableString
@@ -363,7 +371,7 @@ class Common {
      Indents the value as required.
      Should NOT be called for thumbnails.
 
-     FROM 1.3.0
+     FROM 1.3.0-2.2.0
 
      - Parameters
      - part:   A partial Yaml object.
@@ -371,7 +379,7 @@ class Common {
      - isKey:  Is the Yaml part a key?
 
      - Returns The rendered string as an NSAttributedString, or nil on error.
-     */
+
     func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
 
         let returnString: NSMutableAttributedString = NSMutableAttributedString(string: "",
@@ -508,19 +516,19 @@ class Common {
         // Error condition
         return nil
     }
-
+     */
 
     /**
      Return a space-prefix NSAttributedString.
 
-     FROM 1.3.0
+     FROM 1.3.0-2.2.0
 
      - Parameters
      - baseString: The string to be indented.
      - indent:     The number of indent spaces to add.
 
      - Returns The indented string as an NSAttributedString.
-     */
+
     func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
 
         let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
@@ -530,91 +538,15 @@ class Common {
         indentedString.append(NSAttributedString(string: trimmedString))
         return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
     }
+     */
 
 
-    var SPACE_CHAR = "~"
+    func processYaml(_ yaml: Yaml, _ textSize: CGFloat, _ colours: ColourValues) -> String? {
 
-    func renderCollection(_ leadKey: Yaml?, _ collection: Yaml, _ rows: [Row], _ indent: Int, _ flag: Bool = false) -> [Row] {
-
-        var nuRows = rows
-
-        switch collection {
-            case .dictionary:
-                if let dict = collection.dictionary {
-                    // Pad value of outer key
-                    // TODO May not have one if within an array...
-                    let keys: [Yaml] = Array(dict.keys)
-                    for key in keys {
-                        let value = dict[key] ?? ""
-
-                        if key == keys.first, let leadKey = leadKey {
-                            // Value is a collection so make a row with the lead key and an empty value
-                            let row = Row(key: String(repeating: SPACE_CHAR, count: (indent - 1) * 4) + processScalar(leadKey), val: SPACE_CHAR, rule: 0.0)
-                            nuRows.append(row)
-                        }
-
-                        if value.array != nil || value.dictionary != nil {
-                            nuRows = renderCollection(key, value, nuRows, indent + 1)
-                        } else {
-                            // Inset the key and add the scalar value
-                            let row = Row(key: String(repeating: SPACE_CHAR, count: indent * 4) + processScalar(key), val: processScalar(value))
-                            nuRows.append(row)
-                        }
-                    }
-                }
-            case .array:
-                if let list = collection.array {
-                    for value in list {
-                        if (value.dictionary != nil || value.array != nil) {
-                            // Value is a collection, so drop and indent
-                            if value == list.first, let leadKey = leadKey {
-                                // Value is a collection so make a row with the lead key and an empty value
-                                let row = Row(key: String(repeating: SPACE_CHAR, count: (indent - 1) * 4) + processScalar(leadKey), val: SPACE_CHAR, rule: 0.0)
-                                nuRows.append(row)
-                            }
-
-                            nuRows = renderCollection(nil, value, nuRows, indent)
-                            if var row = nuRows.popLast() {
-                                row.rule = 1.0
-                                nuRows.append(row)
-                            }
-                        } else {
-                            // Value is a scalar so follow ion
-                            var subKey: String
-                            if value == list.first, let leadKey = leadKey {
-                                subKey = String(repeating: SPACE_CHAR, count: (indent - 1) * 4) + processScalar(leadKey)
-                            } else {
-                                subKey = SPACE_CHAR
-                            }
-
-                            // Add the row
-                            let row = Row(key: subKey, val: processScalar(value))
-                            nuRows.append(row)
-                        }
-                    }
-                }
-            default:
-                break
-        }
-
-        return nuRows
-    }
-
-
-    struct Row {
-        var key: String = "~"
-        var val: String = "~"
-        var rule: Double = 0.5
-    }
-
-    var rows: [Row] = []
-
-    func processYaml(_ yaml: Yaml, _ keyColour: String) -> String? {
-
-        //var table = "" //addHeaders(["Field", "Value"])
+        var rows: [Row] = []
 
         // Proceed on assumption `yaml` is a dictionary, which
-        // is reasonable for front matter
+        // is reasonable for front matter...
         if let dict = yaml.dictionary {
             var keys: [Yaml] = Array(dict.keys)
             // Sort keys - assume strings for front matter
@@ -632,92 +564,213 @@ class Common {
             for key in keys {
                 let value = dict[key] ?? ""
                 if value.dictionary != nil || value.array != nil {
-                    // Collection type so process its elements
-                    rows = renderCollection(key, value, rows, 1)
+                    // Value is a collection type so process its elements
+                    rows.append(contentsOf: processCollection(key, value, 1))
+
+                    // Add an thick rule after each primary item
                     if var row = rows.popLast() {
                         row.rule = 2.0
                         rows.append(row)
                     }
                 } else {
                     // Row comprises key and single scalar value, always with a baseline
-                    var row = Row()
-                    row.key = processScalar(key)
-                    row.val = processScalar(value)
-                    row.rule = 2.0
+                    let row = Row(key: processScalar(key),
+                                  val: processScalar(value),
+                                  rule: 2.0)
                     rows.append(row)
                 }
             }
         }
 
-        // Replace space markers with actual spaces
-        var table = addHeaders()
+        // Asemble the table HTML
+        var table = addHeader(textSize, colours)
         for row in rows {
-            table += addRow(row, keyColour)
+            table += addRow(row, colours)
         }
 
-        table = table.replacingOccurrences(of: SPACE_CHAR, with: "&nbsp;")
-        return table
+        // Replace hard-space markers with actual spaces
+        return addFooter(table.replacingOccurrences(of: BUFFOON_CONSTANTS.HARDSPACE, with: "&nbsp;"))
     }
 
-    func listify(_ list: [String]) -> String {
 
-        var r = ""
-        for i in 0..<list.count {
-            r += list[i] + (i < list.count - 1 ? "<br />" : "")
+    /**
+     Process a particular YAML collection.
+
+     FROM 2.2.0
+
+     - Parameters:
+        - leadKey    The key for which the collection is a value, or `nil` if there is no key.
+        - collection The collection itself.
+        - indent     The level of indentation.
+
+     - Returns An array of rows to be used to extend the parent.
+     */
+    func processCollection(_ leadKey: Yaml?, _ collection: Yaml, _ indent: Int) -> [Row] {
+
+        var newRows: [Row] = []
+
+        switch collection {
+            case .dictionary:
+                if let map = collection.dictionary {
+                    let keys: [Yaml] = Array(map.keys)
+                    for key in keys {
+                        let value = map[key] ?? ""
+
+                        if key == keys.first, let leadKey = leadKey {
+                            // Value is a collection so make a row with the lead key and an empty value
+                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + processScalar(leadKey),
+                                          val: BUFFOON_CONSTANTS.HARDSPACE, rule: 0.0)
+                            newRows.append(row)
+                        }
+
+                        if value.array != nil || value.dictionary != nil {
+                            // Recurse over the collection value
+                            newRows.append(contentsOf: processCollection(key, value, indent + 1))
+                        } else {
+                            // Inset the key and add the scalar value
+                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: indent * 4) + processScalar(key),
+                                          val: processScalar(value))
+                            newRows.append(row)
+                        }
+                    }
+                }
+            case .array:
+                if let list = collection.array {
+                    for value in list {
+                        if (value.dictionary != nil || value.array != nil) {
+                            // Value is a collection, so drop and indent
+                            if value == list.first, let leadKey = leadKey {
+                                // Value is a collection so make a row with the lead key and an empty value
+                                let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + processScalar(leadKey),
+                                              val: BUFFOON_CONSTANTS.HARDSPACE,
+                                              rule: 0.0)
+                                newRows.append(row)
+                            }
+
+                            newRows.append(contentsOf: processCollection(nil, value, indent))
+
+                            // After rendering the collection, increase the rule of the last item
+                            if var row = newRows.popLast() {
+                                row.rule = 1.0
+                                newRows.append(row)
+                            }
+                        } else {
+                            // Value is a scalar so follow on from the last
+                            var subKey: String = BUFFOON_CONSTANTS.HARDSPACE
+                            if value == list.first, let leadKey = leadKey {
+                                subKey = String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + processScalar(leadKey)
+                            }
+
+                            // Add the row
+                            let row = Row(key: subKey,
+                                          val: "&bull;" + BUFFOON_CONSTANTS.HARDSPACE + processScalar(value))
+                            newRows.append(row)
+                        }
+                    }
+                }
+            default:
+                break
         }
 
-        return r
+        return newRows
     }
 
+
+    /**
+     Handle any scalar value. Most are simple interpolations (int, double), others return strings
+     based on the value (bool, null, unknown). Strings are assembled out of parts.
+
+     FROM 2.2.0
+
+     - Parameters:
+        - part The YAML scalar value to process.
+
+     - Returns The value to add to the table.
+     */
     func processScalar(_ part: Yaml) -> String {
-
-        var returnable = ""
 
         switch part {
             case .string:
                 if let value = part.string {
                     let parts: [String] = value.components(separatedBy: "\n")
+                    var returnString = ""
                     if parts.count > 1 {
                         for i in 0..<parts.count {
                             let part: String = parts[i]
-                            returnable += part + " "
+                            returnString += part + " "
                         }
                     } else {
-                        returnable = parts[0]
+                        returnString = parts[0]
                     }
+
+                    return returnString
                 }
             case .null:
-                returnable = "<code>NULL</code>"
+                return "<code>NULL</code>"
             default:
                 if let val = part.int {
-                    returnable = "\(val)"
-                } else if let val = part.bool {
-                    returnable = val ? "<code>TRUE</code>" : "<code>FALSE</code>"
+                    return "\(val)"
                 } else if let val = part.double {
-                    returnable = "\(val)"
+                    return "\(val)"
+                } else if let val = part.bool {
+                    return val ? "<code>TRUE</code>" : "<code>FALSE</code>"
                 } else {
-                    returnable = "<code>ERROR, NON-SCALAR</code>"
+                    return "<code>ERROR, NON-SCALAR</code>"
                 }
         }
 
-        return returnable
+        return ""
     }
 
 
-    func addHeaders() -> String {
+    /**
+     Create an HTML row based on a supplied row object.
 
-        return "<tr colspan=\"2\"><td style=\"border:0px solid;font-size:\(1.4 * self.styler!.fontSize)px;color: #\(self.styler!.colourValues.head)\"><b>Front Matter</b></td></tr>"
-    }
+     FROM 2.2.0
 
+     - Parameters:
+        - row        The row object use to construct the HTML.
+        - keyColour: The colour of the left column entry.
+     */
+    func addRow(_ row: Row, _ colours: ColourValues) -> String {
 
-    func addRow(_ row: Row, _ keyColour: String) -> String {
-
-        let borderColor = row.rule >= 2.0 ? "ffffffaa" : "999999aa"
+        let borderColor = row.rule >= 1.0 ? "aaaaaaaa" : "555555ff"
 
         var nuRow = "<tr>"
-        nuRow += "<td style=\"width:30%;border:1px solid #\(borderColor);border-width: 0 0 \(row.rule)px 0;padding: 8px 0 8px 0;color:#\(keyColour)\">\(row.key)</td>"
-        nuRow += "<td style=\"width:70%;border:1px solid #\(borderColor);border-width: 0 0 \(row.rule)px 0;padding: 8px 0 8px 0;color: #ffffff\">\(row.val)</td>"
+        nuRow += "<td style=\"width:30%;border:1px solid #\(borderColor);border-width: 0 0 \(row.rule)px 0;padding: 8px 0 8px 0;color:#\(colours.yamlkey);vertical-align: top;\">\(row.key)</td>"
+        nuRow += "<td style=\"width:70%;border:1px solid #\(borderColor);border-width: 0 0 \(row.rule)px 0;padding: 8px 0 8px 0;color: #ffffff;vertical-align: top;\">\(row.val)</td>"
         return nuRow + "</tr>"
+    }
+
+
+    /**
+     Hand back an HTML table header with a title spanning the first row.
+
+     FROM 2.2.0
+
+     - Returns The table header HTML.
+     */
+    func addHeader(_ textSize: CGFloat, _ colours: ColourValues) -> String {
+
+        // To so use font name - might need @font-style thingy...
+        let font: String = "Avenir"
+        return "<table style=\"width:300%;border:0px solid;border-collapse:collapse;font-family:\(font);color:#ffffff;font-size: \(textSize)px;\"><tr colspan=\"2\"><td style=\"border:0px solid;font-size:\(1.4 * textSize)px;color: #\(colours.head)\"><b>Front Matter</b></td></tr>"
+    }
+
+
+    /**
+     Hand back an HTML table footer added to the passed in table body.
+
+     FROM 2.2.0
+
+     - Parameters:
+        - table The assembled table that requires a footer.
+
+     - Returns The table header HTML.
+     */
+    func addFooter(_ table: String) -> String {
+
+        return  table + "</table>"
     }
 
 }

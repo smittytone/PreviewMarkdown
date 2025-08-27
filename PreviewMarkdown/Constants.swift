@@ -198,6 +198,8 @@ struct BUFFOON_CONSTANTS {
         static let FEED                         = "\u{2029}"
 #endif
     }
+
+    static let HARDSPACE                        = "~"
 }
 
 
