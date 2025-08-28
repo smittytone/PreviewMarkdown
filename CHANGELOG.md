@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.1.0 *Unreleased*
+- 2.1.0 *28 August 2025*
     - Add whitespace margin around previews, with option to disable in **Settings**.
     - Allow the colour of front-matter YAML keys to be changed in **Settings**.
     - Update the design of the What’s New panel. 
