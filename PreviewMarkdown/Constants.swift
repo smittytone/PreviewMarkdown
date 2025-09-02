@@ -146,7 +146,7 @@ struct BUFFOON_CONSTANTS {
         static let CODE                         = "00FF00FF"
         static let LINK                         = "0096FFFF"
         static let QUOTE                        = "22528EFF"
-        static let YAML                         = "00FF00FF"
+        static let YAML                         = "009193FF"
     }
 
     struct PREVIEW_SIZE {
@@ -199,7 +199,7 @@ struct BUFFOON_CONSTANTS {
 #endif
     }
 
-    static let HARDSPACE                        = "~"
+    static let HARDSPACE                        = "\u{00A0}"
 }
 
 
