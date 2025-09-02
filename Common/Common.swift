@@ -39,21 +39,18 @@ class Common {
 
     // MARK: - Public Properties
 
-    var doShowLightBackground: Bool                                 = true
+    var doShowLightBackground: Bool                                 = true          // Pass to caller
     // FROM 2.0.0
-    var fontSize: CGFloat                                           = 0.0
-    var lineSpacing: CGFloat                                        = 1.0
-    var workingDirectory: String                                    = ""
-    var linkColor: NSColor                                          = .linkColor    // Used to pass the user's
-    // preferred link colour up to
-    // the main text view
+    var fontSize: CGFloat                                           = 0.0           // Pass to the lozenge layouter
+    var lineSpacing: CGFloat                                        = 1.0           // Pass to the lozenge layouter
+    var workingDirectory: String                                    = ""            // Pass in the file's directory
+    var linkColor: NSColor                                          = .linkColor    // Pass to main text view
     // FROM 2.1.0
-    var doShowMargin: Bool                                          = true
+    var doShowMargin: Bool                                          = true          // Pass to main text view
 
 
     // MARK: - Private Properties
 
-    private var doShowFrontMatter: Bool                             = false
     private var isThumbnail: Bool                                   = false
     // FROM 1.3.0
     // Front Matter string attributes...
@@ -65,13 +62,15 @@ class Common {
     // FROM 2.0.0
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
+    // FROM 2.1.0
+    private var settings: PMSettings                                = PMSettings()
 
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
      the previewer and thumbnailer extensions.
      */
-    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+    private let appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
 
 
     // MARK: - Lifecycle Functions
@@ -86,60 +85,36 @@ class Common {
             return nil
         }
 
-        // Load in the user's preferred values, or set defaults
-        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            // Locally relevant settings values
-            self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
-            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            // FROM 2.1.0
-            self.doShowMargin = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
-
-            // The remaining settings values are passed directly to the styler
-            styler.fontSize = CGFloat(isThumbnail
-                                      ? BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE
-                                      : defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
-
-            styler.colourValues.code  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.CODE
-            styler.colourValues.head  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.HEAD
-            styler.colourValues.link  = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)  ?? BUFFOON_CONSTANTS.HEX_COLOUR.LINK
-            styler.colourValues.quote = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) ?? BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE
-
-            styler.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
-            styler.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
-
-            styler.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
-
-            // FROM 2.1.0
-            styler.colourValues.yamlkey = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) ?? BUFFOON_CONSTANTS.HEX_COLOUR.YAML
-        }
+        // FROM 2.1.0
+        // Load the saved settings
+        self.settings.loadSettings(self.appSuiteName)
 
         // Just in case the above block reads in zero values
         // NOTE The other values CAN be zero
-        if styler.fontSize < BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[0] ||
-            styler.fontSize > BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS.count - 1] {
-            styler.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE)
+        if self.settings.fontSize < BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[0] ||
+            self.settings.fontSize > BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS.count - 1] {
+            self.settings.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE)
         }
 
         // Set paragraph spacing
-        styler.paraSpacing = styler.fontSize * 1.4
-
-        // Retain these value for easy layouter access
-        self.fontSize = styler.fontSize
-        self.lineSpacing = styler.lineSpacing
+        styler.paraSpacing = self.settings.fontSize * 1.4
 
         // FROM 1.3.0
         // Set the front matter key:value fonts and sizes
         var font: NSFont
-        if let otherFont = NSFont(name: styler.codeFontName, size: styler.fontSize) {
+        if let otherFont = NSFont(name: self.settings.codeFontName, size: self.settings.fontSize) {
             font = otherFont
         } else {
             // This should not be hit, but just in case...
-            font = NSFont.systemFont(ofSize: styler.fontSize)
+            font = NSFont.systemFont(ofSize: self.settings.fontSize)
         }
+
+        // FROM 2.1.0
+        styler.settings = self.settings
 
         // YAML front matter styling attributes
         self.yamlKeyAttributes = [
-            .foregroundColor: NSColor.hexToColour(styler.colourValues.yamlkey),
+            .foregroundColor: NSColor.hexToColour(self.settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS]!),
             .font: font
         ]
 
@@ -155,8 +130,14 @@ class Common {
 
         self.newLine = NSAttributedString(string: "\n", attributes: self.yamlValueAttributes)
 
+        // Retain these value for easy layouter access
         // FROM 2.0.0
-        self.linkColor = NSColor.hexToColour(styler.colourValues.link)
+        self.linkColor = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
+        self.fontSize = self.settings.fontSize
+        self.lineSpacing = self.settings.lineSpacing
+        self.doShowLightBackground = self.settings.doShowLightBackground
+        // FROM 2.1.0
+        self.doShowMargin = self.settings.doShowMargin
     }
 
 
@@ -236,7 +217,7 @@ class Common {
 
                 // Render YAML front matter if requested by the user, and we're not
                 // rendering a thumbnail image (this is for previews only)
-                if !self.isThumbnail && self.doShowFrontMatter && frontMatter.count > 0 {
+                if !self.isThumbnail && self.settings.doShowFrontMatter && frontMatter.count > 0 {
                     do {
                         let yaml: Yaml = try Yaml.load(String(frontMatter))
 

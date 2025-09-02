@@ -15,21 +15,17 @@ class PMStyler {
     
     // MARK: - Publicly accessible properties
     
-    var fontSize: CGFloat                                               = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
-    var lineSpacing: CGFloat                                            = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
     var paraSpacing: CGFloat                                            = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
-    var bodyFontName: String                                            = BUFFOON_CONSTANTS.FONT_NAME.BODY
-    var codeFontName: String                                            = BUFFOON_CONSTANTS.FONT_NAME.CODE
     var workingDirectory: String                                        = "/Users/"
-    var bodyColour: NSColor                                             = .labelColor
-    var colourValues: ColourValues                                      = ColourValues()
-    var presentForLightMode: Bool                                       = false
-    var doLoadWebContent: Bool                                          = false
+    // FROM 2.1.0
+    var settings: PMSettings?                                            = nil
 
 
     // MARK: - Private properties with defaults
-    
+
+    private  var presentForLightMode: Bool                              = false
     private  var isThumbnail: Bool                                      = false
+    private  var doLoadWebContent: Bool                                 = false
     internal var tokenString: String                                    = ""
     private  var outputString: String                                   = ""
     private  var currentLink: String                                    = ""
@@ -42,11 +38,6 @@ class PMStyler {
     private  var bodyFontFamily: PMFont                                 = PMFont()
     private  var colours: Colours                                       = Colours()
     private  var highlighter: Highlighter?                              = nil
-
-
-    // MARK: - Constants
-    
-    
 
 
     // MARK: - Rendering Functions
@@ -74,8 +65,7 @@ class PMStyler {
         // to use light mode colours anyway, or we're actually in light mode
         self.isThumbnail = isThumbnail
         self.presentForLightMode = isThumbnail || useLightColoursInDarkMode
-        self.bodyColour = self.isThumbnail ? NSColor.black : .labelColor
-        
+
         // Generate the text styles we'll use
         generateStyles()
         
@@ -108,7 +98,7 @@ class PMStyler {
         // Font-less horizontal rule
         let hr: NSAttributedString          = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n",
                                                                  attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                                                                              .strikethroughColor: self.colours.body!,
+                                                                              .strikethroughColor: self.isThumbnail ? NSColor.black : .labelColor,
                                                                               .paragraphStyle: self.paragraphs["line"]!])
 
         // Set up the Style stack
@@ -144,17 +134,17 @@ class PMStyler {
             if var content = scanned, !content.isEmpty {
                 var listItemPrefix: String = ""
                 
+                // FROM 2.1.0
+                // If the content is just a newline, ignore it.
+                // It will have been included by Markdown-It after pre-formatted HTML.
+                if content == BUFFOON_CONSTANTS.LINE_END.LF {
+                    content = ""
+                }
+
                 // Should we add a bullet or numeral from an LI tag?
                 if isListItem {
                     // Text immediately following the LI - it's a single-line item.
                     isListItem = false
-
-                    // FROM 2.1.0
-                    // If the content is just a newline, ignore it.
-                    // It will have been included by Markdown-It after pre-formatted HTML.
-                    if content == BUFFOON_CONSTANTS.LINE_END.LF {
-                        content = ""
-                    }
 
                     // Process the list item to set the prefix
                     if listTypes[insetLevel] == .bullet {
@@ -824,7 +814,7 @@ class PMStyler {
         block.setValue(512.0, type: .absoluteValueType, for: .minimumWidth)
 
         let newParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        newParaStyle.lineSpacing = self.lineSpacing
+        newParaStyle.lineSpacing = self.settings!.lineSpacing
         newParaStyle.paragraphSpacing = self.paraSpacing
         newParaStyle.alignment = .left
         newParaStyle.textBlocks.append(block)
@@ -846,7 +836,7 @@ class PMStyler {
         // Make the single paragraph style
         // TO-DO Cache for later usage
         let newParaStyle = NSMutableParagraphStyle()
-        newParaStyle.lineSpacing = self.lineSpacing
+        newParaStyle.lineSpacing = self.settings!.lineSpacing
         newParaStyle.paragraphSpacing = self.paraSpacing
         newParaStyle.alignment = .left
         newParaStyle.textBlocks.append(makeCodeParagraphBlock(inset))
@@ -877,7 +867,7 @@ class PMStyler {
         return NSMutableAttributedString(string: plainCode,
                                          attributes: [.paragraphStyle: cellParagraphStyle,
                                                       .foregroundColor: self.colours.code!,
-                                                      .font: makeFont("code", self.fontSize)])
+                                                      .font: makeFont("code", self.settings!.fontSize)])
     }
 
 
@@ -977,17 +967,17 @@ class PMStyler {
                             if fontName == "Courier" {
                                 // NSAttributedString's default code font is Courier so use this
                                 // to format inline code correctly
-                                cellFont = self.makeFont("code", self.fontSize)
+                                cellFont = self.makeFont("code", self.settings!.fontSize)
                                 textColour = self.colours.code
                             } else if fontName.contains("Bold") {
-                                cellFont = self.makeFont("strong", self.fontSize)
+                                cellFont = self.makeFont("strong", self.settings!.fontSize)
                             } else if fontName.contains("Italic") {
-                                cellFont = self.makeFont("em", self.fontSize)
+                                cellFont = self.makeFont("em", self.settings!.fontSize)
                             } else {
-                                cellFont = self.makeFont("plain", self.fontSize)
+                                cellFont = self.makeFont("plain", self.settings!.fontSize)
                             }
                         } else {
-                            cellFont = self.makeFont("plain", self.fontSize)
+                            cellFont = self.makeFont("plain", self.settings!.fontSize)
                         }
                         
                         // Style the cell's font and colour
@@ -1046,13 +1036,13 @@ class PMStyler {
         // Prepare the fonts we'll use
         prepareFonts()
         
-        self.lineSpacing = ((self.lineSpacing >= 0.0 ? self.lineSpacing : 0.0) - 1.0) * self.fontSize
+        self.settings!.lineSpacing = ((self.settings!.lineSpacing >= 0.0 ? self.settings!.lineSpacing : 0.0) - 1.0) * self.settings!.fontSize
         self.paraSpacing = self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0
         
         // Set the paragraph styles
         // Base paragraph style: No left inset
         let tabbedParaStyle: NSMutableParagraphStyle    = NSMutableParagraphStyle()
-        tabbedParaStyle.lineSpacing                     = self.lineSpacing
+        tabbedParaStyle.lineSpacing                     = self.settings!.lineSpacing
         tabbedParaStyle.paragraphSpacing                = self.paraSpacing
         tabbedParaStyle.paragraphSpacingBefore          = 0.5
         tabbedParaStyle.alignment                       = .left
@@ -1062,7 +1052,7 @@ class PMStyler {
         self.paragraphs["tabbed"]                       = tabbedParaStyle
         
         let quoteParaStyle: NSMutableParagraphStyle     = NSMutableParagraphStyle()
-        quoteParaStyle.lineSpacing                      = self.lineSpacing
+        quoteParaStyle.lineSpacing                      = self.settings!.lineSpacing
         quoteParaStyle.paragraphSpacing                 = self.paraSpacing * 2.0
         quoteParaStyle.alignment                        = .right
         quoteParaStyle.paragraphSpacingBefore           = self.paraSpacing
@@ -1072,7 +1062,7 @@ class PMStyler {
         
         // Nested list
         let listParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
-        listParaStyle.lineSpacing                       = self.lineSpacing
+        listParaStyle.lineSpacing                       = self.settings!.lineSpacing
         listParaStyle.paragraphSpacing                  = self.paraSpacing
         listParaStyle.alignment                         = .left
         listParaStyle.headIndent                        = 60.0
@@ -1081,50 +1071,50 @@ class PMStyler {
         
         // HR paragraph
         let lineParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
-        lineParaStyle.lineSpacing                       = self.lineSpacing
+        lineParaStyle.lineSpacing                       = self.settings!.lineSpacing
         lineParaStyle.paragraphSpacing                  = self.paraSpacing
         lineParaStyle.alignment                         = .left
         lineParaStyle.tabStops                          = [NSTextTab(textAlignment: .right, location: 120.0, options: [:])]
         self.paragraphs["line"]                         = lineParaStyle
         
         // Set the colours
-        self.colours.head  = NSColor.hexToColour(self.colourValues.head)
-        self.colours.code  = NSColor.hexToColour(self.colourValues.code)
-        self.colours.link  = NSColor.hexToColour(self.colourValues.link)
-        self.colours.quote = NSColor.hexToColour(self.colourValues.quote)
-        self.colours.body  = self.bodyColour
-        
+        self.colours.head  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS]!)
+        self.colours.code  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]!)
+        self.colours.link  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
+        self.colours.quote = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES]!)
+        self.colours.body  = self.isThumbnail ? NSColor.black : .labelColor
+
         // Generate specific paragraph entity styles
         self.styles["h1"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h2"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h3"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h4"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H4),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H4),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h5"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["h6"]           = [.foregroundColor: self.colours.head,
-                                       .font: makeFont("plain", self.fontSize *  BUFFOON_CONSTANTS.MULTIPLIER.H6),
+                                       .font: makeFont("plain", self.settings!.fontSize *  BUFFOON_CONSTANTS.MULTIPLIER.H6),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["p"]            = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("plain", self.fontSize),
+                                       .font: makeFont("plain", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["t"]            = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("plain", self.fontSize),
+                                       .font: makeFont("plain", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         // Set the character styles we need
@@ -1133,47 +1123,47 @@ class PMStyler {
                                        .underlineColor: self.colours.link]
         
         self.styles["em"]           = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("em", self.fontSize)]
+                                       .font: makeFont("em", self.settings!.fontSize)]
         
         self.styles["strong"]       = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("strong", self.fontSize)]
+                                       .font: makeFont("strong", self.settings!.fontSize)]
         
         self.styles["code"]         = [.foregroundColor: self.colours.code,
-                                       .font: makeFont("code", self.fontSize)]
+                                       .font: makeFont("code", self.settings!.fontSize)]
         
         self.styles["kbd"]          = [.foregroundColor: NSColor.white,
                                        .underlineColor: NSColor.gray,
                                        .underlineStyle: NSUnderlineStyle.double.rawValue as NSNumber,
-                                       .font: makeFont("code", self.fontSize)]
+                                       .font: makeFont("code", self.settings!.fontSize)]
         
         self.styles["s"]            = [.strikethroughStyle: NSUnderlineStyle.single.rawValue as NSNumber,
                                        .strikethroughColor: self.colours.body]
         
-        self.styles["sub"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+        self.styles["sub"]          = [.font: makeFont("plain", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
                                        .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUB_OFFSET as NSNumber]
 
-        self.styles["sup"]          = [.font: makeFont("plain", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
+        self.styles["sup"]          = [.font: makeFont("plain", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BASELINE_SHIFT),
                                        .baselineOffset: BUFFOON_CONSTANTS.MULTIPLIER.SUPER_OFFSET as NSNumber]
 
         // Set up the block styles we need
         self.styles["pre"]          = [.foregroundColor: self.colours.code,
-                                       .font: makeFont("code", self.fontSize),
+                                       .font: makeFont("code", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["blockquote"]   = [.foregroundColor: self.colours.quote,
-                                       .font: makeFont("strong", self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK),
+                                       .font: makeFont("strong", self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK),
                                        .paragraphStyle: self.paragraphs["quote"]!]
         
         self.styles["li"]           = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("plain", self.fontSize),
+                                       .font: makeFont("plain", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["list"]!]
         
         self.styles["img"]          = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("plain", self.fontSize),
+                                       .font: makeFont("plain", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
         
         self.styles["line"]         = [.foregroundColor: self.colours.body,
-                                       .font: makeFont("plain", self.fontSize),
+                                       .font: makeFont("plain", self.settings!.fontSize),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
     }
 
@@ -1185,14 +1175,14 @@ class PMStyler {
     internal func prepareFonts() {
         
         // Make the body font in order to get its family name
-        var bodyFont: NSFont? = NSFont(name: self.bodyFontName, size: self.fontSize)
+        var bodyFont: NSFont? = NSFont(name: self.settings!.bodyFontName, size: self.settings!.fontSize)
 
         // Can't make the body font? Default to System
         if bodyFont == nil {
-            bodyFont = NSFont.systemFont(ofSize: self.fontSize)
+            bodyFont = NSFont.systemFont(ofSize: self.settings!.fontSize)
         }
 
-        self.bodyFontFamily.displayName = bodyFont?.familyName ?? self.bodyFontName
+        self.bodyFontFamily.displayName = bodyFont?.familyName ?? self.settings!.bodyFontName
 
         // Get a list of available members (styles) for the font family
         let fm: NSFontManager = NSFontManager.shared
@@ -1261,7 +1251,7 @@ class PMStyler {
                 }
                 // Still no font? Fall back to the base body font
             case "code":
-                if let font: NSFont = NSFont(name: self.codeFontName, size: size) {
+                if let font: NSFont = NSFont(name: self.settings!.codeFontName, size: size) {
                     recordFont(requiredStyle, size, font)
                     return font
                 }
@@ -1275,7 +1265,7 @@ class PMStyler {
         
         // Just use the body font as a fallback
         // NOTE `bodyFontName` will be a PostScript name
-        if let font: NSFont = NSFont(name: self.bodyFontName, size: size) {
+        if let font: NSFont = NSFont(name: self.settings!.bodyFontName, size: size) {
             recordFont(requiredStyle, size, font)
             return font
         }
@@ -1349,21 +1339,21 @@ class PMStyler {
         
         switch tagName {
             case "h1":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H1
             case "h2":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H2
             case "h3":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H3
             case "h4":
                 fallthrough
             case "blockquote":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.BLOCK
             case "h5":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H5
             case "h6":
-                return self.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H6
+                return self.settings!.fontSize * BUFFOON_CONSTANTS.MULTIPLIER.H6
             default:
-                return self.fontSize
+                return self.settings!.fontSize
         }
     }
 
@@ -1387,7 +1377,7 @@ class PMStyler {
             } else {
                 // Make theme selection more responsive to current mode
                 self.highlighter?.setTheme(self.presentForLightMode ? "atom-one-light" : "atom-one-dark")
-                self.highlighter?.theme.setCodeFont(makeFont("code", self.fontSize))
+                self.highlighter?.theme.setCodeFont(makeFont("code", self.settings!.fontSize))
             }
         }
     }

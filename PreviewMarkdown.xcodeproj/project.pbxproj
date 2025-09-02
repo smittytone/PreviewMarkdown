@@ -97,6 +97,7 @@
 		3BEAC5B42AA39E9500958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEAC5AF2AA39E5C00958FFC /* REPLACE_WITH_YOUR_CODES.swift */; };
 		3BEAC5B72AA39ED700958FFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B62AA39ED700958FFC /* Assets.xcassets */; };
 		3BEAC5B92AA39EF200958FFC /* new in Resources */ = {isa = PBXBuildFile; fileRef = 3BEAC5B82AA39EF200958FFC /* new */; };
+		3BEB32582E5063B5008E03F8 /* PMSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */; };
 		3BF2DC4C2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
 		3BF2DC4D2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
 		3BF2DC4E2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */; };
@@ -288,6 +289,8 @@
 				3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */,
 				3BBAE1392D2EDE48009D0C34 /* PMMarkdowner.swift */,
 				3BBAE1382D2EDE48009D0C34 /* PMLayouter.swift */,
+				3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */,
+				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
 				3BBAE1352D2EDE48009D0C34 /* Extensions.swift */,
 				3BBAE1362D2EDE48009D0C34 /* HTMLUtils.swift */,
 				3BBAE1372D2EDE48009D0C34 /* markdown-it.min.js */,
@@ -334,8 +337,6 @@
 				3B71BD42267F4B98005F7FFC /* AppDelegateMisc.swift */,
 				3B0201842CAAD0F1003C1705 /* PMTabManager.swift */,
 				3B363F432D48F63100F0982F /* PMServices.swift */,
-				3B5CAA03268F4B2300A2DED1 /* PMFont.swift */,
-				3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
 				3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */,
@@ -718,6 +719,7 @@
 				3BBAE1502D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1512D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */,
+				3BEB32582E5063B5008E03F8 /* PMSettings.swift in Sources */,
 				3BF2DC4F2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */,
 			);
@@ -949,7 +951,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -989,7 +991,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1021,7 +1023,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1054,7 +1056,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1085,7 +1087,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1116,7 +1118,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 237;
+				CURRENT_PROJECT_VERSION = 239;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
