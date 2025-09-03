@@ -27,8 +27,8 @@ class MarkdownComponents {
 // FROM 2.2.0
 // Structure to hold front matter row components.
 struct Row {
-    var key: String     = BUFFOON_CONSTANTS.HARDSPACE
-    var val: String     = BUFFOON_CONSTANTS.HARDSPACE
+    var key: String     = BUFFOON_CONSTANTS.HARDTAB
+    var val: String     = BUFFOON_CONSTANTS.HARDTAB
     var rule: Double    = 0.5
     var style: String   = ""
 }
@@ -352,20 +352,7 @@ class Common {
         // Proceed on assumption `yaml` is a dictionary,
         // which is reasonable for front matter...
         if let dict = yaml.dictionary {
-            var keys: [Yaml] = Array(dict.keys)
-            // Sort keys - assume strings for front matter
-
-            keys = keys.sorted(by: { (a, b) -> Bool in
-                if let a_s: String = a.string {
-                    if let b_s: String = b.string {
-                        return (a_s.lowercased() < b_s.lowercased())
-                    }
-                }
-
-                return false
-            })
-
-            // Iterate over the front matter dictionary's keys
+            let keys: [Yaml] = sortKeys(Array(dict.keys))
             for key in keys {
                 let value = dict[key] ?? ""
                 if value.dictionary != nil || value.array != nil {
@@ -415,15 +402,15 @@ class Common {
         switch collection {
             case .dictionary:
                 if let map = collection.dictionary {
-                    let keys: [Yaml] = Array(map.keys)
+                    let keys: [Yaml] = sortKeys(Array(map.keys))
                     for key in keys {
                         let value = map[key] ?? ""
 
                         if key == keys.first, let leadKey = leadKey {
                             // Value is a collection so make a row with the lead key and an empty value
                             let (_, rkey) = processScalar(leadKey)
-                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + rkey,
-                                          val: BUFFOON_CONSTANTS.HARDSPACE, rule: 0.0)
+                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey,
+                                          val: BUFFOON_CONSTANTS.HARDTAB, rule: 0.0)
                             newRows.append(row)
                         }
 
@@ -434,7 +421,7 @@ class Common {
                             // Inset the key and add the scalar value
                             let (_, rkey) = processScalar(key)
                             let (style, rval) = processScalar(value)
-                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: indent * 4) + rkey,
+                            let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: indent) + rkey,
                                           val: rval,
                                           style: style)
                             newRows.append(row)
@@ -449,8 +436,8 @@ class Common {
                             if value == list.first, let leadKey = leadKey {
                                 // Value is a collection so make a row with the lead key and an empty value
                                 let (_, rkey) = processScalar(leadKey)
-                                let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + rkey,
-                                              val: BUFFOON_CONSTANTS.HARDSPACE,
+                                let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey,
+                                              val: BUFFOON_CONSTANTS.HARDTAB,
                                               rule: 0.0)
                                 newRows.append(row)
                             }
@@ -464,16 +451,16 @@ class Common {
                             }
                         } else {
                             // Value is a scalar so follow on from the last
-                            var subKey: String = BUFFOON_CONSTANTS.HARDSPACE
+                            var subKey: String = BUFFOON_CONSTANTS.HARDTAB
                             if value == list.first, let leadKey = leadKey {
                                 let (_, rkey) = processScalar(leadKey)
-                                subKey = String(repeating: BUFFOON_CONSTANTS.HARDSPACE, count: (indent - 1) * 4) + rkey
+                                subKey = String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey
                             }
 
                             // Add the row
                             let (style, rval) = processScalar(value)
                             let row = Row(key: subKey,
-                                          val: "\u{25CF} \(rval)",
+                                          val: rval,
                                           style: style)
                             newRows.append(row)
                         }
@@ -486,6 +473,21 @@ class Common {
         return newRows
     }
 
+
+    private func sortKeys(_ keys: [Yaml]) -> [Yaml] {
+
+        let newKeys = keys.sorted(by: { (a, b) -> Bool in
+            if let a_s: String = a.string {
+                if let b_s: String = b.string {
+                    return (a_s.lowercased() < b_s.lowercased())
+                }
+            }
+
+            return false
+        })
+
+        return newKeys
+    }
 
     /**
      Handle any scalar value. Most are simple interpolations (int, double), others return strings
@@ -587,20 +589,33 @@ class Common {
         let cellBlock = NSTextTableBlock(table: parentTable, startingRow: rowNumber, rowSpan: 1, startingColumn: isKey ? 0 : 1, columnSpan: 1)
         cellBlock.setWidth(8.0, type: .absoluteValueType, for: .padding)
         cellBlock.setValue(isKey ? 32 : 68, type: .percentageValueType, for: .width)
-        cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
-        cellBlock.setBorderColor(NSColor.hexToColour(row.rule >= 1.0 ? "aaaaaaaa" : "555555ff"))
+        cellBlock.setValue(styler.settings!.fontSize * 1.8, type: .absoluteValueType, for: .height)
+        // NOTE Following two lines set the underline
+        //cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
+        //cellBlock.setBorderColor(NSColor.hexToColour(row.rule >= 1.0 ? "aaaaaaaa" : "555555ff"))
 
         // Create the cell's paragraph style
         let cellParaStyle = NSMutableParagraphStyle()
         cellParaStyle.alignment = .left
+        cellParaStyle.defaultTabInterval = 32.0
         cellParaStyle.textBlocks = [cellBlock]  // Is this quicker than `.append(cellBlock)`?
 
         // Build and return the cell itself
-        let cellTextStyle = (row.style.isEmpty || isKey) ? "plain" : row.style
+        let cellTextStyle = isKey ? "strong" : (row.style.isEmpty ? "plain" : row.style)
+
+        var cellTextColour: NSColor
+        if isKey {
+            cellTextColour = styler.colours.yamlkey ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML)
+        } else if row.style == "code" {
+            cellTextColour = styler.colours.code ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.CODE)
+        } else {
+            cellTextColour = NSColor.labelColor
+        }
+
         let cellText = isKey ? row.key : row.val
         let cellFont = styler.makeFont(cellTextStyle, styler.settings!.fontSize)
         return NSMutableAttributedString(string: cellText + "\n",
-                                         attributes: [.foregroundColor: isKey ? styler.colours.yamlkey ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML) : NSColor.labelColor,
+                                         attributes: [.foregroundColor: cellTextColour,
                                                       .paragraphStyle: cellParaStyle,
                                                       .font: cellFont])
     }
