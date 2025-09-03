@@ -200,6 +200,7 @@ struct BUFFOON_CONSTANTS {
     }
 
     static let HARDSPACE                        = "\u{00A0}"
+    static let HARDTAB                          = "\t"
 }
 
 
