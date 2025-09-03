@@ -1,4 +1,4 @@
-# PreviewMarkdown 2.1.0
+# PreviewMarkdown 2.2.0
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for versions of macOS 10.15 or above.
 
@@ -33,7 +33,7 @@ YAML front matter can be delimited with both `---` and `---`, and `---` and `...
 ## Known Issues
 
 1. Tables containing nested remote images may take an extended time to render while `NSAttributedString`’s WebKit-based HTML parser attempts to request the image, which ultimately fails. We are exploring mitigations.
-1. Tables are intermittently rendered with horizontal blanks in place of borders. Resizing the preview window fixes them (though may cause other horizontal lines to disappear). We are exploring mitigations.
+1. Tables are intermittently rendered with horizontal blanks in place of borders. Resizing the preview window fixes them (though may cause other horizontal lines to disappear). We are exploring mitigations but believe this is an issue with macOS’ TextKit.
 1. Users of Markdown editing tools like OneMarkdown and Marked may not see PreviewMarkdown-produced previews. This is because those apps claim ownership of key Markdown file UTIs which may cause Finder to pre-empt PreviewMarkdown. There is no workaround at this time.
 
 ## Source Code
