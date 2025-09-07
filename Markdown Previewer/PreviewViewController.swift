@@ -113,6 +113,10 @@ class PreviewViewController: NSViewController,
                     renderTextStorage.endEditing()
                     self.view.display()
 
+                    // FROM 2.2.0
+                    // Set the parent window's size
+                    setPreviewWindowSize()
+
                     // Call the QLPreviewingController indicating no error (nil)
                     handler(nil)
                     return
@@ -224,7 +228,7 @@ class PreviewViewController: NSViewController,
     /**
      Specify the content size of the parent view.
     */
-    private func setPrviewWindowSize() {
+    private func setPreviewWindowSize() {
 
         var screen: NSScreen = NSScreen.screens[0]
 
@@ -235,8 +239,8 @@ class PreviewViewController: NSViewController,
             screen = mainScreen
         }
 
-        let height: CGFloat = screen.frame.size.height * BUFFOON_CONSTANTS.WINDOW_SIZE_SCALER
-        let width: CGFloat = screen.frame.size.width * BUFFOON_CONSTANTS.WINDOW_SIZE_SCALER
+        let height: CGFloat = screen.frame.size.height * BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE
+        let width: CGFloat = screen.frame.size.width * BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE
         self.preferredContentSize = NSSize(width: width, height: height)
     }
 }

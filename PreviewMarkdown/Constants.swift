@@ -202,8 +202,21 @@ struct BUFFOON_CONSTANTS {
     // FROM 2.2.0
     static let HARDSPACE                        = "\u{00A0}"
     static let HARDTAB                          = "\t"
-    static let WINDOW_SIZE_SCALER               = 0.75
 
+    struct PREVIEW_FRONT_MATTER {
+
+        static let TAB_INTERVAL                 = 32.0
+        static let CELL_PADDING                 = 8.0
+        static let KEY_WIDTH_PCT                = 32.0
+        static let VALUE_WIDTH_PCT              = 68.0
+    }
+
+    struct SCALERS {
+        
+        static let WINDOW_SIZE                  = 0.75
+        static let FRONT_MATTER_TEXT            = 0.9
+        static let FRONT_MATTER_ROW_HEIGHT      = 1.3
+    }
 }
 
 

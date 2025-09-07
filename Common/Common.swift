@@ -554,15 +554,17 @@ class Common {
                                                     attributes: [.foregroundColor: styler.colours.head ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML),
                                                                  .font: styler.makeFont("strong", styler.setFontSize("h3"))])
 
-        // Prepare the table
-        let table: NSTextTable = NSTextTable()
-        table.numberOfColumns = 2
-        table.collapsesBorders = false
+        autoreleasepool {
+            // Prepare the table
+            let table: NSTextTable = NSTextTable()
+            table.numberOfColumns = 2
+            table.collapsesBorders = false
 
-        // Assemble the table's rows (each with two cells: one for the key, one for the value)
-        for (i, row) in rows.enumerated() {
-            tableString.append(makeCell(row, i, table, styler, true))   // Key
-            tableString.append(makeCell(row, i, table, styler, false))  // Value
+            // Assemble the table's rows (each with two cells: one for the key, one for the value)
+            for (i, row) in rows.enumerated() {
+                tableString.append(makeCell(row, i, table, styler, true))   // Key
+                tableString.append(makeCell(row, i, table, styler, false))  // Value
+            }
         }
 
         return tableString
@@ -587,22 +589,24 @@ class Common {
 
         // Assemble the containing block with 8pt padding and a bottom rule only
         let cellBlock = NSTextTableBlock(table: parentTable, startingRow: rowNumber, rowSpan: 1, startingColumn: isKey ? 0 : 1, columnSpan: 1)
-        cellBlock.setWidth(8.0, type: .absoluteValueType, for: .padding)
-        cellBlock.setValue(isKey ? 32 : 68, type: .percentageValueType, for: .width)
-        cellBlock.setValue(styler.settings!.fontSize * 1.8, type: .absoluteValueType, for: .height)
+        cellBlock.setWidth(BUFFOON_CONSTANTS.PREVIEW_FRONT_MATTER.CELL_PADDING, type: .absoluteValueType, for: .padding)
+        cellBlock.setValue(isKey
+                           ? BUFFOON_CONSTANTS.PREVIEW_FRONT_MATTER.KEY_WIDTH_PCT
+                           : BUFFOON_CONSTANTS.PREVIEW_FRONT_MATTER.VALUE_WIDTH_PCT,
+                           type: .percentageValueType, for: .width)
+        cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        //cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
-        //cellBlock.setBorderColor(NSColor.hexToColour(row.rule >= 1.0 ? "aaaaaaaa" : "555555ff"))
+        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"))
+        cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style
         let cellParaStyle = NSMutableParagraphStyle()
         cellParaStyle.alignment = .left
-        cellParaStyle.defaultTabInterval = 32.0
+        cellParaStyle.defaultTabInterval = BUFFOON_CONSTANTS.PREVIEW_FRONT_MATTER.TAB_INTERVAL
         cellParaStyle.textBlocks = [cellBlock]  // Is this quicker than `.append(cellBlock)`?
 
         // Build and return the cell itself
         let cellTextStyle = isKey ? "strong" : (row.style.isEmpty ? "plain" : row.style)
-
         var cellTextColour: NSColor
         if isKey {
             cellTextColour = styler.colours.yamlkey ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML)
@@ -613,11 +617,22 @@ class Common {
         }
 
         let cellText = isKey ? row.key : row.val
-        let cellFont = styler.makeFont(cellTextStyle, styler.settings!.fontSize)
+        let cellFont = styler.makeFont(cellTextStyle, styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_TEXT)
         return NSMutableAttributedString(string: cellText + "\n",
                                          attributes: [.foregroundColor: cellTextColour,
                                                       .paragraphStyle: cellParaStyle,
                                                       .font: cellFont])
+    }
+
+
+    /**
+     Determine whether the host Mac is in light mode.
+
+     - Returns: `true` if the Mac is in light mode, otherwise `false`.
+     */
+    private func isMacInLightMode() -> Bool {
+
+        return NSApp.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua"
     }
 
 
