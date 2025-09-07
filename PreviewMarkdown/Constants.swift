@@ -199,8 +199,11 @@ struct BUFFOON_CONSTANTS {
 #endif
     }
 
+    // FROM 2.2.0
     static let HARDSPACE                        = "\u{00A0}"
     static let HARDTAB                          = "\t"
+    static let WINDOW_SIZE_SCALER               = 0.75
+
 }
 
 

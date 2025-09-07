@@ -17,8 +17,8 @@ class PMLayouter: NSLayoutManager {
     var lozengeColour: NSColor?     = nil
     var fontSize: CGFloat           = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
     var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
-    // FROM 1.2.0
-    var marginAdd: CGFloat          = BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH
+    // FROM 2.1.0
+    var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH
 
 
     // Override this function to hijack double-line drawing and replace it with
@@ -47,8 +47,8 @@ class PMLayouter: NSLayoutManager {
         var lozengeRect = lineRect
         lozengeRect = self.boundingRect(forGlyphRange: glyphRange, in: self.textContainers[0])
         lozengeRect.origin.x -= (self.fontSize > 18 ? 4.0 : 2.0)
-        lozengeRect.origin.x += marginAdd
-        lozengeRect.origin.y += marginAdd
+        lozengeRect.origin.x += self.marginDelta
+        lozengeRect.origin.y += self.marginDelta
         lozengeRect.size.width += (self.fontSize > 18 ? 8.0 : 4.0)
         
         // Allow for larger line spacing values 'stretching' the rect

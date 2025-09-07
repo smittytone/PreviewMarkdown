@@ -87,7 +87,7 @@ class PreviewViewController: NSViewController,
                 // FROM 2.0.0
                 // Correct way to set a text view's link colouring, etc. - and have it stick
                 self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
-                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand ]
+                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand]
 
                 // Access the text view's storage to place the rendered Markdown string
                 if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
@@ -96,9 +96,15 @@ class PreviewViewController: NSViewController,
                         // we are using as a proxy for lozenged text - the layouter will
                         // do the replacement work
                         let layouter = PMLayouter()
-                        layouter.marginAdd = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                        layouter.marginDelta = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
                         layouter.fontSize = common.fontSize
                         layouter.lineSpacing = common.lineSpacing
+
+                        // This line is a sort of fix for the table border rendering issue
+                        // It helps - missing borders do get drawn eventually - but doesn't
+                        // get them drawn immediately.
+                        layouter.allowsNonContiguousLayout = true
+
                         renderTextContainer.replaceLayoutManager(layouter)
                     }
 
@@ -212,5 +218,25 @@ class PreviewViewController: NSViewController,
                 block()
             }
         }
+    }
+
+
+    /**
+     Specify the content size of the parent view.
+    */
+    private func setPrviewWindowSize() {
+
+        var screen: NSScreen = NSScreen.screens[0]
+
+        // We've set `screen` to the primary, ie. menubar-displaying,
+        // screen, but ideally we should pick the screen with user focus.
+        // They may be one and the same, of course...
+        if let mainScreen = NSScreen.main, mainScreen != screen {
+            screen = mainScreen
+        }
+
+        let height: CGFloat = screen.frame.size.height * BUFFOON_CONSTANTS.WINDOW_SIZE_SCALER
+        let width: CGFloat = screen.frame.size.width * BUFFOON_CONSTANTS.WINDOW_SIZE_SCALER
+        self.preferredContentSize = NSSize(width: width, height: height)
     }
 }
