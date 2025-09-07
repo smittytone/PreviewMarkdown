@@ -2,7 +2,9 @@
 
 - 2.2.0 *Unreleased*
     - Add new UI for YAML front matter.
+    - Expand size of preview window.
     - Migrate to TextKit 2.
+    - Fix `NSColor.hexToColour()` alpha handling.
 - 2.1.0 *28 August 2025*
     - Add whitespace margin around previews, with option to disable in **Settings**.
     - Allow the colour of front-matter YAML keys to be changed in **Settings**.

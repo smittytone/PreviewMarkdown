@@ -127,24 +127,25 @@ extension NSColor {
         var colourString: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         if (colourString.hasPrefix("#")) {
-            // The colour is defined by a hex value
             let index = colourString.index(colourString.startIndex, offsetBy: 1)
             colourString = String(colourString[index...])
         }
 
-        if colourString.count != 8 {
+        // Colours in hex strings have 6 (`AABBCC`) or 8 (6 + alpha, `AABBCCDD`) values
+        if colourString.count != 8 && colourString.count != 6 {
             return NSColor.red
         }
-        
+
         func hexToFloat(_ hs: String) -> CGFloat {
-            return CGFloat(UInt8(hs, radix: 16) ?? 0)
+           // No alpha value supplied, so assume full opacity is required
+           return CGFloat(UInt8(hs, radix: 16) ?? 255)
         }
         
         let cns: NSString = colourString as NSString
-        let red: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 0, length: 2))) / 255
-        let green: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 2, length: 2))) / 255
-        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 4, length: 2))) / 255
-        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 6, length: 2))) / 255
+        let red: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 0, length: 2))) / 255.0
+        let green: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 2, length: 2))) / 255.0
+        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 4, length: 2))) / 255.0
+        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 6, length: 2))) / 255.0
         return NSColor(srgbRed: red, green: green, blue: blue, alpha: alpha)
     }
 
