@@ -217,6 +217,15 @@ struct BUFFOON_CONSTANTS {
         static let FRONT_MATTER_TEXT            = 0.9
         static let FRONT_MATTER_ROW_HEIGHT      = 1.3
     }
+
+    struct RULES {
+
+        static let THICK                        = 2.0
+        static let MEDIUM                       = 1.5
+        static let THIN                         = 1.0
+        static let FINE                         = 0.5
+        static let NONE                         = 0.0
+    }
 }
 
 
