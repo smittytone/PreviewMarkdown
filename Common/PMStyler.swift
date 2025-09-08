@@ -663,16 +663,26 @@ class PMStyler {
 
 
     /**
-     Get a URL or path embedded in an IMG SRC tag.
+     Extract a URL or path embedded in an IMG SRC tag.
 
      - Parameters
-         - tag: The full token, eg. `img src="/Users/smitty/emu/monitor_main.png"`
+         - tag: The full token, eg. `img class="img-fluid" src="/Users/smitty/emu/monitor_main.png" alt="An image"`
 
      - Returns The embedded path.
      */
     internal func getImageRef(_ tag: String) -> String {
 
-        let basePath = splitTag(tag)
+        var basePath: String = ""
+        let parts = tag.components(separatedBy: " ")
+        for part in parts {
+            if part.hasPrefix("src") {
+                if let range = part.range(of: "(?<=\\\").*?(?=\\\")", options: .regularExpression) {
+                    basePath = String(part[range.lowerBound..<range.upperBound])
+                    break
+                }
+            }
+        }
+
         if basePath.hasPrefix("http") {
             return basePath
         }
@@ -1493,6 +1503,7 @@ class PMStyler {
      */
     internal func splitTag(_ tag: String, _ requiredIndex: Int = 1) -> String {
 
+        // tag = "img class=\"\" src=\"" alt=\"\""
         let parts: [String] = tag.components(separatedBy: "\"")
         if parts.count > requiredIndex {
             return parts[requiredIndex]
