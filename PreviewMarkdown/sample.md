@@ -47,13 +47,15 @@ Some `preformatted text` in `this line`.
 
 ### Code ###
 
-    func showError(_ errString: String) {
+```swift
+func showError(_ errString: String) {
 
-        // Relay an error message to its various outlets
+    // Relay an error message to its various outlets
 
-        NSLog("BUFFOON " + errString)
-        self.errorReportField.stringValue = errString
-        self.errorReportField.isHidden = false
-    }
+    NSLog("BUFFOON " + errString)
+    self.errorReportField.stringValue = errString
+    self.errorReportField.isHidden = false
+}
+```
 
 > A Sample Blockquote
