@@ -3,6 +3,7 @@
 - 2.2.0 *Unreleased*
     - Add new UI for YAML front matter.
     - Expand size of preview window.
+    - Add a `Convert Markdown Text to Plain Text` system-wide text service.
     - Restore the original settings icon.
     - Migrate to TextKit 2.
     - Fix `NSColor.hexToColour()` alpha handling.

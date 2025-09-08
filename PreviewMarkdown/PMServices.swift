@@ -24,7 +24,21 @@ class HTMLServiceProvider: NSObject {
 
     @objc
     func convertToHtml(_ pasteboard: NSPasteboard, userData: String?, error: AutoreleasingUnsafeMutablePointer<NSString>) {
-        
+
+        convert(pasteboard, userData: userData, error: error, false)
+    }
+
+
+    @objc
+    func convertToPlainText(_ pasteboard: NSPasteboard, userData: String?, error: AutoreleasingUnsafeMutablePointer<NSString>) {
+
+        convert(pasteboard, userData: userData, error: error, true)
+    }
+
+
+    @objc
+    func convert(_ pasteboard: NSPasteboard, userData: String?, error: AutoreleasingUnsafeMutablePointer<NSString>, _ removeTags: Bool) {
+
         // Ensure we have a string to process...
         guard let markdown = pasteboard.string(forType: .string) else {
             error.pointee = Errors.badText.rawValue
@@ -37,8 +51,21 @@ class HTMLServiceProvider: NSObject {
             return
         }
         
-        // Convert the markdown and paste it back
-        let html = converter.tokenise(markdown[...])
+        // Convert the markdown to HTML
+        var html = converter.tokenise(markdown[...])
+
+        // If we're converting to plain text, excise the tags
+        if removeTags {
+            // Replace most close tags with line breaks to preserve text structure
+            for regEx in ["</h[1-6]+>", "</p[re]*>", "</[ou]l*>", "</t[hd]*>", "</block>"] {
+                html = html.replacingOccurrences(of: regEx, with: "\n", options: .regularExpression)
+            }
+
+            // Now zap all of the remaining tags
+            html = html.replacingOccurrences(of: "<[^>]*>", with: "", options: .regularExpression)
+        }
+
+        // Drop the converted text onto the pasteboard
         pasteboard.clearContents()
         pasteboard.setString(html, forType: .string)
     }

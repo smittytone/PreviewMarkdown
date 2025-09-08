@@ -665,7 +665,7 @@ class Common {
      Indents the value as required.
      Should NOT be called for thumbnails.
 
-     FROM 1.3.0-2.2.0
+     FROM 1.3.0-2.1.0
 
      - Parameters
      - part:   A partial Yaml object.
@@ -816,7 +816,7 @@ class Common {
     /**
      Return a space-prefix NSAttributedString.
 
-     FROM 1.3.0-2.2.0
+     FROM 1.3.0-2.1.0
 
      - Parameters
      - baseString: The string to be indented.
