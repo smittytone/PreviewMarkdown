@@ -3,6 +3,7 @@
 - 2.2.0 *Unreleased*
     - Add new UI for YAML front matter.
     - Expand size of preview window.
+    - Restore the original settings icon.
     - Migrate to TextKit 2.
     - Fix `NSColor.hexToColour()` alpha handling.
 - 2.1.0 *28 August 2025*

@@ -1432,7 +1432,7 @@ running this app once more.</string>
                         <buttonCell key="cell" type="square" title="Button" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="1Dq-L5-bmo">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
-                            <imageReference key="image" image="ellipsis.circle.fill" catalog="system" symbolScale="default" renderingMode="template"/>
+                            <imageReference key="image" image="gearshape.circle.fill" catalog="system" symbolScale="default" renderingMode="template"/>
                         </buttonCell>
                         <color key="bezelColor" red="0.58039215690000001" green="0.094117647060000004" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="contentTintColor" red="0.58039215690000001" green="0.094117647060000004" blue="0.31764705879999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -1499,8 +1499,8 @@ running this app once more.</string>
     </objects>
     <resources>
         <image name="appicon" width="64" height="64"/>
-        <image name="ellipsis.circle.fill" catalog="system" width="15" height="15"/>
         <image name="envelope.circle.fill" catalog="system" width="15" height="15"/>
+        <image name="gearshape.circle.fill" catalog="system" width="15" height="15"/>
         <image name="gearshape.fill" catalog="system" width="16" height="16"/>
         <image name="info.circle.fill" catalog="system" width="15" height="15"/>
         <image name="logotype" width="700" height="52"/>
