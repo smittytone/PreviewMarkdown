@@ -29,8 +29,9 @@ class MarkdownComponents {
 struct Row {
     var key: String     = BUFFOON_CONSTANTS.HARDTAB
     var val: String     = BUFFOON_CONSTANTS.HARDTAB
-    var rule: Double    = 0.5
+    var rule: Double    = BUFFOON_CONSTANTS.RULES.FINE
     var style: String   = ""
+    var indent: Int     = 0
 }
 
 
@@ -357,7 +358,7 @@ class Common {
 
                     // Add an thick rule after each primary item
                     if var row = rows.popLast() {
-                        row.rule = 2.0
+                        row.rule = BUFFOON_CONSTANTS.RULES.THICK
                         rows.append(row)
                     }
                 } else {
@@ -366,12 +367,18 @@ class Common {
                     let (style, rval) = processScalar(value)
                     let row = Row(key: rkey,
                                   val: rval,
-                                  rule: 2.0,
+                                  rule: BUFFOON_CONSTANTS.RULES.THICK,
                                   style: style)
 
                     rows.append(row)
                 }
             }
+        }
+
+        // Zap the last row rule
+        if var row = rows.popLast() {
+            row.rule = BUFFOON_CONSTANTS.RULES.NONE
+            rows.append(row)
         }
 
         // Assemble and return the table
@@ -406,7 +413,9 @@ class Common {
                             // Value is a collection so make a row with the lead key and an empty value
                             let (_, rkey) = processScalar(leadKey)
                             let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey,
-                                          val: BUFFOON_CONSTANTS.HARDTAB, rule: 0.0)
+                                          val: BUFFOON_CONSTANTS.HARDTAB,
+                                          rule: BUFFOON_CONSTANTS.RULES.NONE,
+                                          indent: indent - 1)
                             newRows.append(row)
                         }
 
@@ -419,7 +428,8 @@ class Common {
                             let (style, rval) = processScalar(value)
                             let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: indent) + rkey,
                                           val: rval,
-                                          style: style)
+                                          style: style,
+                                          indent: indent)
                             newRows.append(row)
                         }
                     }
@@ -432,9 +442,14 @@ class Common {
                             if value == list.first, let leadKey = leadKey {
                                 // Value is a collection so make a row with the lead key and an empty value
                                 let (_, rkey) = processScalar(leadKey)
-                                let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey,
+                                var inset = indent - 1
+                                if inset < 0 {
+                                    inset = 0
+                                }
+                                let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: inset) + rkey,
                                               val: BUFFOON_CONSTANTS.HARDTAB,
-                                              rule: 0.0)
+                                              rule: BUFFOON_CONSTANTS.RULES.NONE,
+                                              indent: inset)
                                 newRows.append(row)
                             }
 
@@ -442,22 +457,28 @@ class Common {
 
                             // After rendering the collection, increase the rule of the last item
                             if var row = newRows.popLast() {
-                                row.rule = 1.0
+                                row.rule = BUFFOON_CONSTANTS.RULES.MEDIUM
                                 newRows.append(row)
                             }
                         } else {
                             // Value is a scalar so follow on from the last
                             var subKey: String = BUFFOON_CONSTANTS.HARDTAB
+                            var inset = indent
                             if value == list.first, let leadKey = leadKey {
+                                inset = indent - 1
+                                if inset < 0 {
+                                    inset = 0
+                                }
                                 let (_, rkey) = processScalar(leadKey)
-                                subKey = String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: (indent - 1)) + rkey
+                                subKey = String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: inset) + rkey
                             }
 
                             // Add the row
                             let (style, rval) = processScalar(value)
                             let row = Row(key: subKey,
                                           val: rval,
-                                          style: style)
+                                          style: style,
+                                          indent: inset)
                             newRows.append(row)
                         }
                     }
@@ -546,9 +567,12 @@ class Common {
     private func makeTable(_ rows: [Row], _ styler: PMStyler) -> NSMutableAttributedString {
 
         // Set the header
+        let paraStyle = NSMutableParagraphStyle()
+        paraStyle.lineSpacing = styler.setFontSize("h6")
         let tableString = NSMutableAttributedString(string: "Front Matter\n",
                                                     attributes: [.foregroundColor: styler.colours.head ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML),
-                                                                 .font: styler.makeFont("strong", styler.setFontSize("h3"))])
+                                                                 .font: styler.makeFont("strong", styler.setFontSize("h4")),
+                                                                 .paragraphStyle: paraStyle])
 
         autoreleasepool {
             // Prepare the table
@@ -592,7 +616,7 @@ class Common {
                            type: .percentageValueType, for: .width)
         cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"))
+        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
         cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style
@@ -602,7 +626,7 @@ class Common {
         cellParaStyle.textBlocks = [cellBlock]  // Is this quicker than `.append(cellBlock)`?
 
         // Build and return the cell itself
-        let cellTextStyle = isKey ? "strong" : (row.style.isEmpty ? "plain" : row.style)
+        let cellTextStyle = isKey ? (row.indent == 0 ? "strong" : "plain") : (row.style.isEmpty ? "plain" : row.style)
         var cellTextColour: NSColor
         if isKey {
             cellTextColour = styler.colours.yamlkey ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML)
