@@ -235,8 +235,7 @@ class Common {
 
                         // FROM 2.2.0
                         let yamlString: NSMutableAttributedString = processYaml(yaml, self.styler!)
-                        yamlString.append(self.newLine)
-                        yamlString.append(output)
+                        yamlString.addAttributedStrings([self.newLine, self.hr, self.newLine, output])
                         output = yamlString
                     } catch {
                         // No YAML to render, or the YAML was mis-formatted
@@ -251,14 +250,11 @@ class Common {
                         // Assemble the error string
                         let errorString: NSMutableAttributedString = NSMutableAttributedString(string: "Could not render the front matter. Error: " + yamlErrString, attributes: self.yamlKeyAttributes)
 #if DEBUG
-                        errorString.append(self.newLine)
-                        errorString.append(self.hr)
+                        errorString.addAttributedStrings([self.newLine, self.hr])
                         errorString.append(NSMutableAttributedString(string: String(frontMatter),
                                                                      attributes: self.yamlValueAttributes))
 #endif
-                        errorString.append(self.hr)
-                        errorString.append(self.newLine)
-                        errorString.append(output)
+                        errorString.addAttributedStrings([self.hr, self.newLine, output])
                         output = errorString
                     }
                 }

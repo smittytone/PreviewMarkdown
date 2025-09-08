@@ -37,7 +37,7 @@ extension NSMutableAttributedString {
      - Parameters:
         - paraStyle: The injected NSParagraphStyle.
      */
-    func addParaStyle(with paraStyle: NSParagraphStyle) {
+    public func addParaStyle(with paraStyle: NSParagraphStyle) {
 
         beginEditing()
         self.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: self.length)) { (value, range, stop) in
@@ -46,6 +46,27 @@ extension NSMutableAttributedString {
             }
         }
         endEditing()
+    }
+
+
+    /**
+     Append the contents of an array of attributed strings
+
+     - Parameters:
+        - strings: The attributed strings to add.
+     */
+    public func addAttributedStrings(_ strings: [NSMutableAttributedString]) {
+
+        for string in strings {
+            self.append(string)
+        }
+    }
+
+    public func addAttributedStrings(_ strings: [NSAttributedString]) {
+
+        for string in strings {
+            self.append(string)
+        }
     }
 }
 
