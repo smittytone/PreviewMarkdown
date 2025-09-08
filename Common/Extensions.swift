@@ -167,7 +167,7 @@ extension NSColor {
         let green: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 2, length: 2))) / 255.0
         let blue: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 4, length: 2))) / 255.0
         let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 6, length: 2))) / 255.0
-        return NSColor(srgbRed: red, green: green, blue: blue, alpha: alpha)
+        return NSColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 
 

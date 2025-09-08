@@ -175,7 +175,7 @@ class AppDelegate:  NSObject,
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter = PMLayouter()
                                 layouter.fontSize = common.fontSize
-                                layouter.marginAdd = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                                layouter.marginDelta = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
                             

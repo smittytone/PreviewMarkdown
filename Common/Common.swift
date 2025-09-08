@@ -629,9 +629,9 @@ class Common {
         let cellTextStyle = isKey ? (row.indent == 0 ? "strong" : "plain") : (row.style.isEmpty ? "plain" : row.style)
         var cellTextColour: NSColor
         if isKey {
-            cellTextColour = styler.colours.yamlkey ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.YAML)
+            cellTextColour = styler.colours.yamlkey ?? NSColor.hexToColour(self.settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS]!)
         } else if row.style == "code" {
-            cellTextColour = styler.colours.code ?? NSColor.hexToColour(BUFFOON_CONSTANTS.HEX_COLOUR.CODE)
+            cellTextColour = styler.colours.code ?? NSColor.hexToColour(self.settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]!)
         } else {
             cellTextColour = NSColor.labelColor
         }
