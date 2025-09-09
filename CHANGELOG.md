@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.2.0 *Unreleased*
+- 2.2.0 *9 September 2025*
     - Add new UI for YAML front matter.
     - Expand size of preview window.
     - Add a `Convert Markdown Text to Plain Text` system-wide text service.
