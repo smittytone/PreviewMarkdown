@@ -1,5 +1,7 @@
 ## Release Notes
 
+- 2.2.1 *Unreleased*
+    - Maintain image URL case.
 - 2.2.0 *9 September 2025*
     - Add new UI for YAML front matter.
     - Expand size of preview window.

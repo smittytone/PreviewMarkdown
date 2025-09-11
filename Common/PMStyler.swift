@@ -357,7 +357,7 @@ class PMStyler {
                     if token.hasPrefix("img") {
                         // TO-DO Do we want to retain the ALT tag?
                         tokenToApply = "img"
-                        self.currentImagePath = getImageRef(token)
+                        self.currentImagePath = getImageRef(openToken)
                     }
 
                     // Look for a language specifier. If one exists, get it
