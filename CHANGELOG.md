@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.2.1 *Unreleased*
+- 2.2.1 *16 September 2025*
     - Add macOS 26 icon.
     - Add macOS 26 menu items.
     - Add 3x images for hi-res displays.
