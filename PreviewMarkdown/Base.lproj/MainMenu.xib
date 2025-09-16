@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24127" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23727"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24127"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="24127"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -64,7 +64,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="PreviewMarkdown" systemMenu="apple" autoenablesItems="NO" id="uQy-DD-JDr">
                         <items>
-                            <menuItem title="Settings..." keyEquivalent="," id="t9y-p4-apt">
+                            <menuItem title="Settings..." image="gearshape.fill" catalog="system" keyEquivalent="," id="t9y-p4-apt">
                                 <connections>
                                     <action selector="doShowSettingsWithSender:" target="Voe-Tx-rLC" id="sq4-gV-M5u"/>
                                 </connections>
@@ -196,13 +196,13 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" autoenablesItems="NO" id="F2S-fz-NVQ">
                         <items>
-                            <menuItem title="View Online Help" id="NdQ-kU-ZWH">
+                            <menuItem title="View Online Help" secondaryImage="questionmark.circle" catalog="system" id="NdQ-kU-ZWH">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="ikJ-5X-b7S"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="See What’s New..." id="RVo-0J-2sd">
+                            <menuItem title="See What’s New..." image="newspaper" catalog="system" id="RVo-0J-2sd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doShowWhatsNew:" target="Voe-Tx-rLC" id="xSQ-2B-eGW"/>
@@ -212,13 +212,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" id="aTi-bA-2As">
                                     <items>
-                                        <menuItem title="PreviewCode" id="s6y-wo-6b3">
+                                        <menuItem title="PreviewCode" image="app" catalog="system" id="s6y-wo-6b3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="tri-dt-wgD"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="PreviewJson" id="a2B-RL-t2t">
+                                        <menuItem title="PreviewJson" image="app" catalog="system" id="a2B-RL-t2t">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="WLc-Fg-dcZ"/>
@@ -228,13 +228,13 @@
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="PKG-sv-SKa"/>
-                            <menuItem title="Report a Bug..." id="WK3-2e-U4U">
+                            <menuItem title="Report a Bug..." image="ant" catalog="system" id="WK3-2e-U4U">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doShowFeedbackWithSender:" target="Voe-Tx-rLC" id="i4Y-X6-m4Z"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Review This App..." id="Poi-jo-cDz">
+                            <menuItem title="Review This App..." secondaryImage="star" catalog="system" id="Poi-jo-cDz">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="y7f-iq-wFd"/>
@@ -245,19 +245,19 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Acknowledgements" id="WBx-VK-xbe">
                                     <items>
-                                        <menuItem title="MarkdownIt" id="3OS-WA-nsV">
+                                        <menuItem title="MarkdownIt" image="document" catalog="system" id="3OS-WA-nsV">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="XJE-PY-x6d"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Highlight.js" id="AkO-22-jQl">
+                                        <menuItem title="Highlight.js" image="document" catalog="system" id="AkO-22-jQl">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="AfV-g3-VBc"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="YamlSwift" id="O46-Mu-Ivb">
+                                        <menuItem title="YamlSwift" image="document" catalog="system" id="O46-Mu-Ivb">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="jf4-Ma-9LU"/>
@@ -279,7 +279,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="610" height="432"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
             <value key="minSize" type="size" width="610" height="432"/>
             <value key="maxSize" type="size" width="610" height="432"/>
             <value key="minFullScreenContentSize" type="size" width="610" height="432"/>
@@ -320,7 +320,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Od6-82-oZh">
-                        <rect key="frame" x="275" y="13" width="60" height="33"/>
+                        <rect key="frame" x="280" y="20" width="50" height="21"/>
                         <buttonCell key="cell" type="push" title="Quit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="GIL-s9-L7E">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -346,7 +346,7 @@ DQ
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSG-kl-hgD">
-                        <rect key="frame" x="200" y="98" width="210" height="33"/>
+                        <rect key="frame" x="207" y="105" width="196" height="21"/>
                         <buttonCell key="cell" type="push" title="Send Feedback" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ho2-VM-TFK">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -357,7 +357,7 @@ DQ
                         </constraints>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zKx-i4-faD">
-                        <rect key="frame" x="200" y="132" width="210" height="33"/>
+                        <rect key="frame" x="207" y="139" width="196" height="21"/>
                         <buttonCell key="cell" type="push" title="Show Preview Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9PZ-Qj-bvf">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -368,7 +368,7 @@ DQ
                         </constraints>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gsi-wT-aLS">
-                        <rect key="frame" x="200" y="217" width="210" height="32"/>
+                        <rect key="frame" x="207" y="224" width="196" height="20"/>
                         <buttonCell key="cell" type="push" title="Open System Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DFW-b3-xdd">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -422,7 +422,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="158" width="560" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
             <value key="minSize" type="size" width="560" height="356"/>
             <value key="maxSize" type="size" width="560" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="356"/>
@@ -432,7 +432,7 @@ DQ
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tkx-af-mn5">
-                        <rect key="frame" x="474" y="13" width="73" height="33"/>
+                        <rect key="frame" x="481" y="20" width="59" height="21"/>
                         <buttonCell key="cell" type="push" title="Send" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w55-9v-6Fw">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -475,7 +475,7 @@ DQ
                         </constraints>
                     </progressIndicator>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P6B-a3-sQA">
-                        <rect key="frame" x="392" y="13" width="84" height="33"/>
+                        <rect key="frame" x="399" y="20" width="70" height="21"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PSj-gp-hg2">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -526,7 +526,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
             <value key="minSize" type="size" width="560" height="400"/>
             <value key="maxSize" type="size" width="560" height="400"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="400"/>
@@ -539,7 +539,7 @@ Gw
                 </userGuides>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kxb-3y-zsN">
-                        <rect key="frame" x="483" y="13" width="64" height="32"/>
+                        <rect key="frame" x="487" y="20" width="53" height="20"/>
                         <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hij-YA-i2o">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -553,7 +553,7 @@ DQ
                         </constraints>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FEy-oZ-Q0b">
-                        <rect key="frame" x="409" y="13" width="76" height="32"/>
+                        <rect key="frame" x="409" y="20" width="66" height="20"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="NfM-u3-xbg">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -567,7 +567,7 @@ Gw
                         </constraints>
                     </button>
                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DUw-vA-tdu">
-                        <rect key="frame" x="18" y="330" width="524" height="28"/>
+                        <rect key="frame" x="20" y="336" width="520" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="L66-H7-CE9"/>
                         </constraints>
@@ -763,7 +763,7 @@ Gw
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q0r-Nm-T23">
-                        <rect key="frame" x="17" y="16" width="25" height="25"/>
+                        <rect key="frame" x="20" y="20" width="20" height="20"/>
                         <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WmW-TL-8B5">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -828,7 +828,7 @@ Gw
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="760" height="600"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
             <value key="minSize" type="size" width="760" height="600"/>
             <value key="maxSize" type="size" width="760" height="600"/>
             <value key="minFullScreenContentSize" type="size" width="760" height="600"/>
@@ -848,7 +848,7 @@ Gw
                         </connections>
                     </wkWebView>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AQa-FM-Ece">
-                        <rect key="frame" x="347" y="3" width="66" height="32"/>
+                        <rect key="frame" x="354" y="10" width="52" height="20"/>
                         <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tnq-MK-fJq">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -881,7 +881,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="0.0" y="717" width="800" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
             <value key="minSize" type="size" width="800" height="400"/>
             <value key="maxSize" type="size" width="800" height="400"/>
             <value key="minFullScreenContentSize" type="size" width="800" height="400"/>
@@ -975,7 +975,7 @@ running this app once more.</string>
                                     </userGuides>
                                     <subviews>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ib5-2j-aQH">
-                                            <rect key="frame" x="387" y="16" width="25" height="25"/>
+                                            <rect key="frame" x="390" y="20" width="20" height="20"/>
                                             <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Mb-8X-aga">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -989,7 +989,7 @@ running this app once more.</string>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="geE-b6-IYa">
-                                            <rect key="frame" x="13" y="13" width="85" height="32"/>
+                                            <rect key="frame" x="20" y="20" width="71" height="20"/>
                                             <buttonCell key="cell" type="push" title="Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fSx-d6-lSf">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -1003,7 +1003,7 @@ running this app once more.</string>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kFy-Nr-jYW">
-                                            <rect key="frame" x="718" y="13" width="69" height="32"/>
+                                            <rect key="frame" x="725" y="20" width="55" height="20"/>
                                             <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="a1P-2y-WfV">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -1041,7 +1041,7 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QDv-Sp-Ula">
-                                            <rect key="frame" x="18" y="276" width="764" height="28"/>
+                                            <rect key="frame" x="20" y="282" width="760" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="BfL-l7-BAg"/>
                                             </constraints>
@@ -1464,7 +1464,7 @@ running this app once more.</string>
                     <box boxType="custom" borderType="line" borderWidth="2" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ylE-vr-uuQ">
                         <rect key="frame" x="0.0" y="342" width="800" height="2"/>
                         <view key="contentView" id="cOZ-IJ-8IU">
-                            <rect key="frame" x="2" y="1" width="796" height="0.0"/>
+                            <rect key="frame" x="2" y="0.0" width="796" height="2"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </view>
                         <constraints>
@@ -1498,11 +1498,17 @@ running this app once more.</string>
         </window>
     </objects>
     <resources>
+        <image name="ant" catalog="system" width="14" height="18"/>
+        <image name="app" catalog="system" width="15" height="14"/>
         <image name="appicon" width="64" height="64"/>
+        <image name="document" catalog="system" width="14" height="16"/>
         <image name="envelope.circle.fill" catalog="system" width="15" height="15"/>
         <image name="gearshape.circle.fill" catalog="system" width="15" height="15"/>
         <image name="gearshape.fill" catalog="system" width="16" height="16"/>
         <image name="info.circle.fill" catalog="system" width="15" height="15"/>
         <image name="logotype" width="700" height="52"/>
+        <image name="newspaper" catalog="system" width="18" height="16"/>
+        <image name="questionmark.circle" catalog="system" width="15" height="15"/>
+        <image name="star" catalog="system" width="17" height="16"/>
     </resources>
 </document>
