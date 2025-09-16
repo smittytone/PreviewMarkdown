@@ -1,8 +1,11 @@
 ## Release Notes
 
 - 2.2.1 *Unreleased*
-    - Maintain image URL case.
+    - Add macOS 26 icon.
+    - Add macOS 26 menu items.
     - Add 3x images for hi-res displays.
+    - Mitigate macOS 26 NSSlider changes.
+    - Fix image URL case handling.
 - 2.2.0 *9 September 2025*
     - Add new UI for YAML front matter.
     - Expand size of preview window.
