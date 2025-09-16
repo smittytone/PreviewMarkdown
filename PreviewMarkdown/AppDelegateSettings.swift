@@ -19,7 +19,13 @@ extension AppDelegate {
      Update UI when we are about to switch to it
      */
     internal func willShowSettingsPage() {
-        
+
+        // FROM 2.2.1
+        // Fix track colour on macOS 26
+        if #available(macOS 26.0, *) {
+            self.fontSizeSlider.tintProminence = .none
+        }
+
         // Disable the Feedback > Send button if we have sent a message.
         // It will be re-enabled by typing something
         self.applyButton.isEnabled = checkSettingsOnQuit()
