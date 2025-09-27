@@ -161,7 +161,7 @@
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
 		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3B873DCC2E795567000F0610 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = SOURCE_ROOT; };
+		3B873DCC2E795567000F0610 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; name = AppIcon.icon; path = "../../Library/Mobile Documents/com~apple~CloudDocs/Documents/Programming/PreviewMarkdown/AppIcon.icon"; sourceTree = SOURCE_ROOT; };
 		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BAE671628D4D09B001532BD /* AppDelegateFontHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateFontHandling.swift; sourceTree = "<group>"; };
 		3BAE6EC72C89783C0090C343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
