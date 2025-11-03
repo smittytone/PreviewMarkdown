@@ -1,5 +1,7 @@
 ## Release Notes
 
+- 2.2.3 *Unreleased*
+    - Improve light-mode colouring for code blocks. Thanks, @JamesW.
 - 2.2.2 *27 September 2025*
     - Adjust Settings UI layout for macOS 26.
 - 2.2.1 *16 September 2025*
