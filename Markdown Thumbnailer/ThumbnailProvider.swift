@@ -66,6 +66,17 @@ class ThumbnailProvider: QLThumbnailProvider {
             // and extend the size of its frame
             let markdownTextField: NSTextField = NSTextField(frame: markdownFrame)
             markdownTextField.lineBreakMode = .byTruncatingTail
+
+            // FROM 2.2.4
+            // From macOS 26.1, make sure thumbnail backgrounds remain white
+            // NOTE This may become a setting in future, but for now retain the styling
+            //      we have always presented.
+            if #available(macOS 26.1, *) {
+                markdownTextField.isBezeled = false
+                markdownTextField.drawsBackground = true
+                markdownTextField.backgroundColor = .white
+            }
+
             markdownTextField.attributedStringValue = common.getAttributedString(markdownString[...])
 
             // Generate the bitmap from the rendered markdown text view
