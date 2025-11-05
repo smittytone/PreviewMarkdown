@@ -75,7 +75,7 @@ class PreviewViewController: NSViewController,
                 }
 
                 // Update the NSTextView
-                self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor(white: 0.9, alpha: 1.0) : NSColor.textBackgroundColor
+                self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
 
                 // FROM 2.1.0
