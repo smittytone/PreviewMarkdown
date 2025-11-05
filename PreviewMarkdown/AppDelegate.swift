@@ -13,7 +13,7 @@ import WebKit
 
 
 @NSApplicationMain
-final class AppDelegate: NSObject,
+final class AppDelegate: NSResponder,
                          NSApplicationDelegate,
                          URLSessionDelegate,
                          URLSessionDataDelegate,
