@@ -29,6 +29,9 @@ extension AppDelegate {
         // Disable the Feedback > Send button if we have sent a message.
         // It will be re-enabled by typing something
         self.applyButton.isEnabled = checkSettingsOnQuit()
+
+        // FROM 2.2.4
+        self.window.makeFirstResponder(self)
     }
 
 
@@ -47,6 +50,28 @@ extension AppDelegate {
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
         willShowSettingsPage()
      }
+
+
+    override func keyDown(with event: NSEvent) {
+
+        if (event.keyCode == 126 || event.keyCode == 124) && self.fontSizeSlider.floatValue < 6.0 {
+            self.fontSizeSlider.floatValue += 1
+            if self.fontSizeSlider.floatValue > 6.0 {
+                self.fontSizeSlider.floatValue = 6.0
+            }
+
+            doMoveSlider(sender: self)
+        }
+
+        if (event.keyCode == 125 || event.keyCode == 123) && self.fontSizeSlider.floatValue > 0.0 {
+            self.fontSizeSlider.floatValue -= 1
+            if self.fontSizeSlider.floatValue < 0.0 {
+                self.fontSizeSlider.floatValue = 0.0
+            }
+
+            doMoveSlider(sender: self)
+        }
+    }
 
 
      /**
