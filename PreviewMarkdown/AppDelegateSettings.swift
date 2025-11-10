@@ -26,6 +26,16 @@ extension AppDelegate {
             self.fontSizeSlider.tintProminence = .none
         }
 
+        // FROM 2.3.0
+        // Disable this switch below 26.1
+        if #available(macOS 26.1, *) {
+            self.tintTumbnailsAdvancedLabel.isEnabled = true
+            self.tintTumbnailsAdvancedSwitch.isEnabled = true
+        } else {
+            self.tintTumbnailsAdvancedLabel.isEnabled = false
+            self.tintTumbnailsAdvancedSwitch.isEnabled = false
+        }
+
         // Disable the Feedback > Send button if we have sent a message.
         // It will be re-enabled by typing something
         self.applyButton.isEnabled = checkSettingsOnQuit()
@@ -198,120 +208,22 @@ extension AppDelegate {
      }
 
 
-    // MARK: - General Functions
+    @IBAction
+    internal func doShowAdvancedSettings(sender: Any) {
 
-
-    /**
-     Configure the app's preferences with default values.
-     
-     FROM 1.2.0
-     RENAMED 2.0.0
-     */
-    internal func registerSettings() {
-
-        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            // Check if each preference value exists -- set if it doesn't
-            // Preview body font size, stored as a CGFloat
-            // Default: 16.0
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE) == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE),
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
-            }
-
-            // Thumbnail view base font size, stored as a CGFloat, NOT CURRENTLY USED
-            // Default: 14.0
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE) == nil {
-                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE),
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
-            }
-            
-            // Use light background even in dark mode, stored as a bool
-            // Default: false
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT) == nil {
-                defaults.setValue(false,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
-            }
-
-            // Show the What's New sheet
-            // Default: true
-            // This is a version-specific preference suffixed with, eg, '-2-3'. Once created
-            // this will persist, but with each new major and/or minor version, we make a
-            // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
-            // should be shown this run
-            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
-            if defaults.object(forKey: key) == nil {
-                defaults.setValue(true, forKey: key)
-            }
-            
-            // FROM 1.3.0
-            // Show any YAML front matter, if present
-            // Default: true
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML) == nil {
-                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
-            }
-            
-            // FROM 1.4.0
-            // Colour of links in the preview, stored as hex string
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.LINK,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
-            }
-            
-            // FROM 1.4.0
-            // Colour of code blocks in the preview, stored as hex string
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.CODE,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
-            }
-            
-            // FROM 1.4.0
-            // Colour of headings in the preview, stored as hex string
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.HEAD,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
-            }
-            
-            // FROM 1.4.0
-            // Font for body test in the preview, stored as a PostScript name
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.BODY,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
-            }
-
-            // FROM 1.4.0
-            // Font for code blocks in the preview, stored as a PostScript name
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.CODE,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
-            }
-            
-            // FROM 1.5.0
-            // Store the preview line spacing value
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
-            }
-
-            // The blockquote colour, stored as hex string
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
-            }
-
-            // FROM 2.1.0
-            // The YAML key colour, stored as hex string
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.YAML,
-                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
-            }
-
-            // Show a margin or not
-            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN) == nil {
-                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
-            }
-        }
+        self.window.beginSheet(self.advancedSettingsSheet)
     }
 
+
+    @IBAction
+    internal func doCloseAdvancedSettings(sender: Any) {
+
+        self.window.endSheet(self.advancedSettingsSheet)
+        willShowSettingsPage()
+    }
+
+    
+    // MARK: - General Functions
 
     /**
      Update the UI with the supplied settings.
@@ -330,10 +242,10 @@ extension AppDelegate {
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
 
         // Set the checkboxes
-        self.useLightCheckbox.state = settings.doShowLightBackground ? .on : .off
-        self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
+        //self.useLightCheckbox.state = settings.doShowLightBackground ? .on : .off
+        //self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
         // FROM 2.1.0
-        self.showMarginCheckbox.state = settings.doShowMargin ? .on : .off
+        //self.showMarginCheckbox.state = settings.doShowMargin ? .on : .off
 
         // Set the colour well
         // NOTE This has only one colour, so we always reset to "heads" on changes
@@ -369,6 +281,21 @@ extension AppDelegate {
         // Set the line spacing selector
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
         self.lineSpacingPopup.selectItem(at: linespacingValues.firstIndex(of: round(settings.lineSpacing * 100) / 100.0) ?? 0)
+
+        // FROM 2.3.0
+        self.showMarginSwitch.state = settings.doShowMargin ? .on : .off
+        self.showFrontMatterSwitch.state = settings.doShowFrontMatter ? .on : .off
+        self.useLightSwitch.state = settings.doShowLightBackground ? .on : .off
+
+        self.tintTumbnailsAdvancedSwitch.state = settings.thumbnailMatchFinderMode ? .on : .off
+        var idx = 2
+        if settings.previewWindowScale == BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S {
+            idx = 0
+        } else if settings.previewWindowScale == BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_M {
+            idx = 1
+        }
+
+        self.previewSizeAdvancedPopup.selectItem(at: idx)
     }
 
 
@@ -384,18 +311,33 @@ extension AppDelegate {
         
         let displayedSettings = PMSettings()
         displayedSettings.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
-        displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
-        displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
+        //displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
+        //displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
         displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
         displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
         // FROM 2.1.0
-        displayedSettings.doShowMargin = self.showMarginCheckbox.state == .on
+        //displayedSettings.doShowMargin = self.showMarginCheckbox.state == .on
+        // FROM 2.3.0
+        displayedSettings.doShowMargin = self.showMarginSwitch.state == .on
+        displayedSettings.doShowFrontMatter = self.showFrontMatterSwitch.state == .on
+        displayedSettings.doShowLightBackground = self.useLightSwitch.state == .on
 
         // Set the actual linespacing according to the index of the menu
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
         assert(self.lineSpacingPopup.indexOfSelectedItem < linespacingValues.count)
         displayedSettings.lineSpacing = linespacingValues[self.lineSpacingPopup.indexOfSelectedItem]
-        
+
+        displayedSettings.thumbnailMatchFinderMode = self.tintTumbnailsAdvancedSwitch.state == .on
+        let idx = self.previewSizeAdvancedPopup.indexOfSelectedItem
+        switch idx {
+            case 1:
+                displayedSettings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_M
+            case 2:
+                displayedSettings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L
+            default:
+                displayedSettings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S
+        }
+
         return displayedSettings
     }
 
@@ -492,6 +434,15 @@ extension AppDelegate {
             settingsHaveChanged = self.currentSettings.doShowMargin != displayedSettings.doShowMargin
         }
 
+        // FROM 2.3.0
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.thumbnailMatchFinderMode != displayedSettings.thumbnailMatchFinderMode
+        }
+
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.previewWindowScale != displayedSettings.previewWindowScale
+        }
+
         return settingsHaveChanged
     }
 
@@ -524,4 +475,117 @@ extension AppDelegate {
             self.currentSettings.displayColours["new_" + key] = self.defaultSettings.displayColours[key]
         }
     }
+
+
+    /**
+     Configure the app's preferences with default values.
+
+     FROM 1.2.0
+     RENAMED 2.0.0
+
+    internal func registerSettings() {
+
+        if let defaults = UserDefaults(suiteName: self.appSuiteName) {
+            // Check if each preference value exists -- set if it doesn't
+            // Preview body font size, stored as a CGFloat
+            // Default: 16.0
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE) == nil {
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE),
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
+            }
+
+            // Thumbnail view base font size, stored as a CGFloat, NOT CURRENTLY USED
+            // Default: 14.0
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE) == nil {
+                defaults.setValue(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.FONT_SIZE),
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
+            }
+
+            // Use light background even in dark mode, stored as a bool
+            // Default: false
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT) == nil {
+                defaults.setValue(false,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            }
+
+            // Show the What's New sheet
+            // Default: true
+            // This is a version-specific preference suffixed with, eg, '-2-3'. Once created
+            // this will persist, but with each new major and/or minor version, we make a
+            // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
+            // should be shown this run
+            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
+            if defaults.object(forKey: key) == nil {
+                defaults.setValue(true, forKey: key)
+            }
+
+            // FROM 1.3.0
+            // Show any YAML front matter, if present
+            // Default: true
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML) == nil {
+                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
+            }
+
+            // FROM 1.4.0
+            // Colour of links in the preview, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.LINK,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINK_COLOUR)
+            }
+
+            // FROM 1.4.0
+            // Colour of code blocks in the preview, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.CODE,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_COLOUR)
+            }
+
+            // FROM 1.4.0
+            // Colour of headings in the preview, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.HEAD,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_HEAD_COLOUR)
+            }
+
+            // FROM 1.4.0
+            // Font for body test in the preview, stored as a PostScript name
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.BODY,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)
+            }
+
+            // FROM 1.4.0
+            // Font for code blocks in the preview, stored as a PostScript name
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.FONT_NAME.CODE,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
+            }
+
+            // FROM 1.5.0
+            // Store the preview line spacing value
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE)
+            }
+
+            // The blockquote colour, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_QUOTE_COLOUR)
+            }
+
+            // FROM 2.1.0
+            // The YAML key colour, stored as hex string
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.HEX_COLOUR.YAML,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_KEY_COLOUR)
+            }
+
+            // Show a margin or not
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN) == nil {
+                defaults.setValue(true, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_MARGIN)
+            }
+        }
+    }
+     */
 }

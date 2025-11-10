@@ -67,10 +67,14 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_HEAD_COLOUR          = "com-bps-previewmarkdown-head-colour-hex"
         static let PREVIEW_QUOTE_COLOUR         = "com-bps-previewmarkdown-quote-colour-hex"
         static let PREVIEW_YAML_KEY_COLOUR      = "com-bps-previewmarkdown-yaml-key-colour-hex"
+        static let PREVIEW_LOZENGE_COLOUR       = "com-bps-previewmarkdown-lozenge-colour-hex"
         static let PREVIEW_LINE_SPACE           = "com-bps-previewmarkdown-line-spacing"
         static let THUMB_FONT_SIZE              = "com-bps-previewmarkdown-thumb-font-size"
         static let THUMB_SHOW_TAG               = "com-bps-previewmarkdown-do-show-tag"
         static let PREVIEW_SHOW_MARGIN          = "com-bps-previewmarkdown-do-show-margin"
+        static let PREVIEW_WINDOW_SCALE         = "com-bps-previewmarkdown-window-scale"
+        static let PREVIEW_MARGIN               = "com-bps-previewmarkdown-preview-margin"
+        static let THUMB_MATCH_MODE             = "com-bps-previewmarkdown-match-mode"
     }
     
     // FROM 2.0.0
@@ -85,11 +89,13 @@ struct BUFFOON_CONSTANTS {
         static let LINKS                        = "links"
         static let QUOTES                       = "quote"
         static let YAML_KEYS                    = "yamlkeys"
+        static let LOZENGE                      = "lozenge"             // Advanced
         static let NEW_HEADS                    = "new_heads"
         static let NEW_CODE                     = "new_code"
         static let NEW_LINKS                    = "new_links"
         static let NEW_QUOTES                   = "new_quote"
         static let NEW_YAML_KEYS                = "new_yamlkeys"
+        static let NEW_LOZENGE                  = "new_lozenge"         // Unused
     }
 
     // FROM 2.1.0
@@ -147,6 +153,7 @@ struct BUFFOON_CONSTANTS {
         static let LINK                         = "0096FFFF"
         static let QUOTE                        = "22528EFF"
         static let YAML                         = "009193FF"
+        static let LOZENGE                      = ""                // Advanced
     }
 
     struct PREVIEW_SIZE {
@@ -213,7 +220,9 @@ struct BUFFOON_CONSTANTS {
 
     struct SCALERS {
         
-        static let WINDOW_SIZE                  = 0.75
+        static let WINDOW_SIZE_L                = 0.75
+        static let WINDOW_SIZE_M                = 0.50
+        static let WINDOW_SIZE_S                = 0.42
         static let FRONT_MATTER_TEXT            = 0.9
         static let FRONT_MATTER_ROW_HEIGHT      = 1.3
     }

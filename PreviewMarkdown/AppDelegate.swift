@@ -67,6 +67,11 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var applyButton: NSButton!
     // FROM 2.1.0
     @IBOutlet weak var showMarginCheckbox: NSButton!
+    // FROM 2.3.0
+    @IBOutlet weak var useLightSwitch: NSSwitch!
+    @IBOutlet weak var showFrontMatterSwitch: NSSwitch!
+    @IBOutlet weak var showMarginSwitch: NSSwitch!
+
 
     // Window > Feedback Tab Items
     @IBOutlet weak var feedbackText: NSTextField!
@@ -77,6 +82,14 @@ final class AppDelegate: NSResponder,
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
+
+    // FROM 2.3.0
+    // Advanced Settings Sheet
+    @IBOutlet weak var advancedSettingsSheet: NSWindow!
+    @IBOutlet weak var applyAdvancedButton: NSButton!
+    @IBOutlet weak var previewSizeAdvancedPopup: NSPopUpButton!
+    @IBOutlet weak var tintTumbnailsAdvancedSwitch: NSSwitch!
+    @IBOutlet weak var tintTumbnailsAdvancedLabel: NSTextField!
 
 
     // MARK: - Public Properties
@@ -121,8 +134,8 @@ final class AppDelegate: NSResponder,
         
         // FROM 1.2.0
         // Set application group-level defaults
-        registerSettings()
-        
+        defaultSettings.registerSettings(self.appSuiteName, getVersion())
+
         // FROM 1.2.0
         // Get the local UTI for markdown files
         self.localMarkdownUTI = getLocalFileUTI(BUFFOON_CONSTANTS.SAMPLE_UTI_FILE)
@@ -185,6 +198,10 @@ final class AppDelegate: NSResponder,
         self.window.delegate = self
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
+
+        self.showMarginCheckbox.isHidden = true
+        self.showFrontMatterCheckbox.isHidden = true
+        self.useLightCheckbox.isHidden = true
     }
 
 
@@ -324,7 +341,7 @@ final class AppDelegate: NSResponder,
     @IBAction
     private func doShowPrefsHelp(sender: Any) {
 
-        let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
+        let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customize-the-preview"
         NSWorkspace.shared.open(URL(string:path)!)
         
     }

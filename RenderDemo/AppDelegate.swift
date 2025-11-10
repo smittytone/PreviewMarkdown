@@ -145,10 +145,10 @@ class AppDelegate:  NSObject,
                     }
                     
                     //common.viewWidth = self.previewTextView.frame.width
-                    common.doShowLightBackground = !self.renderAsDark
+                    common.settings.doShowLightBackground = !self.renderAsDark
                     common.workingDirectory = (mdUrl.unixpath() as NSString).deletingLastPathComponent
 
-                    if common.doShowMargin {
+                    if common.settings.doShowMargin {
                         // Add an inset margin to the main text view
                         // TODO What are the best sizes? Want to add a little whitespace to increase
                         //      clarity, but not to make an obvious blank space
@@ -160,8 +160,8 @@ class AppDelegate:  NSObject,
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
-                            self.previewTextView.backgroundColor = common.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
-                            self.previewScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                            self.previewTextView.backgroundColor = common.settings.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                            self.previewScrollView.scrollerKnobStyle = common.settings.doShowLightBackground ? .dark : .light
 
                             // Correct way to set a text view's link colouring, etc. - and have it stick
                             self.previewTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
@@ -174,8 +174,8 @@ class AppDelegate:  NSObject,
                             // We need to access the NSTextView's containter to apply the custom NSLayoutManager
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter = PMLayouter()
-                                layouter.fontSize = common.fontSize
-                                layouter.marginDelta = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                                layouter.fontSize = common.settings.fontSize
+                                layouter.marginDelta = common.settings.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
                             

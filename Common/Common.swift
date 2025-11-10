@@ -41,14 +41,11 @@ class Common {
 
     // MARK: - Public Properties
 
-    var doShowLightBackground: Bool                                 = true          // Pass to caller
     // FROM 2.0.0
-    var fontSize: CGFloat                                           = 0.0           // Pass to the lozenge layouter
-    var lineSpacing: CGFloat                                        = 1.0           // Pass to the lozenge layouter
     var workingDirectory: String                                    = ""            // Pass in the file's directory
     var linkColor: NSColor                                          = .linkColor    // Pass to main text view
     // FROM 2.1.0
-    var doShowMargin: Bool                                          = true          // Pass to main text view
+    var settings: PMSettings                                = PMSettings()
 
 
     // MARK: - Private Properties
@@ -64,8 +61,6 @@ class Common {
     // FROM 2.0.0
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
-    // FROM 2.1.0
-    private var settings: PMSettings                                = PMSettings()
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -146,11 +141,6 @@ class Common {
         // Retain these value for easy layouter access
         // FROM 2.0.0
         self.linkColor = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
-        self.fontSize = self.settings.fontSize
-        self.lineSpacing = self.settings.lineSpacing
-        self.doShowLightBackground = self.settings.doShowLightBackground
-        // FROM 2.1.0
-        self.doShowMargin = self.settings.doShowMargin
     }
 
 
@@ -225,7 +215,7 @@ class Common {
             // First set up the styler with the chosen settings
             self.styler?.workingDirectory = self.workingDirectory
 
-            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.doShowLightBackground) {
+            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.settings.doShowLightBackground) {
                 output = NSMutableAttributedString(attributedString: attStr)
 
                 // Render YAML front matter if requested by the user, and we're not
@@ -616,7 +606,7 @@ class Common {
                            type: .percentageValueType, for: .width)
         cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
+        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.settings.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
         cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style

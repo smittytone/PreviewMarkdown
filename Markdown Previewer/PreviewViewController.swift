@@ -62,6 +62,10 @@ class PreviewViewController: NSViewController,
                     return
                 }
 
+                // FROM 2.2.0
+                // Set the parent window's size
+                setPreviewWindowSize(common.settings)
+
                 // FROM 2.0.0
                 // Pass in the source file's directory
                 common.workingDirectory = (url.path as NSString).deletingLastPathComponent
@@ -70,17 +74,17 @@ class PreviewViewController: NSViewController,
                 // Set the view to display in light mode, even if the Mac is set to dark mode,
                 // if that's required by the user. This means we can stick to as few fixed colours
                 // as possible: AppKit will flip accordingly.
-                if common.doShowLightBackground {
+                if common.settings.doShowLightBackground {
                     self.view.appearance = NSAppearance(named: .aqua)
                 }
 
                 // Update the NSTextView
-                self.renderTextView.backgroundColor = common.doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
-                self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                self.renderTextView.backgroundColor = common.settings.doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
+                self.renderTextScrollView.scrollerKnobStyle = common.settings.doShowLightBackground ? .dark : .light
 
                 // FROM 2.1.0
                 // Add margin if required
-                if common.doShowMargin {
+                if common.settings.doShowMargin {
                     self.renderTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_MARGIN_SIZE
                 }
 
@@ -96,9 +100,9 @@ class PreviewViewController: NSViewController,
                         // we are using as a proxy for lozenged text - the layouter will
                         // do the replacement work
                         let layouter = PMLayouter()
-                        layouter.marginDelta = common.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
-                        layouter.fontSize = common.fontSize
-                        layouter.lineSpacing = common.lineSpacing
+                        layouter.marginDelta = common.settings.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                        layouter.fontSize = common.settings.fontSize
+                        layouter.lineSpacing = common.settings.lineSpacing
 
                         // This line is a sort of fix for the table border rendering issue
                         // It helps - missing borders do get drawn eventually - but doesn't
@@ -115,7 +119,7 @@ class PreviewViewController: NSViewController,
 
                     // FROM 2.2.0
                     // Set the parent window's size
-                    setPreviewWindowSize()
+                    //setPreviewWindowSize()
 
                     // Call the QLPreviewingController indicating no error (nil)
                     handler(nil)
@@ -228,7 +232,7 @@ class PreviewViewController: NSViewController,
     /**
      Specify the content size of the parent view.
     */
-    private func setPreviewWindowSize() {
+    private func setPreviewWindowSize(_ settings: PMSettings) {
 
         var screen: NSScreen = NSScreen.screens[0]
 
@@ -239,8 +243,8 @@ class PreviewViewController: NSViewController,
             screen = mainScreen
         }
 
-        let height: CGFloat = screen.frame.size.height * BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE
-        let width: CGFloat = screen.frame.size.width * BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE
+        let height: CGFloat = screen.frame.size.height * settings.previewWindowScale
+        let width: CGFloat = screen.frame.size.width * settings.previewWindowScale
         self.preferredContentSize = NSSize(width: width, height: height)
     }
 }

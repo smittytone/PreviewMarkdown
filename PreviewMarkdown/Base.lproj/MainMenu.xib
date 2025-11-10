@@ -17,6 +17,8 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="advancedSettingsSheet" destination="vZ0-4t-gU9" id="ia2-id-cE0"/>
+                <outlet property="applyAdvancedButton" destination="c1n-RD-kYz" id="JYY-3X-y9P"/>
                 <outlet property="applyButton" destination="kFy-Nr-jYW" id="auY-ol-XGY"/>
                 <outlet property="bodyFontPopup" destination="tcO-mr-eBH" id="gc7-Qr-swo"/>
                 <outlet property="bodyStylePopup" destination="eAc-MW-Aa2" id="mV6-v0-rx4"/>
@@ -47,10 +49,16 @@
                 <outlet property="mainTabView" destination="B1P-eb-X1i" id="40y-e4-cqh"/>
                 <outlet property="messageSendButton" destination="zVb-Qo-WXM" id="lzX-PR-fAG"/>
                 <outlet property="messageSizeLabel" destination="i7b-Zp-PAw" id="x7X-mU-Fs6"/>
+                <outlet property="previewSizeAdvancedPopup" destination="cdJ-GQ-YNH" id="fto-vx-RVG"/>
                 <outlet property="settingsButton" destination="XT6-vN-IwB" id="trD-B7-qUF"/>
                 <outlet property="showFrontMatterCheckbox" destination="C6Z-2z-3G7" id="is1-La-VqA"/>
+                <outlet property="showFrontMatterSwitch" destination="EA2-hi-rAI" id="Awt-uK-f9G"/>
                 <outlet property="showMarginCheckbox" destination="PNh-Ih-Kko" id="oGV-pW-fX7"/>
+                <outlet property="showMarginSwitch" destination="eHN-Wm-zgJ" id="y6g-ua-O8g"/>
+                <outlet property="tintTumbnailsAdvancedLabel" destination="iDr-vO-dxT" id="rGT-Gn-SVv"/>
+                <outlet property="tintTumbnailsAdvancedSwitch" destination="cgP-sC-bGb" id="bhg-iF-ewb"/>
                 <outlet property="useLightCheckbox" destination="DGX-Ye-M9S" id="lKQ-24-CNz"/>
+                <outlet property="useLightSwitch" destination="x3R-Jh-AIY" id="eTE-Zy-8Ub"/>
                 <outlet property="versionLabel" destination="7WS-6l-Uih" id="UCQ-v5-Yhp"/>
                 <outlet property="whatsNewWebView" destination="edS-kL-I2r" id="f6t-H5-tEf"/>
                 <outlet property="whatsNewWindow" destination="9wj-wl-UO6" id="5x9-DD-ytU"/>
@@ -533,7 +541,7 @@ Gw
             <value key="maxFullScreenContentSize" type="size" width="560" height="400"/>
             <view key="contentView" id="DTJ-no-zbr">
                 <rect key="frame" x="0.0" y="0.0" width="560" height="400"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <userGuides>
                     <userLayoutGuide location="280" affinity="minX"/>
                 </userGuides>
@@ -781,6 +789,114 @@ Gw
             </view>
             <point key="canvasLocation" x="-712" y="28"/>
         </window>
+        <window title="Extra Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="vZ0-4t-gU9" userLabel="Advanced Preferences">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="206" width="600" height="200"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1204"/>
+            <value key="minSize" type="size" width="600" height="200"/>
+            <value key="maxSize" type="size" width="600" height="200"/>
+            <value key="minFullScreenContentSize" type="size" width="600" height="200"/>
+            <value key="maxFullScreenContentSize" type="size" width="600" height="200"/>
+            <view key="contentView" id="XZo-x1-MeL">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c1n-RD-kYz">
+                        <rect key="frame" x="524" y="20" width="56" height="24"/>
+                        <buttonCell key="cell" type="push" title="Done" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dBb-nW-gKn">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="56" id="2M6-vj-vbM"/>
+                            <constraint firstAttribute="height" constant="24" id="xNh-XQ-wtT"/>
+                        </constraints>
+                        <connections>
+                            <action selector="doCloseAdvancedSettingsWithSender:" target="Voe-Tx-rLC" id="15e-Hb-sYH"/>
+                        </connections>
+                    </button>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="m0H-aw-rdi">
+                        <rect key="frame" x="18" y="164" width="430" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="wek-m5-fVx"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Preview Window Size:" id="yIy-XC-MSc">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cdJ-GQ-YNH">
+                        <rect key="frame" x="454" y="160" width="126" height="24"/>
+                        <popUpButtonCell key="cell" type="push" title="Large" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="RJz-TP-0N9" id="94b-7I-UGE">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="message"/>
+                            <menu key="menu" id="hHl-pT-cc9">
+                                <items>
+                                    <menuItem title="Small" image="widget.small" catalog="system" id="Fe5-3x-Mhr"/>
+                                    <menuItem title="Medium" image="widget.large" catalog="system" id="qtg-YP-5V1"/>
+                                    <menuItem title="Large" state="on" image="widget.extralarge" catalog="system" id="RJz-TP-0N9"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="HAB-ys-gxK"/>
+                            <constraint firstAttribute="width" constant="126" id="adx-3K-pJJ"/>
+                        </constraints>
+                    </popUpButton>
+                    <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iDr-vO-dxT">
+                        <rect key="frame" x="18" y="132" width="502" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="je2-Gz-nGf"/>
+                        </constraints>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Match thumnbail colour scheme to display mode (macOS 26.1 or above):" id="JZo-Om-RsJ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="cgP-sC-bGb">
+                        <rect key="frame" x="526" y="128" width="54" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="54" id="EJI-QB-sFc"/>
+                            <constraint firstAttribute="height" constant="24" id="KHY-Ms-CdF"/>
+                        </constraints>
+                    </switch>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sr6-Go-PfS">
+                        <rect key="frame" x="20" y="20" width="20" height="20"/>
+                        <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ntW-vh-l9o">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="bL0-9e-rb8"/>
+                            <constraint firstAttribute="height" constant="20" id="ikJ-gq-3HD"/>
+                        </constraints>
+                        <connections>
+                            <action selector="doShowPrefsHelpWithSender:" target="Voe-Tx-rLC" id="Udu-S1-CLP"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="iDr-vO-dxT" firstAttribute="top" secondItem="cdJ-GQ-YNH" secondAttribute="bottom" constant="12" id="0rx-NV-1Ty"/>
+                    <constraint firstAttribute="trailing" secondItem="c1n-RD-kYz" secondAttribute="trailing" constant="20" symbolic="YES" id="5Nz-Vs-fyE"/>
+                    <constraint firstItem="cdJ-GQ-YNH" firstAttribute="top" secondItem="XZo-x1-MeL" secondAttribute="top" constant="16" id="710-Zj-Lz8"/>
+                    <constraint firstItem="cgP-sC-bGb" firstAttribute="top" secondItem="cdJ-GQ-YNH" secondAttribute="bottom" constant="8" symbolic="YES" id="CQd-Va-mUD"/>
+                    <constraint firstAttribute="bottom" secondItem="c1n-RD-kYz" secondAttribute="bottom" constant="20" symbolic="YES" id="E4Y-hR-6sC"/>
+                    <constraint firstItem="sr6-Go-PfS" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="JJS-8g-sG3"/>
+                    <constraint firstAttribute="bottom" secondItem="sr6-Go-PfS" secondAttribute="bottom" constant="20" symbolic="YES" id="Nuk-qd-kyi"/>
+                    <constraint firstItem="m0H-aw-rdi" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="PHV-G3-LBW"/>
+                    <constraint firstItem="cdJ-GQ-YNH" firstAttribute="leading" secondItem="m0H-aw-rdi" secondAttribute="trailing" constant="8" symbolic="YES" id="XT8-fy-ceq"/>
+                    <constraint firstItem="m0H-aw-rdi" firstAttribute="top" secondItem="XZo-x1-MeL" secondAttribute="top" constant="20" symbolic="YES" id="bBd-YR-lzJ"/>
+                    <constraint firstAttribute="trailing" secondItem="cgP-sC-bGb" secondAttribute="trailing" constant="20" symbolic="YES" id="gXH-od-uWi"/>
+                    <constraint firstItem="cgP-sC-bGb" firstAttribute="leading" secondItem="iDr-vO-dxT" secondAttribute="trailing" constant="8" symbolic="YES" id="mJm-xE-G2j"/>
+                    <constraint firstItem="iDr-vO-dxT" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="ohX-ee-gZl"/>
+                    <constraint firstAttribute="trailing" secondItem="cdJ-GQ-YNH" secondAttribute="trailing" constant="20" symbolic="YES" id="rC3-Qv-nLZ"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="-712" y="28"/>
+        </window>
         <window title="What’s New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" id="9wj-wl-UO6">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -946,14 +1062,14 @@ running this app once more.</string>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="geE-b6-IYa">
-                                            <rect key="frame" x="20" y="20" width="71" height="20"/>
+                                            <rect key="frame" x="20" y="20" width="72" height="20"/>
                                             <buttonCell key="cell" type="push" title="Defaults" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="fSx-d6-lSf">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="4N5-Iq-Q4Q"/>
-                                                <constraint firstAttribute="width" constant="71" id="ho1-2l-VKC"/>
+                                                <constraint firstAttribute="width" constant="72" id="ho1-2l-VKC"/>
                                             </constraints>
                                             <connections>
                                                 <action selector="doApplyDefaultSettingsWithSender:" target="Voe-Tx-rLC" id="tJ4-OO-2n9"/>
@@ -1199,8 +1315,64 @@ running this app once more.</string>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DoD-oh-O9a">
+                                            <rect key="frame" x="478" y="166" width="44" height="23"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="colourSelectedWithSender:" target="Voe-Tx-rLC" id="3iL-0I-9Fz"/>
+                                            </connections>
+                                        </colorWell>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g9s-eZ-633">
+                                            <rect key="frame" x="188" y="109" width="342" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" title="Use light background for previews in macOS Dark Mode" id="vlF-eX-a4t">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSI-xO-hWv">
+                                            <rect key="frame" x="188" y="85" width="342" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Add a whitespace margin around preview content" id="Oe4-9E-L1z">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OYD-ur-GUm">
+                                            <rect key="frame" x="188" y="61" width="342" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Render YAML front matter, if present" id="W7f-gE-hPD">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="x3R-Jh-AIY">
+                                            <rect key="frame" x="536" y="105" width="54" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="D44-y2-TgL"/>
+                                            </connections>
+                                        </switch>
+                                        <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="eHN-Wm-zgJ">
+                                            <rect key="frame" x="536" y="81" width="54" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="MmB-vP-yND"/>
+                                            </connections>
+                                        </switch>
+                                        <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="EA2-hi-rAI">
+                                            <rect key="frame" x="536" y="57" width="54" height="24"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="RTb-2E-odN"/>
+                                            </connections>
+                                        </switch>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DGX-Ye-M9S">
-                                            <rect key="frame" x="237" y="106" width="380" height="18"/>
+                                            <rect key="frame" x="20" y="109" width="380" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="mOs-nO-lDb">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1211,7 +1383,7 @@ running this app once more.</string>
                                             </buttonCell>
                                         </button>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6Z-2z-3G7">
-                                            <rect key="frame" x="237" y="58" width="380" height="18"/>
+                                            <rect key="frame" x="20" y="61" width="380" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Render YAML front matter, if present" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1222,7 +1394,7 @@ running this app once more.</string>
                                             </buttonCell>
                                         </button>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNh-Ih-Kko">
-                                            <rect key="frame" x="237" y="82" width="380" height="18"/>
+                                            <rect key="frame" x="20" y="85" width="380" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Add a whitespace margin around preview content" bezelStyle="regularSquare" imagePosition="left" inset="2" id="C2v-ha-MBI">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1232,14 +1404,20 @@ running this app once more.</string>
                                                 <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="JO7-Pn-fCS"/>
                                             </connections>
                                         </button>
-                                        <colorWell fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DoD-oh-O9a">
-                                            <rect key="frame" x="478" y="166" width="44" height="23"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ya9-ow-vW2">
+                                            <rect key="frame" x="104" y="18" width="72" height="24"/>
+                                            <buttonCell key="cell" type="push" title="Extra..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kFF-Do-jdv">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="72" id="65b-6J-cFu"/>
+                                                <constraint firstAttribute="height" constant="24" id="jfh-Ux-a3K"/>
+                                            </constraints>
                                             <connections>
-                                                <action selector="colourSelectedWithSender:" target="Voe-Tx-rLC" id="3iL-0I-9Fz"/>
+                                                <action selector="doShowAdvancedSettingsWithSender:" target="Voe-Tx-rLC" id="FmB-eI-xcn"/>
                                             </connections>
-                                        </colorWell>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="QDv-Sp-Ula" firstAttribute="leading" secondItem="aQS-58-W7R" secondAttribute="leading" constant="20" id="5hw-E5-NLD"/>
@@ -1252,15 +1430,17 @@ running this app once more.</string>
                                         <constraint firstAttribute="bottom" secondItem="kFy-Nr-jYW" secondAttribute="bottom" constant="20" symbolic="YES" id="Hn3-7C-1Ol"/>
                                         <constraint firstItem="ASb-Ht-I28" firstAttribute="leading" secondItem="aQS-58-W7R" secondAttribute="leading" constant="20" id="Msg-P2-Cjm"/>
                                         <constraint firstItem="Va2-Ma-vYz" firstAttribute="leading" secondItem="aQS-58-W7R" secondAttribute="leading" constant="20" id="O9j-qa-7Vn"/>
+                                        <constraint firstItem="ya9-ow-vW2" firstAttribute="leading" secondItem="geE-b6-IYa" secondAttribute="trailing" constant="12" id="Pau-bp-SIC"/>
                                         <constraint firstItem="rf8-Y5-aOc" firstAttribute="top" secondItem="QDv-Sp-Ula" secondAttribute="bottom" constant="-4" id="Qyg-CP-ye3"/>
                                         <constraint firstAttribute="trailing" secondItem="QDv-Sp-Ula" secondAttribute="trailing" constant="20" id="WuO-Qe-K60"/>
                                         <constraint firstAttribute="bottom" secondItem="Ib5-2j-aQH" secondAttribute="bottom" constant="20" symbolic="YES" id="YC9-vu-Vdd"/>
                                         <constraint firstItem="rf8-Y5-aOc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ASb-Ht-I28" secondAttribute="trailing" constant="8" symbolic="YES" id="byJ-LQ-zfa"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kFy-Nr-jYW" secondAttribute="trailing" symbolic="YES" id="iBX-lx-Zxc"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kFy-Nr-jYW" secondAttribute="trailing" constant="20" symbolic="YES" id="iBX-lx-Zxc"/>
                                         <constraint firstAttribute="bottom" secondItem="geE-b6-IYa" secondAttribute="bottom" constant="20" symbolic="YES" id="oZB-Ci-rpl"/>
                                         <constraint firstAttribute="trailing" secondItem="fgd-6m-pmC" secondAttribute="trailing" constant="20" id="qFP-1i-qvy"/>
                                         <constraint firstItem="kFy-Nr-jYW" firstAttribute="leading" secondItem="Ib5-2j-aQH" secondAttribute="trailing" constant="311" id="uQs-UW-w6a"/>
                                         <constraint firstAttribute="trailing" secondItem="rf8-Y5-aOc" secondAttribute="trailing" constant="13" id="uV5-jf-b5f"/>
+                                        <constraint firstAttribute="bottom" secondItem="ya9-ow-vW2" secondAttribute="bottom" constant="18" id="zdN-lv-MRj"/>
                                     </constraints>
                                 </view>
                             </tabViewItem>
@@ -1470,5 +1650,8 @@ running this app once more.</string>
         <image name="newspaper" catalog="system" width="18" height="16"/>
         <image name="questionmark.circle" catalog="system" width="15" height="15"/>
         <image name="star" catalog="system" width="17" height="16"/>
+        <image name="widget.extralarge" catalog="system" width="24" height="18"/>
+        <image name="widget.large" catalog="system" width="20" height="18"/>
+        <image name="widget.small" catalog="system" width="16" height="15"/>
     </resources>
 </document>
