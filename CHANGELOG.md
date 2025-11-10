@@ -3,6 +3,7 @@
 - 2.2.4 *Unreleased*
     - Fix for macOS 26.1 deciding thumbnails should match mode.
     - Correct light mode background colour.
+    - Correct the link to help content.
 - 2.2.3 *4 November 2025*
     - Improve light-mode colouring for code blocks. Thanks, @JamesW.
 - 2.2.2 *27 September 2025*
