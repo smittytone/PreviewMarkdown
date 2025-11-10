@@ -343,7 +343,6 @@ final class AppDelegate: NSResponder,
 
         let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customize-the-preview"
         NSWorkspace.shared.open(URL(string:path)!)
-        
     }
 
 
