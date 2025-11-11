@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.2.4 *11 November 2025**
+- 2.2.4 *11 November 2025*
     - Fix for macOS 26.1 deciding thumbnails should match mode.
     - Correct light mode background colour.
     - Correct the link to help content.
