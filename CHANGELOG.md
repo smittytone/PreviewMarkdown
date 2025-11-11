@@ -3,10 +3,7 @@
 - 2.3.0 *Unreleased*
     - Add extra setting to control preview window size: small (42% of main screen; standard QuickLook size), medium (50% of main screen) or large (75% of main screen)
     - Add extra setting to match thumbnails to Finder display mode under macOS 26.1+. Default: preserve PreviewMarkdown behaviour.
-    - Fix link to help site.
-    - Fix for macOS 26.1 deciding thumbnails should match mode.
-    - Correct light mode background colour.
-- 2.2.4 *Unreleased*
+- 2.2.4 *11 November 2025*
     - Fix for macOS 26.1 deciding thumbnails should match mode.
     - Correct light mode background colour.
     - Correct the link to help content.
@@ -31,9 +28,9 @@
 - 2.1.0 *28 August 2025*
     - Add whitespace margin around previews, with option to disable in **Settings**.
     - Allow the colour of front-matter YAML keys to be changed in **Settings**.
-    - Update the design of the What’s New panel. 
+    - Update the design of the What’s New panel.
     - Fix disabling/re-enabling of **Settings** menu item when sheets open/close.
-    - Fix extraneous `\n` added by Markdown-It after including pre-formatted HTML. 
+    - Fix extraneous `\n` added by Markdown-It after including pre-formatted HTML.
     - Reorganise and consolidate constant values.
 - 2.0.0 *8 August 2025*
     - Introduce a new rendering engine which leverages [Markdown-It](https://github.com/markdown-it/markdown-it).
