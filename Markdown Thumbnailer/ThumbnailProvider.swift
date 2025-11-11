@@ -72,9 +72,11 @@ class ThumbnailProvider: QLThumbnailProvider {
             // NOTE This may become a setting in future, but for now retain the styling
             //      we have always presented.
             if #available(macOS 26.1, *) {
-                markdownTextField.isBezeled = false
-                markdownTextField.drawsBackground = true
-                markdownTextField.backgroundColor = .white
+                if !common.settings.thumbnailMatchFinderMode {
+                    markdownTextField.isBezeled = false
+                    markdownTextField.drawsBackground = true
+                    markdownTextField.backgroundColor = .white
+                }
             }
 
             markdownTextField.attributedStringValue = common.getAttributedString(markdownString[...])
@@ -118,5 +120,17 @@ class ThumbnailProvider: QLThumbnailProvider {
 
         // We didn't draw anything because of 'can't find file' error
         handler(nil, ThumbnailerError.badFileUnreadable(request.fileURL.path))
+    }
+
+
+    /**
+     Determine whether the host Mac is in light mode.
+
+     - Returns: `true` if the Mac is in light mode, otherwise `false`.
+     */
+    internal func isMacInLightMode() -> Bool {
+
+        let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
+        return (appearNameString == "NSAppearanceNameAqua")
     }
 }

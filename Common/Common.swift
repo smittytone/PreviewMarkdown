@@ -215,7 +215,12 @@ class Common {
             // First set up the styler with the chosen settings
             self.styler?.workingDirectory = self.workingDirectory
 
-            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, self.settings.doShowLightBackground) {
+            var showLight = self.settings.doShowLightBackground
+            if self.isThumbnail {
+                showLight = !self.settings.thumbnailMatchFinderMode
+            }
+
+            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, showLight) {
                 output = NSMutableAttributedString(attributedString: attStr)
 
                 // Render YAML front matter if requested by the user, and we're not

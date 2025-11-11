@@ -64,7 +64,7 @@ class PMStyler {
         // Always render for light mode when generating thumbnail, we;'re in dakr mode but want
         // to use light mode colours anyway, or we're actually in light mode
         self.isThumbnail = isThumbnail
-        self.presentForLightMode = isThumbnail || useLightColoursInDarkMode
+        self.presentForLightMode = useLightColoursInDarkMode
 
         // Generate the text styles we'll use
         generateStyles()
@@ -1092,7 +1092,7 @@ class PMStyler {
         self.colours.code  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]!)
         self.colours.link  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
         self.colours.quote = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES]!)
-        self.colours.body  = self.isThumbnail ? NSColor.black : .labelColor
+        self.colours.body  = self.isThumbnail && self.presentForLightMode ? NSColor.black : .labelColor
 
         // Generate specific paragraph entity styles
         self.styles["h1"]           = [.foregroundColor: self.colours.head,
