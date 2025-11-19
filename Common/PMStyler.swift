@@ -930,7 +930,7 @@ class PMStyler {
 
         // Hack to present checkboxes a la GitHub
         let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
-        let symbols: [String] = ["❎", "✅"]
+        let symbols: [String] = ["\u{1F7E9}", "❎"]
 
         var i = 0
         for pattern in patterns {
