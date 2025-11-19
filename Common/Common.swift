@@ -215,6 +215,11 @@ class Common {
             // First set up the styler with the chosen settings
             self.styler?.workingDirectory = self.workingDirectory
 
+            // FROM 2.3.0
+            // Force a light background (`showLight` = true) if:
+            //   A light preview in dark mode,
+            //   A thumbnail when the user has NOT enabled theme matching
+            // In other cases, match the current mode
             var showLight = self.settings.doShowLightBackground
             if self.isThumbnail {
                 showLight = !self.settings.thumbnailMatchFinderMode
