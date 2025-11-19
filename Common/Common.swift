@@ -298,8 +298,8 @@ class Common {
 
         // Look for YAML symbol code:
         // Front matter delimited by --- and ---, or --- and ...
-        let lineFindRegex = #"(?s)(?<=---\n).*(?=\n---)"#
-        let dotFindRegex  = #"(?s)(?<=---\n).*(?=\n\.\.\.)"#
+        let lineFindRegex = #"(?s)(?<=---\n).*?(?=\n---)"#
+        let dotFindRegex  = #"(?s)(?<=---\n).*?(?=\n\.\.\.)"#
 
         // First look for either of the two delimiter patterns, lines first
         if let range = rawText.range(of: dotFindRegex, options: .regularExpression) {
