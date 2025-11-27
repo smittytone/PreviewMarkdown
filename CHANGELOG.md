@@ -2,9 +2,11 @@
 
 - 2.3.0 *Unreleased*
     - Add extra setting to control preview window size: small (42% of main screen; standard QuickLook size), medium (50% of main screen) or large (75% of main screen)
+    - Add extra setting for the preview whitespace margin. Default: 16.0 points (previous, locked value).
     - Add extra setting to match thumbnails to Finder display mode under macOS 26.1+. Default: preserve PreviewMarkdown behaviour.
     - New more intuitive graphic for unchecked checkboxes.
     - Fix front matter detection when horizontal rules are also included in the Markdown.
+    - Fix inadvertent changes to the case of image URLs.
 - 2.2.4 *11 November 2025*
     - Fix for macOS 26.1 deciding thumbnails should match mode.
     - Correct light mode background colour.
