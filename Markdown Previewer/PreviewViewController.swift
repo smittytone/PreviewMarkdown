@@ -84,8 +84,11 @@ class PreviewViewController: NSViewController,
 
                 // FROM 2.1.0
                 // Add margin if required
+                // FROM 2.3.0
+                // Margin size is a setting
                 if common.settings.doShowMargin {
-                    self.renderTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_MARGIN_SIZE
+                    let previewSize = NSSize(width: common.settings.previewMarginWidth, height: common.settings.previewMarginWidth)
+                    self.renderTextView.textContainerInset = previewSize
                 }
 
                 // FROM 2.0.0
@@ -100,7 +103,7 @@ class PreviewViewController: NSViewController,
                         // we are using as a proxy for lozenged text - the layouter will
                         // do the replacement work
                         let layouter = PMLayouter()
-                        layouter.marginDelta = common.settings.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                        layouter.marginDelta = common.settings.doShowMargin ? common.settings.previewMarginWidth : 0.0
                         layouter.fontSize = common.settings.fontSize
                         layouter.lineSpacing = common.settings.lineSpacing
 

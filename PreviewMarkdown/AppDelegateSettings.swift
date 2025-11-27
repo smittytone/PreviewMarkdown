@@ -208,6 +208,8 @@ extension AppDelegate {
      }
 
 
+    // MARK: - Advanced Settings
+    
     @IBAction
     internal func doShowAdvancedSettings(sender: Any) {
 
@@ -296,6 +298,8 @@ extension AppDelegate {
         }
 
         self.previewSizeAdvancedPopup.selectItem(at: idx)
+
+        self.previewMarginSizeText.stringValue = String(format:"%.1f", settings.previewMarginWidth)
     }
 
 
@@ -337,6 +341,8 @@ extension AppDelegate {
             default:
                 displayedSettings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S
         }
+
+        displayedSettings.previewMarginWidth = Double(self.previewMarginSizeText.stringValue) ?? BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
 
         return displayedSettings
     }
@@ -443,6 +449,11 @@ extension AppDelegate {
             settingsHaveChanged = self.currentSettings.previewWindowScale != displayedSettings.previewWindowScale
         }
 
+        if !settingsHaveChanged {
+            settingsHaveChanged = (self.currentSettings.previewMarginWidth != displayedSettings.previewMarginWidth) &&
+                                   !(displayedSettings.previewMarginWidth.isClose(to: self.currentSettings.previewMarginWidth))
+        }
+
         return settingsHaveChanged
     }
 
@@ -474,6 +485,42 @@ extension AppDelegate {
         for key in keys {
             self.currentSettings.displayColours["new_" + key] = self.defaultSettings.displayColours[key]
         }
+    }
+
+
+    // MARK: - NSTextFieldDelegate Functions
+
+    /**
+     Verify input values.
+
+     FROM 2.3.0
+    */
+    func controlTextDidEndEditing(_ obj: Notification) {
+
+        if let doubleValue = Double(self.previewMarginSizeText.stringValue) {
+            let min = Double(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN).rounded(.towardZero)
+            let max = Double(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX).rounded(.towardZero)
+
+            if doubleValue > min && doubleValue <= max {
+                // Value within supported range, so write the formatted value back from where it will later be read
+                self.previewMarginSizeText.stringValue = String(format:"%.1f", doubleValue)
+                return
+            }
+
+            // Erroneous value: numeric but out of range
+            // Set value to either end
+            if doubleValue < min {
+                self.previewMarginSizeText.stringValue = String(format:"%.1f", min)
+            } else if doubleValue > max {
+                self.previewMarginSizeText.stringValue = String(format:"%.1f", max)
+            }
+        } else {
+            // Erroneous value: not numeric
+            self.previewMarginSizeText.stringValue = String(format:"%.1f", self.currentSettings.previewMarginWidth)
+        }
+
+        // Warn the user
+        NSSound.beep()
     }
 
 

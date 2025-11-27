@@ -19,6 +19,7 @@ final class AppDelegate: NSResponder,
                          URLSessionDataDelegate,
                          WKNavigationDelegate,
                          NSControlTextEditingDelegate,
+                         NSTextFieldDelegate,
                          NSWindowDelegate,
                          NSMenuDelegate {
 
@@ -72,7 +73,6 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var showFrontMatterSwitch: NSSwitch!
     @IBOutlet weak var showMarginSwitch: NSSwitch!
 
-
     // Window > Feedback Tab Items
     @IBOutlet weak var feedbackText: NSTextField!
     @IBOutlet weak var connectionProgress: NSProgressIndicator!
@@ -90,6 +90,8 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var previewSizeAdvancedPopup: NSPopUpButton!
     @IBOutlet weak var tintTumbnailsAdvancedSwitch: NSSwitch!
     @IBOutlet weak var tintTumbnailsAdvancedLabel: NSTextField!
+    @IBOutlet weak var previewMarginSizeText: NSTextField!
+    @IBOutlet weak var previewMarginRangeText: NSTextField!
 
 
     // MARK: - Public Properties
@@ -191,7 +193,11 @@ final class AppDelegate: NSResponder,
         doShowWhatsNew(self)
 
         // FROM 2.0.0
-        mainMenuResetFinder.isHidden = true
+        self.mainMenuResetFinder.isHidden = true
+
+        // FROM 2.3.0
+        self.previewMarginSizeText.delegate = self
+        self.previewMarginRangeText.stringValue = "Valid range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)" 
 
         // Show the main window
         setInfoText()

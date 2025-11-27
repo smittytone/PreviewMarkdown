@@ -30,12 +30,12 @@ class PMSettings {
         BUFFOON_CONSTANTS.COLOUR_IDS.LINKS:     BUFFOON_CONSTANTS.HEX_COLOUR.LINK,
         BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES:    BUFFOON_CONSTANTS.HEX_COLOUR.QUOTE,
         BUFFOON_CONSTANTS.COLOUR_IDS.YAML_KEYS: BUFFOON_CONSTANTS.HEX_COLOUR.YAML,
-        BUFFOON_CONSTANTS.COLOUR_IDS.LOZENGE:   BUFFOON_CONSTANTS.HEX_COLOUR.LOZENGE        // Advanced
+        BUFFOON_CONSTANTS.COLOUR_IDS.LOZENGE:   BUFFOON_CONSTANTS.HEX_COLOUR.LOZENGE                // Advanced
     ]
     // FROM 2.3.0
-    var previewWindowScale: CGFloat         = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L       // Advanced
-    var previewMarginWidth: CGFloat         = BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH        // Advanced
-    var thumbnailMatchFinderMode: Bool      = false                                         // Advanced
+    var previewWindowScale: CGFloat         = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L               // Advanced
+    var previewMarginWidth: CGFloat         = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH   // Advanced
+    var thumbnailMatchFinderMode: Bool      = false                                                 // Advanced
 
 
     /**
@@ -259,7 +259,7 @@ class PMSettings {
 
             // Preview inset margin width
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
+                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
             }
         }
     }

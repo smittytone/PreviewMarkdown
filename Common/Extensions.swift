@@ -133,6 +133,38 @@ extension CGFloat {
 }
 
 
+extension Double {
+
+    /**
+     Determine if the instance is near enough the specified value as makes no odds.
+
+     - Parameters
+        - value: The float value we're comparing the instance to.
+
+     - Returns `true` if the values are proximate, otherwise `false`.
+     */
+    func isClose(to value: CGFloat) -> Bool {
+
+        let rndA = (self * 100).rounded() / 100
+        let rndB = (value * 100).rounded() / 100
+
+        if self == value || rndA == rndB {
+            return true
+        }
+
+        let absA: CGFloat = abs(self)
+        let absB: CGFloat = abs(value)
+        let diff: CGFloat = abs(self - value)
+
+        if self == .zero || value == .zero || (absA + absB) < Self.leastNormalMagnitude {
+            return diff < Self.ulpOfOne * Self.leastNormalMagnitude
+        } else {
+            return (diff / Self.minimum(CGFloat(absA + absB), Self.greatestFiniteMagnitude)) < .ulpOfOne
+        }
+    }
+}
+
+
 extension NSColor {
 
     /**

@@ -18,7 +18,7 @@ class PMLayouter: NSLayoutManager {
     var fontSize: CGFloat           = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
     var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
     // FROM 2.1.0
-    var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH
+    var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
 
 
     // Override this function to hijack double-line drawing and replace it with
