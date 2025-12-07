@@ -67,7 +67,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             let markdownTextField: NSTextField = NSTextField(frame: markdownFrame)
             markdownTextField.lineBreakMode = .byTruncatingTail
 
-            // FROM 2.2.4
+            // FROM 2.3.0
             // From macOS 26.1, make sure thumbnail backgrounds remain white
             // NOTE This may become a setting in future, but for now retain the styling
             //      we have always presented.
