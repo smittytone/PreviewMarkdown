@@ -7,6 +7,7 @@
     - New more intuitive graphic for unchecked checkboxes.
     - Fix front matter detection when horizontal rules are also included in the Markdown.
     - Fix inadvertent changes to the case of image URLs.
+    - Fix preview scrollbar colour in light mode.
 - 2.2.4 *11 November 2025*
     - Fix for macOS 26.1 deciding thumbnails should match mode.
     - Correct light mode background colour.

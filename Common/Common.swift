@@ -650,7 +650,7 @@ class Common {
 
      - Returns: `true` if the Mac is in light mode, otherwise `false`.
      */
-    private func isMacInLightMode() -> Bool {
+    func isMacInLightMode() -> Bool {
 
         return NSApp.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua"
     }
