@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
         <plugIn identifier="com.apple.WebKit2IBPlugin" version="24506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
@@ -1050,7 +1051,7 @@ DQ
                                             <textFieldCell key="cell" controlSize="mini" allowsUndo="NO" alignment="left" id="JET-7P-X43">
                                                 <font key="font" metaFont="menu" size="9"/>
                                                 <string key="title">PreviewMarkdown © 2026, Tony Smith. 
-Contains Markdown-It © 2014-25 Vitaly Puzrin, Alex Kocharin; Highlight.js © 2006-25 Josh Goebel and other contributors; YamlSwift © 2015 Behrang Noruzi Niya.</string>
+Contains Markdown-It © 2014-26 Vitaly Puzrin, Alex Kocharin; Highlight.js © 2006-26Josh Goebel and other contributors; YamlSwift © 2015 Behrang Noruzi Niya.</string>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
