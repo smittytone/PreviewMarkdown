@@ -3,7 +3,7 @@
  *  Convert a tokenised string into an NSAttributedString.
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2025 Tony Smith. All rights reserved.
+ *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
 

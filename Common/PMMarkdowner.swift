@@ -3,7 +3,7 @@
  *  Swift wrapper for MarkdownIt JavaScript
  *
  *  Created by Tony Smith on 23/09/2020.
- *  Copyright © 2025 Tony Smith. All rights reserved.
+ *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
 import JavaScriptCore

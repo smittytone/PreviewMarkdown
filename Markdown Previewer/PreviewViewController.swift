@@ -3,7 +3,7 @@
  *  Markdown Previewer
  *
  *  Created by Tony Smith on 31/10/2019.
- *  Copyright © 2025 Tony Smith. All rights reserved.
+ *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
 

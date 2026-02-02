@@ -56,6 +56,6 @@ See [CHANGELOG.md](CHANGELOG.md)
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2025, Tony Smith.
+Primary app code and UI design &copy; 2026, Tony Smith.
 
 Code portions &copy; 2014-25 Vitaly Puzrin, Alex Kocharin; &copy; 2006-25, Josh Goebel and Other Contributors; &copy; 2015 Behrang Noruzi Niya. 
