@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.3.1 *Unreleased*
+- 2.3.1 *4 February 2026*
     - Fix preview scrollbar colour in light mode.
 - 2.3.0 *12 December 2025*
     - Add extra setting to control preview window size: small (42% of main screen; standard QuickLook size), medium (50% of main screen) or large (75% of main screen)

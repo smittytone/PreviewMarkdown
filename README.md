@@ -1,4 +1,4 @@
-# PreviewMarkdown 2.3.0
+# PreviewMarkdown 2.3.1
 
 This app provides [Markdown](https://daringfireball.net/projects/markdown/syntax) file preview and thumbnailing extensions for versions of macOS 10.15 or above.
 
