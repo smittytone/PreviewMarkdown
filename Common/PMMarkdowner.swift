@@ -31,23 +31,28 @@ public class PMMarkdowner {
         let bundle = Bundle(for: PMMarkdowner.self)
 
         // Load the highlight.js code from the bundle or fail
-        guard let markdownerJavaScriptPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
+        guard let javaScriptPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
             return nil
         }
 
         // Check the JavaScript or fail
-        let context: JSContext = JSContext()
-        let markdownerJavaScriptString: String = try! String(contentsOfFile: markdownerJavaScriptPath)
-        let _ = context.evaluateScript(markdownerJavaScriptString)
-        guard let localMarkdownerJavaScript = context.globalObject.objectForKeyedSubscript("markdownit") else {
+        // FROM 2.4.0 add extra checks for failed operations
+        do {
+            guard let context: JSContext = JSContext() else { return nil }
+            let javaScriptString: String = try String(contentsOfFile: javaScriptPath)
+            let _ = context.evaluateScript(javaScriptString)
+            guard let localJavaScript = context.globalObject.objectForKeyedSubscript("markdownit") else {
+                return nil
+            }
+
+            // Store the results for later
+            // NOTE Set "html" because Markdown-It 14 doesn't do this automatically,
+            //      Set "breaks" to convert <br> to CR
+            let markdownerHtmlOption: JSValue = JSValue(object: ["html": true, "breaks": true, "typographer": true], in: context)
+            self.markdownerJavaScript = localJavaScript.construct(withArguments: [markdownerHtmlOption])
+        } catch {
             return nil
         }
-        
-        // Store the results for later
-        // NOTE Set "html" because Markdown-It 14 doesn't do this automatically,
-        //      Set "breaks" to convert <br> to CR
-        let markdownerHtmlOption: JSValue = JSValue(object: ["html": true, "breaks": true, "typographer": true], in: context)
-        self.markdownerJavaScript = localMarkdownerJavaScript.construct(withArguments: [markdownerHtmlOption])
     }
 
 

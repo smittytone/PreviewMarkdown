@@ -96,7 +96,11 @@ extension Scanner {
      */
     func skipNextCharacter() {
 
-        self.currentIndex = self.string.index(after: self.currentIndex)
+        // FROM 2.4.0
+        // Add check to hopefully fix certain Thumbnailer crashes
+        if self.currentIndex < self.string.endIndex {
+            self.currentIndex = self.string.index(after: self.currentIndex)
+        }
     }
 }
 
