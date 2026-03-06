@@ -70,17 +70,31 @@ class PreviewViewController: NSViewController,
                 // Pass in the source file's directory
                 common.workingDirectory = (url.path as NSString).deletingLastPathComponent
 
+                // FROM 2.4.0
+                // The force-light-mode-preview-in-dark-mode setting is now a general
+                // preview-colours-should-be-opposite-the-mode setting.
+                var useLightMode = common.isMacInLightMode()
+                if common.settings.doShowLightBackground {
+                    // Invert the colour scheme based on the current mode
+                    useLightMode = !useLightMode
+                }
+
+                // Set the view's mode
+                self.view.appearance = useLightMode ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
+
                 // FROM 2.0.0
                 // Set the view to display in light mode, even if the Mac is set to dark mode,
                 // if that's required by the user. This means we can stick to as few fixed colours
                 // as possible: AppKit will flip accordingly.
-                if common.settings.doShowLightBackground {
-                    self.view.appearance = NSAppearance(named: .aqua)
-                }
+                //if common.settings.doShowLightBackground {
+                //    self.view.appearance = NSAppearance(named: .aqua)
+                //} else {
+                //    self.view.appearance = NSAppearance(named: .darkAqua)
+                //}
 
                 // Update the NSTextView
-                self.renderTextView.backgroundColor = common.settings.doShowLightBackground ? NSColor.white : NSColor.textBackgroundColor
-                self.renderTextScrollView.scrollerKnobStyle = common.settings.doShowLightBackground ? .dark : .light
+                self.renderTextView.backgroundColor = useLightMode ? NSColor.white : NSColor.textBackgroundColor
+                self.renderTextScrollView.scrollerKnobStyle = useLightMode ? .dark : .light
                 if common.isMacInLightMode() {
                     self.renderTextScrollView.scrollerKnobStyle = .dark
                 }

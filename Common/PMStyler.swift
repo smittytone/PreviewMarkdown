@@ -1092,7 +1092,7 @@ class PMStyler {
         self.colours.code  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]!)
         self.colours.link  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
         self.colours.quote = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES]!)
-        self.colours.body  = self.forceLightMode ? .black : .labelColor
+        self.colours.body  = self.forceLightMode ? .black : .white
 
         // Generate specific paragraph entity styles
         self.styles["h1"]           = [.foregroundColor: self.colours.head,

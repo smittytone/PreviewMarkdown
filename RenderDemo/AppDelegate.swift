@@ -152,7 +152,7 @@ class AppDelegate:  NSObject,
                         // Add an inset margin to the main text view
                         // TODO What are the best sizes? Want to add a little whitespace to increase
                         //      clarity, but not to make an obvious blank space
-                        self.previewTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_MARGIN_SIZE
+                        self.previewTextView.textContainerInset = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_SIZE
                     }
 
                     // Get the key string first
@@ -175,7 +175,7 @@ class AppDelegate:  NSObject,
                             if let renderTextContainer: NSTextContainer = self.previewTextView.textContainer {
                                 let layouter = PMLayouter()
                                 layouter.fontSize = common.settings.fontSize
-                                layouter.marginDelta = common.settings.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_MARGIN_WIDTH : 0.0
+                                layouter.marginDelta = common.settings.doShowMargin ? BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH : 0.0
                                 renderTextContainer.replaceLayoutManager(layouter)
                             }
                             

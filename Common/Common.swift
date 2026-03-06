@@ -159,6 +159,10 @@ class Common {
         // Process the markdown string
         var output: NSMutableAttributedString = NSMutableAttributedString(string: "")
 
+        // FROM 2.4.0
+        // Should we render for Light mode? Assume Dark for now
+        var renderForLightMode: Bool = false
+
         // Look for YAML front matter
         var frontMatter: Substring = ""
         let components: MarkdownComponents = getFrontMatter(rawText)
@@ -216,16 +220,21 @@ class Common {
             self.styler?.workingDirectory = self.workingDirectory
 
             // FROM 2.3.0
-            // Force a light background (`showLight` = true) if:
+            // Force a light background (`renderForLightMode` = true) if:
             //   A light preview in dark mode,
             //   A thumbnail when the user has NOT enabled theme matching
             // In other cases, match the current mode
-            var showLight = self.settings.doShowLightBackground
             if self.isThumbnail {
-                showLight = !self.settings.thumbnailMatchFinderMode
+                renderForLightMode = !self.settings.thumbnailMatchFinderMode
+            } else {
+                // FROM 2.4.0
+                renderForLightMode = isMacInLightMode()
+                if self.settings.doShowLightBackground {
+                    renderForLightMode = !renderForLightMode
+                }
             }
 
-            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, showLight) {
+            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, renderForLightMode) {
                 output = NSMutableAttributedString(attributedString: attStr)
 
                 // Render YAML front matter if requested by the user, and we're not
@@ -271,6 +280,15 @@ class Common {
             return NSAttributedString(string: "No valid Markdown to render.",
                                       attributes: self.yamlKeyAttributes)
         }
+
+#if DEBUG
+        if !self.isThumbnail {
+            let modeString = NSMutableAttributedString(string: "MODE: \(isMacInLightMode() ? "LIGHT" : "DARK") SETTING: \(self.settings.doShowLightBackground ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
+                                                       attributes: self.yamlKeyAttributes)
+            modeString.append(output)
+            output = modeString
+        }
+#endif
 
         // Return the rendered NSAttributedString to Previewer or Thumbnailer
         return output as NSAttributedString
@@ -652,7 +670,11 @@ class Common {
      */
     func isMacInLightMode() -> Bool {
 
-        return NSApp.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua"
+        if self.isThumbnail {
+            return NSApp.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua"
+        }
+
+        return NSApp.effectiveAppearance.name == .aqua
     }
 
 
