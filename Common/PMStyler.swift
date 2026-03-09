@@ -220,7 +220,8 @@ class PMStyler {
             scanner.skipNextCharacter()
 
             // Get the first character of the tag
-            let nextChar: String = scanner.getNextCharacter(in: self.tokenString)
+            //let nextChar: String = scanner.getNextCharacter(in: self.tokenString)
+            let nextChar: String = scanner.getNextChar()
 
             // MARK: Closing Token
             if nextChar == "/" {
