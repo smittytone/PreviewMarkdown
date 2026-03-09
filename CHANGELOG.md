@@ -2,9 +2,10 @@
 
 - 2.4.0 *Unreleased*
     - Change the setting which enables light previews to be displayed under macOS dark mode to also deliver dark previews under light mode.
-    - Fix some logic issues in the logic for determining whether to render light or dark previews and thrumbnails.
+    - Fix some logic issues in the logic for determining whether to render light or dark previews and thumbnails.
     - Add extra checks for JavaScript loading and context instantiation failures.
     - Add extra check for Scanner moving beyond the end of the scanned string.
+    - Improve Scanner character stepping.
 - 2.3.1 *4 February 2026*
     - Fix preview scrollbar colour in light mode.
 - 2.3.0 *12 December 2025*
