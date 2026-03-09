@@ -145,7 +145,7 @@ class AppDelegate:  NSObject,
                     }
                     
                     //common.viewWidth = self.previewTextView.frame.width
-                    common.settings.doShowLightBackground = !self.renderAsDark
+                    common.settings.doReverseMode = !self.renderAsDark
                     common.workingDirectory = (mdUrl.unixpath() as NSString).deletingLastPathComponent
 
                     if common.settings.doShowMargin {
@@ -160,8 +160,8 @@ class AppDelegate:  NSObject,
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
                         safeMainSync {
-                            self.previewTextView.backgroundColor = common.settings.doShowLightBackground ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
-                            self.previewScrollView.scrollerKnobStyle = common.settings.doShowLightBackground ? .dark : .light
+                            self.previewTextView.backgroundColor = common.settings.doReverseMode ? NSColor.init(white: 1.0, alpha: 0.9) : NSColor.textBackgroundColor
+                            self.previewScrollView.scrollerKnobStyle = common.settings.doReverseMode ? .dark : .light
 
                             // Correct way to set a text view's link colouring, etc. - and have it stick
                             self.previewTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,

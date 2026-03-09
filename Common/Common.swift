@@ -229,7 +229,7 @@ class Common {
             } else {
                 // FROM 2.4.0
                 renderForLightMode = isMacInLightMode()
-                if self.settings.doShowLightBackground {
+                if self.settings.doReverseMode {
                     renderForLightMode = !renderForLightMode
                 }
             }
@@ -283,7 +283,7 @@ class Common {
 
 #if DEBUG
         if !self.isThumbnail {
-            let modeString = NSMutableAttributedString(string: "MODE: \(isMacInLightMode() ? "LIGHT" : "DARK") SETTING: \(self.settings.doShowLightBackground ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
+            let modeString = NSMutableAttributedString(string: "MODE: \(isMacInLightMode() ? "LIGHT" : "DARK") SETTING: \(self.settings.doReverseMode ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
                                                        attributes: self.yamlKeyAttributes)
             modeString.append(output)
             output = modeString
@@ -634,7 +634,7 @@ class Common {
                            type: .percentageValueType, for: .width)
         cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.settings.doShowLightBackground) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
+        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.settings.doReverseMode) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
         cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style

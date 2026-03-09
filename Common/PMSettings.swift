@@ -16,7 +16,7 @@ import Foundation
 
 class PMSettings {
 
-    var doShowLightBackground: Bool         = false
+    var doReverseMode: Bool         = false
     var doShowFrontMatter: Bool             = true
     var bodyFontName: String                = BUFFOON_CONSTANTS.FONT_NAME.BODY
     var codeFontName: String                = BUFFOON_CONSTANTS.FONT_NAME.CODE
@@ -47,7 +47,7 @@ class PMSettings {
         if let defaults = UserDefaults(suiteName: suite) {
             self.fontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE))
             self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACE))
-            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            self.doReverseMode = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             self.doShowFrontMatter = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             self.codeFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
             self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
@@ -82,7 +82,7 @@ class PMSettings {
         if let defaults = UserDefaults(suiteName: suite) {
             // TO-DO Test each on to see if the setting needs to be saved
             defaults.setValue(self.fontSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_SIZE)
-            defaults.setValue(self.doShowLightBackground, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            defaults.setValue(self.doReverseMode, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             defaults.setValue(self.doShowFrontMatter, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_SHOW_YAML)
             defaults.setValue(self.codeFontName, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_CODE_FONT_NAME)
             defaults.setValue(self.bodyFontName, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_BODY_FONT_NAME)

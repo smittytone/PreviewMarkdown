@@ -24,7 +24,7 @@ class PMStyler {
 
     // MARK: - Private properties with defaults
 
-    private  var forceLightMode: Bool                                   = false
+    private  var renderLightMode: Bool                                   = false
     private  var isThumbnail: Bool                                      = false
     private  var doLoadWebContent: Bool                                 = false
     internal var tokenString: String                                    = ""
@@ -48,11 +48,11 @@ class PMStyler {
         - Parameters
             - tokenString:     The tokenised string we'll use to render an NSAttributedString.
             - isThumbnail:     Are we rendering text for thumbnail use? Default : `false`.
-            - useLightColours: Present previews and (from macOS 26.1+) in light colours, irrespective of mode. Default : `false`.
+            - renderLightMode: Present previews and (from macOS 26.1+) in light colours, irrespective of mode. Default : `false`.
 
         - Returns NSAttributedString or `nil` or error.
      */
-    public func render(_ tokenString: String, _ isThumbnail: Bool = false, _ useLightColours: Bool = false) -> NSAttributedString? {
+    public func render(_ tokenString: String, _ isThumbnail: Bool = false, _ renderLightMode: Bool = false) -> NSAttributedString? {
 
         // Check we have an tokened string to render.
         if tokenString.isEmpty {
@@ -64,7 +64,7 @@ class PMStyler {
         // Always render for light mode when generating thumbnail, we;'re in dakr mode but want
         // to use light mode colours anyway, or we're actually in light mode
         self.isThumbnail = isThumbnail
-        self.forceLightMode = useLightColours
+        self.renderLightMode = renderLightMode
 
         // Generate the text styles we'll use
         generateStyles()
@@ -1093,7 +1093,7 @@ class PMStyler {
         self.colours.code  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.CODE]!)
         self.colours.link  = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LINKS]!)
         self.colours.quote = NSColor.hexToColour(self.settings!.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.QUOTES]!)
-        self.colours.body  = self.forceLightMode ? .black : .white
+        self.colours.body  = self.renderLightMode ? .black : .white
 
         // Generate specific paragraph entity styles
         self.styles["h1"]           = [.foregroundColor: self.colours.head,
@@ -1387,7 +1387,7 @@ class PMStyler {
                 NSLog("Could not load the highlighter")
             } else {
                 // Make theme selection more responsive to current mode
-                self.highlighter?.setTheme(self.forceLightMode ? "atom-one-light" : "atom-one-dark")
+                self.highlighter?.setTheme(self.renderLightMode ? "atom-one-light" : "atom-one-dark")
                 self.highlighter?.theme.setCodeFont(makeFont("code", self.settings!.fontSize))
             }
         }

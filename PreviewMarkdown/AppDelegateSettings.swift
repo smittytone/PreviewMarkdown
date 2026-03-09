@@ -244,7 +244,7 @@ extension AppDelegate {
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
 
         // Set the checkboxes
-        //self.useLightCheckbox.state = settings.doShowLightBackground ? .on : .off
+        //self.useLightCheckbox.state = settings.doReverseMode ? .on : .off
         //self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
         // FROM 2.1.0
         //self.showMarginCheckbox.state = settings.doShowMargin ? .on : .off
@@ -287,7 +287,7 @@ extension AppDelegate {
         // FROM 2.3.0
         self.showMarginSwitch.state = settings.doShowMargin ? .on : .off
         self.showFrontMatterSwitch.state = settings.doShowFrontMatter ? .on : .off
-        self.useLightSwitch.state = settings.doShowLightBackground ? .on : .off
+        self.useLightSwitch.state = settings.doReverseMode ? .on : .off
 
         self.tintTumbnailsAdvancedSwitch.state = settings.thumbnailMatchFinderMode ? .on : .off
         var idx = 2
@@ -316,7 +316,7 @@ extension AppDelegate {
         let displayedSettings = PMSettings()
         displayedSettings.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
         //displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
-        //displayedSettings.doShowLightBackground = self.useLightCheckbox.state == .on
+        //displayedSettings.doReverseMode = self.useLightCheckbox.state == .on
         displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
         displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
         // FROM 2.1.0
@@ -324,7 +324,7 @@ extension AppDelegate {
         // FROM 2.3.0
         displayedSettings.doShowMargin = self.showMarginSwitch.state == .on
         displayedSettings.doShowFrontMatter = self.showFrontMatterSwitch.state == .on
-        displayedSettings.doShowLightBackground = self.useLightSwitch.state == .on
+        displayedSettings.doReverseMode = self.useLightSwitch.state == .on
 
         // Set the actual linespacing according to the index of the menu
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
@@ -393,7 +393,7 @@ extension AppDelegate {
     internal func checkSettingsOnQuit() -> Bool {
         
         let displayedSettings = settingsFromDisplay()
-        var settingsHaveChanged = self.currentSettings.doShowLightBackground != displayedSettings.doShowLightBackground
+        var settingsHaveChanged = self.currentSettings.doReverseMode != displayedSettings.doReverseMode
         
         if !settingsHaveChanged {
             settingsHaveChanged = self.currentSettings.doShowFrontMatter != displayedSettings.doShowFrontMatter
