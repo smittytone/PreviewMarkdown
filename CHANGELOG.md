@@ -3,6 +3,7 @@
 - 2.4.0 *Unreleased*
     - Change the setting which enables light previews to be displayed under macOS dark mode to also deliver dark previews under light mode.
     - Fix some logic issues in the logic for determining whether to render light or dark previews and thumbnails.
+    - Fix truncation of feedback text to prevent loss of styling.
     - Add extra checks for JavaScript loading and context instantiation failures.
     - Add extra check for Scanner moving beyond the end of the scanned string.
     - Improve Scanner character stepping.

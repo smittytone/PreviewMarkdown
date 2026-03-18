@@ -120,13 +120,15 @@ extension AppDelegate {
         // can be entered into the text field
 
         if self.feedbackText.stringValue.count > BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE {
-            // Prune the feedback to kMaxFeedbackCharacters chars
-            let edit: Substring = self.feedbackText.stringValue.prefix(BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE)
-            self.feedbackText.stringValue = String(edit)
-            
+            // FROM 2.4.0
+            // Chop the feedback field's attributed string, not its plain string
+            let attStr = NSMutableAttributedString(attributedString: self.feedbackText.attributedStringValue)
+            attStr.deleteCharacters(in: NSRange(location: BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE, length: attStr.length - BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE))
+            self.feedbackText.attributedStringValue = attStr as NSAttributedString
+
             // Tell the user about the limit by flashing the
             // text field red and back
-            flashField()
+            self.flashField()
         }
         
         // Set the button title according to the amount of feedback text
