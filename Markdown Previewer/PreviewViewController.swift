@@ -236,7 +236,8 @@ class PreviewViewController: NSViewController,
 
     /**
      Execute the supplied block on the main thread.
-    */
+
+     FROM 2.4.0 REMOVED
     private func safeMainSync(_ block: @escaping ()->()) {
 
         if Thread.isMainThread {
@@ -247,7 +248,7 @@ class PreviewViewController: NSViewController,
             }
         }
     }
-
+     */
 
     /**
      Specify the content size of the parent view.
