@@ -961,7 +961,7 @@ class PMStyler {
             //      halt the loading of images within tables (which are processed by NSAttributedString
             //      not by us). This should be replaced as soon as we have a better solution to
             //      Known Issue #1
-            let wp = WebPreferences()
+            guard let wp = WebPreferences(identifier: BUFFOON_CONSTANTS.WEB_PREFS_ID) else { return NSMutableAttributedString() }
             wp.loadsImagesAutomatically = false
             let options = [NSAttributedString.DocumentReadingOptionKey.webPreferences: wp]
             if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: data, options: options, documentAttributes: nil) {

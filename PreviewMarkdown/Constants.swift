@@ -238,6 +238,9 @@ struct BUFFOON_CONSTANTS {
         static let FINE                         = 0.5
         static let NONE                         = 0.0
     }
+
+    // FROM 2.4.0
+    static let WEB_PREFS_ID                     = "com.bps.web.prefs"
 }
 
 
