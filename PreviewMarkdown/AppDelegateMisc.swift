@@ -342,7 +342,7 @@ extension AppDelegate {
         if let nav = self.whatsNewNav {
             if nav == navigation {
                 // Display the sheet
-                Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
+                let _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
                     timer.invalidate()
                     // FROM 2.2.4
                     // Run call on main thread using Swift Concurrency

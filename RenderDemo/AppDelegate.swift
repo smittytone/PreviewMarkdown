@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 
 
 @main
+@MainActor
 class AppDelegate:  NSObject,
                     NSApplicationDelegate,
                     NSOpenSavePanelDelegate {
@@ -136,7 +137,7 @@ class AppDelegate:  NSObject,
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
                 if let mdString: String = String.init(data: data, encoding: encoding) {
-                    guard let common = Common.init(false) else {
+                    guard let common = Common.init(forThumbnail: false) else {
                         let errDesc: String = "No file selected to render"
                         reportError = NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
                                               code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
@@ -254,8 +255,9 @@ class AppDelegate:  NSObject,
         if Thread.isMainThread {
             block()
         } else {
-            DispatchQueue.main.sync {
-                block()
+            Task {
+                @MainActor in
+                    block()
             }
         }
     }

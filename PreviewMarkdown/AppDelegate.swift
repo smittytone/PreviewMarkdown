@@ -16,8 +16,6 @@ import WebKit
 @MainActor
 final class AppDelegate: NSResponder,
                          NSApplicationDelegate,
-                         //URLSessionDelegate,
-                         //URLSessionDataDelegate,
                          WKNavigationDelegate,
                          NSControlTextEditingDelegate,
                          NSTextFieldDelegate,

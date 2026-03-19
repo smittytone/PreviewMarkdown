@@ -122,7 +122,7 @@ extension AppDelegate {
                                        "Your comments have been received and we’ll take a look at them shortly.")
         alert.beginSheetModal(for: self.window) { (resp) in
             // Close the feedback window when the modal alert returns
-            let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
                 // Run call on main thread using Swift Concurrency
                 Task {
                     @MainActor in
@@ -176,7 +176,7 @@ extension AppDelegate {
         self.feedbackText.backgroundColor = .red
         
         // Switch the background back in 0.25 of a second
-        _ = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+        let _ = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
             // FROM 2.4.1
             // Migrate to Swift Concurrency
             Task {
