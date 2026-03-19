@@ -2,6 +2,7 @@
 
 - 2.4.1 *Unreleased*
     - Migrate to Swift Concurrency.
+    - Mitigate issues with warning on feedback character-limit exceeded.
 - 2.4.0 *19 March 2026*
     - Change the setting which enables light previews to be displayed under macOS dark mode to also deliver dark previews under light mode.
     - Fix some logic issues in the logic for determining whether to render light or dark previews and thumbnails.
