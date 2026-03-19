@@ -55,7 +55,8 @@ extension AppDelegate {
             self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
             self.whatsNewWebView.enclosingScrollView?.verticalScrollElasticity = .none
             self.whatsNewWebView.configuration.suppressesIncrementalRendering = true
-            
+            self.whatsNewWebView.configuration.limitsNavigationsToAppBoundDomains = true
+
             // Just in case, make sure we can load the file
             if FileManager.default.fileExists(atPath: htmlFolderPath) {
                 let htmlFileURL = URL(fileURLWithPath: htmlFolderPath + "/new.html")
