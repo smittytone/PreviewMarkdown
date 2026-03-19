@@ -55,7 +55,7 @@ class PreviewViewController: NSViewController,
             // Convert the data to a string
             if let markdownString: String = String(data: data, encoding: encoding) {
                 // Instantiate the common code
-                guard let common: Common = Common() else {
+                guard let common: Common = Common(forThumbnail: false) else {
                     reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
                     showError(reportError!)
                     handler(reportError)
@@ -81,16 +81,6 @@ class PreviewViewController: NSViewController,
 
                 // Set the view's mode
                 self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
-
-                // FROM 2.0.0
-                // Set the view to display in light mode, even if the Mac is set to dark mode,
-                // if that's required by the user. This means we can stick to as few fixed colours
-                // as possible: AppKit will flip accordingly.
-                //if common.settings.doReverseMode {
-                //    self.view.appearance = NSAppearance(named: .aqua)
-                //} else {
-                //    self.view.appearance = NSAppearance(named: .darkAqua)
-                //}
 
                 // Update the NSTextView
                 self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
@@ -136,10 +126,6 @@ class PreviewViewController: NSViewController,
                     renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
                     renderTextStorage.endEditing()
                     self.view.display()
-
-                    // FROM 2.2.0
-                    // Set the parent window's size
-                    //setPreviewWindowSize()
 
                     // Call the QLPreviewingController indicating no error (nil)
                     handler(nil)

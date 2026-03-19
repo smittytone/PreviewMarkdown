@@ -37,7 +37,7 @@ struct Row {
 
 // FROM 1.4.0
 // Implement common code as a class
-class Common {
+final internal class Common {
 
     // MARK: - Public Properties
 
@@ -72,7 +72,7 @@ class Common {
 
     // MARK: - Lifecycle Functions
 
-    init?(_ isThumbnail: Bool = false) {
+    init?(forThumbnail isThumbnail: Bool) {
 
         self.isThumbnail = isThumbnail
 

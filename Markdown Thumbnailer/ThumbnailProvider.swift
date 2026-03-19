@@ -51,7 +51,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             }
 
             // Instantiate the common code for a thumbnail ('true')
-            guard let common: Common = Common(true) else {
+            guard let common: Common = Common(forThumbnail: true) else {
                 handler(nil, ThumbnailerError.appComponentMissing)
                 return
             }
