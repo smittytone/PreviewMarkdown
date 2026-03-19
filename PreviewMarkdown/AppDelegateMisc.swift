@@ -81,7 +81,7 @@ extension AppDelegate {
         self.hidePanelGenerators()
         
         // Warn the user about the risks (minor)
-        let alert: NSAlert = showAlert("Are you sure you wish to reset Finder’s UTI database?",
+        let alert: NSAlert = makeAlert("Are you sure you wish to reset Finder’s UTI database?",
                                        "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac.\n\nLogging out of your Mac fixes most issues and should be tried first.\n\nUSE THIS OPTION AT YOUR OWN RISK — WE ACCEPT NO RESPONSIBILITY WHATSOEVER FOR THIS OPTION’s EFFECTS",
                                         false, true)
         alert.addButton(withTitle: "Go Back")
@@ -106,7 +106,7 @@ extension AppDelegate {
     internal func doubleCheck() {
 
         // Warn the user about the risks (minor)
-        let alert: NSAlert = showAlert("Are you really sure you wish to reset Finder’s UTI database?", "", false, true)
+        let alert: NSAlert = makeAlert("Are you really sure you wish to reset Finder’s UTI database?", "", false, true)
         alert.addButton(withTitle: "No")
         alert.addButton(withTitle: "Yes")
 
@@ -135,11 +135,11 @@ extension AppDelegate {
         let success: Bool = runProcess(app: BUFFOON_CONSTANTS.SYS_LAUNCH_SERVICES,
                                        with: ["-kill", "-f", "-r", "-domain", "user", "-domain", "local"])
         if !success {
-            let alert: NSAlert = showAlert("Sorry, the operation failed", "The Finder database could not be reset at this time")
+            let alert: NSAlert = makeAlert("Sorry, the operation failed", "The Finder database could not be reset at this time")
             alert.alertStyle = .critical
             alert.beginSheetModal(for: self.window)
         } else {
-            let alert: NSAlert = showAlert("Finder’s database was reset", "")
+            let alert: NSAlert = makeAlert("Finder’s database was reset", "")
             alert.beginSheetModal(for: self.window)
         }
     }
@@ -157,7 +157,7 @@ extension AppDelegate {
 
      - Returns:     The NSAlert.
      */
-    internal func showAlert(_ head: String, _ message: String, _ addOkButton: Bool = true, _ isCritical: Bool = false) -> NSAlert {
+    internal func makeAlert(_ head: String, _ message: String, _ addOkButton: Bool = true, _ isCritical: Bool = false) -> NSAlert {
 
         let alert: NSAlert = NSAlert()
         alert.messageText = head
@@ -334,21 +334,22 @@ extension AppDelegate {
 
     // MARK: - WKWebNavigation Delegate Functions
 
+    /**
+     Asynchronously show the sheet once the HTML has loaded
+     (triggered by delegate method)
+     */
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
-        // Asynchronously show the sheet once the HTML has loaded
-        // (triggered by delegate method)
         
         if let nav = self.whatsNewNav {
             if nav == navigation {
-                // Display the sheet
+                // Display the sheet after a timer to prevent the 'white flash' of the default view
+                // background appearing for a moment before the new content is rendered
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
                     timer.invalidate()
-                    // FROM 2.2.4
-                    // Run call on main thread using Swift Concurrency
-                    Task {
-                        @MainActor in
-                            self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                    // FROM 2.4.1
+                    // Run sheet-presentation cail on `MainActor` using Swift Concurrency
+                    Task { @MainActor in
+                        self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
                     }
                 }
             }

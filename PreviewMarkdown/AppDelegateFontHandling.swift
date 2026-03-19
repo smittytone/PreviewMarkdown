@@ -95,9 +95,11 @@ extension AppDelegate {
         }
         
         // All done, update the main stores and begin to load
-        // settings (which immediately updates the UI, via `displaySettinsg()`,
+        // settings (which immediately updates the UI, via `displaySettings()`,
         // which itself requires the font store to be populated
-        DispatchQueue.main.async {
+        // FROM 2.4.1 - Switch to Swift Concurrency
+        Task { @MainActor in
+            // Run task on main thread (See notes in PreviewCode)
             self.bodyFonts = bf
             self.codeFonts = cf
             self.loadSettings()

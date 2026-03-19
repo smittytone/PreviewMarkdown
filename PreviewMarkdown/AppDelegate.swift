@@ -100,7 +100,7 @@ final class AppDelegate: NSResponder,
 
     // MARK: - Private Properies
 
-    internal var feedbackTask: URLSessionTask? = nil
+    //internal var feedbackTask: URLSessionTask? = nil
     internal var whatsNewNav: WKNavigation? = nil
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
@@ -118,6 +118,8 @@ final class AppDelegate: NSResponder,
     internal var initialLoadDone: Bool = false
     internal let defaultSettings: PMSettings = PMSettings()
     internal var currentSettings: PMSettings = PMSettings()
+    // FROM 2.4.1
+    internal var timer: Timer? = nil
 
 
     // MARK: - Class Lifecycle Functions
@@ -130,7 +132,7 @@ final class AppDelegate: NSResponder,
         //      have loaded asynchronously because they reference loaded fonts.
         // FROM 2.4.1 - Upgrade to Swift Concurrency
         Task {
-            self.asyncGetFonts()
+            asyncGetFonts()
         }
 
         // FROM 1.2.0
@@ -256,7 +258,7 @@ final class AppDelegate: NSResponder,
         
         // Are there any unsaved changes to the settings?
         if checkSettingsOnQuit() {
-            let alert: NSAlert = showAlert("You have unsaved settings",
+            let alert: NSAlert = makeAlert("You have unsaved settings",
                                            "Do you wish to cancel and save or change them, or quit the app anyway?",
                                            false)
             alert.addButton(withTitle: "Quit")
@@ -287,7 +289,7 @@ final class AppDelegate: NSResponder,
         
         // Does the feeback page contain text? If so let the user know
         if self.feedbackText.stringValue.count > 0 && !self.hasSentFeedback {
-            let alert: NSAlert = showAlert("You have unsent feedback",
+            let alert: NSAlert = makeAlert("You have unsent feedback",
                                            "Do you wish to cancel and send it, or quit the app anyway?",
                                            false)
             alert.addButton(withTitle: "Quit")

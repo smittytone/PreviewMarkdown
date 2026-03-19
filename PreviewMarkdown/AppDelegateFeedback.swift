@@ -29,8 +29,9 @@ extension AppDelegate {
     /**
      Update UI when we are about to switch to it
      */
+    @MainActor
     internal func willShowFeedbackPage() {
-        
+
         // Disable the Feedback > Send button if we have sent a message.
         // It will be re-enabled by typing something
         self.messageSendButton.isEnabled = (!self.feedbackText.stringValue.isEmpty && !self.hasSentFeedback)
@@ -64,10 +65,10 @@ extension AppDelegate {
 
         let feedback: String = self.feedbackText.stringValue
         if !feedback.isEmpty  && !self.hasSentFeedback {
-            // FROM 2.2.4
+            // FROM 2.4.1
             // Use Swift Concurrency
-            // NOTE Use of Task and closure required because @IBAction functions cannot be `async`,
-            //      but we make an `await` call later on
+            // NOTE Use of Task and closure required because @IBAction functions
+            //      cannot be `async`, but we make an `await` call later on
             Task { @MainActor in
                 // Start the connection indicator if it's not already visible,
                 // and block tab switching via menus
@@ -100,12 +101,11 @@ extension AppDelegate {
     internal func presentFeedbackError(_ error: FeedbackError) {
 
         hidePanelGenerators()
-        let alert: NSAlert = showAlert("Feedback Could Not Be Sent",
-                                       "Unfortunately, your comments could not be send at this time. Please try again later.")
+        let alert: NSAlert = makeAlert("Feedback Could Not Be Sent",
+                                       "Unfortunately, your comments could not be send at this time. Please try again later.\n\nError: \(error.localizedDescription)")
         
         // FROM 2.0.0: Fix sheet to mainWindow not reportWindow
         alert.beginSheetModal(for: self.window) { (resp) in
-            self.window.endSheet(self.window)
             self.showPanelGenerators()
         }
     }
@@ -114,23 +114,16 @@ extension AppDelegate {
     /**
      Present a message on successfully sending feedback.
 
-     FROM 2.2.4
+     FROM 2.4.1
      */
     internal func presentFeedbackSuccess() {
 
-        let alert: NSAlert = showAlert("Thanks For Your Feedback!",
+        let alert: NSAlert = makeAlert("Thanks For Your Feedback!",
                                        "Your comments have been received and we’ll take a look at them shortly.")
         alert.beginSheetModal(for: self.window) { (resp) in
-            // Close the feedback window when the modal alert returns
-            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
-                // Run call on main thread using Swift Concurrency
-                Task {
-                    @MainActor in
-                        self.showPanelGenerators()
-                        self.hasSentFeedback = true
-                        self.messageSendButton.isEnabled = false
-                }
-            }
+            self.showPanelGenerators()
+            self.hasSentFeedback = true
+            self.messageSendButton.isEnabled = false
         }
     }
 
@@ -171,17 +164,39 @@ extension AppDelegate {
      FROM 2.0.0
      */
     func flashField() {
-        
+
+        // FROM 2.4.1
+        // Make sure we don't have a timer in play
+        guard self.timer == nil else { return }
+
         // Set the background to colour red
-        self.feedbackText.backgroundColor = .red
-        
+        // Must run on `MainActor` and we set `.high` so it's done immediately
+        Task(priority: .high) {
+            await MainActor.run {
+                self.feedbackText.isEnabled = false
+                self.feedbackText.backgroundColor = .red
+                self.feedbackText.textColor = .white
+            }
+        }
+
+        // FROM 2.4.1
+        // Play the system sound while the screen flash is not working
+        //NSSound.beep()
+
         // Switch the background back in 0.25 of a second
-        let _ = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+        self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { (timer) in
+            timer.invalidate()
+
             // FROM 2.4.1
             // Migrate to Swift Concurrency
-            Task {
-                @MainActor in
-                self.feedbackText.backgroundColor = .white
+            // Must run on `MainActor` and we set `.high` so it's done immediately
+            Task(priority: .high) {
+                await MainActor.run {
+                    self.feedbackText.backgroundColor = .textBackgroundColor
+                    self.feedbackText.textColor = .labelColor
+                    self.feedbackText.isEnabled = true
+                    self.timer = nil
+                }
             }
         })
     }
