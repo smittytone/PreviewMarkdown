@@ -12,6 +12,7 @@
 		3B0C90132D5B6F73003FD494 /* PMSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */; };
 		3B0C90142D5B6F73003FD494 /* PMSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB40F6E2CB56DA5004CBF74 /* PMSettings.swift */; };
 		3B0C90152D5B79BC003FD494 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAE1352D2EDE48009D0C34 /* Extensions.swift */; };
+		3B0EC8532F6B1C4F00C32894 /* Entities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0EC8522F6B1C4F00C32894 /* Entities.swift */; };
 		3B170B8625B2E62600F14FDD /* sample.md in Resources */ = {isa = PBXBuildFile; fileRef = 3B170B8525B2E62600F14FDD /* sample.md */; };
 		3B1C9EB1237454F600331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB0237454F600331D75 /* licences.txt */; };
 		3B1C9EB32374565800331D75 /* licences.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B1C9EB22374565800331D75 /* licences.txt */; };
@@ -147,6 +148,7 @@
 
 /* Begin PBXFileReference section */
 		3B0201842CAAD0F1003C1705 /* PMTabManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PMTabManager.swift; sourceTree = "<group>"; };
+		3B0EC8522F6B1C4F00C32894 /* Entities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entities.swift; sourceTree = "<group>"; };
 		3B170B8525B2E62600F14FDD /* sample.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = sample.md; sourceTree = "<group>"; };
 		3B1C9EB0237454F600331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
 		3B1C9EB22374565800331D75 /* licences.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = licences.txt; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				3B0201842CAAD0F1003C1705 /* PMTabManager.swift */,
 				3B363F432D48F63100F0982F /* PMServices.swift */,
 				3BBAEA1C236ADEB3009BAA05 /* MainMenu.xib */,
+				3B0EC8522F6B1C4F00C32894 /* Entities.swift */,
 				3BBAEA1F236ADEB3009BAA05 /* Info.plist */,
 				3BBAEA20236ADEB3009BAA05 /* PreviewMarkdown.entitlements */,
 				3B170B8525B2E62600F14FDD /* sample.md */,
@@ -656,6 +659,7 @@
 				3BBAEA19236ADEB1009BAA05 /* AppDelegate.swift in Sources */,
 				3B3E7C662CB7E34B005E2EF3 /* AppDelegateWhatsNew.swift in Sources */,
 				3BAE671728D4D09B001532BD /* AppDelegateFontHandling.swift in Sources */,
+				3B0EC8532F6B1C4F00C32894 /* Entities.swift in Sources */,
 				3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3B363F492D48F7EC00F0982F /* PMMarkdowner.swift in Sources */,
 				3BF2DC502D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
@@ -959,7 +963,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -979,7 +983,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				OTHER_LIBTOOLFLAGS = "$(inhertited)";
 				OTHER_SWIFT_FLAGS = "-D TARGET_IS_PM";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
@@ -987,7 +991,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1005,7 +1009,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1021,14 +1025,14 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				OTHER_LIBTOOLFLAGS = "$(inhertited)";
 				OTHER_SWIFT_FLAGS = "-D TARGET_IS_PM";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = NO;
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1041,7 +1045,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1056,7 +1060,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1065,6 +1069,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1077,7 +1082,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1092,7 +1097,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Previewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1100,6 +1105,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1111,7 +1117,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1126,7 +1132,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1134,6 +1140,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1145,7 +1152,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 266;
+				CURRENT_PROJECT_VERSION = 267;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1160,7 +1167,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.5;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bps.PreviewMarkdown.Thumbnailer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1168,6 +1175,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

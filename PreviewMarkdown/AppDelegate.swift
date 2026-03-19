@@ -13,10 +13,11 @@ import WebKit
 
 
 @NSApplicationMain
+@MainActor
 final class AppDelegate: NSResponder,
                          NSApplicationDelegate,
-                         URLSessionDelegate,
-                         URLSessionDataDelegate,
+                         //URLSessionDelegate,
+                         //URLSessionDataDelegate,
                          WKNavigationDelegate,
                          NSControlTextEditingDelegate,
                          NSTextFieldDelegate,
@@ -129,11 +130,11 @@ final class AppDelegate: NSResponder,
         // Pre-load fonts in a separate thread
         // NOTE This ultimately calls `loadSettings()` which we delay until after the fonts
         //      have loaded asynchronously because they reference loaded fonts.
-        let dq: DispatchQueue = DispatchQueue(label: "com.bps.previewmarkdown.async-queue")
-        dq.async {
+        // FROM 2.4.1 - Upgrade to Swift Concurrency
+        Task {
             self.asyncGetFonts()
         }
-        
+
         // FROM 1.2.0
         // Set application group-level defaults
         defaultSettings.registerSettings(self.appSuiteName, getVersion())

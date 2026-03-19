@@ -299,7 +299,7 @@ extension AppDelegate {
 
 
     // MARK: - URLSession Delegate Functions
-
+    /*
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         
         // Some sort of connection error - report it
@@ -330,7 +330,7 @@ extension AppDelegate {
             }
         }
     }
-
+     */
 
     // MARK: - WKWebNavigation Delegate Functions
 
@@ -344,7 +344,12 @@ extension AppDelegate {
                 // Display the sheet
                 Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
                     timer.invalidate()
-                    self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                    // FROM 2.2.4
+                    // Run call on main thread using Swift Concurrency
+                    Task {
+                        @MainActor in
+                            self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
+                    }
                 }
             }
         }
