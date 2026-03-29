@@ -95,7 +95,6 @@
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.plain-text</string>
-				<string>public.markdown</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Markdown</string>
@@ -103,6 +102,37 @@
 			<dict/>
 			<key>UTTypeIdentifier</key>
 			<string>net.daringfireball.markdown</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>md</string>
+					<string>mdown</string>
+					<string>markdown</string>
+					<string>mdwn</string>
+					<string>mdml</string>
+					<string>multimarkdown</string>
+					<string>mkd</string>
+					<string>mmd</string>
+					<string>ft</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>text/markdown</string>
+					<string>text/x-markdown</string>
+					<string>text/x-web-markdown</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array/>
+			<key>UTTypeDescription</key>
+			<string>Markdown</string>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>public.markdown</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

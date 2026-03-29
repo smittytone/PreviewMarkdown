@@ -283,7 +283,7 @@
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="131" y="-589"/>
+            <point key="canvasLocation" x="-3" y="-864"/>
         </menu>
         <window title="LEGACY PreviewMarkdown" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
@@ -791,7 +791,7 @@ Gw
             </view>
             <point key="canvasLocation" x="-712" y="28"/>
         </window>
-        <window title="Extra Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="vZ0-4t-gU9" userLabel="Advanced Preferences">
+        <window title="Advanced Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="vZ0-4t-gU9" userLabel="Advanced Preferences">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="600" height="220"/>
@@ -811,7 +811,7 @@ Gw
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <constraints>
-                            <constraint firstAttribute="width" constant="56" id="2M6-vj-vbM"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="56" id="2M6-vj-vbM"/>
                             <constraint firstAttribute="height" constant="24" id="xNh-XQ-wtT"/>
                         </constraints>
                         <connections>
@@ -849,7 +849,7 @@ Gw
                     </popUpButton>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sr6-Go-PfS">
                         <rect key="frame" x="20" y="20" width="20" height="20"/>
-                        <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ntW-vh-l9o">
+                        <buttonCell key="cell" type="help" bezelStyle="helpButton" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ntW-vh-l9o">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -945,6 +945,7 @@ Gw
                     <constraint firstItem="eLZ-m3-OOG" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="AND-1n-CZD"/>
                     <constraint firstAttribute="bottom" secondItem="c1n-RD-kYz" secondAttribute="bottom" constant="20" symbolic="YES" id="E4Y-hR-6sC"/>
                     <constraint firstItem="BDU-ZP-E42" firstAttribute="leading" secondItem="keF-yX-2uM" secondAttribute="trailing" constant="8" symbolic="YES" id="Gs9-c9-Y0a"/>
+                    <constraint firstItem="c1n-RD-kYz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sr6-Go-PfS" secondAttribute="trailing" constant="12" symbolic="YES" id="IAj-p6-1u2"/>
                     <constraint firstAttribute="trailing" secondItem="ZGS-4x-5FC" secondAttribute="trailing" constant="20" symbolic="YES" id="Ijk-o6-EWX"/>
                     <constraint firstItem="ZGS-4x-5FC" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="IlS-wO-Hnr"/>
                     <constraint firstItem="sr6-Go-PfS" firstAttribute="leading" secondItem="XZo-x1-MeL" secondAttribute="leading" constant="20" symbolic="YES" id="JJS-8g-sG3"/>
@@ -1477,13 +1478,13 @@ running this app once more.</string>
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ya9-ow-vW2">
-                                            <rect key="frame" x="104" y="18" width="72" height="24"/>
-                                            <buttonCell key="cell" type="push" title="Extra..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kFF-Do-jdv">
+                                            <rect key="frame" x="104" y="18" width="96" height="24"/>
+                                            <buttonCell key="cell" type="push" title="Advanced..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kFF-Do-jdv">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="72" id="65b-6J-cFu"/>
+                                                <constraint firstAttribute="width" constant="96" id="65b-6J-cFu"/>
                                                 <constraint firstAttribute="height" constant="24" id="jfh-Ux-a3K"/>
                                             </constraints>
                                             <connections>
@@ -1704,9 +1705,9 @@ running this app once more.</string>
                 </constraints>
             </view>
             <connections>
-                <outlet property="initialFirstResponder" destination="B1P-eb-X1i" id="kkh-lX-dRn"/>
+                <outlet property="initialFirstResponder" destination="hbe-TC-ye0" id="jqf-Vt-p3z"/>
             </connections>
-            <point key="canvasLocation" x="387" y="-270"/>
+            <point key="canvasLocation" x="56" y="-354"/>
         </window>
     </objects>
     <resources>
