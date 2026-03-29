@@ -102,7 +102,7 @@ extension AppDelegate {
 
         hidePanelGenerators()
         let alert: NSAlert = makeAlert("Feedback Could Not Be Sent",
-                                       "Unfortunately, your comments could not be send at this time. Please try again later.\n\nError: \(error.localizedDescription)")
+                                       "Unfortunately, your comments could not be send at this time. Please try again later.\n\nReason: \(error.localizedDescription)")
         
         // FROM 2.0.0: Fix sheet to mainWindow not reportWindow
         alert.beginSheetModal(for: self.window) { (resp) in
