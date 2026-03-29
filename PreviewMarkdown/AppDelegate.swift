@@ -100,7 +100,6 @@ final class AppDelegate: NSResponder,
 
     // MARK: - Private Properies
 
-    //internal var feedbackTask: URLSessionTask? = nil
     internal var whatsNewNav: WKNavigation? = nil
     internal var bodyFonts: [PMFont] = []
     internal var codeFonts: [PMFont] = []
@@ -263,8 +262,8 @@ final class AppDelegate: NSResponder,
                                            false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
-            alert.beginSheetModal(for: self.window) { (response: NSApplication.ModalResponse) in
-                if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+            alert.beginSheetModal(for: self.window) { (response) in
+                if response == .alertFirstButtonReturn {
                     // The user clicked 'Quit': now check for feedback changes
                     self.closeFeedback()
                 }
@@ -294,8 +293,8 @@ final class AppDelegate: NSResponder,
                                            false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
-            alert.beginSheetModal(for: self.window) { (response: NSApplication.ModalResponse) in
-                if response == NSApplication.ModalResponse.alertFirstButtonReturn {
+            alert.beginSheetModal(for: self.window) { (response) in
+                if response == .alertFirstButtonReturn {
                     // The user clicked 'Quit'
                     self.window.close()
                 }
