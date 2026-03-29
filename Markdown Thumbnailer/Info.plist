@@ -30,15 +30,16 @@
 		<dict>
 			<key>QLSupportedContentTypes</key>
 			<array>
-				<string>net.daringfireball</string>
+				<string>public.markdown</string>
 				<string>net.daringfireball.markdown</string>
+				<string>net.daringfireball</string>
 				<string>net.multimarkdown.text</string>
-				<string>org.vim.markdown-file</string>
+				<string>net.ia.markdown</string>
 				<string>com.unknown.md</string>
 				<string>com.foldingtext.FoldingText.document</string>
-				<string>pro.writer.markdown</string>
-				<string>net.ia.markdown</string>
 				<string>com.nutstore.down</string>
+				<string>org.vim.markdown-file</string>
+				<string>pro.writer.markdown</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>32</integer>
