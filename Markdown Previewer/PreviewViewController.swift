@@ -85,7 +85,7 @@ class PreviewViewController: NSViewController,
                 // Update the NSTextView
                 self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
-                if common.isMacInLightMode() {
+                if renderPreviewLight {
                     self.renderTextScrollView.scrollerKnobStyle = .dark
                 }
 
