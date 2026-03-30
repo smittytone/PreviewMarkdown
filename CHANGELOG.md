@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.4.1 *Unreleased*
+- 2.4.1 *30 March 2026*
     - Fully support `public.markdown` UTI.
     - Migrate to Swift Concurrency.
     - Fix issue with warning on feedback character-limit exceeded.
