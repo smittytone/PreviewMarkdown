@@ -1,5 +1,8 @@
 ## Release Notes
 
+- 2.4.2 *Unreleased*
+    - Fix paragraph breaks in content copied from previews.
+    - Reduce image placeholder sizes and change referenced path's colour.
 - 2.4.1 *30 March 2026*
     - Fully support `public.markdown` UTI.
     - Migrate to Swift Concurrency.

@@ -314,9 +314,9 @@ class PMStyler {
                         // Add a tailing New Line if we need one after the para (only in certain cases)
                         if doAddNewLine && currentParagraphStyle.type != .character {
 #if PARATAG
-                            renderedString.append(styleString(">" + BUFFOON_CONSTANTS.LINE_END.FEED, [currentParagraphStyle]))
+                            renderedString.append(styleString(">" + BUFFOON_CONSTANTS.LINE_END.LF, [currentParagraphStyle]))
 #else
-                            renderedString.append(styleString(BUFFOON_CONSTANTS.LINE_END.FEED, [currentParagraphStyle]))
+                            renderedString.append(styleString(BUFFOON_CONSTANTS.LINE_END.LF, [currentParagraphStyle]))
 #endif
                         }
                     }
@@ -1006,7 +1006,7 @@ class PMStyler {
 
 
     /**
-     Formmat a code string for presentation.
+     Format a code string for presentation.
 
      - Parameters
         - someCode: The raw code.
@@ -1175,6 +1175,10 @@ class PMStyler {
 
         self.styles["line"]         = [.foregroundColor: self.colours.body,
                                        .font: makeFont("plain", self.settings!.fontSize),
+                                       .paragraphStyle: self.paragraphs["tabbed"]!]
+
+        self.styles["small"]        = [.foregroundColor: NSColor.systemRed,
+                                       .font: makeFont("plain", self.settings!.fontSize * 0.90),
                                        .paragraphStyle: self.paragraphs["tabbed"]!]
     }
 
@@ -1421,13 +1425,13 @@ class PMStyler {
                     setMissingImage(imageAttachment)
                 }
             } else {
-                setMissingImage(imageAttachment)
+                setMissingImage(imageAttachment, true)
             }
         }
 
         // IMG should be at the top the the stack, so we can return immediately
         let renderedImage = NSMutableAttributedString(attachment: imageAttachment)
-        renderedImage.append(NSAttributedString(string: "\n" + self.currentImagePath, attributes: self.styles["p"]))
+        renderedImage.append(NSAttributedString(string: " " + self.currentImagePath, attributes: self.styles["small"]))
 
         // Add the path as a tooltip. Does this even show? No, doesn't look like it
         // renderedImage.addAttribute(.toolTip, value: self.currentImagePath, range: NSRange(location: 0, length: renderedImage.length))
@@ -1445,6 +1449,8 @@ class PMStyler {
     private func setMissingImage(_ imageAttachment: NSTextAttachment, _ isSandboxLocked: Bool = false) {
 
         guard let image = NSImage(named: NSImage.Name(stringLiteral: isSandboxLocked ? BUFFOON_CONSTANTS.LOCKED_IMG : BUFFOON_CONSTANTS.MISSING_IMG)) else { return }
+        image.resizingMode = .stretch
+        image.size = NSSize(width: 100.0, height: 100.0)
         imageAttachment.image = image
     }
 
@@ -1525,9 +1531,9 @@ class PMStyler {
     private func addNewLine(_ renderedString: NSMutableAttributedString, withLineBreak: Bool = false) {
 
 #if PARATAG
-        let symbol = "<" + BUFFOON_CONSTANTS.LINE_END.FEED
+        let symbol = "<" + BUFFOON_CONSTANTS.LINE_END.LF
 #else
-        let symbol = BUFFOON_CONSTANTS.LINE_END.FEED
+        let symbol = BUFFOON_CONSTANTS.LINE_END.LF
 #endif
         renderedString.append(NSAttributedString(string: (withLineBreak ? BUFFOON_CONSTANTS.LINE_END.BREAK : symbol), attributes: self.styles["p"]))
     }
