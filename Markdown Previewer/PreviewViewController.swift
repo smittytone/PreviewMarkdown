@@ -30,7 +30,7 @@ class PreviewViewController: NSViewController,
 
     // MARK: - QLPreviewingController Required Functions
 
-    func preparePreviewOfFile(at url: URL, completionHandler handler: @escaping (Error?) -> Void) {
+    func preparePreviewOfFile(at url: URL) async throws {
 
         /*
          * This is the main entry point for the macOS QuickLook previewing system
@@ -56,10 +56,8 @@ class PreviewViewController: NSViewController,
             if let markdownString: String = String(data: data, encoding: encoding) {
                 // Instantiate the common code
                 guard let common: Common = Common(forThumbnail: false) else {
-                    reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
-                    showError(reportError!)
-                    handler(reportError)
-                    return
+                    reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+                    throw reportError!
                 }
 
                 // FROM 2.2.0
@@ -85,15 +83,12 @@ class PreviewViewController: NSViewController,
                 // Update the NSTextView
                 self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
-                if renderPreviewLight {
-                    self.renderTextScrollView.scrollerKnobStyle = .dark
-                }
 
                 // FROM 2.1.0
                 // Add margin if required
                 // FROM 2.3.0
                 // Margin size is a setting
-                if common.settings.doShowMargin {
+                if common.settings.previewMarginWidth > 0.0 {
                     let previewSize = NSSize(width: common.settings.previewMarginWidth, height: common.settings.previewMarginWidth)
                     self.renderTextView.textContainerInset = previewSize
                 }
@@ -125,15 +120,11 @@ class PreviewViewController: NSViewController,
                     renderTextStorage.beginEditing()
                     renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
                     renderTextStorage.endEditing()
-                    self.view.display()
-
-                    // Call the QLPreviewingController indicating no error (nil)
-                    handler(nil)
                     return
                 }
 
                 // We couldn't access the preview NSTextView's NSTextStorage
-                reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING)
+                reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING)
             } else {
                 // FROM 1.4.3
                 // We couldn't convert to data to a valid encoding
@@ -144,47 +135,17 @@ class PreviewViewController: NSViewController,
             }
         } catch {
             // We couldn't read the file so set an appropriate error to report back
-            reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+            reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
         }
 
-        // Display the error locally in the window
-        showError(reportError!)
-
-        // Call the QLPreviewingController indicating an error (!nil)
-        handler(reportError)
-    }
-
-
-    func preparePreviewOfSearchableItem(identifier: String, queryString: String?, completionHandler handler: @escaping (Error?) -> Void) {
-
-        // Is this ever called?
-        NSLog("BUFFOON searchable identifier: \(identifier)")
-        NSLog("BUFFOON searchable query:      " + (queryString ?? "nil"))
-
-        // Hand control back to QuickLook
-        handler(nil)
+        // FROM 2.4.3
+        // Throw to indicate an error
+        throw reportError!
     }
 
 
     // MARK: - Utility Functions
     
-    /**
-     Place an error message in its various outlets.
-     
-     - parameters:
-        - error: The error as an NSError.
-     */
-    func showError(_ error: NSError) {
-        
-        let errString: String = error.userInfo[NSLocalizedDescriptionKey] as! String
-        self.errorReportField.stringValue = errString
-        self.errorReportField.isHidden = false
-        self.renderTextScrollView.isHidden = true
-        self.view.display()
-        NSLog("BUFFOON \(errString)")
-    }
-
-
     /**
      Generate an NSError for an internal error, specified by its code.
 
@@ -195,7 +156,7 @@ class PreviewViewController: NSViewController,
 
      - Returns: The described error as an NSError.
      */
-    func setError(_ code: Int) -> NSError {
+    func makeError(_ code: Int) -> NSError {
         
         // NSError generation function
         
@@ -219,22 +180,6 @@ class PreviewViewController: NSViewController,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
     }
 
-
-    /**
-     Execute the supplied block on the main thread.
-
-     FROM 2.4.0 REMOVED
-    private func safeMainSync(_ block: @escaping ()->()) {
-
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.sync {
-                block()
-            }
-        }
-    }
-     */
 
     /**
      Specify the content size of the parent view.

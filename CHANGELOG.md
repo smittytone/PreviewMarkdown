@@ -4,6 +4,7 @@
     - Fix font-size slider control’s colouring.
     - Fix broken Advanced Help button.
     - Sync UI with other PreviewApps.
+    - Implement Swift Concurrency in Previewer.
 - 2.4.2 *16 April 2026*
     - Fix paragraph breaks in content copied from previews.
     - Reduce image placeholder sizes and change referenced path's colour.
