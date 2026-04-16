@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24765" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="24506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24765"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="24765"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,6 +17,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="PreviewMarkdown" customModuleProvider="target">
             <connections>
+                <outlet property="advancedHelpButton" destination="sr6-Go-PfS" id="HQc-kI-NZu"/>
                 <outlet property="advancedSettingsSheet" destination="vZ0-4t-gU9" id="ia2-id-cE0"/>
                 <outlet property="applyAdvancedButton" destination="c1n-RD-kYz" id="JYY-3X-y9P"/>
                 <outlet property="applyButton" destination="kFy-Nr-jYW" id="auY-ol-XGY"/>
@@ -53,13 +54,10 @@
                 <outlet property="previewMarginSizeText" destination="keF-yX-2uM" id="2LH-IU-Mbt"/>
                 <outlet property="previewSizeAdvancedPopup" destination="cdJ-GQ-YNH" id="fto-vx-RVG"/>
                 <outlet property="settingsButton" destination="XT6-vN-IwB" id="trD-B7-qUF"/>
-                <outlet property="showFrontMatterCheckbox" destination="C6Z-2z-3G7" id="is1-La-VqA"/>
                 <outlet property="showFrontMatterSwitch" destination="EA2-hi-rAI" id="Awt-uK-f9G"/>
-                <outlet property="showMarginCheckbox" destination="PNh-Ih-Kko" id="oGV-pW-fX7"/>
                 <outlet property="showMarginSwitch" destination="eHN-Wm-zgJ" id="y6g-ua-O8g"/>
                 <outlet property="tintTumbnailsAdvancedLabel" destination="iDr-vO-dxT" id="rGT-Gn-SVv"/>
                 <outlet property="tintTumbnailsAdvancedSwitch" destination="cgP-sC-bGb" id="bhg-iF-ewb"/>
-                <outlet property="useLightCheckbox" destination="DGX-Ye-M9S" id="lKQ-24-CNz"/>
                 <outlet property="useLightSwitch" destination="x3R-Jh-AIY" id="eTE-Zy-8Ub"/>
                 <outlet property="versionLabel" destination="7WS-6l-Uih" id="UCQ-v5-Yhp"/>
                 <outlet property="whatsNewWebView" destination="edS-kL-I2r" id="f6t-H5-tEf"/>
@@ -823,7 +821,7 @@ Gw
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="wek-m5-fVx"/>
                         </constraints>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Preview window size:" id="yIy-XC-MSc">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Preview Window Size" id="yIy-XC-MSc">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -877,7 +875,7 @@ Gw
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="rPs-aS-1NU"/>
                         </constraints>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Preview margin size:" id="gq8-Eg-mHE">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Preview Margin Size" id="gq8-Eg-mHE">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -894,6 +892,9 @@ Gw
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <outlet property="delegate" destination="Voe-Tx-rLC" id="eyy-iY-dpg"/>
+                        </connections>
                     </textField>
                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BDU-ZP-E42">
                         <rect key="frame" x="537" y="152" width="45" height="16"/>
@@ -912,7 +913,7 @@ Gw
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="9ym-Gw-KWi"/>
                         </constraints>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="Match thumnbail colour scheme to display mode (macOS 26.1 or above):" id="JZo-Om-RsJ">
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="Match thumnbail colour scheme to display mode (macOS 26.1 or above)" id="JZo-Om-RsJ">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1163,13 +1164,13 @@ running this app once more.</string>
                                             </connections>
                                         </button>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Va2-Ma-vYz">
-                                            <rect key="frame" x="18" y="306" width="144" height="16"/>
+                                            <rect key="frame" x="18" y="306" width="164" height="16"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="140" id="fcf-gl-fXS"/>
+                                                <constraint firstAttribute="width" constant="160" id="fcf-gl-fXS"/>
                                                 <constraint firstAttribute="height" constant="16" id="yow-pm-UM7"/>
                                             </constraints>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Preview body text size:" id="2aX-te-AdY">
-                                                <font key="font" usesAppearanceFont="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Preview body text size" id="2aX-te-AdY">
+                                                <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -1274,7 +1275,7 @@ running this app once more.</string>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pds-Hh-SmM">
                                             <rect key="frame" x="18" y="236" width="278" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview body text font:" id="4wm-82-3wu">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview body text font" id="4wm-82-3wu">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1283,7 +1284,7 @@ running this app once more.</string>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RnE-0T-JZ7">
                                             <rect key="frame" x="18" y="203" width="278" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview code mono font:" id="3af-8E-2HE">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview code mono font" id="3af-8E-2HE">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1328,8 +1329,8 @@ running this app once more.</string>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07b-y9-FNN">
                                             <rect key="frame" x="18" y="169" width="327" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Colours:" id="JEd-fU-QaL">
-                                                <font key="font" usesAppearanceFont="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" alignment="right" title="Colours" id="JEd-fU-QaL">
+                                                <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -1382,8 +1383,8 @@ running this app once more.</string>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rq-9E-THR">
                                             <rect key="frame" x="18" y="137" width="385" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview line spacing:" id="xdm-1T-xb4">
-                                                <font key="font" usesAppearanceFont="YES"/>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview line spacing" id="xdm-1T-xb4">
+                                                <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -1397,7 +1398,7 @@ running this app once more.</string>
                                             </connections>
                                         </colorWell>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g9s-eZ-633">
-                                            <rect key="frame" x="18" y="109" width="512" height="16"/>
+                                            <rect key="frame" x="161" y="109" width="376" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Show previews that are opposite to macOS’ current mode" id="vlF-eX-a4t">
                                                 <font key="font" metaFont="system"/>
@@ -1406,7 +1407,7 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSI-xO-hWv">
-                                            <rect key="frame" x="188" y="85" width="342" height="16"/>
+                                            <rect key="frame" x="161" y="85" width="376" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Add a whitespace margin around preview content" id="Oe4-9E-L1z">
                                                 <font key="font" metaFont="system"/>
@@ -1415,7 +1416,7 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OYD-ur-GUm">
-                                            <rect key="frame" x="188" y="61" width="342" height="16"/>
+                                            <rect key="frame" x="161" y="61" width="376" height="16"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Render YAML front matter, if present" id="W7f-gE-hPD">
                                                 <font key="font" metaFont="system"/>
@@ -1424,59 +1425,26 @@ running this app once more.</string>
                                             </textFieldCell>
                                         </textField>
                                         <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="x3R-Jh-AIY">
-                                            <rect key="frame" x="536" y="105" width="54" height="24"/>
+                                            <rect key="frame" x="543" y="105" width="54" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <connections>
                                                 <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="D44-y2-TgL"/>
                                             </connections>
                                         </switch>
                                         <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="eHN-Wm-zgJ">
-                                            <rect key="frame" x="536" y="81" width="54" height="24"/>
+                                            <rect key="frame" x="543" y="81" width="54" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <connections>
                                                 <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="MmB-vP-yND"/>
                                             </connections>
                                         </switch>
                                         <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" controlSize="small" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="EA2-hi-rAI">
-                                            <rect key="frame" x="536" y="57" width="54" height="24"/>
+                                            <rect key="frame" x="543" y="57" width="54" height="24"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <connections>
                                                 <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="RTb-2E-odN"/>
                                             </connections>
                                         </switch>
-                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DGX-Ye-M9S">
-                                            <rect key="frame" x="20" y="109" width="380" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Show previews that are opposite to macOS’ current mode" bezelStyle="regularSquare" imagePosition="left" inset="2" id="mOs-nO-lDb">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                                <connections>
-                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="pFO-7P-cfY"/>
-                                                </connections>
-                                            </buttonCell>
-                                        </button>
-                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C6Z-2z-3G7">
-                                            <rect key="frame" x="20" y="61" width="380" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Render YAML front matter, if present" bezelStyle="regularSquare" imagePosition="left" inset="2" id="flH-nG-RgZ">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                                <connections>
-                                                    <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="hRE-Oy-FA2"/>
-                                                </connections>
-                                            </buttonCell>
-                                        </button>
-                                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNh-Ih-Kko">
-                                            <rect key="frame" x="20" y="85" width="380" height="18"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="check" title="Add a whitespace margin around preview content" bezelStyle="regularSquare" imagePosition="left" inset="2" id="C2v-ha-MBI">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="doChangeValueWithSender:" target="Voe-Tx-rLC" id="JO7-Pn-fCS"/>
-                                            </connections>
-                                        </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ya9-ow-vW2">
                                             <rect key="frame" x="104" y="18" width="96" height="24"/>
                                             <buttonCell key="cell" type="push" title="Advanced..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kFF-Do-jdv">

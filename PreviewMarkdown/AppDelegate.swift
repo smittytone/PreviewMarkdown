@@ -55,8 +55,6 @@ final class AppDelegate: NSResponder,
     // Window > Settings Tab Items
     @IBOutlet weak var fontSizeSlider: NSSlider!
     @IBOutlet weak var fontSizeLabel: NSTextField!
-    @IBOutlet weak var useLightCheckbox: NSButton!
-    @IBOutlet weak var showFrontMatterCheckbox: NSButton!
     @IBOutlet weak var headColourWell: NSColorWell!
     @IBOutlet weak var bodyFontPopup: NSPopUpButton!
     @IBOutlet weak var bodyStylePopup: NSPopUpButton!
@@ -65,8 +63,6 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var colourSelectionPopup: NSPopUpButton!
     @IBOutlet weak var applyButton: NSButton!
-    // FROM 2.1.0
-    @IBOutlet weak var showMarginCheckbox: NSButton!
     // FROM 2.3.0
     @IBOutlet weak var useLightSwitch: NSSwitch!
     @IBOutlet weak var showFrontMatterSwitch: NSSwitch!
@@ -91,6 +87,8 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var tintTumbnailsAdvancedLabel: NSTextField!
     @IBOutlet weak var previewMarginSizeText: NSTextField!
     @IBOutlet weak var previewMarginRangeText: NSTextField!
+    // FROM 2.4.3
+    @IBOutlet weak var advancedHelpButton: NSButton!
 
 
     // MARK: - Public Properties
@@ -204,10 +202,6 @@ final class AppDelegate: NSResponder,
         self.window.delegate = self
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
-
-        self.showMarginCheckbox.isHidden = true
-        self.showFrontMatterCheckbox.isHidden = true
-        self.useLightCheckbox.isHidden = true
     }
 
 
@@ -347,7 +341,13 @@ final class AppDelegate: NSResponder,
     @IBAction
     private func doShowPrefsHelp(sender: Any) {
 
-        let path: String = BUFFOON_CONSTANTS.URL_MAIN + "#customize-the-preview"
+        let path: String
+        if sender as? NSButton == self.advancedHelpButton {
+            path = BUFFOON_CONSTANTS.URL_MAIN + "#advanced-settings"
+        } else {
+            path = BUFFOON_CONSTANTS.URL_MAIN + "#customiae-the-preview"
+        }
+
         NSWorkspace.shared.open(URL(string:path)!)
     }
 
