@@ -20,10 +20,10 @@ extension AppDelegate {
      */
     internal func willShowSettingsPage() {
 
-        // FROM 2.2.1
+        // FROM 2.4.6
         // Fix track colour on macOS 26
         if #available(macOS 26.0, *) {
-            self.fontSizeSlider.tintProminence = .none
+            self.fontSizeSlider.tintProminence = .secondary
         }
 
         // FROM 2.3.0
