@@ -7,7 +7,7 @@
  */
 
 
-import Cocoa
+import AppKit
 import Quartz
 
 
@@ -16,13 +16,12 @@ class PreviewViewController: NSViewController,
 
     // MARK: - Class UI Properties
 
-    @IBOutlet weak var errorReportField: NSTextField!
     @IBOutlet weak var renderTextView: NSTextView!
     @IBOutlet weak var renderTextScrollView: NSScrollView!
 
 
-    // MARK: - Private Properties
-    
+    // MARK: - Public Properties
+
     override var nibName: NSNib.Name? {
         return NSNib.Name("PreviewViewController")
     }
@@ -30,6 +29,8 @@ class PreviewViewController: NSViewController,
 
     // MARK: - QLPreviewingController Required Functions
 
+    // FROM 2.4.0
+    // Update to use Swift Concurrency
     func preparePreviewOfFile(at url: URL) async throws {
 
         /*
@@ -37,52 +38,54 @@ class PreviewViewController: NSViewController,
          */
 
         // Hide the error message field
-        self.errorReportField.isHidden = true
         self.renderTextScrollView.isHidden = false
-        
-        // FROM 1.1.0
-        // Get an error message ready for use
         var reportError: NSError? = nil
 
+        // Load and process the source file
         do {
             // Get the file contents as a string
             let data: Data = try Data(contentsOf: url, options: [.uncached])
-
-            // FROM 1.4.3
-            // Get the string's encoding, or fail back to .utf8
             let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
             // Convert the data to a string
             if let markdownString: String = String(data: data, encoding: encoding) {
-                // Instantiate the common code
-                guard let common: Common = Common(forThumbnail: false) else {
+                /*
+                 Instantiate the common code within the closure
+                 */
+                guard let common = Common(forThumbnail: false) else {
                     reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
                     throw reportError!
                 }
-
-                // FROM 2.2.0
-                // Set the parent window's size
-                setPreviewWindowSize(common.settings)
 
                 // FROM 2.0.0
                 // Pass in the source file's directory
                 common.workingDirectory = (url.path as NSString).deletingLastPathComponent
 
+                /*
+                 Window and mode configuration
+                 */
+                
+                // FROM 2.2.0
+                // Set the parent window's size
+                setPreviewWindowSize(common.settings)
+
                 // FROM 2.4.0
                 // The force-light-mode-preview-in-dark-mode setting is now a general
                 // preview-colours-should-be-opposite-the-mode setting.
-                var renderPreviewLight = common.isMacInLightMode()
+                var renderPreviewLight = NSApplication.shared.inLightMode
                 if common.settings.doReverseMode {
                     // Invert the colour scheme based on the current mode
                     renderPreviewLight = !renderPreviewLight
                 }
-
-                // Set the view's mode
-                self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
-
+                
                 // Update the NSTextView
                 self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
+
+                // FROM 2.0.0
+                // Correct way to set a text view's link colouring, etc. - and have it stick
+                self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
+                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand]
 
                 // FROM 2.1.0
                 // Add margin if required
@@ -93,10 +96,12 @@ class PreviewViewController: NSViewController,
                     self.renderTextView.textContainerInset = previewSize
                 }
 
-                // FROM 2.0.0
-                // Correct way to set a text view's link colouring, etc. - and have it stick
-                self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
-                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand]
+                // Set the view's mode
+                self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
+
+                /*
+                 Attributed String Presentation
+                 */
 
                 // Access the text view's storage to place the rendered Markdown string
                 if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
@@ -113,7 +118,6 @@ class PreviewViewController: NSViewController,
                         // It helps - missing borders do get drawn eventually - but doesn't
                         // get them drawn immediately.
                         layouter.allowsNonContiguousLayout = true
-
                         renderTextContainer.replaceLayoutManager(layouter)
                     }
 
@@ -145,7 +149,7 @@ class PreviewViewController: NSViewController,
 
 
     // MARK: - Utility Functions
-    
+
     /**
      Generate an NSError for an internal error, specified by its code.
 
@@ -157,11 +161,11 @@ class PreviewViewController: NSViewController,
      - Returns: The described error as an NSError.
      */
     func makeError(_ code: Int) -> NSError {
-        
+
         // NSError generation function
-        
+
         var errDesc: String
-        
+
         switch(code) {
         case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
             errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
@@ -174,7 +178,7 @@ class PreviewViewController: NSViewController,
         default:
             errDesc = "UNKNOWN ERROR"
         }
-        
+
         return NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])

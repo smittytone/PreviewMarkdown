@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24765" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24765"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Markdown_Previewer" customModuleProvider="target">
             <connections>
-                <outlet property="errorReportField" destination="CPg-cs-coC" id="2IY-Jg-Tvr"/>
                 <outlet property="renderTextScrollView" destination="pRc-gN-4bi" id="yFP-Iy-SeQ"/>
                 <outlet property="renderTextView" destination="uBe-Ep-G4B" id="mft-4j-mp7"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
@@ -45,25 +44,11 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPg-cs-coC">
-                    <rect key="frame" x="18" y="290" width="764" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="oiv-6o-W1w"/>
-                    </constraints>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" refusesFirstResponder="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Error Message!" id="DWJ-iT-hZh">
-                        <font key="font" textStyle="title3" name=".SFNS-Regular"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="CPg-cs-coC" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="4sG-Ov-Od0"/>
-                <constraint firstItem="CPg-cs-coC" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="LRy-GG-wCb"/>
                 <constraint firstItem="pRc-gN-4bi" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Prr-T5-bPY"/>
                 <constraint firstItem="pRc-gN-4bi" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="VtB-Dq-QKk"/>
                 <constraint firstAttribute="trailing" secondItem="pRc-gN-4bi" secondAttribute="trailing" id="cwq-Ih-O4k"/>
-                <constraint firstAttribute="trailing" secondItem="CPg-cs-coC" secondAttribute="trailing" constant="20" symbolic="YES" id="g5f-rr-lyo"/>
                 <constraint firstAttribute="bottom" secondItem="pRc-gN-4bi" secondAttribute="bottom" id="xK5-rD-hmd"/>
             </constraints>
             <point key="canvasLocation" x="-34.5" y="29.5"/>
