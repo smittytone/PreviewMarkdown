@@ -324,14 +324,10 @@ extension URL {
 
 extension NSApplication {
 
-    /**
-     Determine if the Mac is currently presenting in light mode.
-     
-     - Returns `true` if light mode is enabled, otherwise `false`.
-     */
-    func isMacInLightMode() -> Bool {
-        
-        return (self.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua")
+    var inLightMode: Bool {
+        get {
+            return (self.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua")
+        }
     }
 }
 
