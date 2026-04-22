@@ -956,14 +956,31 @@ class PMStyler {
      */
     private func renderTable(_ table: String) -> NSMutableAttributedString {
 
-        if let data: Data = table.data(using: .utf16) {
+        // FROM 2.4.3
+        // Pave the way for removing use of deprecated WebPreferences: just remove IMG tags from table HTML
+        // (WepPreferences is used to ignore these anyway)
+        let theTable: String
+        if #available(macOS 13.0, *) {
+            theTable = table.replacing(#"|<img[^>]*src="([^"]+)"[^>]*>"#, with: "")
+        } else {
+            theTable = table
+        }
+
+        if let data: Data = theTable.data(using: .utf16) {
             // NOTE We use WebPreferences, which is part of the deprecated WebKit, in order to
             //      halt the loading of images within tables (which are processed by NSAttributedString
             //      not by us). This should be replaced as soon as we have a better solution to
             //      Known Issue #1
-            guard let wp = WebPreferences(identifier: BUFFOON_CONSTANTS.WEB_PREFS_ID) else { return NSMutableAttributedString() }
-            wp.loadsImagesAutomatically = false
-            let options = [NSAttributedString.DocumentReadingOptionKey.webPreferences: wp]
+            let options: [NSAttributedString.DocumentReadingOptionKey : Any]
+            if #available(macOS 13.0, *) {
+                options = [:]
+            } else {
+                // This section can go when PreviewMarkdown's minumum supported OS becomes 13.x
+                guard let wp = WebPreferences(identifier: BUFFOON_CONSTANTS.WEB_PREFS_ID) else { return NSMutableAttributedString() }
+                wp.loadsImagesAutomatically = false // Seems to be an occasional crash here (thumbnailer only)
+                options = [NSAttributedString.DocumentReadingOptionKey.webPreferences: wp]
+            }
+
             if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: data, options: options, documentAttributes: nil) {
                 // Now we have to set our font style for each element within the table
                 tableString.enumerateAttribute(.font, in: NSMakeRange(0, tableString.length)) { (value: Any?, range: NSRange, got: UnsafeMutablePointer<ObjCBool>) in

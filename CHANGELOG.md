@@ -3,6 +3,7 @@
 - 2.4.3 *Unreleased*
     - Fix font-size slider control’s colouring.
     - Fix broken Advanced Help button.
+    - Fix WebPreferences-related crashes in thumbnailer for users on macOS 13 or above.
     - Sync UI with other PreviewApps.
     - Implement Swift Concurrency in Previewer.
 - 2.4.2 *16 April 2026*
