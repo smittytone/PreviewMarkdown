@@ -243,12 +243,6 @@ extension AppDelegate {
         self.fontSizeSlider.floatValue = Float(index)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[index]))pt"
 
-        // Set the checkboxes
-        //self.useLightCheckbox.state = settings.doReverseMode ? .on : .off
-        //self.showFrontMatterCheckbox.state = settings.doShowFrontMatter ? .on : .off
-        // FROM 2.1.0
-        //self.showMarginCheckbox.state = settings.doShowMargin ? .on : .off
-
         // Set the colour well
         // NOTE This has only one colour, so we always reset to "heads" on changes
         self.headColourWell.color = NSColor.hexToColour(settings.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.HEADS] ?? BUFFOON_CONSTANTS.HEX_COLOUR.HEAD)
@@ -315,12 +309,8 @@ extension AppDelegate {
         
         let displayedSettings = PMSettings()
         displayedSettings.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
-        //displayedSettings.doShowFrontMatter = self.showFrontMatterCheckbox.state == .on
-        //displayedSettings.doReverseMode = self.useLightCheckbox.state == .on
         displayedSettings.codeFontName = getPostScriptName(false) ?? BUFFOON_CONSTANTS.FONT_NAME.CODE
         displayedSettings.bodyFontName = getPostScriptName(true) ?? BUFFOON_CONSTANTS.FONT_NAME.BODY
-        // FROM 2.1.0
-        //displayedSettings.doShowMargin = self.showMarginCheckbox.state == .on
         // FROM 2.3.0
         displayedSettings.doShowMargin = self.showMarginSwitch.state == .on
         displayedSettings.doShowFrontMatter = self.showFrontMatterSwitch.state == .on
