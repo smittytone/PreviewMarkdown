@@ -1,11 +1,10 @@
 /*
  *  PreviewViewController.swift
- *  Markdown Previewer
+ *  PreviewMarkdown
  *
  *  Created by Tony Smith on 31/10/2019.
  *  Copyright © 2026 Tony Smith. All rights reserved.
  */
-
 
 import AppKit
 import Quartz
@@ -38,22 +37,21 @@ class PreviewViewController: NSViewController,
          */
 
         // Hide the error message field
-        self.renderTextScrollView.isHidden = false
         var reportError: NSError? = nil
 
         // Load and process the source file
         do {
             // Get the file contents as a string
-            let data: Data = try Data(contentsOf: url, options: [.uncached])
-            let encoding: String.Encoding = data.stringEncoding ?? .utf8
+            let data = try Data(contentsOf: url, options: [.uncached])
+            let encoding = data.stringEncoding ?? .utf8
 
             // Convert the data to a string
-            if let markdownString: String = String(data: data, encoding: encoding) {
+            if let markdown = String(data: data, encoding: encoding) {
                 /*
                  Instantiate the common code within the closure
                  */
                 guard let common = Common(forThumbnail: false) else {
-                    reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+                    reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD)
                     throw reportError!
                 }
 
@@ -62,9 +60,15 @@ class PreviewViewController: NSViewController,
                 common.workingDirectory = (url.path as NSString).deletingLastPathComponent
 
                 /*
+                 Attributed string acquisition
+                 */
+
+                let attributedMarkdown = common.getAttributedString(markdown[...])
+
+                /*
                  Window and mode configuration
                  */
-                
+
                 // FROM 2.2.0
                 // Set the parent window's size
                 setPreviewWindowSize(common.settings)
@@ -77,34 +81,32 @@ class PreviewViewController: NSViewController,
                     // Invert the colour scheme based on the current mode
                     renderPreviewLight = !renderPreviewLight
                 }
-                
+
                 // Update the NSTextView
                 self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
                 self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
-
-                // FROM 2.0.0
-                // Correct way to set a text view's link colouring, etc. - and have it stick
-                self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
-                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand]
+                self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
 
                 // FROM 2.1.0
                 // Add margin if required
                 // FROM 2.3.0
                 // Margin size is a setting
                 if common.settings.previewMarginWidth > 0.0 {
-                    let previewSize = NSSize(width: common.settings.previewMarginWidth, height: common.settings.previewMarginWidth)
-                    self.renderTextView.textContainerInset = previewSize
+                    self.renderTextView.textContainerInset = NSSize(width: common.settings.previewMarginWidth,
+                                                                    height: common.settings.previewMarginWidth)
                 }
 
-                // Set the view's mode
-                self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
+                // FROM 2.0.0
+                // Correct way to set a text view's link colouring, etc. - and have it stick
+                self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
+                                                          NSAttributedString.Key.cursor: NSCursor.pointingHand]
 
                 /*
                  Attributed String Presentation
                  */
 
                 // Access the text view's storage to place the rendered Markdown string
-                if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
+                if let renderTextStorage = self.renderTextView.textStorage {
                     if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
                         // Add a custom layout manager to trap double-underlines, which
                         // we are using as a proxy for lozenged text - the layouter will
@@ -122,7 +124,7 @@ class PreviewViewController: NSViewController,
                     }
 
                     renderTextStorage.beginEditing()
-                    renderTextStorage.setAttributedString(common.getAttributedString(markdownString[...]))
+                    renderTextStorage.setAttributedString(attributedMarkdown)
                     renderTextStorage.endEditing()
                     return
                 }
@@ -175,6 +177,8 @@ class PreviewViewController: NSViewController,
             errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
         case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
             errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
         default:
             errDesc = "UNKNOWN ERROR"
         }
