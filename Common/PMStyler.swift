@@ -118,7 +118,7 @@ class PMStyler {
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
 
-#if INCHTML
+#if DEBUG
         let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
@@ -959,9 +959,13 @@ class PMStyler {
         // FROM 2.4.3
         // Pave the way for removing use of deprecated WebPreferences: just remove IMG tags from table HTML
         // (WepPreferences is used to ignore these anyway)
-        let theTable: String
+        var theTable = table
         if #available(macOS 13.0, *) {
-            theTable = table.replacing(#"|<img[^>]*src="([^"]+)"[^>]*>"#, with: "")
+            var r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
+            while r != nil {
+                theTable = theTable.replacingCharacters(in: r!, with: "")
+                r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
+            }
         } else {
             theTable = table
         }
@@ -971,7 +975,7 @@ class PMStyler {
             //      halt the loading of images within tables (which are processed by NSAttributedString
             //      not by us). This should be replaced as soon as we have a better solution to
             //      Known Issue #1
-            let options: [NSAttributedString.DocumentReadingOptionKey : Any]
+            let options: [NSAttributedString.DocumentReadingOptionKey:Any]
             if #available(macOS 13.0, *) {
                 options = [:]
             } else {
