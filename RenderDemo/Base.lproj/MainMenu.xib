@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24765" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24765"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,9 +17,12 @@
             <connections>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="Xgj-E0-Kdt"/>
                 <outlet property="modeButton" destination="cUv-yG-ROn" id="nRU-sE-vcW"/>
-                <outlet property="modeIndicator" destination="h2G-gD-wSH" id="O22-Mv-mca"/>
                 <outlet property="previewScrollView" destination="9tz-gF-DdE" id="fWy-88-plv"/>
                 <outlet property="previewTextView" destination="NAJ-g1-D1W" id="UaC-b0-EJw"/>
+                <outlet property="progress" destination="Wzq-xC-xkq" id="NO6-mA-IJ3"/>
+                <outlet property="reloadButton" destination="xXF-zr-IHi" id="L11-it-rA5"/>
+                <outlet property="reloadMenuItem" destination="hgU-EM-IhT" id="7em-zg-5z0"/>
+                <outlet property="thumbButton" destination="mIm-wI-PGa" id="cY9-pK-RcH"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -72,11 +75,11 @@
                 </menuItem>
                 <menuItem title="File" id="dMs-cI-mzQ">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="File" id="bib-Uj-vzu">
+                    <menu key="submenu" title="File" autoenablesItems="NO" id="bib-Uj-vzu">
                         <items>
                             <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                 <connections>
-                                    <action selector="doLoadFile:" target="Voe-Tx-rLC" id="Scv-I5-PB8"/>
+                                    <action selector="doLoadFile:" target="Voe-Tx-rLC" id="sxq-ZC-6zu"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Open Recent" id="tXI-mr-wws">
@@ -91,6 +94,12 @@
                                         </menuItem>
                                     </items>
                                 </menu>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="mdE-Es-IKM"/>
+                            <menuItem title="Refresh" keyEquivalent="r" id="hgU-EM-IhT">
+                                <connections>
+                                    <action selector="doReloadFile:" target="Voe-Tx-rLC" id="Jgt-ge-mdT"/>
+                                </connections>
                             </menuItem>
                         </items>
                     </menu>
@@ -166,31 +175,44 @@
                 <rect key="frame" x="0.0" y="0.0" width="660" height="478"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView clipsToBounds="NO" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9tz-gF-DdE">
-                        <rect key="frame" x="0.0" y="60" width="660" height="418"/>
-                        <clipView key="contentView" clipsToBounds="YES" drawsBackground="NO" copiesOnScroll="NO" id="BJy-MZ-98D">
-                            <rect key="frame" x="0.0" y="0.0" width="660" height="418"/>
+                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" translatesAutoresizingMaskIntoConstraints="NO" id="9tz-gF-DdE">
+                        <rect key="frame" x="0.0" y="66" width="660" height="412"/>
+                        <clipView key="contentView" drawsBackground="NO" id="BJy-MZ-98D">
+                            <rect key="frame" x="0.0" y="0.0" width="660" height="412"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView clipsToBounds="NO" wantsLayer="YES" editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" linkDetection="YES" textCompletion="NO" layoutManager="textKit1" id="NAJ-g1-D1W">
-                                    <rect key="frame" x="0.0" y="0.0" width="660" height="418"/>
+                                <textView wantsLayer="YES" editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" usesRuler="YES" textCompletion="NO" layoutManager="textKit1" id="NAJ-g1-D1W">
+                                    <rect key="frame" x="0.0" y="0.0" width="660" height="412"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="660" height="418"/>
+                                    <size key="minSize" width="660" height="412"/>
                                     <size key="maxSize" width="660" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
                             </subviews>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Xl5-99-hvh">
-                            <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                            <rect key="frame" x="0.0" y="383" width="660" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="skS-h9-m4V">
-                            <rect key="frame" x="643" y="0.0" width="17" height="418"/>
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="skS-h9-m4V">
+                            <rect key="frame" x="643" y="0.0" width="17" height="294"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUv-yG-ROn">
+                        <rect key="frame" x="20" y="20" width="514" height="16"/>
+                        <buttonCell key="cell" type="check" title="Dark Mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0P9-pv-cCh">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="514" id="Hgo-AN-UrV"/>
+                        </constraints>
+                        <connections>
+                            <action selector="doSwitchMode:" target="Voe-Tx-rLC" id="uCD-0Y-TM4"/>
+                        </connections>
+                    </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f2a-59-pv7">
                         <rect key="frame" x="542" y="20" width="98" height="20"/>
                         <buttonCell key="cell" type="push" title="Load..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="629-9R-UdX">
@@ -198,54 +220,69 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="2hx-Lc-ReQ"/>
-                            <constraint firstAttribute="width" constant="98" id="IZ1-Yx-gOS"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="98" id="IkA-gX-OG4"/>
+                            <constraint firstAttribute="height" constant="20" id="ipA-Pc-maB"/>
                         </constraints>
                         <connections>
                             <action selector="doLoadFile:" target="Voe-Tx-rLC" id="cl2-82-I8J"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cUv-yG-ROn">
-                        <rect key="frame" x="20" y="22" width="514" height="16"/>
-                        <buttonCell key="cell" type="check" title="Dark Mode" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="0P9-pv-cCh">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xXF-zr-IHi">
+                        <rect key="frame" x="451" y="18" width="83" height="24"/>
+                        <buttonCell key="cell" type="push" title="Reload" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dH6-Fu-yLg">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="TGt-He-Aac"/>
+                            <constraint firstAttribute="width" constant="83" id="tLx-sl-wEY"/>
+                        </constraints>
+                        <connections>
+                            <action selector="doReloadFile:" target="Voe-Tx-rLC" id="UgI-o3-rb7"/>
+                        </connections>
+                    </button>
+                    <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Wzq-xC-xkq">
+                        <rect key="frame" x="314" y="223" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="219-RT-Gjg"/>
+                            <constraint firstAttribute="width" constant="32" id="JR8-05-X7V"/>
+                        </constraints>
+                    </progressIndicator>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mIm-wI-PGa">
+                        <rect key="frame" x="20" y="42" width="620" height="16"/>
+                        <buttonCell key="cell" type="check" title="Thumbnail" bezelStyle="regularSquare" imagePosition="left" inset="2" id="yj0-nX-zys">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <constraints>
-                            <constraint firstAttribute="height" constant="16" id="zKp-LK-Jfp"/>
+                            <constraint firstAttribute="height" constant="16" id="8cO-tc-h4o"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="514" id="EF4-oS-4YG"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="kUA-Qp-PoB"/>
                         </constraints>
                         <connections>
-                            <action selector="doSwitchMode:" target="Voe-Tx-rLC" id="uCD-0Y-TM4"/>
+                            <action selector="doReloadFile:" target="Voe-Tx-rLC" id="IVw-qq-khL"/>
                         </connections>
                     </button>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h2G-gD-wSH">
-                        <rect key="frame" x="306" y="3" width="48" height="54"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="48" id="RNs-pz-x7O"/>
-                            <constraint firstAttribute="height" constant="48" id="Uhf-HN-VQF"/>
-                        </constraints>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="poweroutlet.type.k" catalog="system" id="NlV-fP-tn4"/>
-                        <color key="contentTintColor" name="systemGreenColor" catalog="System" colorSpace="catalog"/>
-                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="f2a-59-pv7" secondAttribute="bottom" constant="20" symbolic="YES" id="3cM-yK-Yg5"/>
-                    <constraint firstItem="cUv-yG-ROn" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="BXx-xl-Dvi"/>
-                    <constraint firstItem="f2a-59-pv7" firstAttribute="top" secondItem="9tz-gF-DdE" secondAttribute="bottom" constant="20" id="Dba-LX-25H"/>
-                    <constraint firstAttribute="trailing" secondItem="9tz-gF-DdE" secondAttribute="trailing" id="NJ5-BP-efF"/>
-                    <constraint firstItem="f2a-59-pv7" firstAttribute="leading" secondItem="cUv-yG-ROn" secondAttribute="trailing" constant="8" symbolic="YES" id="kTh-08-PZP"/>
-                    <constraint firstAttribute="bottom" secondItem="h2G-gD-wSH" secondAttribute="bottom" constant="6" id="p8h-xu-lcs"/>
-                    <constraint firstAttribute="trailing" secondItem="f2a-59-pv7" secondAttribute="trailing" constant="20" symbolic="YES" id="pTc-kP-iCM"/>
-                    <constraint firstItem="h2G-gD-wSH" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="qzy-hj-eRV"/>
-                    <constraint firstItem="9tz-gF-DdE" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="tNf-44-efT"/>
-                    <constraint firstItem="9tz-gF-DdE" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="y1G-Qy-FRA"/>
-                    <constraint firstAttribute="bottom" secondItem="cUv-yG-ROn" secondAttribute="bottom" constant="22" id="zAm-eX-srN"/>
+                    <constraint firstAttribute="trailing" secondItem="9tz-gF-DdE" secondAttribute="trailing" id="1Cy-I4-BDP"/>
+                    <constraint firstItem="9tz-gF-DdE" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="1nO-d9-maJ"/>
+                    <constraint firstItem="cUv-yG-ROn" firstAttribute="top" secondItem="mIm-wI-PGa" secondAttribute="bottom" constant="6" symbolic="YES" id="99U-JB-g4N"/>
+                    <constraint firstAttribute="trailing" secondItem="f2a-59-pv7" secondAttribute="trailing" constant="20" symbolic="YES" id="CFz-ED-Zjx"/>
+                    <constraint firstItem="f2a-59-pv7" firstAttribute="leading" secondItem="xXF-zr-IHi" secondAttribute="trailing" constant="8" id="CuA-dy-EpB"/>
+                    <constraint firstAttribute="trailing" secondItem="mIm-wI-PGa" secondAttribute="trailing" constant="20" symbolic="YES" id="Fdv-Lb-tgb"/>
+                    <constraint firstItem="cUv-yG-ROn" firstAttribute="leading" secondItem="mIm-wI-PGa" secondAttribute="leading" id="Mfw-4g-qdh"/>
+                    <constraint firstItem="Wzq-xC-xkq" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="N5z-Zx-eyb"/>
+                    <constraint firstAttribute="bottom" secondItem="xXF-zr-IHi" secondAttribute="bottom" constant="18" id="XRf-QO-Xpo"/>
+                    <constraint firstItem="mIm-wI-PGa" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Y1Z-Y0-iAP"/>
+                    <constraint firstItem="Wzq-xC-xkq" firstAttribute="centerY" secondItem="EiT-Mj-1SZ" secondAttribute="centerY" id="foa-kC-aa1"/>
+                    <constraint firstItem="cUv-yG-ROn" firstAttribute="baseline" secondItem="f2a-59-pv7" secondAttribute="firstBaseline" id="nn8-yg-8zW"/>
+                    <constraint firstAttribute="bottom" secondItem="f2a-59-pv7" secondAttribute="bottom" constant="20" symbolic="YES" id="r8O-uD-U7X"/>
+                    <constraint firstItem="mIm-wI-PGa" firstAttribute="top" secondItem="9tz-gF-DdE" secondAttribute="bottom" constant="8" symbolic="YES" id="wnF-mP-byN"/>
+                    <constraint firstItem="9tz-gF-DdE" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="xOf-Lx-EmJ"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="290" y="458"/>
+            <point key="canvasLocation" x="304" y="680"/>
         </window>
     </objects>
-    <resources>
-        <image name="poweroutlet.type.k" catalog="system" width="15" height="15"/>
-    </resources>
 </document>
