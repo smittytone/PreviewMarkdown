@@ -24,7 +24,7 @@ class PMStyler {
 
     // MARK: - Private properties with defaults
 
-    private  var renderLightMode: Bool                                   = false
+    private  var renderLightMode: Bool                                  = false
     private  var isThumbnail: Bool                                      = false
     private  var doLoadWebContent: Bool                                 = false
     internal var tokenString: String                                    = ""
@@ -38,6 +38,8 @@ class PMStyler {
     private  var fonts: [FontRecord]                                    = []
     private  var bodyFontFamily: PMFont                                 = PMFont()
     private  var highlighter: Highlighter?                              = nil
+    // FROM 2.4.3
+    private var lineSpacing: CGFloat                                    = 1.0
 
 
     // MARK: - Rendering Functions
@@ -960,12 +962,14 @@ class PMStyler {
         // Removing use of deprecated WebPreferences: remove IMG tags from table HTML
         // (WepPreferences was used to ignore these anyway)
         var theTable = table
-        var r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
+        let regex = #"<img[^>]*src="([^"]+)"[^>]*>"#
+        var r = theTable.range(of: regex, options: .regularExpression)
         while r != nil {
             theTable = theTable.replacingCharacters(in: r!, with: "")
-            r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
+            r = theTable.range(of: regex, options: .regularExpression)
         }
 
+        // Leverage NSAttributedString's HTML to table conversion
         if let data = theTable.data(using: .utf16) {
             if let tableString = NSMutableAttributedString(html: data, options: [:], documentAttributes: nil) {
                 // Now we have to set our font style for each element within the table

@@ -106,14 +106,13 @@ class PreviewViewController: NSViewController,
 
                 // Access the text view's storage to place the rendered Markdown string
                 if let renderTextStorage = self.renderTextView.textStorage {
-                    if let renderTextContainer: NSTextContainer = self.renderTextView.textContainer {
+                    if let renderTextContainer = self.renderTextView.textContainer {
                         // Add a custom layout manager to trap double-underlines, which
                         // we are using as a proxy for lozenged text - the layouter will
                         // do the replacement work
                         let layouter = PMLayouter()
                         layouter.marginDelta = common.settings.doShowMargin ? common.settings.previewMarginWidth : 0.0
                         layouter.fontSize = common.settings.fontSize
-                        layouter.lineSpacing = common.settings.lineSpacing
 
                         // This line is a sort of fix for the table border rendering issue
                         // It helps - missing borders do get drawn eventually - but doesn't

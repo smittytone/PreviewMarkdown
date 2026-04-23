@@ -16,7 +16,6 @@ class PMLayouter: NSLayoutManager {
     // The background of KDB lozenges
     var lozengeColour: NSColor?     = nil
     var fontSize: CGFloat           = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
-    var lineSpacing: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.LINE_SPACING
     // FROM 2.1.0
     var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
 
@@ -52,8 +51,8 @@ class PMLayouter: NSLayoutManager {
         lozengeRect.size.width += (self.fontSize > 18 ? 8.0 : 4.0)
         
         // Allow for larger line spacing values 'stretching' the rect
-        lozengeRect.size.height = lozengeRect.size.height / self.lineSpacing
-        
+        lozengeRect.size.height = self.fontSize + (self.fontSize > 18 ? 8.0 : 4.0)
+
         // Draw and fill rounded path over lozenge
         let path = NSBezierPath(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
         if let colour: NSColor = self.lozengeColour {
