@@ -97,10 +97,10 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                         request.maximumSize.height)
 
                 // NOTE The `+2.0` is a hack to avoid a line above the image
-                let scaleFrame: CGRect = NSMakeRect(10.0,
-                                                    20.0,
-                                                    thumbnailFrame.width * request.scale - 10.0,
-                                                    (thumbnailFrame.height * request.scale) - 18.0)
+                let scaleFrame: CGRect = NSMakeRect(0.0,
+                                                    0.0,
+                                                    thumbnailFrame.width * request.scale,
+                                                    (thumbnailFrame.height * request.scale) + 2.0)
 
                 // Pass a QLThumbnailReply and no error to the supplied handler
                 handler(QLThumbnailReply(contextSize: thumbnailFrame.size) { (context) -> Bool in

@@ -118,7 +118,7 @@ class PMStyler {
         let scanner: Scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
 
-#if DEBUG
+#if INCHTML2
         let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
@@ -957,45 +957,27 @@ class PMStyler {
     private func renderTable(_ table: String) -> NSMutableAttributedString {
 
         // FROM 2.4.3
-        // Pave the way for removing use of deprecated WebPreferences: just remove IMG tags from table HTML
-        // (WepPreferences is used to ignore these anyway)
+        // Removing use of deprecated WebPreferences: remove IMG tags from table HTML
+        // (WepPreferences was used to ignore these anyway)
         var theTable = table
-        if #available(macOS 13.0, *) {
-            var r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
-            while r != nil {
-                theTable = theTable.replacingCharacters(in: r!, with: "")
-                r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
-            }
-        } else {
-            theTable = table
+        var r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
+        while r != nil {
+            theTable = theTable.replacingCharacters(in: r!, with: "")
+            r = theTable.range(of: #"<img[^>]*src="([^"]+)"[^>]*>"#, options: .regularExpression)
         }
 
-        if let data: Data = theTable.data(using: .utf16) {
-            // NOTE We use WebPreferences, which is part of the deprecated WebKit, in order to
-            //      halt the loading of images within tables (which are processed by NSAttributedString
-            //      not by us). This should be replaced as soon as we have a better solution to
-            //      Known Issue #1
-            let options: [NSAttributedString.DocumentReadingOptionKey:Any]
-            if #available(macOS 13.0, *) {
-                options = [:]
-            } else {
-                // This section can go when PreviewMarkdown's minumum supported OS becomes 13.x
-                guard let wp = WebPreferences(identifier: BUFFOON_CONSTANTS.WEB_PREFS_ID) else { return NSMutableAttributedString() }
-                wp.loadsImagesAutomatically = false // Seems to be an occasional crash here (thumbnailer only)
-                options = [NSAttributedString.DocumentReadingOptionKey.webPreferences: wp]
-            }
-
-            if let tableString: NSMutableAttributedString = NSMutableAttributedString(html: data, options: options, documentAttributes: nil) {
+        if let data = theTable.data(using: .utf16) {
+            if let tableString = NSMutableAttributedString(html: data, options: [:], documentAttributes: nil) {
                 // Now we have to set our font style for each element within the table
                 tableString.enumerateAttribute(.font, in: NSMakeRange(0, tableString.length)) { (value: Any?, range: NSRange, got: UnsafeMutablePointer<ObjCBool>) in
                     if value != nil {
-                        let font: NSFont = value as! NSFont
-                        var textColour: NSColor = self.colours.body!
+                        let font = value as! NSFont
+                        var textColour = self.colours.body!
                         var cellFont: NSFont
 
                         // Convert default fonts to the user's preferred ones,
                         // and set the correct foreground colour
-                        if let fontName: String = font.displayName {
+                        if let fontName = font.displayName {
                             if fontName == "Courier" {
                                 // NSAttributedString's default code font is Courier so use this
                                 // to format inline code correctly
