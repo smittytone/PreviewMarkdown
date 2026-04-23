@@ -345,7 +345,7 @@ final class AppDelegate: NSResponder,
         if sender as? NSButton == self.advancedHelpButton {
             path = BUFFOON_CONSTANTS.URL_MAIN + "#advanced-settings"
         } else {
-            path = BUFFOON_CONSTANTS.URL_MAIN + "#customiae-the-preview"
+            path = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
         }
 
         NSWorkspace.shared.open(URL(string:path)!)

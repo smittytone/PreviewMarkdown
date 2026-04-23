@@ -62,7 +62,6 @@ class PreviewViewController: NSViewController,
                 /*
                  Attributed string acquisition
                  */
-
                 let attributedMarkdown = common.getAttributedString(markdown[...])
 
                 /*
