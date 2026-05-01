@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.4.3 *Unreleased*
+- 2.4.3 *02 May 2026*
     - Fix font-size slider control’s colouring.
     - Fix broken Advanced Help button.
     - Fix WebPreferences-related crashes in thumbnailer.
