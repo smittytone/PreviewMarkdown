@@ -33,7 +33,7 @@ extension AppDelegate {
      */
     internal func runProcess(app path: String, with args: [String]) -> Bool {
         
-        let task: Process = Process()
+        let task = Process()
         task.executableURL = URL(fileURLWithPath: path)
         task.arguments = args
         

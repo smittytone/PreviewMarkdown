@@ -132,7 +132,7 @@ class PreviewViewController: NSViewController,
             } else {
                 // FROM 1.4.3
                 // We couldn't convert to data to a valid encoding
-                let errDesc: String = "\(BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING) \(encoding)"
+                let errDesc = "\(BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING) \(encoding)"
                 reportError = NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
                                       code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
                                       userInfo: [NSLocalizedDescriptionKey: errDesc])
@@ -192,7 +192,7 @@ class PreviewViewController: NSViewController,
     */
     private func setPreviewWindowSize(_ settings: PMSettings) {
 
-        var screen: NSScreen = NSScreen.screens[0]
+        var screen = NSScreen.screens[0]
 
         // We've set `screen` to the primary, ie. menubar-displaying,
         // screen, but ideally we should pick the screen with user focus.
