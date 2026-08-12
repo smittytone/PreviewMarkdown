@@ -83,8 +83,8 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var advancedSettingsSheet: NSWindow!
     @IBOutlet weak var applyAdvancedButton: NSButton!
     @IBOutlet weak var previewSizeAdvancedPopup: NSPopUpButton!
-    @IBOutlet weak var tintTumbnailsAdvancedSwitch: NSSwitch!
-    @IBOutlet weak var tintTumbnailsAdvancedLabel: NSTextField!
+    @IBOutlet weak var tintThumbnailsAdvancedSwitch: NSSwitch!
+    @IBOutlet weak var tintThumbnailsAdvancedLabel: NSTextField!
     @IBOutlet weak var previewMarginSizeText: NSTextField!
     @IBOutlet weak var previewMarginRangeText: NSTextField!
     // FROM 2.4.3
@@ -142,16 +142,14 @@ final class AppDelegate: NSResponder,
 
         // FROM 1.0.3
         // Add the version number to the panel
-        let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let build: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
         versionLabel.stringValue = "Version \(version) (\(build))"
 
         // From 1.0.4
         // Disable the Help menu Spotlight features
-        let dummyHelpMenu: NSMenu = NSMenu(title: "Dummy")
-        let theApp = NSApplication.shared
-        theApp.helpMenu = dummyHelpMenu
-        
+        NSApplication.shared.helpMenu = NSMenu(title: "Dummy")
+
         // FROM 2.0.0
         // Configure the tab manager
         self.tabManager.parent = self
@@ -188,7 +186,7 @@ final class AppDelegate: NSResponder,
         // Show 'What's New' if we need to
         // (and set up the WKWebView: no elasticity, horizontal scroller)
         // NOTE Has to take place at the end of the function
-        doShowWhatsNew(self)
+        doShowWhatsNew(nil)
 
         // FROM 2.0.0
         self.mainMenuResetFinder.isHidden = true
@@ -251,9 +249,9 @@ final class AppDelegate: NSResponder,
         
         // Are there any unsaved changes to the settings?
         if checkSettingsOnQuit() {
-            let alert: NSAlert = makeAlert("You have unsaved settings",
-                                           "Do you wish to cancel and save or change them, or quit the app anyway?",
-                                           false)
+            let alert = makeAlert("You have unsaved settings",
+                                  "Do you wish to cancel and save or change them, or quit the app anyway?",
+                                  false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
             alert.beginSheetModal(for: self.window) { (response) in
@@ -282,9 +280,9 @@ final class AppDelegate: NSResponder,
         
         // Does the feeback page contain text? If so let the user know
         if self.feedbackText.stringValue.count > 0 && !self.hasSentFeedback {
-            let alert: NSAlert = makeAlert("You have unsent feedback",
-                                           "Do you wish to cancel and send it, or quit the app anyway?",
-                                           false)
+            let alert = makeAlert("You have unsent feedback",
+                                  "Do you wish to cancel and send it, or quit the app anyway?",
+                                  false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
             alert.beginSheetModal(for: self.window) { (response) in
@@ -308,8 +306,8 @@ final class AppDelegate: NSResponder,
      */
     @IBAction @objc private func doShowSites(sender: Any) {
         
-        let item: NSMenuItem = sender as! NSMenuItem
-        var path: String = BUFFOON_CONSTANTS.URL_MAIN
+        let item = sender as! NSMenuItem
+        var path = BUFFOON_CONSTANTS.URL_MAIN
         
         if item == self.helpMenuMarkdownIt {
             path = "https://github.com/markdown-it/markdown-it"
@@ -415,8 +413,8 @@ final class AppDelegate: NSResponder,
             .foregroundColor: NSColor.labelColor
         ]
         
-        let infoText: NSMutableAttributedString = NSMutableAttributedString(string: "You need only run this app once, to register its Markdown Previewer and Markdown Thumbnailer application extensions with macOS. You can then manage these extensions in ", attributes: bodyAtts)
-        let boldText: NSAttributedString = NSAttributedString(string: "System Settings > Extensions > Quick Look", attributes: boldAtts)
+        let infoText = NSMutableAttributedString(string: "You need only run this app once, to register its Markdown Previewer and Markdown Thumbnailer application extensions with macOS. You can then manage these extensions in ", attributes: bodyAtts)
+        let boldText = NSAttributedString(string: "System Settings > Extensions > Quick Look", attributes: boldAtts)
         infoText.append(boldText)
         infoText.append(NSAttributedString(string: ".\n\nCases where previews cannot be rendered can usually be resolved by logging out of your Mac, logging in again and running this app once more.", attributes: bodyAtts))
         self.infoLabel.attributedStringValue = infoText

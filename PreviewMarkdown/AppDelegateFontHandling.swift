@@ -34,12 +34,12 @@ extension AppDelegate {
         var cf: [PMFont] = []
         var bf: [PMFont] = []
         
-        let mono: UInt = NSFontTraitMask.fixedPitchFontMask.rawValue
-        let bold: UInt = NSFontTraitMask.boldFontMask.rawValue
-        let ital: UInt = NSFontTraitMask.italicFontMask.rawValue
-        let symb: UInt = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
+        let mono = NSFontTraitMask.fixedPitchFontMask.rawValue
+        let bold = NSFontTraitMask.boldFontMask.rawValue
+        let ital = NSFontTraitMask.italicFontMask.rawValue
+        let symb = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
         
-        let fm: NSFontManager = NSFontManager.shared
+        let fm = NSFontManager.shared
         
         let families: [String] = fm.availableFontFamilies
         for family in families {
@@ -54,12 +54,12 @@ extension AppDelegate {
             if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
                 // This will hold a font family: individual fonts will be added to
                 // the 'styles' array
-                var familyRecord: PMFont = PMFont()
+                var familyRecord = PMFont()
                 familyRecord.displayName = family
                 
                 for font: [Any] in fonts {
-                    let psname: String = font[0] as! String
-                    let traits: UInt = font[3] as! UInt
+                    let psname = font[0] as! String
+                    let traits = font[3] as! UInt
                     var doUseFont: Bool = false
                     
                     if mono & traits != 0 {
@@ -71,7 +71,7 @@ extension AppDelegate {
                     
                     if doUseFont {
                         // The font is good to use, so add it to the list
-                        var fontRecord: PMFont = PMFont()
+                        var fontRecord = PMFont()
                         fontRecord.postScriptName = psname
                         fontRecord.styleName = font[1] as! String
                         fontRecord.traits = traits
@@ -116,16 +116,16 @@ extension AppDelegate {
      */
     internal func setStylePopup(_ isBody: Bool = true, _ styleName: String? = nil) {
         
-        let selectedFamily: String = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
+        let selectedFamily = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
         let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
         let targetPopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
         targetPopup.removeAllItems()
         
-        for family: PMFont in familyList {
+        for family in familyList {
             if selectedFamily == family.displayName {
-                if let styles: [PMFont] = family.styles {
+                if let styles = family.styles {
                     targetPopup.isEnabled = true
-                    for style: PMFont in styles {
+                    for style in styles {
                         targetPopup.addItem(withTitle: style.styleName)
                     }
                     
@@ -159,9 +159,9 @@ extension AppDelegate {
         let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
         let targetPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
         
-        for family: PMFont in familyList {
-            if let styles: [PMFont] = family.styles {
-                for style: PMFont in styles {
+        for family in familyList {
+            if let styles = family.styles {
+                for style in styles {
                     if style.postScriptName == postScriptName {
                         // We have a font match, so select the font name popup entry with the
                         // same family name...
@@ -179,7 +179,7 @@ extension AppDelegate {
         // in play, or the font references one that was later removed by the user.
         if targetPopup.selectedItem == nil {
             if postScriptName == "System" {
-                let sysFont: NSFont = NSFont.systemFont(ofSize: 10)
+                let sysFont = NSFont.systemFont(ofSize: 10)
                 selectFontByPostScriptName(sysFont.fontName, isBody)
                 return
             }
@@ -204,13 +204,16 @@ extension AppDelegate {
         let fontPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
         let stylePopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
         
-        if let selectedFont: String = fontPopup.titleOfSelectedItem {
-            let selectedStyle: Int = stylePopup.indexOfSelectedItem
-            
-            for family: PMFont in familyList {
+        if let selectedFont = fontPopup.titleOfSelectedItem {
+            let selectedStyle = stylePopup.indexOfSelectedItem
+
+            // FROM 2.5.0 -- bail if there's no popup selection
+            guard selectedStyle >= 0 else { return nil }
+
+            for family in familyList {
                 if family.displayName == selectedFont {
-                    if let styles: [PMFont] = family.styles {
-                        let font: PMFont = styles[selectedStyle]
+                    if let styles = family.styles {
+                        let font = styles[selectedStyle]
                         return font.postScriptName
                     }
                 }

@@ -63,7 +63,7 @@ extension AppDelegate {
     @objc
     private func doSendFeedback(sender: Any) {
 
-        let feedback: String = self.feedbackText.stringValue
+        let feedback = self.feedbackText.stringValue
         if !feedback.isEmpty  && !self.hasSentFeedback {
             // FROM 2.4.1
             // Use Swift Concurrency
@@ -76,7 +76,7 @@ extension AppDelegate {
                 hidePanelGenerators()
 
                 // Post the feedback asynchronously
-                let error: FeedbackError = await self.nuSendFeedback(feedback)
+                let error = await self.nuSendFeedback(feedback)
                 self.connectionProgress.stopAnimation(self)
                 if error.code != .noError {
                     // Error - inform the user
@@ -101,8 +101,8 @@ extension AppDelegate {
     internal func presentFeedbackError(_ error: FeedbackError) {
 
         hidePanelGenerators()
-        let alert: NSAlert = makeAlert("Feedback Could Not Be Sent",
-                                       "Unfortunately, your comments could not be send at this time. Please try again later.\n\nReason: \(error.localizedDescription)")
+        let alert = makeAlert("Feedback Could Not Be Sent",
+                              "Unfortunately, your comments could not be send at this time. Please try again later.\n\nReason: \(error.localizedDescription)")
         
         // FROM 2.0.0: Fix sheet to mainWindow not reportWindow
         alert.beginSheetModal(for: self.window) { (resp) in
@@ -118,8 +118,8 @@ extension AppDelegate {
      */
     internal func presentFeedbackSuccess() {
 
-        let alert: NSAlert = makeAlert("Thanks For Your Feedback!",
-                                       "Your comments have been received and we’ll take a look at them shortly.")
+        let alert = makeAlert("Thanks For Your Feedback!",
+                              "Your comments have been received and we’ll take a look at them shortly.")
         alert.beginSheetModal(for: self.window) { (resp) in
             self.showPanelGenerators()
             self.hasSentFeedback = true
@@ -178,10 +178,6 @@ extension AppDelegate {
                 self.feedbackText.textColor = .white
             }
         }
-
-        // FROM 2.4.1
-        // Play the system sound while the screen flash is not working
-        //NSSound.beep()
 
         // Switch the background back in 0.25 of a second
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { (timer) in

@@ -75,7 +75,7 @@ class PreviewViewController: NSViewController,
                 // FROM 2.4.0
                 // The force-light-mode-preview-in-dark-mode setting is now a general
                 // preview-colours-should-be-opposite-the-mode setting.
-                var renderPreviewLight = NSApplication.shared.inLightMode
+                var renderPreviewLight = NSApp.inLightMode
                 if common.settings.doReverseMode {
                     // Invert the colour scheme based on the current mode
                     renderPreviewLight = !renderPreviewLight

@@ -86,9 +86,9 @@ extension Scanner {
      */
     func getNextCharacter(in outer: String) -> String {
 
-        let string: NSString = self.string as NSString
-        let idx: Int = self.currentIndex.utf16Offset(in: outer)
-        let nextChar: String = string.substring(with: NSMakeRange(idx, 1))
+        let string = self.string as NSString
+        let idx = self.currentIndex.utf16Offset(in: outer)
+        let nextChar = string.substring(with: NSMakeRange(idx, 1))
         return nextChar
     }
 
@@ -193,52 +193,16 @@ extension Double {
 extension NSColor {
 
     /**
-     Generate a new NSColor from an RGB+A hex string..
-
-     - Parameters
-        - hex: The RGB+A hex string, eg.`AABBCCFF`.
-
-     - Returns An NSColor object.
-     */
-    static func hexToColour(_ hex: String) -> NSColor {
-
-        var colourString: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-
-        if (colourString.hasPrefix("#")) {
-            let index = colourString.index(colourString.startIndex, offsetBy: 1)
-            colourString = String(colourString[index...])
-        }
-
-        // Colours in hex strings have 6 (`AABBCC`) or 8 (6 + alpha, `AABBCCDD`) values
-        if colourString.count != 8 && colourString.count != 6 {
-            return NSColor.red
-        }
-
-        func hexToFloat(_ hs: String) -> CGFloat {
-           // No alpha value supplied, so assume full opacity is required
-           return CGFloat(UInt8(hs, radix: 16) ?? 255)
-        }
-        
-        let cns: NSString = colourString as NSString
-        let red: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 0, length: 2))) / 255.0
-        let green: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 2, length: 2))) / 255.0
-        let blue: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 4, length: 2))) / 255.0
-        let alpha: CGFloat = hexToFloat(cns.substring(with: NSRange(location: 6, length: 2))) / 255.0
-        return NSColor(red: red, green: green, blue: blue, alpha: alpha)
-    }
-
-
-    /**
      Class function to return an NSColor object that matches the colour supplied as a RGBA hex value.
      
      - Parameters:
         - colourValue: The colour as a hex string `RRGGBBAA`, eg `FF00AA88`.
 
      - Returns An NSColor object.
+     */
+    static func hexToColour(_ colourValue: String) -> NSColor {
 
-    static func cns(_ colourValue: String) -> NSColor {
-
-        var colourString: String = colourValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        var colourString = colourValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
         if (colourString.hasPrefix("#")) {
             // The colour is defined by a hex value
@@ -256,9 +220,9 @@ extension NSColor {
 
         if colourString.count == 6 || colourString.count == 8 {
             // Decode a six-character hex string
-            let rString: String = (colourString as NSString).substring(to: 2)
-            let gString: String = ((colourString as NSString).substring(from: 2) as NSString).substring(to: 2)
-            let bString: String = ((colourString as NSString).substring(from: 4) as NSString).substring(to: 2)
+            let rString = (colourString as NSString).substring(to: 2)
+            let gString = ((colourString as NSString).substring(from: 2) as NSString).substring(to: 2)
+            let bString = ((colourString as NSString).substring(from: 4) as NSString).substring(to: 2)
 
             Scanner(string: rString).scanHexInt64(&r)
             Scanner(string: gString).scanHexInt64(&g)
@@ -268,15 +232,15 @@ extension NSColor {
             
             if colourString.count == 8 {
                 // Decode the eight-character hex string's alpha value
-                let aString: String = ((colourString as NSString).substring(from: 6) as NSString).substring(to: 2)
+                let aString = ((colourString as NSString).substring(from: 6) as NSString).substring(to: 2)
                 Scanner(string: aString).scanHexInt64(&a)
                 alpha = CGFloat(a) / divisor
             }
         } else {
             // Decode a three-character hex string
-            let rString: String = (colourString as NSString).substring(to: 1)
-            let gString: String = ((colourString as NSString).substring(from: 1) as NSString).substring(to: 1)
-            let bString: String = ((colourString as NSString).substring(from: 2) as NSString).substring(to: 1)
+            let rString = (colourString as NSString).substring(to: 1)
+            let gString = ((colourString as NSString).substring(from: 1) as NSString).substring(to: 1)
+            let bString = ((colourString as NSString).substring(from: 2) as NSString).substring(to: 1)
 
             Scanner(string: rString).scanHexInt64(&r)
             Scanner(string: gString).scanHexInt64(&g)
@@ -286,7 +250,7 @@ extension NSColor {
 
         return NSColor(red: CGFloat(r) / divisor, green: CGFloat(g) / divisor, blue: CGFloat(b) / divisor, alpha: alpha)
     }
-    */
+
 
     /**
      Property providing a colour's internal representation into an RGB+A hex string.
@@ -297,12 +261,12 @@ extension NSColor {
             return BUFFOON_CONSTANTS.HEX_COLOUR.CODE
         }
         
-        let red: Int = Int(round(rgbColour.redComponent * 0xFF))
-        let green: Int = Int(round(rgbColour.greenComponent * 0xFF))
-        let blue: Int = Int(round(rgbColour.blueComponent * 0xFF))
-        let alpha: Int = Int(round(rgbColour.alphaComponent * 0xFF))
-        
-        let hexString: NSString = NSString(format: "%02X%02X%02X%02X", red, green, blue, alpha)
+        let red = Int(round(rgbColour.redComponent * 0xFF))
+        let green = Int(round(rgbColour.greenComponent * 0xFF))
+        let blue = Int(round(rgbColour.blueComponent * 0xFF))
+        let alpha = Int(round(rgbColour.alphaComponent * 0xFF))
+
+        let hexString = NSString(format: "%02X%02X%02X%02X", red, green, blue, alpha)
         return hexString as String
     }
 }
@@ -325,9 +289,8 @@ extension URL {
 extension NSApplication {
 
     var inLightMode: Bool {
-        get {
-            return (self.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua")
-        }
+        // FROM 2.3.3 -- use a better check than string values
+        return effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .aqua
     }
 }
 

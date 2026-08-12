@@ -175,7 +175,7 @@ class PMSettings {
             // this will persist, but with each new major and/or minor version, we make a
             // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
             // should be shown this run
-            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + version
+            let key = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + version
             if defaults.object(forKey: key) == nil {
                 defaults.setValue(true, forKey: key)
             }

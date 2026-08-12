@@ -56,8 +56,8 @@
                 <outlet property="settingsButton" destination="XT6-vN-IwB" id="trD-B7-qUF"/>
                 <outlet property="showFrontMatterSwitch" destination="EA2-hi-rAI" id="Awt-uK-f9G"/>
                 <outlet property="showMarginSwitch" destination="eHN-Wm-zgJ" id="y6g-ua-O8g"/>
-                <outlet property="tintTumbnailsAdvancedLabel" destination="iDr-vO-dxT" id="rGT-Gn-SVv"/>
-                <outlet property="tintTumbnailsAdvancedSwitch" destination="cgP-sC-bGb" id="bhg-iF-ewb"/>
+                <outlet property="tintThumbnailsAdvancedLabel" destination="iDr-vO-dxT" id="rGT-Gn-SVv"/>
+                <outlet property="tintThumbnailsAdvancedSwitch" destination="cgP-sC-bGb" id="bhg-iF-ewb"/>
                 <outlet property="useLightSwitch" destination="x3R-Jh-AIY" id="eTE-Zy-8Ub"/>
                 <outlet property="versionLabel" destination="7WS-6l-Uih" id="UCQ-v5-Yhp"/>
                 <outlet property="whatsNewWebView" destination="edS-kL-I2r" id="f6t-H5-tEf"/>

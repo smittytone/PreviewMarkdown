@@ -31,15 +31,15 @@ public class PMMarkdowner {
         let bundle = Bundle(for: PMMarkdowner.self)
 
         // Load the highlight.js code from the bundle or fail
-        guard let javaScriptPath: String = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
+        guard let javaScriptPath = bundle.path(forResource: "markdown-it.min", ofType: "js") else {
             return nil
         }
 
         // Check the JavaScript or fail
         // FROM 2.4.0 add extra checks for failed operations
         do {
-            guard let context: JSContext = JSContext() else { return nil }
-            let javaScriptString: String = try String(contentsOfFile: javaScriptPath)
+            guard let context = JSContext() else { return nil }
+            let javaScriptString = try String(contentsOfFile: javaScriptPath)
             let _ = context.evaluateScript(javaScriptString)
             guard let localJavaScript = context.globalObject.objectForKeyedSubscript("markdownit") else {
                 return nil

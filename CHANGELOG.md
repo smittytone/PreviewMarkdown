@@ -1,6 +1,7 @@
 ## Release Notes
 
 - 2.5.0 *Unreleased*
+    - Code stability improvements.
     - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
 - 2.4.3 *02 May 2026*
     - Fix font-size slider control’s colouring.

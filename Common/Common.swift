@@ -45,7 +45,7 @@ final internal class Common {
     var workingDirectory: String                                    = ""            // Pass in the file's directory
     var linkColor: NSColor                                          = .linkColor    // Pass to main text view
     // FROM 2.1.0
-    var settings: PMSettings                                = PMSettings()
+    var settings: PMSettings                                        = PMSettings()
 
 
     // MARK: - Private Properties
@@ -72,9 +72,9 @@ final internal class Common {
 
     // MARK: - Lifecycle Functions
 
-    init?(forThumbnail isThumbnail: Bool) {
+    init?(forThumbnail: Bool) {
 
-        self.isThumbnail = isThumbnail
+        self.isThumbnail = forThumbnail
 
         // Instantiate styler
         self.styler = PMStyler()
@@ -157,11 +157,11 @@ final internal class Common {
     func getAttributedString(_ rawText: Substring) -> NSAttributedString {
 
         // Process the markdown string
-        var output: NSMutableAttributedString = NSMutableAttributedString(string: "")
+        var output = NSMutableAttributedString(string: "")
 
         // FROM 2.4.0
         // Should we render for Light mode? Assume Dark for now
-        var renderForLightMode: Bool = false
+        var renderForLightMode = false
 
         // Look for YAML front matter
         var frontMatter: Substring = ""
@@ -173,8 +173,8 @@ final internal class Common {
         // If we're rendering a thumbnail, count the lines and paragraphcs,
         // and update `components.markdownEnd` to skip lines we won't show
         if self.isThumbnail {
-            var wordCount: Int = 0
-            var lineCount: Int = 0
+            var wordCount = 0
+            var lineCount = 0
 
             // Iterate over the raw string's markdown area
             for index in rawText[components.markdownStart!..<components.markdownEnd!].indices {
@@ -206,11 +206,10 @@ final internal class Common {
         }
 
         // Load in the Markdown converter
-        let markdowner: PMMarkdowner? = PMMarkdowner()
-        if markdowner == nil {
+        guard let markdowner = PMMarkdowner() else {
             // Missing JS code file or other init error
-            output = NSMutableAttributedString(string: "Could not instantiate MDJS",
-                                               attributes: self.yamlValueAttributes)
+            return NSAttributedString(string: "Could not instantiate MDJS",
+                                      attributes: self.yamlValueAttributes)
         }
 
         // Render the Markdown
@@ -228,29 +227,29 @@ final internal class Common {
                 renderForLightMode = !self.settings.thumbnailMatchFinderMode
             } else {
                 // FROM 2.4.0
-                renderForLightMode = isMacInLightMode()
+                renderForLightMode = NSApp.inLightMode
                 if self.settings.doReverseMode {
                     renderForLightMode = !renderForLightMode
                 }
             }
 
-            if let attStr: NSAttributedString = styler?.render(markdowner!.tokenise(markdownToRender), self.isThumbnail, renderForLightMode) {
+            if let attStr = styler?.render(markdowner.tokenise(markdownToRender), self.isThumbnail, renderForLightMode) {
                 output = NSMutableAttributedString(attributedString: attStr)
 
                 // Render YAML front matter if requested by the user, and we're not
                 // rendering a thumbnail image (this is for previews only)
                 if !self.isThumbnail && self.settings.doShowFrontMatter && frontMatter.count > 0 {
                     do {
-                        let yaml: Yaml = try Yaml.load(String(frontMatter))
+                        let yaml = try Yaml.load(String(frontMatter))
 
                         // FROM 2.2.0
-                        let yamlString: NSMutableAttributedString = processYaml(yaml, self.styler!)
+                        let yamlString = processYaml(yaml, self.styler!)
                         yamlString.addAttributedStrings([self.newLine, self.hr, self.newLine, output])
                         output = yamlString
                     } catch {
                         // No YAML to render, or the YAML was mis-formatted
                         // Get the error as reported by YamlSwift
-                        let yamlErr: Yaml.ResultError = error as! Yaml.ResultError
+                        let yamlErr = error as! Yaml.ResultError
                         var yamlErrString: String
                         switch(yamlErr) {
                             case .message(let s):
@@ -258,7 +257,7 @@ final internal class Common {
                         }
 
                         // Assemble the error string
-                        let errorString: NSMutableAttributedString = NSMutableAttributedString(string: "Could not render the front matter. Error: " + yamlErrString, attributes: self.yamlKeyAttributes)
+                        let errorString = NSMutableAttributedString(string: "Could not render the front matter. Error: " + yamlErrString, attributes: self.yamlKeyAttributes)
 #if DEBUG
                         errorString.addAttributedStrings([self.newLine, self.hr])
                         errorString.append(NSMutableAttributedString(string: String(frontMatter),
@@ -283,7 +282,7 @@ final internal class Common {
 
 #if DEBUG
         if !self.isThumbnail {
-            let modeString = NSMutableAttributedString(string: "MODE: \(isMacInLightMode() ? "LIGHT" : "DARK") SETTING: \(self.settings.doReverseMode ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
+            let modeString = NSMutableAttributedString(string: "MODE: \(NSApp.inLightMode ? "LIGHT" : "DARK") SETTING: \(self.settings.doReverseMode ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
                                                        attributes: self.yamlKeyAttributes)
             modeString.append(output)
             output = modeString
@@ -310,7 +309,7 @@ final internal class Common {
     private func getFrontMatter(_ rawText: Substring) -> MarkdownComponents {
 
         // Assume the data is ALL markdown to begin with
-        let components: MarkdownComponents = MarkdownComponents()
+        let components = MarkdownComponents()
         components.markdownStart = rawText.startIndex
         components.markdownEnd = rawText.endIndex
 
@@ -330,8 +329,8 @@ final internal class Common {
 
         // Make sure the front matter, if any, is no preceded by any text
         if components.frontMatterStart != nil {
-            let endIndex: String.Index = rawText.index(components.frontMatterStart!, offsetBy: -4)
-            let start: String = String(rawText[rawText.startIndex..<endIndex])
+            let endIndex = rawText.index(components.frontMatterStart!, offsetBy: -4)
+            let start = String(rawText[rawText.startIndex..<endIndex])
             if !start.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 // Front matter comes after text, ie. it is NOT front matter
                 components.frontMatterStart = nil
@@ -367,7 +366,7 @@ final internal class Common {
         // Proceed on assumption `yaml` is a dictionary,
         // which is reasonable for front matter...
         if let dict = yaml.dictionary {
-            let keys: [Yaml] = sortKeys(Array(dict.keys))
+            let keys = sortKeys(Array(dict.keys))
             for key in keys {
                 let value = dict[key] ?? ""
                 if value.dictionary != nil || value.array != nil {
@@ -423,7 +422,7 @@ final internal class Common {
         switch collection {
             case .dictionary:
                 if let map = collection.dictionary {
-                    let keys: [Yaml] = sortKeys(Array(map.keys))
+                    let keys = sortKeys(Array(map.keys))
                     for key in keys {
                         let value = map[key] ?? ""
 
@@ -464,6 +463,7 @@ final internal class Common {
                                 if inset < 0 {
                                     inset = 0
                                 }
+
                                 let row = Row(key: String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: inset) + rkey,
                                               val: BUFFOON_CONSTANTS.HARDTAB,
                                               rule: BUFFOON_CONSTANTS.RULES.NONE,
@@ -480,13 +480,14 @@ final internal class Common {
                             }
                         } else {
                             // Value is a scalar so follow on from the last
-                            var subKey: String = BUFFOON_CONSTANTS.HARDTAB
+                            var subKey = BUFFOON_CONSTANTS.HARDTAB
                             var inset = indent
                             if value == list.first, let leadKey = leadKey {
                                 inset = indent - 1
                                 if inset < 0 {
                                     inset = 0
                                 }
+
                                 let (_, rkey) = processScalar(leadKey)
                                 subKey = String(repeating: BUFFOON_CONSTANTS.HARDTAB, count: inset) + rkey
                             }
@@ -540,11 +541,11 @@ final internal class Common {
         switch part {
             case .string:
                 if let value = part.string {
-                    let parts: [String] = value.components(separatedBy: "\n")
+                    let parts = value.components(separatedBy: "\n")
                     var returnString = ""
                     if parts.count > 1 {
                         for i in 0..<parts.count {
-                            let part: String = parts[i]
+                            let part = parts[i]
                             returnString += part + " "
                         }
                     } else {
@@ -594,7 +595,7 @@ final internal class Common {
 
         autoreleasepool {
             // Prepare the table
-            let table: NSTextTable = NSTextTable()
+            let table = NSTextTable()
             table.numberOfColumns = 2
             table.collapsesBorders = false
 
@@ -634,7 +635,7 @@ final internal class Common {
                            type: .percentageValueType, for: .width)
         cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        cellBlock.setBorderColor(NSColor.hexToColour((isMacInLightMode() || self.settings.doReverseMode) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
+        cellBlock.setBorderColor(NSColor.hexToColour((NSApp.inLightMode || self.settings.doReverseMode) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
         cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style
@@ -661,199 +662,4 @@ final internal class Common {
                                                       .paragraphStyle: cellParaStyle,
                                                       .font: cellFont])
     }
-
-
-    /**
-     Determine whether the host Mac is in light mode.
-
-     - Returns: `true` if the Mac is in light mode, otherwise `false`.
-     */
-    func isMacInLightMode() -> Bool {
-
-        if self.isThumbnail {
-            return NSApp.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua"
-        }
-
-        return NSApp.effectiveAppearance.name == .aqua
-    }
-
-
-    /*
-     LEGACY CODE
-     */
-
-    /**
-     Render a supplied YAML sub-component ('part') to an NSAttributedString.
-     Indents the value as required.
-     Should NOT be called for thumbnails.
-
-     FROM 1.3.0-2.1.0
-
-     - Parameters
-     - part:   A partial Yaml object.
-     - indent: The number of indent spaces to add.
-     - isKey:  Is the Yaml part a key?
-
-     - Returns The rendered string as an NSAttributedString, or nil on error.
-
-    func renderYaml(_ part: Yaml, _ indent: Int, _ isKey: Bool) -> NSAttributedString? {
-
-        let returnString: NSMutableAttributedString = NSMutableAttributedString(string: "",
-                                                                                attributes: yamlKeyAttributes)
-
-        switch (part) {
-            case .array:
-                if let value = part.array {
-                    // Iterate through array elements
-                    // NOTE A given element can be of any YAML type
-                    for i in 0..<value.count {
-                        if let yamlString = renderYaml(value[i], indent, false) {
-                            // Apply a prefix to separate array and dictionary elements
-                            if i > 0 && (value[i].array != nil || value[i].dictionary != nil) {
-                                returnString.append(self.newLine)
-                            }
-
-                            // Add the element itself
-                            returnString.append(yamlString)
-                        }
-                    }
-
-                    return returnString
-                }
-            case .dictionary:
-                if let dict = part.dictionary {
-                    // Iterate through the dictionary's keys and their values
-                    // NOTE A given value can be of any YAML type
-
-                    // Sort the dictionary's keys (ascending)
-                    // We assume all keys will be strings, ints, doubles or bools
-                    var keys: [Yaml] = Array(dict.keys)
-                    keys = keys.sorted(by: { (a, b) -> Bool in
-                        // Strings?
-                        if let a_s: String = a.string {
-                            if let b_s: String = b.string {
-                                return (a_s.lowercased() < b_s.lowercased())
-                            }
-                        }
-
-                        // Ints?
-                        if let a_i: Int = a.int {
-                            if let b_i: Int = b.int {
-                                return (a_i < b_i)
-                            }
-                        }
-
-                        // Doubles?
-                        if let a_d: Double = a.double {
-                            if let b_d: Double = b.double {
-                                return (a_d < b_d)
-                            }
-                        }
-
-                        // Bools
-                        if let a_b: Bool = a.bool {
-                            if let b_b: Bool = b.bool {
-                                return (a_b && !b_b)
-                            }
-                        }
-
-                        return false
-                    })
-
-                    // Iterate through the sorted keys array
-                    for i in 0..<keys.count {
-                        // Prefix root-level key:value pairs after the first with a new line
-                        if indent == 0 && i > 0 {
-                            returnString.append(self.newLine)
-                        }
-
-                        // Get the key:value pairs
-                        let key: Yaml = keys[i]
-                        let value: Yaml = dict[key] ?? ""
-
-                        // Render the key
-                        if let yamlString = renderYaml(key, indent, true) {
-                            returnString.append(yamlString)
-                        }
-
-                        // If the value is a collection, we drop to the next line and indent
-                        let valueIndent: Int = indent + BUFFOON_CONSTANTS.INSET.YAML
-                        returnString.append(self.newLine)
-
-                        // Render the key's value
-                        if let yamlString = renderYaml(value, valueIndent, false) {
-                            returnString.append(yamlString)
-                        }
-                    }
-
-                    return returnString
-                }
-            case .string:
-                if let keyOrValue = part.string {
-                    let parts: [String] = keyOrValue.components(separatedBy: "\n")
-                    if parts.count > 2 {
-                        for i in 0..<parts.count {
-                            let part: String = parts[i]
-                            returnString.append(getIndentedString(part + (i < parts.count - 2 ? "\n" : ""), indent))
-                        }
-                    } else {
-                        returnString.append(getIndentedString(keyOrValue, indent))
-                    }
-
-                    returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
-                                               range: NSMakeRange(0, returnString.length))
-                    returnString.append(isKey ? NSAttributedString(string: " ", attributes: self.yamlValueAttributes) : self.newLine)
-                    return returnString
-                }
-            case .null:
-                returnString.append(getIndentedString(isKey ? "NULL KEY/n" : "NULL VALUE/n", indent))
-                returnString.setAttributes((isKey ? self.yamlKeyAttributes : self.yamlValueAttributes),
-                                           range: NSMakeRange(0, returnString.length))
-                returnString.append(isKey ? NSAttributedString(string: " ") : self.newLine)
-                return returnString
-            default:
-                // Place all the scalar values here
-                // TODO These *may* be keys too, so we need to check that
-                if let val = part.int {
-                    returnString.append(getIndentedString("\(val)\n", indent))
-                } else if let val = part.bool {
-                    returnString.append(getIndentedString((val ? "TRUE\n" : "FALSE\n"), indent))
-                } else if let val = part.double {
-                    returnString.append(getIndentedString("\(val)\n", indent))
-                } else {
-                    returnString.append(getIndentedString("UNKNOWN-TYPE\n", indent))
-                }
-
-                returnString.setAttributes(self.yamlValueAttributes,
-                                           range: NSMakeRange(0, returnString.length))
-                return returnString
-        }
-
-        // Error condition
-        return nil
-    }
-     */
-
-
-    /**
-     Return a space-prefix NSAttributedString.
-
-     FROM 1.3.0-2.1.0
-
-     - Parameters
-     - baseString: The string to be indented.
-     - indent:     The number of indent spaces to add.
-
-     - Returns The indented string as an NSAttributedString.
-
-    func getIndentedString(_ baseString: String, _ indent: Int) -> NSAttributedString {
-
-        let trimmedString = baseString.trimmingCharacters(in: .whitespaces)
-        let spaceString = String(repeating: " ", count: indent)
-        let indentedString: NSMutableAttributedString = NSMutableAttributedString()
-        indentedString.append(NSAttributedString(string: spaceString))
-        indentedString.append(NSAttributedString(string: trimmedString))
-        return indentedString.attributedSubstring(from: NSMakeRange(0, indentedString.length))
-    }
-     */
 }

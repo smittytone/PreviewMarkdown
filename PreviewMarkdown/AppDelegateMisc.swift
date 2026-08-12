@@ -50,23 +50,22 @@ extension AppDelegate {
         
         // Block until the task has completed (short tasks ONLY)
         task.waitUntilExit()
-        
-        if !task.isRunning {
-            if (task.terminationStatus != 0) {
-                // Command failed -- collect the output if there is any
-                let outputHandle = outputPipe.fileHandleForReading
-                var outString: String = ""
-                if let line = String(data: outputHandle.availableData, encoding: String.Encoding.utf8) {
-                    outString = line
-                }
-                
-                if outString.count > 0 {
-                    print("\(outString)")
-                } else {
-                    print("Error", "Exit code \(task.terminationStatus)")
-                }
-                return false
+
+        if (task.terminationStatus != 0) {
+            // Command failed -- collect the output if there is any
+            let outputHandle = outputPipe.fileHandleForReading
+            var outString = ""
+            if let line = String(data: outputHandle.availableData, encoding: .utf8) {
+                outString = line
             }
+#if DEBUG
+            if outString.count > 0 {
+                print("\(outString)")
+            } else {
+                print("Error", "Exit code \(task.terminationStatus)")
+            }
+#endif
+            return false
         }
         
         return true
@@ -81,9 +80,10 @@ extension AppDelegate {
         self.hidePanelGenerators()
         
         // Warn the user about the risks (minor)
-        let alert: NSAlert = makeAlert("Are you sure you wish to reset Finder’s UTI database?",
-                                       "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac.\n\nLogging out of your Mac fixes most issues and should be tried first.\n\nUSE THIS OPTION AT YOUR OWN RISK — WE ACCEPT NO RESPONSIBILITY WHATSOEVER FOR THIS OPTION’s EFFECTS",
-                                        false, true)
+        let alert = makeAlert("Are you sure you wish to reset Finder’s UTI database?",
+                              "Resetting Finder’s Uniform Type Identifier (UTI) database may result in unexpected associations between files and apps, but it can also fix situations where previews are not being shown after you have first logged out of your Mac.\n\nLogging out of your Mac fixes most issues and should be tried first.\n\nUSE THIS OPTION AT YOUR OWN RISK — WE ACCEPT NO RESPONSIBILITY WHATSOEVER FOR THIS OPTION’s EFFECTS",
+                              false,
+                              true)
         alert.addButton(withTitle: "Go Back")
         alert.addButton(withTitle: "Continue")
         
@@ -106,7 +106,7 @@ extension AppDelegate {
     internal func doubleCheck() {
 
         // Warn the user about the risks (minor)
-        let alert: NSAlert = makeAlert("Are you really sure you wish to reset Finder’s UTI database?", "", false, true)
+        let alert = makeAlert("Are you really sure you wish to reset Finder’s UTI database?", "", false, true)
         alert.addButton(withTitle: "No")
         alert.addButton(withTitle: "Yes")
 
@@ -132,14 +132,14 @@ extension AppDelegate {
 
         // Perform the Finder reset
         // NOTE Cannot access the system domain from within the Sandbox
-        let success: Bool = runProcess(app: BUFFOON_CONSTANTS.SYS_LAUNCH_SERVICES,
-                                       with: ["-kill", "-f", "-r", "-domain", "user", "-domain", "local"])
+        let success = runProcess(app: BUFFOON_CONSTANTS.SYS_LAUNCH_SERVICES,
+                                 with: ["-kill", "-f", "-r", "-domain", "user", "-domain", "local"])
         if !success {
-            let alert: NSAlert = makeAlert("Sorry, the operation failed", "The Finder database could not be reset at this time")
+            let alert = makeAlert("Sorry, the operation failed", "The Finder database could not be reset at this time")
             alert.alertStyle = .critical
             alert.beginSheetModal(for: self.window)
         } else {
-            let alert: NSAlert = makeAlert("Finder’s database was reset", "")
+            let alert = makeAlert("Finder’s database was reset", "")
             alert.beginSheetModal(for: self.window)
         }
     }
@@ -159,7 +159,7 @@ extension AppDelegate {
      */
     internal func makeAlert(_ head: String, _ message: String, _ addOkButton: Bool = true, _ isCritical: Bool = false) -> NSAlert {
 
-        let alert: NSAlert = NSAlert()
+        let alert = NSAlert()
         alert.messageText = head
         alert.informativeText = message
         if addOkButton { alert.addButton(withTitle: "OK") }
@@ -177,8 +177,8 @@ extension AppDelegate {
      */
     internal func getVersion() -> String {
         
-        let version: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let parts: [String] = (version as NSString).components(separatedBy: ".")
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let parts = (version as NSString).components(separatedBy: ".")
         return parts[0] + "-" + parts[1]
     }
 
@@ -190,8 +190,8 @@ extension AppDelegate {
      */
     internal func getFeedbackDate() -> String {
 
-        let date: Date = Date()
-        let dateFormatter: DateFormatter = DateFormatter()
+        let date = Date()
+        let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -208,11 +208,11 @@ extension AppDelegate {
 
         // Refactor code out into separate function for clarity
 
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        let bundle: Bundle = Bundle.main
-        let app: String = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as! String
-        let version: String = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        let build: String = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        let sysVer = ProcessInfo.processInfo.operatingSystemVersion
+        let bundle = Bundle.main
+        let app = bundle.object(forInfoDictionaryKey: "CFBundleExecutable") as? String ?? "PreviewMarkdown"
+        let version = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let build = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
         return "\(app)/\(version)-\(build) (macOS/\(sysVer.majorVersion).\(sysVer.minorVersion).\(sysVer.patchVersion))"
     }
 
@@ -229,7 +229,7 @@ extension AppDelegate {
      */
     internal func getLocalFileUTI(_ filename: String) -> String {
         
-        var localUTI: String = "NONE"
+        var localUTI = "NONE"
         let samplePath = Bundle.main.resourcePath! + "/" + filename
         
         if FileManager.default.fileExists(atPath: samplePath) {
@@ -240,12 +240,12 @@ extension AppDelegate {
                 // Read back the UTI from the URL
                 // Use Big Sur's UTType API
                 if #available(macOS 11, *) {
-                    if let uti: UTType = try sampleURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+                    if let uti = try sampleURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
                         localUTI = uti.identifier
                     }
                 } else {
                     // NOTE '.typeIdentifier' yields an optional
-                    if let uti: String = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+                    if let uti = try sampleURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
                         localUTI = uti
                     }
                 }
@@ -280,57 +280,11 @@ extension AppDelegate {
     }
 
 
-    /**
-     Determine whether the host Mac is in light mode.
-     
-     - Returns: `true` if the Mac is in light mode, otherwise `false`.
-     */
-    internal func isMacInLightMode() -> Bool {
-        
-        let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
-        return (appearNameString == "NSAppearanceNameAqua")
-    }
-
-
     func applicationSupportsSecureRestorableState() -> Bool {
         
         return true
     }
 
-
-    // MARK: - URLSession Delegate Functions
-    /*
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        
-        // Some sort of connection error - report it
-        self.connectionProgress.stopAnimation(self)
-        sendFeedbackError()
-    }
-
-
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        
-        // The operation to send the comment completed
-        self.connectionProgress.stopAnimation(self)
-        if let _ = error {
-            // An error took place - report it
-            sendFeedbackError()
-        } else {
-            // The comment was submitted successfully
-            let alert: NSAlert = showAlert("Thanks For Your Feedback!",
-                                           "Your comments have been received and we’ll take a look at them shortly.")
-            alert.beginSheetModal(for: self.window) { (resp) in
-                // Close the feedback window when the modal alert returns
-                let _: Timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { timer in
-                    //self.window.endSheet(self.window)
-                    self.showPanelGenerators()
-                    self.hasSentFeedback = true
-                    self.messageSendButton.isEnabled = false
-                }
-            }
-        }
-    }
-     */
 
     // MARK: - WKWebNavigation Delegate Functions
 

@@ -66,6 +66,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             // and extend the size of its frame
             let markdownTextField = NSTextField(frame: markdownTextFieldFrame)
             markdownTextField.lineBreakMode = .byTruncatingTail
+            markdownTextField.attributedStringValue = common.getAttributedString(markdown[...])
 
             // FROM 2.3.0
             // From macOS 26.1, make sure thumbnail backgrounds remain white
@@ -79,10 +80,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                 }
             }
 
-            markdownTextField.attributedStringValue = common.getAttributedString(markdown[...])
-
             // Generate the bitmap from the rendered markdown text view
-            guard let bodyImageRep: NSBitmapImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownTextFieldFrame) else {
+            guard let bodyImageRep = markdownTextField.bitmapImageRepForCachingDisplay(in: markdownTextFieldFrame) else {
                 handler(nil, ThumbnailerError.badGfxBitmap)
                 return
             }
@@ -122,15 +121,4 @@ class ThumbnailProvider: QLThumbnailProvider {
         handler(nil, ThumbnailerError.badFileUnreadable(request.fileURL.path))
     }
 
-
-    /**
-     Determine whether the host Mac is in light mode.
-
-     - Returns: `true` if the Mac is in light mode, otherwise `false`.
-     */
-    internal func isMacInLightMode() -> Bool {
-
-        let appearanceName = NSApp.effectiveAppearance.name.rawValue
-        return (appearanceName == "NSAppearanceNameAqua")
-    }
 }

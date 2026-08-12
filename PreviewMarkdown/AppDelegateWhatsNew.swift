@@ -25,12 +25,12 @@ extension AppDelegate {
         - sender: The source of the action.
      */
     @IBAction
-    internal func doShowWhatsNew(_ sender: Any) {
-        
-        // See if we're coming from a menu click (sender != self) or
-        // directly in code from 'appDidFinishLoading()' (sender == self)
-        var doShowSheet: Bool = type(of: self) != type(of: sender)
-        
+    internal func doShowWhatsNew(_ sender: Any?) {
+
+        // Check how we got here: programmatically (`nil` passed in) or
+        // from menu click (menu reference passed in)
+        var doShowSheet = sender == nil
+
         if !doShowSheet {
             // We are coming from the 'appDidFinishLoading()' so check
             // if we need to show the sheet by the checking the prefs
@@ -84,7 +84,7 @@ extension AppDelegate {
         
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
+            let key = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             defaults.setValue(false, forKey: key)
 #if DEBUG
             print("\(key) reset back to true")

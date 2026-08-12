@@ -117,14 +117,14 @@ class PMStyler {
         // Render the HTML
         var prefixWidth: CGFloat = 0.0
         var scanned: String? = nil
-        let scanner: Scanner = Scanner(string: self.tokenString)
+        let scanner = Scanner(string: self.tokenString)
         scanner.charactersToBeSkipped = nil
 
 #if INCHTML2
-        let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
+        let renderedString = NSMutableAttributedString(string: self.tokenString + "\n", attributes: self.styles["p"])
         renderedString.append(hr)
 #else
-        let renderedString: NSMutableAttributedString = NSMutableAttributedString(string: "", attributes: self.styles["p"])
+        let renderedString = NSMutableAttributedString(string: "", attributes: self.styles["p"])
 #endif
         // Iterate over the stored tokenised string
         while !scanner.isAtEnd {
@@ -134,7 +134,7 @@ class PMStyler {
             // MARK: Content Processing
             // Have we got content (ie. text between tags or right at the start) to style? Do so now.
             if var content = scanned, !content.isEmpty {
-                var listItemPrefix: String = ""
+                var listItemPrefix = ""
 
                 // FROM 2.1.0
                 // If the content is just a newline, ignore it.
@@ -152,7 +152,7 @@ class PMStyler {
                     if listTypes[insetLevel] == .bullet {
                         // Add a standard bullet. We set six types and we cycle around
                         // when the indent level is greater than that that number.
-                        var index: Int = insetLevel
+                        var index = insetLevel
                         while index > BUFFOON_CONSTANTS.BULLET_STYLES.count {
                             index -= BUFFOON_CONSTANTS.BULLET_STYLES.count
                         }
@@ -223,7 +223,7 @@ class PMStyler {
 
             // Get the first character of the tag
             //let nextChar: String = scanner.getNextCharacter(in: self.tokenString)
-            let nextChar: String = scanner.getNextChar()
+            let nextChar = scanner.getNextChar()
 
             // MARK: Closing Token
             if nextChar == "/" {
@@ -231,19 +231,19 @@ class PMStyler {
                 scanner.skipNextCharacter()
 
                 // Get the remainder of the tag up to the delimiter
-                if let closeToken: String = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
+                if let closeToken = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
 #if DEBUG
                     NSLog("[TOKEN] <- \(closeToken)")
 #endif
                     // NOTE mdit generates lowercase HTML tags, but we should probably not assume that
 
                     // Should we add a carriage return at the end of the line?
-                    var doAddNewLine: Bool = true
+                    var doAddNewLine = true
 
                     // Is the token one that adds a style to the stack?
                     // This so we don't pull a style from the stack in these cases
                     // NOTE BLOCKQUOTE, OL, UL and PRE do not
-                    var isStackOp: Bool = true
+                    var isStackOp = true
 
                     // Process the closing token by type
                     switch(closeToken) {
@@ -331,13 +331,13 @@ class PMStyler {
             } else {
                 // MARK: Opening Token
                 // We've got a new token, so get it up to the delimiter
-                if let openToken: String = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
+                if let openToken = scanner.scanUpToString(BUFFOON_CONSTANTS.DELIMITERS.HTML_END) {
                     // NOTE mdit generates lowercase HTML tags, but we should probably not assume that
-                    var token: String = openToken.lowercased()
+                    var token = openToken.lowercased()
 
                     // This is the tag we will use to format the content. It may not
                     // be the actual tag detected, eg. for LI- or BLOCKQUOTE-nested Ps we use LI or BLOCK
-                    var tokenToApply: String = token
+                    var tokenToApply = token
 
                     // In special circumstances we need to add a New Line to the output.
                     // This is the flag we set to do so
@@ -485,7 +485,7 @@ class PMStyler {
                     // Some, such as list markers, we do not style here
                     if BUFFOON_CONSTANTS.SUPPORTED_TAGS.contains(tokenToApply) {
                         // Push the tag's style to the stack
-                        let style: Style = Style()
+                        let style = Style()
                         style.name = tokenToApply
 
                         // Set character styles (inherit style from parent)
@@ -538,14 +538,14 @@ class PMStyler {
         }
 
         // We have composed the string. Now process HTML escapes not already addressed
-        let results: [NSTextCheckingResult] = BUFFOON_CONSTANTS.HTML_ESCAPE_REGEX.matches(in: renderedString.string,
-                                                                                          options: [.reportCompletion],
-                                                                                          range: NSMakeRange(0, renderedString.length))
+        let results = BUFFOON_CONSTANTS.HTML_ESCAPE_REGEX.matches(in: renderedString.string,
+                                                                  options: [.reportCompletion],
+                                                                  range: NSMakeRange(0, renderedString.length))
         if results.count > 0 {
-            var localOffset: Int = 0
-            for result: NSTextCheckingResult in results {
-                let fixedRange: NSRange = NSMakeRange(result.range.location - localOffset, result.range.length)
-                let entity: String = (renderedString.string as NSString).substring(with: fixedRange)
+            var localOffset = 0
+            for result in results {
+                let fixedRange = NSMakeRange(result.range.location - localOffset, result.range.length)
+                let entity = (renderedString.string as NSString).substring(with: fixedRange)
                 if let decodedEntity = HTMLUtils.decode(entity) {
                     renderedString.replaceCharacters(in: fixedRange, with: String(decodedEntity))
                     localOffset += (result.range.length - 1);
@@ -574,7 +574,7 @@ class PMStyler {
         if styleList.count > 0 {
             // Assemble the attributes from the style list, including the font
             var attributes = [NSAttributedString.Key: AnyObject]()
-            var parentStyle: Style = Style()
+            var parentStyle = Style()
 
             // Iterate over the stack, applying the style one after the other,
             // the most recent stack item last. We update attributes, so a newer
@@ -675,7 +675,7 @@ class PMStyler {
      */
     internal func getImageRef(_ tag: String) -> String {
 
-        var basePath: String = ""
+        var basePath = ""
         let parts = tag.components(separatedBy: " ")
         for part in parts {
             if part.hasPrefix("src") {
@@ -704,7 +704,7 @@ class PMStyler {
      */
     internal func getCodeLanguage(_ tag: String) -> String {
 
-        let parts: [String] = splitTag(tag).components(separatedBy: "-")
+        let parts = splitTag(tag).components(separatedBy: "-")
         if parts.count > 0 {
             return parts[1]
         }
@@ -723,7 +723,7 @@ class PMStyler {
      */
     internal func getListStart(_ tag: String) -> Int {
 
-        let parts: [String] = splitTag(tag).components(separatedBy: "\"")
+        let parts = splitTag(tag).components(separatedBy: "\"")
         return Int(parts[0]) ?? 0
     }
 
@@ -738,7 +738,7 @@ class PMStyler {
     private func getTable(_ tableCode: String?) -> String {
 
         // Get the table content and style it: set it up with a coloured border around table and cells
-        var table: String = "<table width=\"200%\" style=\"border-collapse:collapse;\">"
+        var table = "<table width=\"200%\" style=\"border-collapse:collapse;\">"
 
         guard let code = tableCode else {
             table += "<tr><td>Malformed table</td></tr></table>\n"
@@ -774,13 +774,13 @@ class PMStyler {
      */
     internal func makeInsetParagraphStyle(_ inset: Int, _ first: CGFloat = 0.0, _ rest: CGFloat = 0.0) -> NSMutableParagraphStyle {
 
-        let styleName: String = String(format: "inset%02d-%03.02f-%03.02f", inset, first, rest)
+        let styleName = String(format: "inset%02d-%03.02f-%03.02f", inset, first, rest)
 
         if self.paragraphs[styleName] != nil {
             return self.paragraphs[styleName]!
         }
 
-        let newParaStyle: NSMutableParagraphStyle = makeBaseParagraphStyle(styleName)
+        let newParaStyle = makeBaseParagraphStyle(styleName)
         newParaStyle.headIndent = rest + (BUFFOON_CONSTANTS.INSET.LIST * CGFloat(inset))
         newParaStyle.firstLineHeadIndent = first + (BUFFOON_CONSTANTS.INSET.LIST * CGFloat(inset))
         return newParaStyle
@@ -797,13 +797,13 @@ class PMStyler {
      */
     internal func makeBlockParagraphStyle(_ inset: Int) -> NSMutableParagraphStyle {
 
-        let styleName: String = String(format: "block%02d", inset)
+        let styleName = String(format: "block%02d", inset)
 
         if self.paragraphs[styleName] != nil {
             return self.paragraphs[styleName]!
         }
 
-        let newParaStyle: NSMutableParagraphStyle = makeBaseParagraphStyle(styleName)
+        let newParaStyle = makeBaseParagraphStyle(styleName)
         newParaStyle.headIndent = BUFFOON_CONSTANTS.INSET.BLOCK * CGFloat(inset)
         newParaStyle.firstLineHeadIndent = newParaStyle.headIndent
         return newParaStyle
@@ -820,13 +820,13 @@ class PMStyler {
      */
     internal func makeBaseParagraphStyle(_ name: String) -> NSMutableParagraphStyle {
 
-        let table: NSTextTable = NSTextTable()
+        let table = NSTextTable()
         table.numberOfColumns = 1
 
-        let block: NSTextTableBlock = NSTextTableBlock(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
+        let block = NSTextTableBlock(table: table, startingRow: 0, rowSpan: 1, startingColumn: 0, columnSpan: 1)
         block.setValue(512.0, type: .absoluteValueType, for: .minimumWidth)
 
-        let newParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
+        let newParaStyle = NSMutableParagraphStyle()
         newParaStyle.lineSpacing = self.settings!.lineSpacing
         newParaStyle.paragraphSpacing = self.paraSpacing
         newParaStyle.alignment = .left
@@ -855,7 +855,6 @@ class PMStyler {
         newParaStyle.textBlocks.append(makeCodeParagraphBlock(inset))
         newParaStyle.firstLineHeadIndent = CGFloat(inset) * 40.0
         newParaStyle.headIndent = CGFloat(inset) * 40.0
-
         return newParaStyle
     }
 
@@ -932,8 +931,8 @@ class PMStyler {
     internal func processCheckboxes() {
 
         // Hack to present checkboxes a la GitHub
-        let patterns: [String] = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
-        let symbols: [String] = ["\u{1F7E9}", "❎"]
+        let patterns = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
+        let symbols = ["\u{1F7E9}", "❎"]
 
         var i = 0
         for pattern in patterns {
@@ -1031,9 +1030,9 @@ class PMStyler {
 
             // First try to render the code in the detected language;
             // if that fails, try to use the highlighter to detect the language
-            if let cas: NSAttributedString = self.highlighter?.highlight(code, as: self.currentLanguage) {
+            if let cas = self.highlighter?.highlight(code, as: self.currentLanguage) {
                 return makeHighlightedCodeParagraph(NSMutableAttributedString(attributedString: cas), inset)
-            } else if let cas: NSAttributedString = self.highlighter?.highlight(code, as: nil) {
+            } else if let cas = self.highlighter?.highlight(code, as: nil) {
                 return makeHighlightedCodeParagraph(NSMutableAttributedString(attributedString: cas), inset)
             }
         }
@@ -1059,7 +1058,7 @@ class PMStyler {
 
         // Set the paragraph styles
         // Base paragraph style: No left inset
-        let tabbedParaStyle: NSMutableParagraphStyle    = NSMutableParagraphStyle()
+        let tabbedParaStyle                             = NSMutableParagraphStyle()
         tabbedParaStyle.lineSpacing                     = self.settings!.lineSpacing
         tabbedParaStyle.paragraphSpacing                = self.paraSpacing
         tabbedParaStyle.paragraphSpacingBefore          = 0.5
@@ -1069,7 +1068,7 @@ class PMStyler {
         tabbedParaStyle.defaultTabInterval              = 30.0
         self.paragraphs["tabbed"]                       = tabbedParaStyle
 
-        let quoteParaStyle: NSMutableParagraphStyle     = NSMutableParagraphStyle()
+        let quoteParaStyle                              = NSMutableParagraphStyle()
         quoteParaStyle.lineSpacing                      = self.settings!.lineSpacing
         quoteParaStyle.paragraphSpacing                 = self.paraSpacing * 2.0
         quoteParaStyle.alignment                        = .right
@@ -1079,7 +1078,7 @@ class PMStyler {
         self.paragraphs["quote"]                        = quoteParaStyle
 
         // Nested list
-        let listParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
+        let listParaStyle                               = NSMutableParagraphStyle()
         listParaStyle.lineSpacing                       = self.settings!.lineSpacing
         listParaStyle.paragraphSpacing                  = self.paraSpacing
         listParaStyle.alignment                         = .left
@@ -1088,7 +1087,7 @@ class PMStyler {
         self.paragraphs["list"]                         = listParaStyle
 
         // HR paragraph
-        let lineParaStyle: NSMutableParagraphStyle      = NSMutableParagraphStyle()
+        let lineParaStyle                               = NSMutableParagraphStyle()
         lineParaStyle.lineSpacing                       = self.settings!.lineSpacing
         lineParaStyle.paragraphSpacing                  = self.paraSpacing
         lineParaStyle.alignment                         = .left
@@ -1207,10 +1206,10 @@ class PMStyler {
         self.bodyFontFamily.displayName = bodyFont?.familyName ?? self.settings!.bodyFontName
 
         // Get a list of available members (styles) for the font family
-        let fm: NSFontManager = NSFontManager.shared
+        let fm = NSFontManager.shared
         if let availableMembers = fm.availableMembers(ofFontFamily: self.bodyFontFamily.displayName) {
             for member in availableMembers {
-                var fontStyle: PMFont = PMFont()
+                var fontStyle = PMFont()
                 fontStyle.postScriptName = member[0] as! String
                 fontStyle.styleName = member[1] as! String
                 self.bodyFontFamily.styles?.append(fontStyle)
@@ -1232,9 +1231,9 @@ class PMStyler {
 
         // Check through the fonts we've already made in case we have the
         // required one already.
-        for fontRecord: FontRecord in self.fonts {
+        for fontRecord in self.fonts {
             if fontRecord.style == requiredStyle && fontRecord.size.isClose(to: size) {
-                if let font: NSFont = fontRecord.font {
+                if let font = fontRecord.font {
                     return font
                 }
 
@@ -1243,16 +1242,16 @@ class PMStyler {
         }
 
         // No existing font available, so make one
-        let fm: NSFontManager = NSFontManager.shared
+        let fm = NSFontManager.shared
         switch requiredStyle {
             case "strong":
                 if let font = matchFont("strong", ["Bold", "Black", "Heavy", "Medium", "Semi-Bold"], self.bodyFontFamily, size) {
                     return font
                 } else {
-                    if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
-                                                  traits: .boldFontMask,
-                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.BOLD,
-                                                  size: size) {
+                    if let font = fm.font(withFamily: self.bodyFontFamily.displayName,
+                                          traits: .boldFontMask,
+                                          weight: BUFFOON_CONSTANTS.FONT_WEIGHT.BOLD,
+                                          size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
                     }
@@ -1263,22 +1262,22 @@ class PMStyler {
                 if let font = matchFont("em", ["Italic", "Oblique"], self.bodyFontFamily, size) {
                     return font
                 } else {
-                    if let font: NSFont = fm.font(withFamily: self.bodyFontFamily.displayName,
-                                                  traits: .italicFontMask,
-                                                  weight: BUFFOON_CONSTANTS.FONT_WEIGHT.ITALIC,
-                                                  size: size) {
+                    if let font = fm.font(withFamily: self.bodyFontFamily.displayName,
+                                          traits: .italicFontMask,
+                                          weight: BUFFOON_CONSTANTS.FONT_WEIGHT.ITALIC,
+                                          size: size) {
                         recordFont(requiredStyle, size, font)
                         return font
                     }
                 }
                 // Still no font? Fall back to the base body font
             case "code":
-                if let font: NSFont = NSFont(name: self.settings!.codeFontName, size: size) {
+                if let font = NSFont(name: self.settings!.codeFontName, size: size) {
                     recordFont(requiredStyle, size, font)
                     return font
                 }
 
-                let font: NSFont = NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(5.0))
+                let font = NSFont.monospacedSystemFont(ofSize: size, weight: NSFont.Weight(5.0))
                 recordFont(requiredStyle, size, font)
                 return font
             default:
@@ -1287,13 +1286,13 @@ class PMStyler {
 
         // Just use the body font as a fallback
         // NOTE `bodyFontName` will be a PostScript name
-        if let font: NSFont = NSFont(name: self.settings!.bodyFontName, size: size) {
+        if let font = NSFont(name: self.settings!.bodyFontName, size: size) {
             recordFont(requiredStyle, size, font)
             return font
         }
 
         // Still no joy? Fall right back to the system font
-        let font: NSFont = NSFont.systemFont(ofSize: size)
+        let font = NSFont.systemFont(ofSize: size)
         recordFont(requiredStyle, size, font)
         return font
     }
@@ -1314,11 +1313,11 @@ class PMStyler {
      */
     internal func matchFont(_ requiredStyle: String, _ styleNames: [String], _ family: PMFont, _ size: CGFloat) -> NSFont? {
 
-        if let styles: [PMFont] = family.styles {
-            for styleName: String in styleNames {
-                 for style: PMFont in styles {
+        if let styles = family.styles {
+            for styleName in styleNames {
+                 for style in styles {
                     if styleName == style.styleName {
-                        if let font: NSFont = NSFont(name: style.postScriptName, size: size) {
+                        if let font = NSFont(name: style.postScriptName, size: size) {
                             recordFont(requiredStyle, size, font)
                             return font
                         }
@@ -1341,7 +1340,7 @@ class PMStyler {
      */
     internal func recordFont(_ style: String, _ size: CGFloat, _ font: NSFont?) {
 
-        var fontRecord: FontRecord = FontRecord()
+        var fontRecord = FontRecord()
         fontRecord.style = style
         fontRecord.size = size
         fontRecord.font = font
@@ -1473,7 +1472,7 @@ class PMStyler {
     func getFullPath(_ relativePath: String) -> String {
 
         // Standardise the path as best as we can (this covers most cases)
-        var absolutePath: String = (relativePath as NSString).standardizingPath
+        var absolutePath = (relativePath as NSString).standardizingPath
 
         // Check for a unresolved relative path -- and if it is one, resolve it
         // NOTE This includes raw filenames
@@ -1518,7 +1517,7 @@ class PMStyler {
     internal func splitTag(_ tag: String, _ requiredIndex: Int = 1) -> String {
 
         // tag = "img class=\"\" src=\"" alt=\"\""
-        let parts: [String] = tag.components(separatedBy: "\"")
+        let parts = tag.components(separatedBy: "\"")
         if parts.count > requiredIndex {
             return parts[requiredIndex]
         }
