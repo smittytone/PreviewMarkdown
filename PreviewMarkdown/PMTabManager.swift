@@ -29,10 +29,12 @@ class PMTabManager {
     /**
      Return the most recently clicked button.
      
-     - Returns The button as an NSButton instance.
+     - Returns The button as an NSButton instance, or `nil`.
      */
-    func currentButton() -> NSButton {
-        
+    func currentButton() -> NSButton? {
+
+        guard !self.buttons.isEmpty else { return nil }
+        guard self.currentIndex >= 0 && self.currentIndex < self.buttons.count else { return nil }
         return self.buttons[self.currentIndex]
     }
 
@@ -54,17 +56,18 @@ class PMTabManager {
         }
 
         // Make sure we have access to the parent controller
-        guard let appDelegate = self.parent else {
+        guard let theAppDelegate = self.parent else {
             return
         }
         
         // Select the required tab based on the button clicked
+        // (this makes sure `button` is within `self.buttons`)
         if let nextIndex = self.buttons.firstIndex(of: button) {
             self.currentIndex = nextIndex
             
             // Enable the current tab's button and disable the rest
             for i in 0..<self.buttons.count {
-                if i != nextIndex {
+                if i != self.currentIndex {
                     self.buttons[i].state = .off
                 } else {
                     self.buttons[i].state = .on
@@ -72,24 +75,15 @@ class PMTabManager {
             }
             
             // Perform tab-specific logic BEFORE switching
-            // NOTE These closures are set in the app delegate
-            switch self.currentIndex {
-                case 1:
-                    if let handler = self.callbacks[1] {
-                        handler()
-                    }
-                case 2:
-                    if let handler = self.callbacks[2] {
-                        handler()
-                    }
-                default: // 0
-                    if let handler = self.callbacks[0] {
-                        handler()
-                    }
+            // NOTE The closures are set in the app delegate
+            if self.currentIndex < self.callbacks.count {
+                if let handler = self.callbacks[self.currentIndex] {
+                    handler()
+                }
             }
             
             // Select the tab we're going to show
-            appDelegate.mainTabView.selectTabViewItem(at: nextIndex)
+            theAppDelegate.mainTabView.selectTabViewItem(at: nextIndex)
         }
     }
 
@@ -100,6 +94,7 @@ class PMTabManager {
     @MainActor
     func programmaticallyClickButton(_ button: NSButton) {
 
+        guard self.buttons.contains(button) else { return }
         buttonClicked(button)
     }
 
@@ -110,6 +105,8 @@ class PMTabManager {
     @MainActor
     func programmaticallyClickButton(at index: Int) {
 
+        guard !self.buttons.isEmpty else { return }
+        guard index >= 0 && index < self.buttons.count else { return }
         buttonClicked(self.buttons[index])
     }
 }
