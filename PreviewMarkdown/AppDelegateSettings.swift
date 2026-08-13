@@ -36,8 +36,7 @@ extension AppDelegate {
             self.tintThumbnailsAdvancedSwitch.isEnabled = false
         }
 
-        // Disable the Feedback > Send button if we have sent a message.
-        // It will be re-enabled by typing something
+        // Disable the Settings > Apply button if no settings have changed.
         self.applyButton.isEnabled = checkSettingsOnQuit()
 
         // FROM 2.2.4
@@ -318,8 +317,11 @@ extension AppDelegate {
 
         // Set the actual linespacing according to the index of the menu
         let linespacingValues: [CGFloat] = [1.0, 1.15, 1.5, 2.0]
-        assert(self.lineSpacingPopup.indexOfSelectedItem < linespacingValues.count)
-        displayedSettings.lineSpacing = linespacingValues[self.lineSpacingPopup.indexOfSelectedItem]
+        if self.lineSpacingPopup.indexOfSelectedItem >= 0 && self.lineSpacingPopup.indexOfSelectedItem < linespacingValues.count {
+            displayedSettings.lineSpacing = linespacingValues[self.lineSpacingPopup.indexOfSelectedItem]
+        } else {
+            displayedSettings.lineSpacing = linespacingValues[0]
+        }
 
         displayedSettings.thumbnailMatchFinderMode = self.tintThumbnailsAdvancedSwitch.state == .on
         let idx = self.previewSizeAdvancedPopup.indexOfSelectedItem
@@ -440,8 +442,7 @@ extension AppDelegate {
         }
 
         if !settingsHaveChanged {
-            settingsHaveChanged = (self.currentSettings.previewMarginWidth != displayedSettings.previewMarginWidth) &&
-                                   !(displayedSettings.previewMarginWidth.isClose(to: self.currentSettings.previewMarginWidth))
+            settingsHaveChanged = !displayedSettings.previewMarginWidth.isClose(to: self.currentSettings.previewMarginWidth)
         }
 
         return settingsHaveChanged

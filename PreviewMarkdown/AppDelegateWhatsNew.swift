@@ -18,8 +18,8 @@ extension AppDelegate {
 
      If we're on a new, non-patch version, of the user has explicitly
      asked to see it with a menu click See if we're coming from a menu click
-     (`sender != self`) or directly in code from *appDidFinishLoading()*
-     (`sender == self`)
+     or directly in code from `pplicationDidFinishLaunching()`
+     (`sender == nil`)
 
      - Parameters:
         - sender: The source of the action.
@@ -29,7 +29,7 @@ extension AppDelegate {
 
         // Check how we got here: programmatically (`nil` passed in) or
         // from menu click (menu reference passed in)
-        var doShowSheet = sender == nil
+        var doShowSheet = sender != nil
 
         if !doShowSheet {
             // We are coming from the 'appDidFinishLoading()' so check

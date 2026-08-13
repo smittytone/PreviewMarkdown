@@ -36,7 +36,6 @@ class PreviewViewController: NSViewController,
          * This is the main entry point for the macOS QuickLook previewing system
          */
 
-        // Hide the error message field
         var reportError: NSError? = nil
 
         // Load and process the source file
@@ -139,7 +138,9 @@ class PreviewViewController: NSViewController,
             }
         } catch {
             // We couldn't read the file so set an appropriate error to report back
-            reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+            if reportError != nil {
+                reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
+            }
         }
 
         // FROM 2.4.3
@@ -175,8 +176,8 @@ class PreviewViewController: NSViewController,
             errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
         case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
             errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
-            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
-                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
+        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
+            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
         default:
             errDesc = "UNKNOWN ERROR"
         }

@@ -5,7 +5,7 @@
  *
  *  These functions can be used by all PreviewApps
  *
- *  Created by Tony Smith on 18/06/20214.
+ *  Created by Tony Smith on 18/06/2024.
  *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
@@ -213,8 +213,10 @@ extension AppDelegate {
             for family in familyList {
                 if family.displayName == selectedFont {
                     if let styles = family.styles {
-                        let font = styles[selectedStyle]
-                        return font.postScriptName
+                        if selectedStyle < styles.count {
+                            let font = styles[selectedStyle]
+                            return font.postScriptName
+                        }
                     }
                 }
             }

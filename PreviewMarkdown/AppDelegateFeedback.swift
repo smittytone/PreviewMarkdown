@@ -46,7 +46,7 @@ extension AppDelegate {
      */
     internal func checkFeedbackOnQuit() -> Bool {
         
-        // If the user has never access the page
+        // If the user has never accessed the page
         if self.feedbackText.stringValue.isEmpty || self.hasSentFeedback {
             return false
         }

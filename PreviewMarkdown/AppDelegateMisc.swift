@@ -22,9 +22,6 @@ extension AppDelegate {
     /**
      Generic macOS process creation and run function.
 
-     Make sure we clear the preference flag for this minor version, so that
-     the sheet is not displayed next time the app is run (unless the version changes)
-
      - Parameters:
         - app:  The location of the app.
         - with: Array of arguments to pass to the app.
@@ -171,7 +168,7 @@ extension AppDelegate {
     // MARK: - Data Generator Functions
 
     /**
-     Build a basic 'major-manor' version string for prefs usage.
+     Build a basic 'major-minor' version string for prefs usage.
 
      - Returns: The version string.
      */
@@ -301,7 +298,7 @@ extension AppDelegate {
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) { timer in
                     timer.invalidate()
                     // FROM 2.4.1
-                    // Run sheet-presentation cail on `MainActor` using Swift Concurrency
+                    // Run sheet-presentation call on `MainActor` using Swift Concurrency
                     Task { @MainActor in
                         self.window.beginSheet(self.whatsNewWindow, completionHandler: nil)
                     }

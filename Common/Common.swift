@@ -93,6 +93,20 @@ final internal class Common {
             self.settings.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE)
         }
 
+        // FROM 2.5.0
+        // Check key preview window sizing values
+        if self.settings.previewWindowScale < BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S {
+            self.settings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S
+        } else if self.settings.previewWindowScale > BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L {
+            self.settings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L
+        }
+
+        if self.settings.previewMarginWidth < CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN) {
+            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)
+        } else if self.settings.previewMarginWidth > CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX) {
+            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)
+        }
+
         // Set paragraph spacing
         styler.paraSpacing = self.settings.fontSize * 1.4
 
@@ -249,6 +263,7 @@ final internal class Common {
                     } catch {
                         // No YAML to render, or the YAML was mis-formatted
                         // Get the error as reported by YamlSwift
+                        // NOTE If YamlSwift ever changes its error type or wraps errors (unlikely), this crashes
                         let yamlErr = error as! Yaml.ResultError
                         var yamlErrString: String
                         switch(yamlErr) {
@@ -544,10 +559,7 @@ final internal class Common {
                     let parts = value.components(separatedBy: "\n")
                     var returnString = ""
                     if parts.count > 1 {
-                        for i in 0..<parts.count {
-                            let part = parts[i]
-                            returnString += part + " "
-                        }
+                        returnString = parts.joined(separator: " ")
                     } else {
                         returnString = parts[0]
                     }
@@ -581,7 +593,7 @@ final internal class Common {
         - rows    The array of Row instances.
         - styler: A PMStyler (taken from the global).
 
-     - Returns The table header HTML.
+     - Returns An NSAttributedString containing the front matter table.
      */
     private func makeTable(_ rows: [Row], _ styler: PMStyler) -> NSMutableAttributedString {
 
@@ -635,7 +647,7 @@ final internal class Common {
                            type: .percentageValueType, for: .width)
         cellBlock.setValue(styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_ROW_HEIGHT, type: .absoluteValueType, for: .height)
         // NOTE Following two lines set the underline
-        cellBlock.setBorderColor(NSColor.hexToColour((NSApp.inLightMode || self.settings.doReverseMode) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
+        cellBlock.setBorderColor(NSColor.hexToColour((!NSApp.inLightMode || self.settings.doReverseMode) ? "EBEBEBFF" : "5E5E5EFF"), for: .maxY)
         cellBlock.setWidth(row.rule, type: .absoluteValueType, for: .border, edge: .maxY)
 
         // Create the cell's paragraph style

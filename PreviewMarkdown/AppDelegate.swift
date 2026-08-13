@@ -306,7 +306,8 @@ final class AppDelegate: NSResponder,
      */
     @IBAction @objc private func doShowSites(sender: Any) {
         
-        let item = sender as! NSMenuItem
+        // FROM 2.5.0 -- set `item` more safely
+        guard let item = sender as? NSMenuItem else { return }
         var path = BUFFOON_CONSTANTS.URL_MAIN
         
         if item == self.helpMenuMarkdownIt {
@@ -327,7 +328,10 @@ final class AppDelegate: NSResponder,
         }
         
         // Open the selected website
-        NSWorkspace.shared.open(URL(string:path)!)
+        // FROM 2.5.0 -- more safely
+        if let url = URL(string: path) {
+            NSWorkspace.shared.open(url)
+        }
     }
 
 

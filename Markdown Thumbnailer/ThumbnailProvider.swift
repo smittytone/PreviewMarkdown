@@ -115,6 +115,7 @@ class ThumbnailProvider: QLThumbnailProvider {
             return
         } catch {
             // NOP: fall through to error
+            NSLog("Markdown Thumbnailer actual error: " + error.localizedDescription)
         }
 
         // We didn't draw anything because of 'can't find file' error
