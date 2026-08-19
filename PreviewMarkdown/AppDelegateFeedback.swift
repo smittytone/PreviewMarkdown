@@ -170,14 +170,11 @@ extension AppDelegate {
         guard self.timer == nil else { return }
 
         // Set the background to colour red
-        // Must run on `MainActor` and we set `.high` so it's done immediately
-        Task(priority: .high) {
-            await MainActor.run {
-                self.feedbackText.isEnabled = false
-                self.feedbackText.backgroundColor = .red
-                self.feedbackText.textColor = .white
-            }
-        }
+        // NOTE Already being run on `MainActor` as this function is called by an
+        //      NSTextFieldDelegate method, `controlTextDidChange()`
+        self.feedbackText.isEnabled = false
+        self.feedbackText.backgroundColor = .red
+        self.feedbackText.textColor = .white
 
         // Switch the background back in 0.25 of a second
         self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { (timer) in
@@ -186,6 +183,7 @@ extension AppDelegate {
             // FROM 2.4.1
             // Migrate to Swift Concurrency
             // Must run on `MainActor` and we set `.high` so it's done immediately
+            // See note above, but the `MainActor` call here silences errors
             Task(priority: .high) {
                 await MainActor.run {
                     self.feedbackText.backgroundColor = .textBackgroundColor

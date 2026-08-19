@@ -84,24 +84,24 @@ class PMStyler {
     private func processTokenString() -> NSAttributedString? {
 
         // Rendering control variables
-        var isListItem: Bool                = false // Add a bullet or not
-        var isBlockquote: Bool              = false
-        var isPre: Bool                     = false
+        var isListItem = false // Add a bullet or not
+        var isBlockquote = false
+        var isPre = false
 
-        var blockLevel: Int                 = 0
-        var insetLevel: Int                 = 0
+        var blockLevel = 0
+        var insetLevel = 0
 
-        var orderedListCounts: [Int]        = Array(repeating: 0, count: 12)
-        var listTypes: [ListType]           = Array(repeating: .bullet, count: 12)
-        var isListNested: [Bool]            = Array(repeating: false, count: 12)
+        var orderedListCounts = Array(repeating: 0, count: 12)
+        var listTypes: [ListType] = Array(repeating: .bullet, count: 12)
+        var isListNested = Array(repeating: false, count: 12)
 
-        var previousCloseToken: String      = ""
+        var previousCloseToken = ""
 
         // Font-less horizontal rule
-        let hr: NSAttributedString          = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n",
-                                                                 attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                                                                              .strikethroughColor: self.colours.body!,
-                                                                              .paragraphStyle: self.paragraphs["line"]!])
+        let hr = NSAttributedString(string: "\u{00A0} \u{0009} \u{00A0}\n",
+                                    attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                                                 .strikethroughColor: self.colours.body!,
+                                                 .paragraphStyle: self.paragraphs["line"]!])
 
         // Set up the Style stack
         var styleStack: [Style] = []
@@ -610,7 +610,7 @@ class PMStyler {
                             // Check if we have an italic font. If not, we underline the text
                             if fontUsed == nil || (!fontUsed!.fontName.contains("Italic") && !fontUsed!.fontName.contains("Oblique")) {
                                 var lineColour: NSColor
-                                if let c: Any = self.styles[parentStyle.name]![.foregroundColor] {
+                                if let c = self.styles[parentStyle.name]![.foregroundColor] {
                                     lineColour = c as! NSColor
                                 } else {
                                     lineColour = self.colours.body
@@ -1206,10 +1206,10 @@ class PMStyler {
         self.bodyFontFamily.displayName = bodyFont?.familyName ?? self.settings!.bodyFontName
 
         // Get a list of available members (styles) for the font family
-        let fm = NSFontManager.shared
-        if let availableMembers = fm.availableMembers(ofFontFamily: self.bodyFontFamily.displayName) {
+        if let availableMembers = NSFontManager.shared.availableMembers(ofFontFamily: self.bodyFontFamily.displayName) {
             for member in availableMembers {
                 var fontStyle = PMFont()
+                // We can be fairly sure these a typeable as described
                 fontStyle.postScriptName = member[0] as! String
                 fontStyle.styleName = member[1] as! String
                 self.bodyFontFamily.styles?.append(fontStyle)

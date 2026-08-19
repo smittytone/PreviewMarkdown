@@ -57,10 +57,11 @@ extension AppDelegate {
                 var familyRecord = PMFont()
                 familyRecord.displayName = family
                 
-                for font: [Any] in fonts {
+                for font in fonts {
+                    // We can be fairly sure these values are correctly typeable
                     let psname = font[0] as! String
                     let traits = font[3] as! UInt
-                    var doUseFont: Bool = false
+                    var doUseFont = false
                     
                     if mono & traits != 0 {
                         doUseFont = true

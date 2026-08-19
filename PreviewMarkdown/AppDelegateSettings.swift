@@ -94,7 +94,7 @@ extension AppDelegate {
     @IBAction
     internal func doUpdateFonts(sender: Any) {
 
-        let item = sender as! NSPopUpButton
+        guard let item = sender as? NSPopUpButton else { return }
         setStylePopup(item == self.bodyFontPopup)
         willShowSettingsPage()
     }
@@ -113,7 +113,7 @@ extension AppDelegate {
     @objc
     internal func colourSelected(sender: Any) {
 
-        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
+        let keys = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         let key = "new_" + keys[self.colourSelectionPopup.indexOfSelectedItem]
         self.currentSettings.displayColours[key] = self.headColourWell.color.hexString
         willShowSettingsPage()
@@ -132,7 +132,7 @@ extension AppDelegate {
     @IBAction
     internal func doChooseColourType(sender: Any) {
 
-        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
+        let keys = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         let key = keys[self.colourSelectionPopup.indexOfSelectedItem]
 
         // If there's no `new_xxx` key, the next line will evaluate to false
@@ -291,7 +291,6 @@ extension AppDelegate {
         }
 
         self.previewSizeAdvancedPopup.selectItem(at: idx)
-
         self.previewMarginSizeText.stringValue = String(format:"%.1f", settings.previewMarginWidth)
     }
 
@@ -456,7 +455,7 @@ extension AppDelegate {
      */
     internal func clearNewColours() {
 
-        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
+        let keys = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         for key in keys {
             if let _: String = self.currentSettings.displayColours["new_" + key] {
                 self.currentSettings.displayColours["new_" + key] = nil
@@ -472,7 +471,7 @@ extension AppDelegate {
      */
     internal func applyDefaultColours() {
 
-        let keys: [String] = BUFFOON_CONSTANTS.COLOUR_OPTIONS
+        let keys = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         for key in keys {
             self.currentSettings.displayColours["new_" + key] = self.defaultSettings.displayColours[key]
         }

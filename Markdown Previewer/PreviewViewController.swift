@@ -168,18 +168,18 @@ class PreviewViewController: NSViewController,
         var errDesc: String
 
         switch(code) {
-        case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
-        case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
-        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
-        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
-        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
-        default:
-            errDesc = "UNKNOWN ERROR"
+            case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
+            case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
+            default:
+                errDesc = "UNKNOWN ERROR"
         }
 
         return NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
@@ -202,8 +202,8 @@ class PreviewViewController: NSViewController,
             screen = mainScreen
         }
 
-        let height: CGFloat = screen.frame.size.height * settings.previewWindowScale
-        let width: CGFloat = screen.frame.size.width * settings.previewWindowScale
+        let height = screen.frame.size.height * settings.previewWindowScale
+        let width = screen.frame.size.width * settings.previewWindowScale
         self.preferredContentSize = NSSize(width: width, height: height)
     }
 }

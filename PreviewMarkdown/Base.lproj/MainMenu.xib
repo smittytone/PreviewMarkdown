@@ -1672,9 +1672,6 @@ running this app once more.</string>
                     <constraint firstItem="ylE-vr-uuQ" firstAttribute="leading" secondItem="tvY-uS-fjB" secondAttribute="leading" id="w8d-DB-BND"/>
                 </constraints>
             </view>
-            <connections>
-                <outlet property="initialFirstResponder" destination="hbe-TC-ye0" id="jqf-Vt-p3z"/>
-            </connections>
             <point key="canvasLocation" x="56" y="-354"/>
         </window>
     </objects>

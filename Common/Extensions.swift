@@ -289,7 +289,7 @@ extension URL {
 extension NSApplication {
 
     var inLightMode: Bool {
-        // FROM 2.3.3 -- use a better check than string values
+        // FROM 2.5.0 -- use a better check than string values
         return effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .aqua
     }
 }

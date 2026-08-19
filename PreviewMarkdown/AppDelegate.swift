@@ -93,7 +93,7 @@ final class AppDelegate: NSResponder,
 
     // MARK: - Public Properties
 
-    var localMarkdownUTI: String = "NONE"
+    public var localMarkdownUTI: String = "NONE"
 
 
     // MARK: - Private Properies
@@ -215,7 +215,7 @@ final class AppDelegate: NSResponder,
     @IBAction
     private func doClose(_ sender: Any) {
 
-        //FROM 2.0.0
+        // FROM 2.0.0
         closeBasics()
         closeSettings()
     }
@@ -350,7 +350,9 @@ final class AppDelegate: NSResponder,
             path = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
         }
 
-        NSWorkspace.shared.open(URL(string:path)!)
+        if let url = URL(string: path) {
+            NSWorkspace.shared.open(url)
+        }
     }
 
 
@@ -362,7 +364,7 @@ final class AppDelegate: NSResponder,
     @objc
     private func doOpenSysPrefs(sender: Any) {
 
-       NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
+        NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
     }
 
 

@@ -1,6 +1,6 @@
 /*
  *  PMTabManager.swift
- *  PreviewMarkdown
+ *  PreviewApps
  *
  *  Created by Tony Smith on 30/09/2024.
  *  Copyright © 2026 Tony Smith. All rights reserved.
@@ -17,7 +17,7 @@ import AppKit
 class PMTabManager {
 
     // MARK: - Public Properties
-    
+
     var buttons: [NSButton]         = []
     var callbacks: [(()->Void)?]    = []
     var currentIndex: Int           = 0
@@ -25,10 +25,10 @@ class PMTabManager {
 
 
     // MARK: - Functions
-    
+
     /**
      Return the most recently clicked button.
-     
+
      - Returns The button as an NSButton instance, or `nil`.
      */
     func currentButton() -> NSButton? {
@@ -41,7 +41,7 @@ class PMTabManager {
 
     /**
      Process the action of clicking one of the tab manager's buttons.
-     
+
      - Parameters:
         - button: The NSButton clicked.
      */
@@ -59,31 +59,30 @@ class PMTabManager {
         guard let theAppDelegate = self.parent else {
             return
         }
-        
+
         // Select the required tab based on the button clicked
         // (this makes sure `button` is within `self.buttons`)
         if let nextIndex = self.buttons.firstIndex(of: button) {
-            self.currentIndex = nextIndex
-            
             // Enable the current tab's button and disable the rest
             for i in 0..<self.buttons.count {
-                if i != self.currentIndex {
+                if i != nextIndex {
                     self.buttons[i].state = .off
                 } else {
                     self.buttons[i].state = .on
                 }
             }
-            
+
             // Perform tab-specific logic BEFORE switching
             // NOTE The closures are set in the app delegate
-            if self.currentIndex < self.callbacks.count {
-                if let handler = self.callbacks[self.currentIndex] {
+            if nextIndex < self.callbacks.count {
+                if let handler = self.callbacks[nextIndex] {
                     handler()
                 }
             }
-            
+
             // Select the tab we're going to show
             theAppDelegate.mainTabView.selectTabViewItem(at: nextIndex)
+            self.currentIndex = nextIndex
         }
     }
 

@@ -16,7 +16,7 @@ import Foundation
 
 class PMSettings {
 
-    var doReverseMode: Bool         = false
+    var doReverseMode: Bool                 = false
     var doShowFrontMatter: Bool             = true
     var bodyFontName: String                = BUFFOON_CONSTANTS.FONT_NAME.BODY
     var codeFontName: String                = BUFFOON_CONSTANTS.FONT_NAME.CODE

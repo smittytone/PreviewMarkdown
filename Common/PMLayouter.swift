@@ -55,7 +55,7 @@ class PMLayouter: NSLayoutManager {
 
         // Draw and fill rounded path over lozenge
         let path = NSBezierPath(roundedRect: lozengeRect, xRadius: 4.0, yRadius: 4.0)
-        if let colour: NSColor = self.lozengeColour {
+        if let colour = self.lozengeColour {
             colour.setFill()
         } else {
             // Default to dark grey

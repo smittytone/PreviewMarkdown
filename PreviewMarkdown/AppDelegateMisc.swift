@@ -174,9 +174,9 @@ extension AppDelegate {
      */
     internal func getVersion() -> String {
         
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
-        let parts = (version as NSString).components(separatedBy: ".")
-        return parts[0] + "-" + parts[1]
+        let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown.unknown"
+        let parts = bundleVersion.components(separatedBy: ".")
+        return parts.joined(separator: "-")
     }
 
 
