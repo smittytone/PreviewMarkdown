@@ -193,17 +193,20 @@ class PreviewViewController: NSViewController,
     */
     private func setPreviewWindowSize(_ settings: PMSettings) {
 
-        var screen = NSScreen.screens[0]
-
-        // We've set `screen` to the primary, ie. menubar-displaying,
-        // screen, but ideally we should pick the screen with user focus.
-        // They may be one and the same, of course...
-        if let mainScreen = NSScreen.main, mainScreen != screen {
-            screen = mainScreen
+        // This app will never be run headless, so this should not really be necessary
+        if NSScreen.screens.count > 0 {
+            var screen = NSScreen.screens[0]
+            
+            // We've set `screen` to the primary, ie. menubar-displaying,
+            // screen, but ideally we should pick the screen with user focus.
+            // They may be one and the same, of course...
+            if let mainScreen = NSScreen.main, mainScreen != screen {
+                screen = mainScreen
+            }
+            
+            let height = screen.frame.size.height * settings.previewWindowScale
+            let width = screen.frame.size.width * settings.previewWindowScale
+            self.preferredContentSize = NSSize(width: width, height: height)
         }
-
-        let height = screen.frame.size.height * settings.previewWindowScale
-        let width = screen.frame.size.width * settings.previewWindowScale
-        self.preferredContentSize = NSSize(width: width, height: height)
     }
 }

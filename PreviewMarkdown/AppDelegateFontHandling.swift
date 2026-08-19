@@ -51,7 +51,7 @@ extension AppDelegate {
             var isCodeFont: Bool = true
             
             // For each family, examine its fonts for suitable ones
-            if let fonts: [[Any]] = fm.availableMembers(ofFontFamily: family) {
+            if let fonts = fm.availableMembers(ofFontFamily: family) {
                 // This will hold a font family: individual fonts will be added to
                 // the 'styles' array
                 var familyRecord = PMFont()
