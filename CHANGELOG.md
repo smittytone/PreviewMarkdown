@@ -2,6 +2,7 @@
 
 - 2.5.0 *Unreleased*
     - Code stability improvements.
+    - Update to HighlighterSwift 3.1.0. 
     - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
 - 2.4.3 *02 May 2026*
     - Fix font-size slider control’s colouring.
