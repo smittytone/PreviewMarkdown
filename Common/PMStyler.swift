@@ -36,7 +36,7 @@ class PMStyler {
     private  var styles: [String: [NSAttributedString.Key: AnyObject]]  = [:]
     private  var paragraphs: [String : NSMutableParagraphStyle]         = [:]
     private  var fonts: [FontRecord]                                    = []
-    private  var bodyFontFamily: PMFont                                 = PMFont()
+    private  var bodyFontFamily: PAFont                                 = PAFont()
     private  var highlighter: Highlighter?                              = nil
     // FROM 2.4.3
     private var lineSpacing: CGFloat                                    = 1.0
@@ -222,7 +222,6 @@ class PMStyler {
             scanner.skipNextCharacter()
 
             // Get the first character of the tag
-            //let nextChar: String = scanner.getNextCharacter(in: self.tokenString)
             let nextChar = scanner.getNextChar()
 
             // MARK: Closing Token
@@ -1208,7 +1207,7 @@ class PMStyler {
         // Get a list of available members (styles) for the font family
         if let availableMembers = NSFontManager.shared.availableMembers(ofFontFamily: self.bodyFontFamily.displayName) {
             for member in availableMembers {
-                var fontStyle = PMFont()
+                var fontStyle = PAFont()
                 // We can be fairly sure these a typeable as described
                 fontStyle.postScriptName = member[0] as! String
                 fontStyle.styleName = member[1] as! String
@@ -1311,7 +1310,7 @@ class PMStyler {
 
      - Returns The font we want or `nil` on error.
      */
-    internal func matchFont(_ requiredStyle: String, _ styleNames: [String], _ family: PMFont, _ size: CGFloat) -> NSFont? {
+    internal func matchFont(_ requiredStyle: String, _ styleNames: [String], _ family: PAFont, _ size: CGFloat) -> NSFont? {
 
         if let styles = family.styles {
             for styleName in styleNames {
