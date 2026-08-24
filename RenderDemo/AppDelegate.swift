@@ -79,7 +79,8 @@ class AppDelegate:  NSObject,
 
     // MARK: - Action Functions
     
-    @IBAction private func doLoadFile(_ sender: Any) {
+    @IBAction
+    private func doLoadFile(_ sender: Any) {
 
         let openPanel = NSOpenPanel()
         openPanel.delegate = self
@@ -109,7 +110,8 @@ class AppDelegate:  NSObject,
     }
 
 
-    @IBAction private func doSwitchMode(_ sender: Any) {
+    @IBAction
+    private func doSwitchMode(_ sender: Any) {
 
         self.renderAsDark = self.modeButton.state == .on
         doReRenderFile(self)

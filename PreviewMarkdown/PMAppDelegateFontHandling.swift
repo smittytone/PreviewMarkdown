@@ -1,9 +1,7 @@
 /*
- *  AppDelegateFontHandling.swift
+ *  PMAppDelegateFontHandling.swift
  *  PreviewMarkdown
  *  Extension for AppDelegate providing font processing functionality.
- *
- *  These functions can be used by all PreviewApps
  *
  *  Created by Tony Smith on 18/06/2024.
  *  Copyright © 2026 Tony Smith. All rights reserved.
@@ -12,7 +10,6 @@
 
 import AppKit
 import WebKit
-import UniformTypeIdentifiers
 
 
 extension AppDelegate {
@@ -31,8 +28,8 @@ extension AppDelegate {
      */
     internal func asyncGetFonts() {
         
-        var cf: [PMFont] = []
-        var bf: [PMFont] = []
+        var cf: [PAFont] = []
+        var bf: [PAFont] = []
         
         let mono = NSFontTraitMask.fixedPitchFontMask.rawValue
         let bold = NSFontTraitMask.boldFontMask.rawValue
@@ -40,43 +37,38 @@ extension AppDelegate {
         let symb = NSFontTraitMask.nonStandardCharacterSetFontMask.rawValue
         
         let fm = NSFontManager.shared
-        
-        let families: [String] = fm.availableFontFamilies
+        let families = fm.availableFontFamilies
         for family in families {
             // Remove known unwanted fonts
             if family.hasPrefix(".") || family.hasPrefix("Apple Braille") || family == "Apple Color Emoji" {
                 continue
             }
             
-            var isCodeFont: Bool = true
-            
+            var isCodeFont = true
+
             // For each family, examine its fonts for suitable ones
             if let fonts = fm.availableMembers(ofFontFamily: family) {
                 // This will hold a font family: individual fonts will be added to
                 // the 'styles' array
-                var familyRecord = PMFont()
+                var familyRecord = PAFont()
                 familyRecord.displayName = family
                 
                 for font in fonts {
-                    // We can be fairly sure these values are correctly typeable
-                    let psname = font[0] as! String
-                    let traits = font[3] as! UInt
+                    var fontRecord = PAFont()
+                    fontRecord.postScriptName = font[0] as? String ?? "error"
+                    fontRecord.styleName = font[1] as? String ?? "error"
+                    fontRecord.traits = font[3] as? UInt ?? 0
+
                     var doUseFont = false
-                    
-                    if mono & traits != 0 {
+                    if mono & fontRecord.traits != 0 {
                         doUseFont = true
-                    } else if traits & bold == 0 && traits & ital == 0 && traits & symb == 0 {
+                    } else if fontRecord.traits & bold == 0 && fontRecord.traits & ital == 0 && fontRecord.traits & symb == 0 {
                         isCodeFont = false
                         doUseFont = true
                     }
                     
                     if doUseFont {
                         // The font is good to use, so add it to the list
-                        var fontRecord = PMFont()
-                        fontRecord.postScriptName = psname
-                        fontRecord.styleName = font[1] as! String
-                        fontRecord.traits = traits
-                        
                         if familyRecord.styles == nil {
                             familyRecord.styles = []
                         }
@@ -118,7 +110,7 @@ extension AppDelegate {
     internal func setStylePopup(_ isBody: Bool = true, _ styleName: String? = nil) {
         
         let selectedFamily = isBody ? self.bodyFontPopup.titleOfSelectedItem! : self.codeFontPopup.titleOfSelectedItem!
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let familyList: [PAFont] = isBody ? self.bodyFonts : self.codeFonts
         let targetPopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
         targetPopup.removeAllItems()
         
@@ -157,7 +149,7 @@ extension AppDelegate {
      */
     internal func selectFontByPostScriptName(_ postScriptName: String, _ isBody: Bool) {
         
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let familyList: [PAFont] = isBody ? self.bodyFonts : self.codeFonts
         let targetPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
         
         for family in familyList {
@@ -201,7 +193,7 @@ extension AppDelegate {
      */
     internal func getPostScriptName(_ isBody: Bool) -> String? {
         
-        let familyList: [PMFont] = isBody ? self.bodyFonts : self.codeFonts
+        let familyList: [PAFont] = isBody ? self.bodyFonts : self.codeFonts
         let fontPopup: NSPopUpButton = isBody ? self.bodyFontPopup : self.codeFontPopup
         let stylePopup: NSPopUpButton = isBody ? self.bodyStylePopup : self.codeStylePopup
         

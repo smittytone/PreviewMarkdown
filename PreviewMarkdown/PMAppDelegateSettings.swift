@@ -1,5 +1,5 @@
 /*
- *  AppDelegateSettings.swift
+ *  PMAppDelegateSettings.swift
  *  PreviewMarkdown
  *  Extension for AppDelegate providing settings handling functionality.
  *
@@ -14,6 +14,11 @@ import AppKit
 extension AppDelegate {
 
     // MARK: - User Action Functions
+
+    internal func initialiseSettings() {
+
+    }
+
     
     /**
      Update UI when we are about to switch to it
@@ -254,7 +259,7 @@ extension AppDelegate {
         self.bodyStylePopup.isEnabled = false
         
         for i in 0..<self.bodyFonts.count {
-            let font: PMFont = self.bodyFonts[i]
+            let font: PAFont = self.bodyFonts[i]
             self.bodyFontPopup.addItem(withTitle: font.displayName)
         }
         
@@ -457,7 +462,7 @@ extension AppDelegate {
 
         let keys = BUFFOON_CONSTANTS.COLOUR_OPTIONS
         for key in keys {
-            if let _: String = self.currentSettings.displayColours["new_" + key] {
+            if let _ = self.currentSettings.displayColours["new_" + key] {
                 self.currentSettings.displayColours["new_" + key] = nil
             }
         }

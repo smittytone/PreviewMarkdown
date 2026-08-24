@@ -99,8 +99,8 @@ final class AppDelegate: NSResponder,
     // MARK: - Private Properies
 
     internal var whatsNewNav: WKNavigation? = nil
-    internal var bodyFonts: [PMFont] = []
-    internal var codeFonts: [PMFont] = []
+    internal var bodyFonts: [PAFont] = []
+    internal var codeFonts: [PAFont] = []
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -110,7 +110,7 @@ final class AppDelegate: NSResponder,
     internal var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
     
     // FROM 2.0.0
-    private  var tabManager: PMTabManager = PMTabManager()
+    private  var tabManager: PATabManager = PATabManager()
     internal var hasSentFeedback: Bool = false
     internal var initialLoadDone: Bool = false
     internal let defaultSettings: PMSettings = PMSettings()
@@ -123,32 +123,28 @@ final class AppDelegate: NSResponder,
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         
-        // FROM 1.4.0
         // Pre-load fonts in a separate thread
-        // NOTE This ultimately calls `loadSettings()` which we delay until after the fonts
-        //      have loaded asynchronously because they reference loaded fonts.
+        // NOTE This ultimately calls `AppDelegateSettings.loadSettings()`
+        //      which we delay until after the fonts have loaded asynchronously
+        //      because they reference loaded fonts.
         // FROM 2.4.1 - Upgrade to Swift Concurrency
         Task {
             asyncGetFonts()
         }
 
-        // FROM 1.2.0
         // Set application group-level defaults
         defaultSettings.registerSettings(self.appSuiteName, getVersion())
-
-        // FROM 1.2.0
-        // Get the local UTI for markdown files
-        self.localMarkdownUTI = getLocalFileUTI(BUFFOON_CONSTANTS.SAMPLE_UTI_FILE)
-
-        // FROM 1.0.3
-        // Add the version number to the panel
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
-        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
-        versionLabel.stringValue = "Version \(version) (\(build))"
 
         // From 1.0.4
         // Disable the Help menu Spotlight features
         NSApplication.shared.helpMenu = NSMenu(title: "Dummy")
+
+        self.infoButton.toolTip = "About \(BUFFOON_CONSTANTS.APP_NAME) 2"
+        self.settingsButton.toolTip = "Set preview styles and content"
+        self.feedbackButton.toolTip = "Send feedback to the developer"
+        self.infoButton.alphaValue = 1.0
+        self.settingsButton.alphaValue = 1.0
+        self.feedbackButton.alphaValue = 1.0
 
         // FROM 2.0.0
         // Configure the tab manager
@@ -156,37 +152,18 @@ final class AppDelegate: NSResponder,
         self.tabManager.buttons.append(self.infoButton)
         self.tabManager.buttons.append(self.settingsButton)
         self.tabManager.buttons.append(self.feedbackButton)
-        self.infoButton.toolTip = "About PreviewMarkdown 2"
-        self.settingsButton.toolTip = "Set preview styles and content"
-        self.feedbackButton.toolTip = "Send feedback to the developer"
-        self.infoButton.alphaValue = 1.0
-        self.settingsButton.alphaValue = 1.0
-        self.feedbackButton.alphaValue = 1.0
-        
         // Add callback closures, one per tab, to the tab manager
         self.tabManager.callbacks.append(nil)   // Info tab
-        self.tabManager.callbacks.append {      // Settings tab
-            self.willShowSettingsPage()
-        }
-        self.tabManager.callbacks.append {
-            self.willShowFeedbackPage()         // Feedback tab
-        }
-        
+        self.tabManager.callbacks.append { self.willShowSettingsPage() }
+        self.tabManager.callbacks.append { self.willShowFeedbackPage() }
+
         // Clear the Feedback tab
         // NOTE Don't initialise the Settings tab here too:
         //      It must happen after we've got a list of fonts
         initialiseFeedback()
-        
-        // FROM 2.0.0
-        // Register our Markdown to HTML service
-        NSApplication.shared.servicesProvider = HTMLServiceProvider()
-        NSUpdateDynamicServices()
-        
-        // FROM 1.2.0
-        // Show 'What's New' if we need to
-        // (and set up the WKWebView: no elasticity, horizontal scroller)
-        // NOTE Has to take place at the end of the function
-        doShowWhatsNew(nil)
+
+        // Set the `Settings` tab's tooltips
+        initialiseSettings()
 
         // FROM 2.0.0
         self.mainMenuResetFinder.isHidden = true
@@ -195,8 +172,17 @@ final class AppDelegate: NSResponder,
         self.previewMarginSizeText.delegate = self
         self.previewMarginRangeText.stringValue = "Valid range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)" 
 
+        localApplicationDidFinishLaunching()
+
+        // FROM 1.2.0
+        // Show 'What's New' if we need to
+        // (and set up the WKWebView: no elasticity, horizontal scroller)
+        // NOTE Has to take place at the end of the function
+        doShowWhatsNew(nil)
+
         // Show the main window
-        setInfoText()
+        setInfoText(self.infoLabel)
+        setversionText(self.versionLabel)
         self.window.delegate = self
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
@@ -213,11 +199,13 @@ final class AppDelegate: NSResponder,
     // MARK: - Action Functions
 
     @IBAction
-    private func doClose(_ sender: Any) {
+    internal func doClose(_ sender: Any) {
 
         // FROM 2.0.0
-        closeBasics()
-        closeSettings()
+        Task { @MainActor in
+            await closeBasics()
+            await closeSettings()
+        }
     }
 
 
@@ -226,12 +214,8 @@ final class AppDelegate: NSResponder,
      
      FROM 2.0.0
      */
-    internal func closeBasics() {
-        
-        // FROM 1.3.0
-        // Reset the QL thumbnail cache... just in case (don't think this does anything)
-        _ = runProcess(app: "/usr/bin/qlmanage", with: ["-r", "cache"])
-        
+    internal func closeBasics() async {
+
         // Close the What's New sheet if it's open
         if self.whatsNewWindow.isVisible {
             self.whatsNewWindow.close()
@@ -245,8 +229,8 @@ final class AppDelegate: NSResponder,
      
      FROM 2.0.0
      */
-    internal func closeSettings() {
-        
+    internal func closeSettings() async {
+
         // Are there any unsaved changes to the settings?
         if checkSettingsOnQuit() {
             let alert = makeAlert("You have unsaved settings",
@@ -254,19 +238,16 @@ final class AppDelegate: NSResponder,
                                   false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
-            alert.beginSheetModal(for: self.window) { (response) in
-                if response == .alertFirstButtonReturn {
-                    // The user clicked 'Quit': now check for feedback changes
-                    self.closeFeedback()
-                }
+
+            let response = await alert.beginSheetModal(for: self.window)
+            if response != .alertFirstButtonReturn {
+                // The user clicked 'Cancel'
+                return
             }
-            
-            // Exit the close process to allow the user to save their changed settings
-            return
         }
-        
+
         // Move on to the next phase: the feedback check
-        closeFeedback()
+        await closeFeedback()
     }
 
 
@@ -276,8 +257,8 @@ final class AppDelegate: NSResponder,
      
      FROM 2.0.0
      */
-    internal func closeFeedback() {
-        
+    internal func closeFeedback() async {
+
         // Does the feeback page contain text? If so let the user know
         if self.feedbackText.stringValue.count > 0 && !self.hasSentFeedback {
             let alert = makeAlert("You have unsent feedback",
@@ -285,15 +266,12 @@ final class AppDelegate: NSResponder,
                                   false)
             alert.addButton(withTitle: "Quit")
             alert.addButton(withTitle: "Cancel")
-            alert.beginSheetModal(for: self.window) { (response) in
-                if response == .alertFirstButtonReturn {
-                    // The user clicked 'Quit'
-                    self.window.close()
-                }
+
+            let response = await alert.beginSheetModal(for: self.window)
+            if response != .alertFirstButtonReturn {
+                // The user clicked 'Cancel'
+                return
             }
-            
-            // Exit the close process to allow the user to send their entered feedback
-            return
         }
 
         // No feedback text to send/ignore so close the window which will trigger an app closure
@@ -304,8 +282,10 @@ final class AppDelegate: NSResponder,
     /**
      Open the websites for contributors, etc.
      */
-    @IBAction @objc private func doShowSites(sender: Any) {
-        
+    @objc
+    @IBAction
+    private func doShowSites(sender: Any) {
+
         // FROM 2.5.0 -- set `item` more safely
         guard let item = sender as? NSMenuItem else { return }
         var path = BUFFOON_CONSTANTS.URL_MAIN
@@ -350,6 +330,8 @@ final class AppDelegate: NSResponder,
             path = BUFFOON_CONSTANTS.URL_MAIN + "#customise-the-preview"
         }
 
+        // Open the selected website
+        // FROM 2.5.0 -- more safely
         if let url = URL(string: path) {
             NSWorkspace.shared.open(url)
         }
@@ -358,21 +340,12 @@ final class AppDelegate: NSResponder,
 
     /**
      Open the System Preferences app at the Extensions pane.
-     FROM 1.1.0
      */
-    @IBAction
     @objc
+    @IBAction
     private func doOpenSysPrefs(sender: Any) {
 
         NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Library/PreferencePanes/Extensions.prefPane"))
-    }
-
-
-    @IBAction
-    private func doInitiateFinderReset(sender: Any) {
-
-        // FROM 1.5.0
-        warnUserAboutReset()
     }
 
 
@@ -406,23 +379,34 @@ final class AppDelegate: NSResponder,
      Create and display the information text label. This is done programmatically
      because we're using an NSAttributedString rather than a plain string.
      */
-    private func setInfoText() {
-        
+    private func setInfoText(_ text: NSTextField) {
+
         // Set the attributes
         let bodyAtts: [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: 13.0),
             .foregroundColor: NSColor.labelColor
         ]
-        
+
         let boldAtts : [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: 13.0, weight: .bold),
             .foregroundColor: NSColor.labelColor
         ]
-        
-        let infoText = NSMutableAttributedString(string: "You need only run this app once, to register its Markdown Previewer and Markdown Thumbnailer application extensions with macOS. You can then manage these extensions in ", attributes: bodyAtts)
+
+        let infoText = NSMutableAttributedString(string: "You need only run this app once, to register its JSON Previewer and JSON Thumbnailer application extensions with macOS. You can then manage these extensions in ", attributes: bodyAtts)
         let boldText = NSAttributedString(string: "System Settings > Extensions > Quick Look", attributes: boldAtts)
         infoText.append(boldText)
         infoText.append(NSAttributedString(string: ".\n\nCases where previews cannot be rendered can usually be resolved by logging out of your Mac, logging in again and running this app once more.", attributes: bodyAtts))
-        self.infoLabel.attributedStringValue = infoText
+        text.attributedStringValue = infoText
+    }
+
+
+    /**
+     Add the app's version number to the UI.
+     */
+    private func setversionText(_ text: NSTextField) {
+
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
+        text.stringValue = "Version \(version) (\(build))"
     }
 }

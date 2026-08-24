@@ -1,6 +1,6 @@
 /*
- *  AppDelegateWhatsNew.swift
- *  PreviewMarkdown
+ *  PAAppDelegateWhatsNew.swift
+ *  PreviewApps
  *  Extension for AppDelegate providing What's New sheet functionality.
  *
  *  Created by Tony Smith on 10/10/2024.
@@ -16,10 +16,8 @@ extension AppDelegate {
     /**
      Show the **What's New** sheet.
 
-     If we're on a new, non-patch version, of the user has explicitly
-     asked to see it with a menu click See if we're coming from a menu click
-     or directly in code from `pplicationDidFinishLaunching()`
-     (`sender == nil`)
+     See if we're coming from a menu click (`sender != self`) or directly
+     in code from *appDidFinishLoading()* (`sender == nil`)
 
      - Parameters:
         - sender: The source of the action.
@@ -43,8 +41,7 @@ extension AppDelegate {
       
         // Configure and show the sheet
         if doShowSheet {
-            // FROM 1.4.6
-            // Disable menus we don't want used when the panel is open
+            // Hide menus we don't want used while panel is open
             hidePanelGenerators()
             
             // First, get the folder path
@@ -68,14 +65,17 @@ extension AppDelegate {
 
 
     /**
-     Close the 'What's New' sheet, making sure we clear the preference flag for this minor version,
-     so that the sheet is not displayed next time the app is run (unless the version changes)
-     
-     FROM 1.2.0
+     Close the **What's New** sheet.
+
+     Make sure we clear the preference flag for this minor version, so that
+     the sheet is not displayed next time the app is run (unless the version changes)
+
+     - Parameters:
+        - sender: The source of the action.
      */
     @IBAction
-    private func doCloseWhatsNew(_ sender: Any) {
-        
+    internal func doCloseWhatsNew(_ sender: Any) {
+
         // Close the sheet
         self.window.endSheet(self.whatsNewWindow)
         
@@ -85,14 +85,14 @@ extension AppDelegate {
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let key = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
-            defaults.setValue(false, forKey: key)
 #if DEBUG
             print("\(key) reset back to true")
             defaults.setValue(true, forKey: key)
+#else
+            defaults.setValue(false, forKey: key)
 #endif
         }
         
-        // FROM 1.4.6
         // Restore menus
         showPanelGenerators()
     }

@@ -243,6 +243,9 @@ struct BUFFOON_CONSTANTS {
 
     // FROM 2.4.0
     static let WEB_PREFS_ID                     = "com.bps.web.prefs"
+
+    // FROM 2.5.0
+    static let APP_NAME                         = "PreviewMarkdown"
 }
 
 
