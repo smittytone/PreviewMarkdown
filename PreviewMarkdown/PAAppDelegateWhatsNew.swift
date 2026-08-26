@@ -7,7 +7,6 @@
  *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
-
 import AppKit
 
 
@@ -38,15 +37,15 @@ extension AppDelegate {
                 doShowSheet = defaults.bool(forKey: key)
             }
         }
-      
+
         // Configure and show the sheet
         if doShowSheet {
             // Hide menus we don't want used while panel is open
             hidePanelGenerators()
-            
+
             // First, get the folder path
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
-            
+
             // Set WebView properties: limit scrollers and elasticity
             self.whatsNewWebView.enclosingScrollView?.hasHorizontalScroller = false
             self.whatsNewWebView.enclosingScrollView?.horizontalScrollElasticity = .none
@@ -78,10 +77,10 @@ extension AppDelegate {
 
         // Close the sheet
         self.window.endSheet(self.whatsNewWindow)
-        
+
         // Scroll the web view back to the top
         self.whatsNewWebView.evaluateJavaScript("window.scrollTo(0,0)", completionHandler: nil)
-        
+
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             let key = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
@@ -92,8 +91,9 @@ extension AppDelegate {
             defaults.setValue(false, forKey: key)
 #endif
         }
-        
+
         // Restore menus
         showPanelGenerators()
     }
+
 }

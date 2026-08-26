@@ -49,7 +49,7 @@ extension AppDelegate {
      - Returns: The version string.
      */
     internal func getVersion() -> String {
-        
+
         let bundleVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown.unknown"
         let parts = bundleVersion.components(separatedBy: ".")
         return parts.joined(separator: "-")
@@ -90,19 +90,19 @@ extension AppDelegate {
 
     /**
      Read back the host system's registered UTI for the specified file.
-     
+
      This is not PII. It used solely for debugging purposes
-     
+
      - Parameters:
         - filename: The file we'll use to get the UTI.
-     
+
      - Returns: The file's UTI.
      */
     internal func getLocalFileUTI(_ filename: String) -> String {
-        
+
         var localUTI = "NONE"
         let samplePath = Bundle.main.resourcePath! + "/" + filename
-        
+
         if FileManager.default.fileExists(atPath: samplePath) {
             // Create a URL reference to the sample file
             // NOTE Call below is DEPRECATED, but replacement requires macOS 13
@@ -111,7 +111,7 @@ extension AppDelegate {
                 localUTI = uti.identifier
             }
         }
-        
+
         return localUTI
     }
 
@@ -122,7 +122,7 @@ extension AppDelegate {
      Disable all panel-opening menu items.
      */
     internal func hidePanelGenerators() {
-        
+
         self.helpMenuWhatsNew.isEnabled = false
         self.mainMenuSettings.isEnabled = false
         localHides()
@@ -141,7 +141,7 @@ extension AppDelegate {
 
 
     func applicationSupportsSecureRestorableState() -> Bool {
-        
+
         return true
     }
 
@@ -181,7 +181,7 @@ extension AppDelegate {
             // No unsaved settings or unsent feedback, so we're good to close
             return true
         }
-        
+
         // Close mmanually
         // NOTE The above check will fail if there are settings changes and/or
         //      unsent feedback, in which case the following calls will trigger

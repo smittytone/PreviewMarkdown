@@ -7,7 +7,6 @@
  *  Copyright © 2026 Tony Smith. All rights reserved.
  */
 
-
 import AppKit
 
 
@@ -17,7 +16,7 @@ extension AppDelegate {
      Set up the UI for the first time.
      */
     internal func initialiseFeedback() {
-        
+
         // Reset the UI
         self.connectionProgress.stopAnimation(self)
         self.feedbackText.stringValue = ""
@@ -40,7 +39,7 @@ extension AppDelegate {
 
     /**
      Check if feedback has been entered and, if so, whether it has been sent.
-     
+
      - Returns:
         `true` if there is feedback to warn the user about, otherwise `false`.
      */
@@ -85,7 +84,7 @@ extension AppDelegate {
 
 
     // MARK: - Alert Functions
-    
+
     /**
      Present an error message specific to sending feedback.
 
@@ -97,7 +96,7 @@ extension AppDelegate {
         hidePanelGenerators()
         let alert = makeAlert("Feedback Could Not Be Sent",
                               "Unfortunately, your comments could not be send at this time. Please try again later.\n\nReason: \(error.localizedDescription)")
-        
+
         let _ = await alert.beginSheetModal(for: self.window)
         self.showPanelGenerators()
     }
@@ -119,9 +118,9 @@ extension AppDelegate {
 
 
     // MARK: - NSTextFieldDelegate Functions
-    
+
     func controlTextDidChange(_ note: Notification) {
-        
+
         // Trap text changes so that no more than
         // can be entered into the text field
 
@@ -135,13 +134,13 @@ extension AppDelegate {
             // text field red and back
             flashField()
         }
-        
+
         // Set the button title according to the amount of feedback text
         self.messageSendButton.isEnabled = !self.feedbackText.stringValue.isEmpty
         if self.hasSentFeedback {
             self.hasSentFeedback = false
         }
-        
+
         // Set the text length label
         self.messageSizeLabel.stringValue = "\(self.feedbackText.stringValue.count)/\(BUFFOON_CONSTANTS.MAX_FEEDBACK_SIZE)"
     }

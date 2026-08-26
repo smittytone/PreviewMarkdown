@@ -257,41 +257,27 @@ extension NSColor {
         }
 
         // Colours in hex strings have 3, 6 or 8 (6 + alpha) values
-        if ![8, 6, 3].contains(colourString.count) {
-            return NSColor.gray
-        }
+        guard [8, 6, 3].contains(colourString.count) else { return NSColor.gray }
+        guard let colourValue = Int(colourString, radix: 16) else { return NSColor.gray }
 
-        var r: UInt64 = 0, g: UInt64 = 0, b: UInt64 = 0, a: UInt64 = 0
-        var divisor: CGFloat
+        var r: UInt64 = 0, g: UInt64 = 0, b: UInt64 = 0
+        var divisor: CGFloat = 255.0
         var alpha: CGFloat = 1.0
 
-        if colourString.count == 6 || colourString.count == 8 {
-            // Decode a six-character hex string
-            let rString = colourString[0..<2]
-            let gString = colourString[2..<4]
-            let bString = colourString[4..<6]
-
-            Scanner(string: rString).scanHexInt64(&r)
-            Scanner(string: gString).scanHexInt64(&g)
-            Scanner(string: bString).scanHexInt64(&b)
-
-            divisor = 255.0
-
-            if colourString.count == 8 {
-                // Decode the eight-character hex string's alpha value
-                let aString = colourString[6..<8]
-                Scanner(string: aString).scanHexInt64(&a)
-                alpha = CGFloat(a) / divisor
-            }
+        if colourString.count == 6 {
+            r = UInt64((colourValue >> 16) & 0xFF)
+            g = UInt64((colourValue >> 8) & 0xFF)
+            b = UInt64(colourValue & 0xFF)
+        } else if colourString.count == 8 {
+            r = UInt64((colourValue >> 24) & 0xFF)
+            g = UInt64((colourValue >> 16) & 0xFF)
+            b = UInt64((colourValue >> 8) & 0xFF)
+            alpha = CGFloat(colourValue & 0xFF) / divisor
         } else {
             // Decode a three-character hex string
-            let rString = colourString[0..<1]
-            let gString = colourString[1..<2]
-            let bString = colourString[2..<3]
-
-            Scanner(string: rString).scanHexInt64(&r)
-            Scanner(string: gString).scanHexInt64(&g)
-            Scanner(string: bString).scanHexInt64(&b)
+            r = UInt64((colourValue >> 8) & 0xF)
+            g = UInt64((colourValue >> 4) & 0xF)
+            b = UInt64(colourValue & 0xF)
             divisor = 15.0
         }
 
