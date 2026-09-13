@@ -12,29 +12,6 @@ import AppKit
 import Yaml
 
 
-// FROM 2.0.0
-// Simple class to hold indices (start and end) of the key elements
-// within a string of markdown-formatted text
-class MarkdownComponents {
-    // TO-DO Replace with ranges??
-    var frontMatterStart: String.Index? = nil
-    var frontMatterEnd: String.Index?   = nil
-    var markdownStart: String.Index?    = nil
-    var markdownEnd: String.Index?      = nil
-}
-
-
-// FROM 2.2.0
-// Structure to hold front matter row components.
-struct Row {
-    var key: String     = BUFFOON_CONSTANTS.HARDTAB
-    var val: String     = BUFFOON_CONSTANTS.HARDTAB
-    var rule: Double    = BUFFOON_CONSTANTS.RULES.FINE
-    var style: String   = ""
-    var indent: Int     = 0
-}
-
-
 // FROM 1.4.0
 // Implement common code as a class
 final internal class Common {
@@ -46,7 +23,8 @@ final internal class Common {
     var linkColor: NSColor                                          = .linkColor    // Pass to main text view
     // FROM 2.1.0
     var settings: PMSettings                                        = PMSettings()
-
+    // FROM 2.5.0
+    var outputHTMLforDebug: Bool                                    = false         // Use for debug only
 
     // MARK: - Private Properties
 
@@ -297,10 +275,17 @@ final internal class Common {
 
 #if DEBUG
         if !self.isThumbnail {
-            let modeString = NSMutableAttributedString(string: "MODE: \(NSApp.inLightMode ? "LIGHT" : "DARK") SETTING: \(self.settings.doReverseMode ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
-                                                       attributes: self.yamlKeyAttributes)
-            modeString.append(output)
-            output = modeString
+            if self.outputHTMLforDebug {
+                let htmlString = NSMutableAttributedString(string: "\(markdowner.tokenise(markdownToRender))\n\n",
+                                                           attributes: self.yamlValueAttributes)
+                htmlString.append(output)
+                output = htmlString
+            } else {
+                let infoString = NSMutableAttributedString(string: "MODE: \(NSApp.inLightMode ? "LIGHT" : "DARK") SETTING: \(self.settings.doReverseMode ? "ON" : "OFF") USE LIGHT PREVIEW: \(renderForLightMode ? "TRUE" : "FALSE")\n",
+                                                           attributes: self.yamlKeyAttributes)
+                infoString.append(output)
+                output = infoString
+            }
         }
 #endif
 
