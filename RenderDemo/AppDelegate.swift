@@ -192,6 +192,7 @@ class AppDelegate:  NSObject,
                     }
 
                     // Get the key string first
+                    common.outputHTMLforDebug = true
                     let mdAttString: NSAttributedString = common.getAttributedString(mdString[...])
 
                     if let renderTextStorage: NSTextStorage = self.previewTextView.textStorage {
