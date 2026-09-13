@@ -1,9 +1,9 @@
 ## Release Notes
 
 - 2.5.0 *Unreleased*
-    - Improve Thumbnail Provider's thread safety.
-    - Improve Thumbnail Provider's error handling.
-    - Improve Preview Provider's error handling.
+    - Improve Markdown Thumbnailer’s thread safety.
+    - Improve Markdown Thumbnailer’s error handling.
+    - Improve Markdown Previewer’s error handling.
     - Update to HighlighterSwift 4.0.0 (tracking `develop` branch).
     - Update to Markdown-It 14.3.2.
     - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
