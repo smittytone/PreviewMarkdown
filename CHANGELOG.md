@@ -4,7 +4,7 @@
     - Improve Thumbnail Provider's thread safety.
     - Improve Thumbnail Provider's error handling.
     - Improve Preview Provider's error handling.
-    - Update to HighlighterSwift 3.1.0. 
+    - Update to HighlighterSwift 4.0.0 (tracking `develop` branch). 
     - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
 - 2.4.3 *02 May 2026*
     - Fix font-size slider control’s colouring.

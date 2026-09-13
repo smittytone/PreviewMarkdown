@@ -37,6 +37,11 @@
 		3B7D30962515073000A37F96 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA2F236ADECB009BAA05 /* PreviewViewController.swift */; };
 		3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBAEA46236ADF11009BAA05 /* ThumbnailProvider.swift */; };
 		3B7D30A02515077300A37F96 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
+		3B7E758730569DBC00E620C1 /* CommonEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E758630569DB700E620C1 /* CommonEntities.swift */; };
+		3B7E758830569DBC00E620C1 /* CommonEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E758630569DB700E620C1 /* CommonEntities.swift */; };
+		3B7E758930569DBC00E620C1 /* CommonEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E758630569DB700E620C1 /* CommonEntities.swift */; };
+		3B7E758A30569DBC00E620C1 /* CommonEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E758630569DB700E620C1 /* CommonEntities.swift */; };
+		3B7E758B30569DBC00E620C1 /* CommonEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7E758630569DB700E620C1 /* CommonEntities.swift */; };
 		3B873DCD2E795567000F0610 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 3B873DCC2E795567000F0610 /* AppIcon.icon */; };
 		3B8865D724E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
 		3B8865D824E3E99700435B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8865D624E3E99700435B1C /* Constants.swift */; };
@@ -165,6 +170,7 @@
 		3B7D3086251504A900A37F96 /* PreviewMarkdownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PreviewMarkdownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B7D3088251504A900A37F96 /* PreviewMarkdownTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMarkdownTests.swift; sourceTree = "<group>"; };
 		3B7D308A251504A900A37F96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3B7E758630569DB700E620C1 /* CommonEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonEntities.swift; sourceTree = "<group>"; };
 		3B873DCC2E795567000F0610 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; name = AppIcon.icon; path = "../../Library/Mobile Documents/com~apple~CloudDocs/Documents/Programming/PreviewMarkdown/AppIcon.icon"; sourceTree = SOURCE_ROOT; };
 		3B8865D624E3E99700435B1C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3BAE671628D4D09B001532BD /* PMAppDelegateFontHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMAppDelegateFontHandling.swift; sourceTree = "<group>"; };
@@ -291,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				3BBAE1342D2EDE48009D0C34 /* Common.swift */,
+				3B7E758630569DB700E620C1 /* CommonEntities.swift */,
 				3BBAE1362D2EDE48009D0C34 /* HTMLUtils.swift */,
 				3BBAE13A2D2EDE48009D0C34 /* PMStyler.swift */,
 				3BF2DC4B2D4A8A1100520F48 /* PMStylerEntities.swift */,
@@ -648,6 +655,7 @@
 				3B7D30972515073000A37F96 /* ThumbnailProvider.swift in Sources */,
 				3BBAE14A2D2EDE48009D0C34 /* Common.swift in Sources */,
 				3BC7DDB02D390E1E0066B644 /* PAExtensions.swift in Sources */,
+				3B7E758A30569DBC00E620C1 /* CommonEntities.swift in Sources */,
 				3BC7DDAE2D390DC70066B644 /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
 				3BC7DDAD2D390C870066B644 /* PMMarkdowner.swift in Sources */,
 				3B7D3089251504A900A37F96 /* PreviewMarkdownTests.swift in Sources */,
@@ -665,6 +673,7 @@
 				3B54BE5030383E6C00AB4631 /* PMAppDelegateMisc.swift in Sources */,
 				3B0EC8532F6B1C4F00C32894 /* PAEntities.swift in Sources */,
 				3BEAC5B22AA39E9400958FFC /* REPLACE_WITH_YOUR_CODES.swift in Sources */,
+				3B7E758830569DBC00E620C1 /* CommonEntities.swift in Sources */,
 				3B363F492D48F7EC00F0982F /* PMMarkdowner.swift in Sources */,
 				3BF2DC502D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
 				3B5CAA04268F4B2300A2DED1 /* PAFont.swift in Sources */,
@@ -695,6 +704,7 @@
 				3BBAE1402D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1412D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3BF2DC4E2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
+				3B7E758930569DBC00E620C1 /* CommonEntities.swift in Sources */,
 				3B8865D824E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,6 +724,7 @@
 				3BBAE1472D2EDE48009D0C34 /* PMLayouter.swift in Sources */,
 				3BBAE1482D2EDE48009D0C34 /* HTMLUtils.swift in Sources */,
 				3BF2DC4D2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
+				3B7E758B30569DBC00E620C1 /* CommonEntities.swift in Sources */,
 				3B8865D924E3E99700435B1C /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -733,6 +744,7 @@
 				3BD56C2F2AF02E0500772A82 /* AppDelegate.swift in Sources */,
 				3BEB32582E5063B5008E03F8 /* PMSettings.swift in Sources */,
 				3BF2DC4F2D4A8A1100520F48 /* PMStylerEntities.swift in Sources */,
+				3B7E758730569DBC00E620C1 /* CommonEntities.swift in Sources */,
 				3BD56C3B2AF02ED400772A82 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -967,7 +979,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1013,7 +1025,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1049,7 +1061,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1086,7 +1098,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1121,7 +1133,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
@@ -1156,7 +1168,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 280;
+				CURRENT_PROJECT_VERSION = 281;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = Y5J3K52DNA;
