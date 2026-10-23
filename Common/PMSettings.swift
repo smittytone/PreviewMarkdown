@@ -34,7 +34,7 @@ class PMSettings {
     ]
     // FROM 2.3.0
     var previewWindowScale: CGFloat         = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L               // Advanced
-    var previewMarginWidth: CGFloat         = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH   // Advanced
+    var previewMarginWidth: CGFloat         = BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH           // Advanced
     var thumbnailMatchFinderMode: Bool      = false                                                 // Advanced
     // FROM 2.5.0
     var maxFileSize: Int                    = BUFFOON_CONSTANTS.DEFAULT_MAX_FILE_SIZE               // Advanced
@@ -269,7 +269,7 @@ class PMSettings {
 
             // Preview inset margin width
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN) == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
+                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
             }
 
             // FROM 2.5.0

@@ -271,11 +271,11 @@ extension AppDelegate {
         // Preview Margin Size
         if let previewMargin = Float(self.previewMarginSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)) {
             if previewMargin < 0.0 || previewMargin > 256.0 {
-                showWarning("The preview margin size is outside the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)")
+                showWarning("The preview margin size is outside the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MAX)")
                 return false
             }
         } else {
-            showWarning("The preview margin size must be a number in the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)")
+            showWarning("The preview margin size must be a number in the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MAX)")
             return false
         }
 
@@ -413,7 +413,7 @@ extension AppDelegate {
                 displayedSettings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S
         }
 
-        displayedSettings.previewMarginWidth = Double(self.previewMarginSizeText.stringValue) ?? BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
+        displayedSettings.previewMarginWidth = Double(self.previewMarginSizeText.stringValue) ?? BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH
 
         // FROM 2.5.0
         if self.advancedYamlFontSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased().hasPrefix("M") {
@@ -704,7 +704,7 @@ extension AppDelegate {
         let textField = obj.object as? NSTextField ?? nil
         if textField == self.previewMarginSizeText {
             if let doubleValue = Double(textField!.stringValue) {
-                if let update = check(double: doubleValue, min: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN), max: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)) {
+                if let update = check(double: doubleValue, min: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MIN), max: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MAX)) {
                     textField!.stringValue = update
                     return
                 }

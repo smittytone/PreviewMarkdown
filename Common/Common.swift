@@ -79,10 +79,10 @@ final internal class Common {
             self.settings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L
         }
 
-        if self.settings.previewMarginWidth < CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN) {
-            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)
-        } else if self.settings.previewMarginWidth > CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX) {
-            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)
+        if self.settings.previewMarginWidth < CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MIN) {
+            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MIN)
+        } else if self.settings.previewMarginWidth > CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MAX) {
+            self.settings.previewMarginWidth = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH_MAX)
         }
 
         // Set paragraph spacing

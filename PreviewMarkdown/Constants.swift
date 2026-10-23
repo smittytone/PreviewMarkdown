@@ -170,10 +170,10 @@ struct BUFFOON_CONSTANTS {
         static let FONT_SIZE                    = 16.0
         static let FONT_SIZE_OPTIONS: [CGFloat] = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
         static let LINE_SPACING                 = 1.0
-        static let PREVIEW_MARGIN_WIDTH         = 16.0
-        static let PREVIEW_MARGIN_WIDTH_MIN     = 0
-        static let PREVIEW_MARGIN_WIDTH_MAX     = 256
-        static let PREVIEW_MARGIN_SIZE          = NSSize(width: PREVIEW_MARGIN_WIDTH, height: PREVIEW_MARGIN_WIDTH)
+        static let MARGIN_WIDTH                 = 16.0
+        static let MARGIN_WIDTH_MIN             = 0
+        static let MARGIN_WIDTH_MAX             = 256
+        static let MARGIN_SIZE                  = NSSize(width: MARGIN_WIDTH, height: MARGIN_WIDTH)
         // FROM 2.5.0
         static let YAML_FONT_SIZE               = CGFloat(0.0)  // Code for 'same as body font'
     }

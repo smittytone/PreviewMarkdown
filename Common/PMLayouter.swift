@@ -17,7 +17,7 @@ class PMLayouter: NSLayoutManager {
     var lozengeColour: NSColor?     = nil
     var fontSize: CGFloat           = BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE
     // FROM 2.1.0
-    var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
+    var marginDelta: CGFloat        = BUFFOON_CONSTANTS.PREVIEW_SIZE.MARGIN_WIDTH
 
 
     // Override this function to hijack double-line drawing and replace it with
