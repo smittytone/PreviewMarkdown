@@ -1,12 +1,10 @@
 /*
  *  PMAppDelegateFontHandling.swift
  *  PreviewMarkdown
- *  Extension for AppDelegate providing font processing functionality.
  *
  *  Created by Tony Smith on 18/06/2024.
  *  Copyright © 2026 Tony Smith. All rights reserved.
  */
-
 
 import AppKit
 import WebKit

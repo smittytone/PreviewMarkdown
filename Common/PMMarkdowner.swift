@@ -1,6 +1,6 @@
 /*
  *  PMMarkdowner.swift
- *  Swift wrapper for MarkdownIt JavaScript
+ *  PreviewMarkdown
  *
  *  Created by Tony Smith on 23/09/2020.
  *  Copyright © 2026 Tony Smith. All rights reserved.

@@ -1,10 +1,10 @@
-//
-//  PMStylerEntities.swift
-//  Structs and classes used by PMStyler
-//
-//  Created by Tony Smith on 29/01/2025.
-//  Copyright © 2026 Tony Smith. All rights reserved.
-//
+/*
+ *  PMStylerEntities.swift
+ *  PreviewMarkdown
+ *
+ *  Created by Tony Smith on 29/01/2025.
+ *  Copyright © 2026 Tony Smith. All rights reserved.
+ */
 
 import AppKit
 

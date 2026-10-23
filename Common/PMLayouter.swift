@@ -1,14 +1,13 @@
-//
-//  PMLayouter.swift
-//  NSLayoutManager for text lozenge handling
-//
-//  Created by Tony Smith on 05/09/2024.
-//  Copyright © 2026 Tony Smith. All rights reserved.
-//
+/*
+ *  PMLayouter.swift
+ *  PreviewMarkdown
+ *
+ *  Created by Tony Smith on 05/09/2024.
+ *  Copyright © 2026 Tony Smith. All rights reserved.
+ */
 
 import Foundation
 import AppKit
-
 
 
 class PMLayouter: NSLayoutManager {

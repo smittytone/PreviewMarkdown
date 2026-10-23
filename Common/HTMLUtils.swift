@@ -1,11 +1,10 @@
 /*
  *  HTMLUtils.swift
- *  HTML-processing utilities
+ *  PreviewMarkdown
  *
  *  Created by Tony Smith on 23/09/2020.
  *  Copyright © 2024 Tony Smith. All rights reserved.
  */
-
 
 import Foundation
 

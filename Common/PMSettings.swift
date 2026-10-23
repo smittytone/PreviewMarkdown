@@ -1,6 +1,6 @@
 /*
  *  PMSettings.swift
- *  PreviewApps
+ *  PreviewMarkdown
  *
  *  Created by Tony Smith on 08/10/2024.
  *  Copyright © 2026 Tony Smith. All rights reserved.
