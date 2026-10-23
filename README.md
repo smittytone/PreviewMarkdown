@@ -59,3 +59,5 @@ See [CHANGELOG.md](CHANGELOG.md)
 Primary app code and UI design &copy; 2026, Tony Smith.
 
 Code portions &copy; 2014-2026 Vitaly Puzrin, Alex Kocharin; &copy; 2006-2026, Josh Goebel and Other Contributors; &copy; 2015 Behrang Noruzi Niya. 
+
+*AI was not used to write this app. However, AI has been used for research, review and testing. Any code suggested by AI has been reviewed and modified.*
