@@ -1,12 +1,15 @@
 ## Release Notes
 
 - 2.5.0 *Unreleased*
+    - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
+    - Add an advanced setting to set the size of YAML frontmatter in previews.
+    - Add an advanced setting to restrict the size of files *PreviewMarkown* will preview.
     - Improve Markdown Thumbnailer’s thread safety.
     - Improve Markdown Thumbnailer’s error handling.
     - Improve Markdown Previewer’s error handling.
+    - Improve text-entry value validity checking.
     - Update to HighlighterSwift 4.0.0 (tracking `develop` branch).
     - Update to Markdown-It 14.3.2.
-    - **Potential Break** *PreviewMarkdown* now requires macOS 12 (Monterey, 2021) or above.
 - 2.4.3 *02 May 2026*
     - Fix font-size slider control’s colouring.
     - Fix broken Advanced Help button.
