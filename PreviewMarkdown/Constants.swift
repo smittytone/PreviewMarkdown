@@ -23,6 +23,9 @@ struct BUFFOON_CONSTANTS {
             static let BAD_MD_STRING            = 402
             static let BAD_TS_STRING            = 403
             static let BAD_STYLER_LOAD          = 404
+            // FROM 2.5.0
+            static let FILE_TOO_LARGE           = 405
+            static let BAD_STR_ENCODING         = 406
         }
 
         struct MESSAGES {
@@ -32,6 +35,9 @@ struct BUFFOON_CONSTANTS {
             static let BAD_MD_STRING            = "Can't get markdown data"
             static let BAD_TS_STRING            = "Can't access NSTextView's TextStorage"
             static let BAD_STYLER_LOAD          = "App files could not be loaded. Please re-install PreviewMarkdown"
+            // FROM 2.5.0
+            static let FILE_TOO_LARGE           = "File larger than permitted. See Advanced settings in PrevieeMarkdown"
+            static let BAD_STR_ENCODING         = "Can’t determine loaded file’s text encoding"
         }
     }
 
@@ -77,6 +83,9 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_WINDOW_SCALE         = "com-bps-previewmarkdown-window-scale"
         static let PREVIEW_MARGIN               = "com-bps-previewmarkdown-preview-margin"
         static let THUMB_MATCH_MODE             = "com-bps-previewmarkdown-match-mode"
+        // FROM 2.5.0
+        static let MAX_FILE_SIZE                = "com-bps-previewmarkdown-max-file-size"
+        static let PREVIEW_YAML_FONT_SIZE       = "com-bps-previewmarkdown-yaml-font-size"
     }
     
     // FROM 2.0.0
@@ -165,7 +174,8 @@ struct BUFFOON_CONSTANTS {
         static let PREVIEW_MARGIN_WIDTH_MIN     = 0
         static let PREVIEW_MARGIN_WIDTH_MAX     = 256
         static let PREVIEW_MARGIN_SIZE          = NSSize(width: PREVIEW_MARGIN_WIDTH, height: PREVIEW_MARGIN_WIDTH)
-
+        // FROM 2.5.0
+        static let YAML_FONT_SIZE               = CGFloat(0.0)  // Code for 'same as body font'
     }
 
     struct THUMBNAIL_SIZE {
@@ -246,6 +256,7 @@ struct BUFFOON_CONSTANTS {
 
     // FROM 2.5.0
     static let APP_NAME                         = "PreviewMarkdown"
+    static let DEFAULT_MAX_FILE_SIZE            = 0
 }
 
 

@@ -36,6 +36,9 @@ class PMSettings {
     var previewWindowScale: CGFloat         = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_L               // Advanced
     var previewMarginWidth: CGFloat         = BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH   // Advanced
     var thumbnailMatchFinderMode: Bool      = false                                                 // Advanced
+    // FROM 2.5.0
+    var maxFileSize: Int                    = BUFFOON_CONSTANTS.DEFAULT_MAX_FILE_SIZE               // Advanced
+    var yamlFontSize: CGFloat               = BUFFOON_CONSTANTS.PREVIEW_SIZE.YAML_FONT_SIZE         // Advanced
 
 
     /**
@@ -69,6 +72,9 @@ class PMSettings {
             self.thumbnailMatchFinderMode = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MATCH_MODE)
             self.displayColours[BUFFOON_CONSTANTS.COLOUR_IDS.LOZENGE] = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LOZENGE_COLOUR)
             ?? BUFFOON_CONSTANTS.HEX_COLOUR.LOZENGE
+            // FROM 2.5.0
+            self.maxFileSize = defaults.integer(forKey: BUFFOON_CONSTANTS.PREFS_IDS.MAX_FILE_SIZE)
+            self.yamlFontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_FONT_SIZE))
         }
     }
 
@@ -133,6 +139,10 @@ class PMSettings {
             defaults.setValue(self.previewWindowScale, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_WINDOW_SCALE)
             defaults.setValue(self.previewMarginWidth, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
             defaults.setValue(self.thumbnailMatchFinderMode, forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MATCH_MODE)
+
+            // FROM 2.5.0
+            defaults.setValue(self.maxFileSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.MAX_FILE_SIZE)
+            defaults.setValue(self.yamlFontSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_FONT_SIZE)
         }
     }
 
@@ -260,6 +270,15 @@ class PMSettings {
             // Preview inset margin width
             if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN) == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_MARGIN)
+            }
+
+            // FROM 2.5.0
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.MAX_FILE_SIZE) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.DEFAULT_MAX_FILE_SIZE, forKey: BUFFOON_CONSTANTS.PREFS_IDS.MAX_FILE_SIZE)
+            }
+
+            if defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_FONT_SIZE) == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.PREVIEW_SIZE.YAML_FONT_SIZE, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_YAML_FONT_SIZE)
             }
         }
     }

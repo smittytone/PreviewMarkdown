@@ -17,14 +17,6 @@ extension AppDelegate {
 
     internal func initialiseSettings() {
 
-    }
-
-    
-    /**
-     Update UI when we are about to switch to it
-     */
-    internal func willShowSettingsPage() {
-
         // FROM 2.4.6
         // Fix track colour on macOS 26
         if #available(macOS 26.0, *) {
@@ -40,6 +32,16 @@ extension AppDelegate {
             self.tintThumbnailsAdvancedLabel.isEnabled = false
             self.tintThumbnailsAdvancedSwitch.isEnabled = false
         }
+
+        self.advancedYamlFontSizeText.delegate = self
+        self.advancedMaxFileSizeText.delegate = self
+    }
+
+    
+    /**
+     Update UI when we are about to switch to it
+     */
+    internal func willShowSettingsPage() {
 
         // Disable the Settings > Apply button if no settings have changed.
         self.applyButton.isEnabled = checkSettingsOnQuit()
@@ -174,7 +176,9 @@ extension AppDelegate {
 
     /**
      The user has clicked on the Settings > Apply button.
-     
+
+     NOTE This is only possible if the button is enabled.
+
      FROM 2.0.0
 
      - Parameters:
@@ -183,13 +187,10 @@ extension AppDelegate {
     @IBAction
     internal func doApplyCurrentSettings(sender: Any) {
          
-         // First, make sure changes have been made
-         if checkSettingsOnQuit() {
-             // Changes are present, so save them.
-             // NOTE This call updates the current settings values from the Settings tab UI.
-             saveSettings()
-             willShowSettingsPage()
-         }
+         // Changes are present, so save them.
+         // NOTE This call updates the current settings values from the Settings tab UI.
+         saveSettings()
+         willShowSettingsPage()
     }
 
 
@@ -224,11 +225,80 @@ extension AppDelegate {
     @IBAction
     internal func doCloseAdvancedSettings(sender: Any) {
 
-        self.window.endSheet(self.advancedSettingsSheet)
-        willShowSettingsPage()
+        if advancedValuesGood() {
+            self.window.endSheet(self.advancedSettingsSheet)
+
+            var note = Notification(name: .NSAppleEventManagerWillProcessFirstEvent, object: self.advancedYamlFontSizeText)
+            controlTextDidEndEditing(note)
+            note.object = self.advancedMaxFileSizeText
+            controlTextDidEndEditing(note)
+
+            willShowSettingsPage()
+        }
     }
 
-    
+
+    internal func advancedValuesGood() -> Bool {
+
+        let yamlSize = self.advancedYamlFontSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if let ys = yamlSize.first {
+            if ys.isWholeNumber {
+                // The first digit is a number
+                let value = Float(self.advancedYamlFontSizeText.stringValue)
+                guard value != nil else {
+                    showWarning("The YAML front matter font size is not a number or M(atch)")
+                    return false
+                }
+
+                guard value! >= 6.0 && value! <= 28.0 else {
+                    showWarning("The YAML front matter font size is not in the range 0-28")
+                    return false
+                }
+            } else {
+                // Text
+                if ys != "M" || !["M", "MATCH"].contains(yamlSize) {
+                    // Not Match or M
+                    showWarning("The YAML front matter font size must be a number or M(atch)")
+                    return false
+                }
+            }
+        } else {
+            // Box is empty
+            showWarning("The YAML front matter font size must be a number or M(atch)")
+            return false
+        }
+
+        // Preview Margin Size
+        if let previewMargin = Float(self.previewMarginSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)) {
+            if previewMargin < 0.0 || previewMargin > 256.0 {
+                showWarning("The preview margin size is outside the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)")
+                return false
+            }
+        } else {
+            showWarning("The preview margin size must be a number in the range \(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN)-\(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)")
+            return false
+        }
+
+        // File Size
+        let possibleSize = calculateSize(self.advancedMaxFileSizeText.stringValue.uppercased())
+        if possibleSize == -1 {
+            showWarning("The maximum file size value is not a valid size, eg. 1MB, 100MB, 2GB, or A(ny size)")
+            return false
+        }
+
+        return true
+    }
+
+
+    internal func showWarning(_ message: String) {
+
+        Task { @MainActor in
+            let alert = makeAlert("Something‘s not right!", message, true, true)
+            _ = await alert.beginSheetModal(for: self.advancedSettingsSheet)
+        }
+    }
+
+
     // MARK: - General Functions
 
     /**
@@ -297,6 +367,11 @@ extension AppDelegate {
 
         self.previewSizeAdvancedPopup.selectItem(at: idx)
         self.previewMarginSizeText.stringValue = String(format:"%.1f", settings.previewMarginWidth)
+
+        // FROM 2.5.0
+        let displayText = settings.yamlFontSize == 0.0 ? "Match" : String(format:"%.1f", settings.yamlFontSize)
+        self.advancedYamlFontSizeText.stringValue = displayText
+        self.advancedMaxFileSizeText.stringValue = unifySize(settings.maxFileSize)
     }
 
 
@@ -339,6 +414,20 @@ extension AppDelegate {
         }
 
         displayedSettings.previewMarginWidth = Double(self.previewMarginSizeText.stringValue) ?? BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH
+
+        // FROM 2.5.0
+        if self.advancedYamlFontSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased().hasPrefix("M") {
+            displayedSettings.yamlFontSize = 0.0
+        } else {
+            displayedSettings.yamlFontSize = CGFloat(Float(self.advancedYamlFontSizeText.stringValue) ?? 6.0)
+        }
+
+        let fieldValue = self.advancedMaxFileSizeText.stringValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if self.infinities.contains(fieldValue) {
+            displayedSettings.maxFileSize = 0
+        } else {
+            displayedSettings.maxFileSize = calculateSize(fieldValue)
+        }
 
         return displayedSettings
     }
@@ -449,6 +538,16 @@ extension AppDelegate {
             settingsHaveChanged = !displayedSettings.previewMarginWidth.isClose(to: self.currentSettings.previewMarginWidth)
         }
 
+        // FROM 2.5.0
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.yamlFontSize != displayedSettings.yamlFontSize
+        }
+
+        if !settingsHaveChanged {
+            settingsHaveChanged = self.currentSettings.maxFileSize != displayedSettings.maxFileSize
+        }
+
+
         return settingsHaveChanged
     }
 
@@ -483,6 +582,116 @@ extension AppDelegate {
     }
 
 
+    /**
+     Receive a string like `Any`, `12B`, `8KB`, `10MB` or `0.5GB` and
+     convert it into `0` or a larger integer.
+
+     `0` has special meaning: any size.
+
+     FROM 2.5.0
+     */
+    internal func calculateSize(_ sizeText: String) -> Int {
+
+        if sizeText.isEmpty {
+            return  -1
+        }
+
+        let testText = sizeText.trimmingCharacters(in: .whitespaces).uppercased().replacingOccurrences(of: ",", with: "")
+        if self.infinities.contains(testText) {
+            return 0
+        }
+
+        let units = ["B", "KB", "MB", "GB", "TB"]
+        let (valueText, unit) = parseFileSize(testText)
+        let valueBase = Double(valueText) ?? 1.0
+        var value = 0
+        if !unit.isEmpty {
+            if units.contains(unit) {
+                let index = Double(units.firstIndex(of: String(unit)) ?? 0)
+                value = Int(valueBase * pow(1024, index))
+            } else {
+                // Bad unit
+                return -1
+            }
+        } else {
+            value = Int(valueBase)
+        }
+
+        // Apply the 1MB smallest max. value
+        if value < 1048576 {
+            return -1
+        }
+
+        return value
+    }
+
+
+    /**
+     Take a filesize string, with or without a byte marker (eg. `B`, `KB`, `MB`) and
+     separate the value from the units. If no units are provided, `B` is returned.
+
+     FROM 2.5.0
+
+     - Parameters:
+        - input: The source string.
+
+     - Returns A tuple comprising the size compoent as a string and the unit marker
+               (default: `B`)
+     */
+    internal func parseFileSize(_ input: String) -> (value: String, unit: String) {
+
+        let trimmed = input.trimmingCharacters(in: .whitespaces)
+
+        // Take the leading run of digits and decimal points as the value
+        let value = String(trimmed.prefix {
+            ("0"..."9").contains($0) || $0 == "."
+        })
+
+        // Whatever follows is the byte marker, eg. "KB", "MB", "GB"
+        let unit = String(trimmed.dropFirst(value.count)).trimmingCharacters(in: .whitespaces)
+        return (value, unit.isEmpty ? "B" : unit)
+    }
+
+
+    /**
+     Convert an byte value into a units string,
+     eg. `536,870,912` to `512MB`.
+
+     - Parameters:
+        - numberInBytes: The byte value.
+
+     - Returns: The string containing a order of magnitude merker.
+     */
+    internal func unifySize(_ numberInBytes: Int) -> String {
+
+        // Special case: handle a zero value, which is used
+        // to represent any size (ie. user has set no limit)
+        if numberInBytes == 0 {
+            return "♾️"
+        }
+
+        let units = ["B", "KB", "MB", "GB", "TB"]
+        var displayText = ""
+        let base: Double = 1024
+        var power: Double = 0
+
+        while true {
+            let max = Int(pow(base, power))
+            if numberInBytes < max {
+                displayText = "\(numberInBytes / Int(pow(base, power - 1)))\(units[Int(power - 1)])"
+                break
+            }
+
+            power += 1
+            if power > Double(units.count) {
+                return "ERROR"
+            }
+        }
+
+        return displayText
+    }
+
+
     // MARK: - NSTextFieldDelegate Functions
 
     /**
@@ -492,29 +701,77 @@ extension AppDelegate {
     */
     func controlTextDidEndEditing(_ obj: Notification) {
 
-        if let doubleValue = Double(self.previewMarginSizeText.stringValue) {
-            let min = Double(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN).rounded(.towardZero)
-            let max = Double(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX).rounded(.towardZero)
+        let textField = obj.object as? NSTextField ?? nil
+        if textField == self.previewMarginSizeText {
+            if let doubleValue = Double(textField!.stringValue) {
+                if let update = check(double: doubleValue, min: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MIN), max: Float(BUFFOON_CONSTANTS.PREVIEW_SIZE.PREVIEW_MARGIN_WIDTH_MAX)) {
+                    textField!.stringValue = update
+                    return
+                }
+            } else {
+                // Bad value -- not numeric
+                textField!.stringValue = String(format:"%.1f", self.currentSettings.previewMarginWidth)
+            }
+        } else if textField == self.advancedYamlFontSizeText {
+            if let doubleValue = Double(textField!.stringValue) {
+                // User has entered a number value
+                if let update = check(double: doubleValue, min: 6.0, max: 28.0) {
+                    textField!.stringValue = update
+                    return
+                }
+            } else {
+                // Text entered -- is it correct?
+                let currentText = textField!.stringValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+                if currentText == "MATCH" || currentText == "M" {
+                    textField!.stringValue = "Match"
+                    return
+                }
 
-            if doubleValue > min && doubleValue <= max {
-                // Value within supported range, so write the formatted value back from where it will later be read
-                self.previewMarginSizeText.stringValue = String(format:"%.1f", doubleValue)
+                // Bad text -- replace with the current numeric value
+                textField!.stringValue = String(format:"%.1f", self.currentSettings.yamlFontSize)
+            }
+        } else if textField == self.advancedMaxFileSizeText {
+            let possibleSize = calculateSize(textField!.stringValue.uppercased())
+            if possibleSize != -1 {
+                // Value OK
+                if possibleSize == 0 {
+                    // Variant on 'any'
+                    textField!.stringValue = "♾️"
+                } else {
+                    textField!.stringValue = "\(unifySize(possibleSize))" //textField!.stringValue.uppercased()
+                }
+
                 return
             }
 
-            // Erroneous value: numeric but out of range
-            // Set value to either end
-            if doubleValue < min {
-                self.previewMarginSizeText.stringValue = String(format:"%.1f", min)
-            } else if doubleValue > max {
-                self.previewMarginSizeText.stringValue = String(format:"%.1f", max)
-            }
-        } else {
-            // Erroneous value: not numeric
-            self.previewMarginSizeText.stringValue = String(format:"%.1f", self.currentSettings.previewMarginWidth)
+            // Invalid entry -- replace with the current value
+            textField!.stringValue = "\(unifySize(self.currentSettings.maxFileSize))"
         }
 
         // Warn the user
         NSSound.beep()
+    }
+
+
+    internal func check(double: Double, min: Float, max: Float) -> String? {
+
+        let mind = Double(min).rounded(.towardZero)
+        let maxd = Double(max).rounded(.towardZero)
+
+        if double >= mind && double <= maxd {
+            // Value within supported range, so write the formatted value back from where it will later be read
+            return String(format:"%.1f", double)
+        }
+
+        // Erroneous value: numeric but out of range, so set value to either end
+        NSSound.beep()
+        if double < mind {
+            return String(format:"%.1f", mind)
+        } else if double > maxd {
+            return String(format:"%.1f", maxd)
+        }
+
+        // Error
+        return nil
     }
 }

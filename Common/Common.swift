@@ -71,7 +71,7 @@ final internal class Common {
             self.settings.fontSize = CGFloat(BUFFOON_CONSTANTS.PREVIEW_SIZE.FONT_SIZE)
         }
 
-        // FROM 2.5.0
+        // FROM 2.4.0
         // Check key preview window sizing values
         if self.settings.previewWindowScale < BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S {
             self.settings.previewWindowScale = BUFFOON_CONSTANTS.SCALERS.WINDOW_SIZE_S
@@ -653,7 +653,8 @@ final internal class Common {
         }
 
         let cellText = isKey ? row.key : row.val
-        let cellFont = styler.makeFont(cellTextStyle, styler.settings!.fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_TEXT)
+        let fontSize = settings.yamlFontSize == 0 ? styler.settings!.fontSize : settings.yamlFontSize
+        let cellFont = styler.makeFont(cellTextStyle, fontSize * BUFFOON_CONSTANTS.SCALERS.FRONT_MATTER_TEXT)
         return NSMutableAttributedString(string: cellText + "\n",
                                          attributes: [.foregroundColor: cellTextColour,
                                                       .paragraphStyle: cellParaStyle,

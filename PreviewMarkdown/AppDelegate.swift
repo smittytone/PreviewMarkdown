@@ -89,7 +89,10 @@ final class AppDelegate: NSResponder,
     @IBOutlet weak var previewMarginRangeText: NSTextField!
     // FROM 2.4.3
     @IBOutlet weak var advancedHelpButton: NSButton!
-
+    // FROM 2.5.0
+    @IBOutlet weak var advancedYamlFontSizeText: NSTextField!
+    @IBOutlet weak var advancedMaxFileSizeText: NSTextField!
+    
 
     // MARK: - Public Properties
 
@@ -117,6 +120,9 @@ final class AppDelegate: NSResponder,
     internal var currentSettings: PMSettings = PMSettings()
     // FROM 2.4.1
     internal var timer: Timer? = nil
+
+    // FROM 2.5.0
+    internal let infinities = ["ANY", "A", "♾️", "INF", "+INF", "-INF", "∞", "⧞"]
 
 
     // MARK: - Class Lifecycle Functions
