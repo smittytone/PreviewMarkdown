@@ -55,7 +55,7 @@ class PreviewViewController: NSViewController,
         // Convert the data to a string
         let encoding = data.stringEncoding ?? .utf8
         guard let markdown = String(data: data, encoding: encoding) else {
-            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STR_ENCODING, "\(encoding)")
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_ENC_STRING, "\(encoding)")
         }
 
         // FROM 2.0.0
@@ -141,7 +141,8 @@ class PreviewViewController: NSViewController,
      Codes are listed in `Constants.swift`
 
      - Parameters:
-        - code: The internal error code.
+        - code:  The internal error code.
+        - extra: Additional text for specific errors
 
      - Returns: The described error as an NSError.
      */
@@ -158,14 +159,14 @@ class PreviewViewController: NSViewController,
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_ENC_STRING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_ENC_STRING + " \(extra)"
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
             case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_TOO_LARGE + " \(extra)"
-            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STR_ENCODING:
-                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STR_ENCODING + " \(extra)"
             default:
                 errDesc = "UNKNOWN ERROR"
         }

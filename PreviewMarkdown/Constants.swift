@@ -20,24 +20,22 @@ struct BUFFOON_CONSTANTS {
             static let NONE                     = 0
             static let FILE_INACCESSIBLE        = 400
             static let FILE_WONT_OPEN           = 401
-            static let BAD_MD_STRING            = 402
+            static let BAD_ENC_STRING           = 402
             static let BAD_TS_STRING            = 403
-            static let BAD_STYLER_LOAD          = 404
-            // FROM 2.5.0
-            static let FILE_TOO_LARGE           = 405
-            static let BAD_STR_ENCODING         = 406
+            static let BAD_STYLER_LOAD          = 410
+            static let FILE_TOO_LARGE           = 411
+            static let BAD_MD_STRING            = 412
         }
 
         struct MESSAGES {
             static let NO_ERROR                 = "No error"
-            static let FILE_INACCESSIBLE        = "Can't access file"
-            static let FILE_WONT_OPEN           = "Can't open file"
+            static let FILE_INACCESSIBLE        = "Can’t access file"
+            static let FILE_WONT_OPEN           = "Can’t open file"
+            static let BAD_ENC_STRING           = "File uses an unsupported text encoding"
+            static let BAD_TS_STRING            = "Can’t access NSTextView's TextStorage"
             static let BAD_MD_STRING            = "Can't get markdown data"
-            static let BAD_TS_STRING            = "Can't access NSTextView's TextStorage"
             static let BAD_STYLER_LOAD          = "App files could not be loaded. Please re-install PreviewMarkdown"
-            // FROM 2.5.0
             static let FILE_TOO_LARGE           = "File larger than permitted. See Advanced settings in PrevieeMarkdown"
-            static let BAD_STR_ENCODING         = "Can’t determine loaded file’s text encoding"
         }
     }
 
