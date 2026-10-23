@@ -36,115 +36,100 @@ class PreviewViewController: NSViewController,
          * This is the main entry point for the macOS QuickLook previewing system
          */
 
-        var reportError: NSError? = nil
-
-        // Load and process the source file
-        do {
-            // Get the file contents as a string
-            let data = try Data(contentsOf: url, options: [.uncached])
-            let encoding = data.stringEncoding ?? .utf8
-
-            // Convert the data to a string
-            guard let markdown = String(data: data, encoding: encoding) else {
-                let errDesc = "\(BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING) \(encoding)"
-                reportError = NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
-                                      code: BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING,
-                                      userInfo: [NSLocalizedDescriptionKey: errDesc])
-                throw reportError!
-            }
-
-            /*
-             Instantiate the common code within the closure
-             */
-            guard let common = Common(forThumbnail: false) else {
-                reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD)
-                throw reportError!
-            }
-
-            // FROM 2.0.0
-            // Pass in the source file's directory
-            common.workingDirectory = (url.path as NSString).deletingLastPathComponent
-
-            /*
-             Attributed string acquisition
-             */
-            let attributedMarkdown = common.getAttributedString(markdown[...])
-
-            /*
-             Window and mode configuration
-             */
-
-            // FROM 2.2.0
-            // Set the parent window's size
-            setPreviewWindowSize(common.settings)
-
-            // FROM 2.4.0
-            // The force-light-mode-preview-in-dark-mode setting is now a general
-            // preview-colours-should-be-opposite-the-mode setting.
-            var renderPreviewLight = NSApp.inLightMode
-            if common.settings.doReverseMode {
-                // Invert the colour scheme based on the current mode
-                renderPreviewLight = !renderPreviewLight
-            }
-
-            // Update the NSTextView
-            self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
-            self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
-            self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
-
-            // FROM 2.1.0
-            // Add margin if required
-            // FROM 2.3.0
-            // Margin size is a setting
-            if common.settings.previewMarginWidth > 0.0 {
-                self.renderTextView.textContainerInset = NSSize(width: common.settings.previewMarginWidth,
-                                                                height: common.settings.previewMarginWidth)
-            }
-
-            // FROM 2.0.0
-            // Correct way to set a text view's link colouring, etc. - and have it stick
-            self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
-                                                      NSAttributedString.Key.cursor: NSCursor.pointingHand]
-
-            /*
-             Attributed String Presentation
-             */
-
-            // Access the text view's storage to place the rendered Markdown string
-            if let renderTextStorage = self.renderTextView.textStorage {
-                if let renderTextContainer = self.renderTextView.textContainer {
-                    // Add a custom layout manager to trap double-underlines, which
-                    // we are using as a proxy for lozenged text - the layouter will
-                    // do the replacement work
-                    let layouter = PMLayouter()
-                    layouter.marginDelta = common.settings.doShowMargin ? common.settings.previewMarginWidth : 0.0
-                    layouter.fontSize = common.settings.fontSize
-
-                    // This line is a sort of fix for the table border rendering issue
-                    // It helps - missing borders do get drawn eventually - but doesn't
-                    // get them drawn immediately.
-                    layouter.allowsNonContiguousLayout = true
-                    renderTextContainer.replaceLayoutManager(layouter)
-                }
-
-                renderTextStorage.beginEditing()
-                renderTextStorage.setAttributedString(attributedMarkdown)
-                renderTextStorage.endEditing()
-                return
-            }
-
-            // We couldn't access the preview NSTextView's NSTextStorage
-            reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING)
-        } catch {
-            // We couldn't read the file so set an appropriate error to report back
-            if reportError == nil {
-                reportError = makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
-            }
+        // Get the file contents as a string
+        guard let data = try? Data(contentsOf: url, options: [.uncached]) else {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN)
         }
 
-        // FROM 2.4.3
-        // Throw to indicate an error
-        throw reportError!
+        // Instantiate the common code within the closure
+        guard let common = Common(forThumbnail: false) else {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD)
+        }
+
+        // FROM 2.5.0
+        // NOTE `zero` = `any size`
+        if common.settings.maxFileSize > 0 && data.count <= common.settings.maxFileSize {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE)
+        }
+
+        // Convert the data to a string
+        let encoding = data.stringEncoding ?? .utf8
+        guard let markdown = String(data: data, encoding: encoding) else {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STR_ENCODING, "\(encoding)")
+        }
+
+        // FROM 2.0.0
+        // Pass in the source file's directory
+        common.workingDirectory = (url.path as NSString).deletingLastPathComponent
+
+        /*
+         * Attributed string acquisition
+         */
+        let attributedMarkdown = common.getAttributedString(markdown[...])
+
+        /*
+         * Window and mode configuration
+         */
+
+        // FROM 2.2.0
+        // Set the parent window's size
+        setPreviewWindowSize(common.settings)
+
+        // FROM 2.4.0
+        // The force-light-mode-preview-in-dark-mode setting is now a general
+        // preview-colours-should-be-opposite-the-mode setting.
+        var renderPreviewLight = NSApp.inLightMode
+        if common.settings.doReverseMode {
+            // Invert the colour scheme based on the current mode
+            renderPreviewLight = !renderPreviewLight
+        }
+
+        // Update the NSTextView
+        self.renderTextView.backgroundColor = renderPreviewLight ? NSColor.white : NSColor.textBackgroundColor
+        self.renderTextScrollView.scrollerKnobStyle = renderPreviewLight ? .dark : .light
+        self.view.appearance = renderPreviewLight ? NSAppearance(named: .aqua) : NSAppearance(named: .darkAqua)
+
+        // FROM 2.1.0
+        // Add margin if required
+        // FROM 2.3.0
+        // Margin size is a setting
+        if common.settings.previewMarginWidth > 0.0 {
+            self.renderTextView.textContainerInset = NSSize(width: common.settings.previewMarginWidth,
+                                                            height: common.settings.previewMarginWidth)
+        }
+
+        // FROM 2.0.0
+        // Correct way to set a text view's link colouring, etc. - and have it stick
+        self.renderTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: common.linkColor,
+                                                  NSAttributedString.Key.cursor: NSCursor.pointingHand]
+
+        /*
+         * Attributed String Presentation
+         */
+
+        // Access the text view's storage to place the rendered Markdown string
+        guard let renderTextStorage = self.renderTextView.textStorage else {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING)
+        }
+
+        if let renderTextContainer = self.renderTextView.textContainer {
+            // Add a custom layout manager to trap double-underlines, which
+            // we are using as a proxy for lozenged text - the layouter will
+            // do the replacement work
+            let layouter = PMLayouter()
+            layouter.marginDelta = common.settings.doShowMargin ? common.settings.previewMarginWidth : 0.0
+            layouter.fontSize = common.settings.fontSize
+
+            // This line is a sort of fix for the table border rendering issue
+            // It helps - missing borders do get drawn eventually - but doesn't
+            // get them drawn immediately.
+            layouter.allowsNonContiguousLayout = true
+            renderTextContainer.replaceLayoutManager(layouter)
+        }
+
+        renderTextStorage.beginEditing()
+        renderTextStorage.setAttributedString(attributedMarkdown)
+        renderTextStorage.endEditing()
     }
 
 
@@ -160,7 +145,7 @@ class PreviewViewController: NSViewController,
 
      - Returns: The described error as an NSError.
      */
-    func makeError(_ code: Int) -> NSError {
+    func makeError(_ code: Int, _ extra: String = "") -> NSError {
 
         // NSError generation function
 
@@ -177,6 +162,10 @@ class PreviewViewController: NSViewController,
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
+            case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_TOO_LARGE
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STR_ENCODING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STR_ENCODING + " \(extra)"
             default:
                 errDesc = "UNKNOWN ERROR"
         }
