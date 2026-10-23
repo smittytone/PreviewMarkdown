@@ -48,8 +48,8 @@ class PreviewViewController: NSViewController,
 
         // FROM 2.5.0
         // NOTE `zero` = `any size`
-        if common.settings.maxFileSize > 0 && data.count <= common.settings.maxFileSize {
-            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE)
+        if common.settings.maxFileSize > 0 && data.count > common.settings.maxFileSize {
+            throw makeError(BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE, "\(data.count) bytes, \(common.settings.maxFileSize) allowed")
         }
 
         // Convert the data to a string
@@ -163,7 +163,7 @@ class PreviewViewController: NSViewController,
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STYLER_LOAD:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STYLER_LOAD
             case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_TOO_LARGE:
-                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_TOO_LARGE
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_TOO_LARGE + " \(extra)"
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_STR_ENCODING:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_STR_ENCODING + " \(extra)"
             default:
