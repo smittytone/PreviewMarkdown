@@ -1,6 +1,6 @@
 ## Release Notes
 
-- 2.5.0 *Unreleased*
+- 2.5.0 *24 October 2026*
     - **BREAKING** Minimum macOS version is now macOS 12 Monterey.
     - Add an advanced setting to set the size of YAML frontmatter in previews.
     - Add an advanced setting to restrict the size of files *PreviewMarkown* will preview.
