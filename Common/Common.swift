@@ -39,6 +39,7 @@ final internal class Common {
     private var markdowner: PMMarkdowner?                           = nil
     private var styler: PMStyler?                                   = nil
 
+
     /*
      Replace the following string with your own team ID. This is used to
      identify the app suite and so share preferences set by the main app with
@@ -156,7 +157,7 @@ final internal class Common {
 
         // Look for YAML front matter
         var frontMatter: Substring = ""
-        let components: MarkdownComponents = getFrontMatter(rawText)
+        let components = getFrontMatter(rawText)
         if components.frontMatterStart != nil && !self.isThumbnail {
             frontMatter = rawText[components.frontMatterStart!...components.frontMatterEnd!]
         }
@@ -191,9 +192,16 @@ final internal class Common {
         }
 
         // Get the markdown content that comes after the front matter (if there is any)
-        var markdownToRender: Substring = rawText[components.markdownStart!..<components.markdownEnd!]
+        var markdownToRender = rawText[components.markdownStart!..<components.markdownEnd!]
         if markdownToRender.count == 0 {
             markdownToRender = "*Empty File*"
+        }
+
+        // FROM 2.5.1
+        if markdownToRender.rightToLeft {
+            // Increase the line spacing by 25% (a multiple of the font size) to allow for
+            // cursive character sets
+            self.settings.lineSpacing += 1.25
         }
 
         // Load in the Markdown converter
@@ -659,4 +667,5 @@ final internal class Common {
                                                       .paragraphStyle: cellParaStyle,
                                                       .font: cellFont])
     }
+
 }

@@ -825,7 +825,7 @@ class PMStyler {
         block.setValue(512.0, type: .absoluteValueType, for: .minimumWidth)
 
         let newParaStyle = NSMutableParagraphStyle()
-        newParaStyle.lineSpacing = self.settings!.lineSpacing
+        newParaStyle.lineSpacing = self.lineSpacing
         newParaStyle.paragraphSpacing = self.paraSpacing
         newParaStyle.alignment = .left
         newParaStyle.textBlocks.append(block)
@@ -847,7 +847,7 @@ class PMStyler {
         // Make the single paragraph style
         // TO-DO Cache for later usage
         let newParaStyle = NSMutableParagraphStyle()
-        newParaStyle.lineSpacing = self.settings!.lineSpacing
+        newParaStyle.lineSpacing = self.lineSpacing
         newParaStyle.paragraphSpacing = self.paraSpacing
         newParaStyle.alignment = .left
         newParaStyle.textBlocks.append(makeCodeParagraphBlock(inset))
@@ -1051,13 +1051,16 @@ class PMStyler {
         // Prepare the fonts we'll use
         prepareFonts()
 
-        self.settings!.lineSpacing = ((self.settings!.lineSpacing >= 0.0 ? self.settings!.lineSpacing : 0.0) - 1.0) * self.settings!.fontSize
+        // Set the local line spacing, the extra space in points between the bottom of one line and the top of
+        // the next, as derived from the settings value and multiplied by the chosen font size. Make sure the
+        // settings value is not negative -- use 1.0 if it is.
+        self.lineSpacing = ((self.settings!.lineSpacing >= 0.0 ? self.settings!.lineSpacing : 1.0) - 1.0) * self.settings!.fontSize
         self.paraSpacing = self.paraSpacing >= 0.0 ? self.paraSpacing : 0.0
 
         // Set the paragraph styles
         // Base paragraph style: No left inset
         let tabbedParaStyle                             = NSMutableParagraphStyle()
-        tabbedParaStyle.lineSpacing                     = self.settings!.lineSpacing
+        tabbedParaStyle.lineSpacing                     = self.lineSpacing
         tabbedParaStyle.paragraphSpacing                = self.paraSpacing
         tabbedParaStyle.paragraphSpacingBefore          = 0.5
         tabbedParaStyle.alignment                       = .left
@@ -1067,7 +1070,7 @@ class PMStyler {
         self.paragraphs["tabbed"]                       = tabbedParaStyle
 
         let quoteParaStyle                              = NSMutableParagraphStyle()
-        quoteParaStyle.lineSpacing                      = self.settings!.lineSpacing
+        quoteParaStyle.lineSpacing                      = self.lineSpacing
         quoteParaStyle.paragraphSpacing                 = self.paraSpacing * 2.0
         quoteParaStyle.alignment                        = .right
         quoteParaStyle.paragraphSpacingBefore           = self.paraSpacing
@@ -1077,7 +1080,7 @@ class PMStyler {
 
         // Nested list
         let listParaStyle                               = NSMutableParagraphStyle()
-        listParaStyle.lineSpacing                       = self.settings!.lineSpacing
+        listParaStyle.lineSpacing                       = self.lineSpacing
         listParaStyle.paragraphSpacing                  = self.paraSpacing
         listParaStyle.alignment                         = .left
         listParaStyle.headIndent                        = 60.0
@@ -1086,7 +1089,7 @@ class PMStyler {
 
         // HR paragraph
         let lineParaStyle                               = NSMutableParagraphStyle()
-        lineParaStyle.lineSpacing                       = self.settings!.lineSpacing
+        lineParaStyle.lineSpacing                       = self.lineSpacing
         lineParaStyle.paragraphSpacing                  = self.paraSpacing
         lineParaStyle.alignment                         = .left
         lineParaStyle.tabStops                          = [NSTextTab(textAlignment: .right, location: 120.0, options: [:])]

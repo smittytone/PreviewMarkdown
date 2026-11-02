@@ -367,18 +367,41 @@ extension NSBitmapImageRep {
 extension String {
 
     func substring(fromIndex: Int) -> String {
+
         return self[min(fromIndex, self.count)..<self.count]
     }
 
     func substring(toIndex: Int) -> String {
+
         return self[0..<max(0, toIndex)]
     }
 
+
     subscript(r: Range<Int>) -> String {
+
         let bounds = (lower: max(0, min(self.count, r.lowerBound)), upper: min(self.count, max(0, r.upperBound)))
         let range = Range(uncheckedBounds:bounds)
         let start = index(self.startIndex, offsetBy: range.lowerBound)
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
         return String(self[start ..< end])
+    }
+
+
+    var rightToLeft: Bool {
+        
+        get {
+            return self.range(of: "\\p{Script=Arabic}", options: .regularExpression) != nil
+        }
+    }
+}
+
+
+extension Substring {
+
+    var rightToLeft: Bool {
+
+        get {
+            return self.range(of: "\\p{Script=Arabic}", options: .regularExpression) != nil
+        }
     }
 }
