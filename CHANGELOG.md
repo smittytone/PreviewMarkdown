@@ -2,6 +2,7 @@
 
 - 2.5.1 *Unreleased*
     - Extend line-spacing for Arabic text (experimental).
+    - Fix a bug that restyled checkboxes even within code blocks.
 - 2.5.0 *24 October 2026*
     - **BREAKING** Minimum macOS version is now macOS 12 Monterey.
     - Add an advanced setting to set the size of YAML frontmatter in previews.

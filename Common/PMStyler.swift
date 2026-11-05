@@ -56,11 +56,10 @@ class PMStyler {
     public func render(_ tokenString: String, _ isThumbnail: Bool = false, _ renderLightMode: Bool = false) -> NSAttributedString? {
 
         // Check we have an tokened string to render.
-        if tokenString.isEmpty {
-            return nil
-        } else {
-            self.tokenString = tokenString
-        }
+        guard !tokenString.isEmpty else { return nil }
+
+        // Convert any checkboxes
+        self.tokenString = processCheckboxes(tokenString)
 
         // Always render for light mode when generating thumbnail, we;'re in dakr mode but want
         // to use light mode colours anyway, or we're actually in light mode
@@ -106,11 +105,7 @@ class PMStyler {
         var styleStack: [Style] = []
         styleStack.append(Style())
 
-        // Perform pre-processing:
-        // 1. Convert checkboxes, eg `[] checkbox`, `[x] checkbox`
-        processCheckboxes()
-
-        // 2. Convert Windows LFCR line endings and remove unwanted New Lines
+        // Convert Windows LFCR line endings and remove unwanted New Lines
         self.tokenString = self.tokenString.replacingOccurrences(of: BUFFOON_CONSTANTS.LINE_END.WINDOWS, with: "")
 
         // Render the HTML
@@ -926,7 +921,7 @@ class PMStyler {
      Convert all the occurences of `[ ]` and `[x]` in the specified
      string into emoji symbols.
      */
-    internal func processCheckboxes() {
+    internal func processCheckboxesOLD() {
 
         // Hack to present checkboxes a la GitHub
         let patterns = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
@@ -945,6 +940,57 @@ class PMStyler {
 
             i += 1
         }
+    }
+
+
+    /**
+     Convert all the occurences of `[ ]` and `[x]` in the specified
+     string into emoji symbols.
+
+     FROM 2.5.1
+     */
+    internal func processCheckboxes(_ raw: String) -> String {
+
+        // Hack to present checkboxes a la GitHub
+        let patterns = [#"\[\s?\](?!\()"#, #"\[[xX]{1}\](?!\()"#]
+        let symbols = ["☐", "☒"]
+
+        // Use <code> and </code> as out don't replace boundaries
+        var source = raw
+        var start = source.startIndex
+        var range = source.range(of: "<code")
+        while range != nil {
+            // Get a range from `start` up to the `<code>`
+            let scanRange = start..<range!.lowerBound
+
+            // Zap any checkboxes in the scanRange
+            var i = 0
+            for pattern in patterns {
+                var subRange = source.range(of: pattern, options: .regularExpression, range: scanRange)
+                while subRange != nil {
+                    // Swap out the HTML symbol code for the actual symbol
+                    source = source.replacingCharacters(in: subRange!, with: symbols[i])
+
+                    // Get the next occurence of the pattern ready for the 'while...' check
+                    subRange = source.range(of: pattern, options: .regularExpression, range: scanRange)
+                }
+
+                i += 1
+            }
+
+            // Find the closing `</code>`
+            let codeRange = source.range(of: "</code>", range: range!.upperBound..<source.endIndex)
+            if codeRange != nil {
+                // Set the new start-of-scan point
+                start = codeRange!.upperBound
+            }
+
+            // Get a range from `start` up to the `<code>`
+            range = source.range(of: "<code", range: start..<source.endIndex)
+        }
+
+        // Return the converted string
+        return source
     }
 
 
